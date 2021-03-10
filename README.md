@@ -44,9 +44,14 @@ mix phx.server
 Running tests.
 
 ```
-MIX_ENV=test mix test
+mix test
 ```
 
+Lint your code.
+
+```
+mix credo
+```
 
 Format your code.
 
@@ -96,11 +101,11 @@ guides](https://hexdocs.pm/phoenix/deployment.html).
 You can use these resources to learn more about the technologies this project
 uses.
 
-* [Getting Started with Elixir](https://elixir-lang.org/getting-started/introduction.html)
-* [Erlang/Elixir Syntax: A Crash Course](https://elixir-lang.org/crash-course.html)
-* [Elixir School Course](https://elixirschool.com/en/)
-* [Phoenix Guides Overview](https://hexdocs.pm/phoenix/overview.html)
-* [Phoenix Documentation](https://hexdocs.pm/phoenix)
+- [Getting Started with Elixir](https://elixir-lang.org/getting-started/introduction.html)
+- [Erlang/Elixir Syntax: A Crash Course](https://elixir-lang.org/crash-course.html)
+- [Elixir School Course](https://elixirschool.com/en/)
+- [Phoenix Guides Overview](https://hexdocs.pm/phoenix/overview.html)
+- [Phoenix Documentation](https://hexdocs.pm/phoenix)
 
 ## :handshake: Contributing
 

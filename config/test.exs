@@ -8,7 +8,7 @@ use Mix.Config
 config :bokken, Bokken.Repo,
   username: System.get_env("DB_USERNAME", "postgres"),
   password: System.get_env("DB_PASSWORD", "postgres"),
-  database: System.get_env("DB_NAME", "bokken_test#{Sytem.get_env("MIX_TEST_PARITION")}"),
+  database: System.get_env("DB_NAME", "bokken_test"),
   hostname: System.get_env("DB_HOST", "localhost"),
   port: System.get_env("DB_PORT", "5432"),
   pool: Ecto.Adapters.SQL.Sandbox
