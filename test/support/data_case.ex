@@ -16,6 +16,8 @@ defmodule Bokken.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       alias Bokken.Repo
@@ -28,10 +30,10 @@ defmodule Bokken.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Bokken.Repo)
+    :ok = Sandbox.checkout(Bokken.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Bokken.Repo, {:shared, self()})
+      Sandbox.mode(Bokken.Repo, {:shared, self()})
     end
 
     :ok

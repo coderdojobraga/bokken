@@ -4,7 +4,10 @@
 
 # bokken
 
-Platform support API for managing session registrations and recording ninja progress.
+> :crossed_swords: **bok**ken + shuri**ken**
+
+Platform support API for managing session registrations and recording ninjas'
+progress.
 
 ## :rocket: Getting Started
 
@@ -21,7 +24,7 @@ The following software is required to be installed on your system:
 
 We recommend using [asdf version
 manager](https://asdf-vm.com/#/core-manage-asdf?id=install) to install and
-manage all the programming languages requirements.
+manage all the programming languages' requirements.
 
 ### :gear: Setup
 
@@ -35,13 +38,14 @@ bin/setup
 
 ### :hammer: Development
 
-Starting the development server and then you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Start the development server and then you can visit
+[`localhost:4000`](http://localhost:4000) from your browser.
 
 ```
 mix phx.server
 ```
 
-Running tests.
+Run the tests.
 
 ```
 mix test
