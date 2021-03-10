@@ -18,6 +18,5 @@ defmodule Bokken.Repo.Migrations.CreateUsers do
 
       timestamps()
     end
-
   end
 end
