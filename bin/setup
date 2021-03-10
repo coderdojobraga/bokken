@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/logging.sh
+. scripts/logging.sh
+# shellcheck source=../scripts/utils.sh
+. scripts/utils.sh
+
+env=${1:-"dev"}
+
+log_info "setup" "Setting up the env..."
+if [ ! -f .env ]; then
+  cp .env.sample .env
+  log_success "env file created, you might want to open .env and set the
+    correct values. Make sure you export them into your environment before
+    runing this script again."
+  exit
+else
+  log_warn ".env file already exists, skipping..."
+fi
+
+log_info "setup" "Installing required languages..."
+if not_installed "asdf"; then
+  log_error "
+    We are using asdf (https://github.com/asdf-vm/asdf) to manage tool
+    dependencies, since it was not found on your system we cannot ensure that you
+    are using the correct versions of all the tools. Please install it and run
+    this script again, or proceed at your own peril.
+  "
+
+  ensure_confirmation
+else
+  set +e
+  asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git 2>/dev/null
+  asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git 2>/dev/null
+  set -e
+
+  asdf install
+fi
+
+. "./.env"
+
+log_info "setup" "Installing dependencies..."
+MIX_ENV=$env mix local.hex --force
+MIX_ENV=$env mix local.rebar --force
+MIX_ENV=$env mix deps.get
+
+log_info "setup" "Creating and running migrations on database..."
+MIX_ENV=$env mix ecto.setup
+
+log_info "setup" "You're good to go! Run bin/server to get the development server running."

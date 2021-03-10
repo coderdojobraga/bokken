@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13.2
+    container_name: bokken_db
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_HOST: ${DB_HOST:-localhost}
+      POSTGRES_PORT: ${DB_PORT:-5432}
+    ports:
+      - ${DB_PORT:-5432}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
