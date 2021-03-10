@@ -5,6 +5,10 @@ defmodule BokkenWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/", BokkenWeb do
+    get "/", PageController, :index
+  end
+
   scope "/api", BokkenWeb do
     pipe_through :api
   end
