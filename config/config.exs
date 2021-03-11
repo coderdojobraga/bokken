@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :bokken,
-  ecto_repos: [Bokken.Repo]
+  ecto_repos: [Bokken.Repo],
+  generators: [binary_id: true]
 
 # Configures the endpoint
 config :bokken, BokkenWeb.Endpoint,
