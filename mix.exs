@@ -5,6 +5,8 @@ defmodule Bokken.MixProject do
     [
       app: :bokken,
       version: "0.1.0",
+      description:
+        "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
