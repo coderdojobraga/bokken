@@ -27,5 +27,8 @@ bokken-*.tar
 # this depending on your deployment strategy.
 /priv/static/
 
+# local env files
 .env
-
+.env.dev
+.env.test
+.env.prod
