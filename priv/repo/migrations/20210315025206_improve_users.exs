@@ -3,11 +3,13 @@ defmodule Bokken.Repo.Migrations.AddUniqueIndexToUsersEmail do
 
   def change do
     alter table(:users) do
-      modify :first_name, :string, null: false
-      modify :last_name, :string, null: false
       modify :email, :string, null: false
       modify :password_hash, :string, null: false
       modify :role, :string, null: false
+
+      remove :first_name, :string, null: false
+      remove :last_name, :string, null: false
+      remove :photo, :string, null: false
     end
 
     create unique_index(:users, [:email])

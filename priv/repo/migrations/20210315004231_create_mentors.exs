@@ -4,6 +4,9 @@ defmodule Bokken.Repo.Migrations.CreateMentors do
   def change do
     create table(:mentors, primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :photo, :string
+      add :first_name, :string, null: false
+      add :last_name, :string, null: false
       add :mobile, :string, null: false
       add :birthday, :date
       add :major, :string

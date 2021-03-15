@@ -13,11 +13,14 @@ defmodule BokkenWeb.MentorView do
   def render("mentor.json", %{mentor: mentor}) do
     %{
       id: mentor.id,
+      photo: mentor.photo,
+      first_name: mentor.first_name,
+      last_name: mentor.last_name,
       mobile: mentor.mobile,
       birthday: mentor.birthday,
       trial: mentor.trial,
       major: mentor.major,
-      social: mentor.social
+      socials: mentor.socials
     }
   end
 end

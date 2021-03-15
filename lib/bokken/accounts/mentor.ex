@@ -5,15 +5,21 @@ defmodule Bokken.Accounts.Mentor do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields [:mobile, :trial, :user_id]
-  @optional_fields [:birthday, :major]
+  @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
+  @optional_fields [:photo, :birthday, :major]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "mentors" do
+    field :photo, :string
+    field :first_name, :string
+    field :last_name, :string
+
     field :mobile, :string
+
     field :birthday, :date
     field :major, :string
+
     field :trial, :boolean, default: true
 
     embeds_many :socials, Social do
