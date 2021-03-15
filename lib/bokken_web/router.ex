@@ -11,6 +11,8 @@ defmodule BokkenWeb.Router do
 
   scope "/api", BokkenWeb do
     pipe_through :api
+
+    resources "/mentors", MentorController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
