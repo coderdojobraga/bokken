@@ -19,6 +19,10 @@ config :bokken, BokkenWeb.Endpoint,
   pubsub_server: Bokken.PubSub,
   live_view: [signing_salt: "HwkWYgOC"]
 
+config :bokken, BokkenWeb.Authorization,
+  issuer: "bokken",
+  secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

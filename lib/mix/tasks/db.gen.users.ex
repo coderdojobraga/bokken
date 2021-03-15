@@ -37,6 +37,9 @@ defmodule Mix.Tasks.Db.Gen.Users do
       names = split_names(character)
 
       case Bokken.Accounts.create_user(user) do
+        {:error, changeset} ->
+          Mix.Shell.IO.error(Kernel.inspect(changeset.errors))
+
         {:ok, %{id: user_id}} when role == :mentor ->
           mobile =
             "+351 9#{Enum.random([1, 2, 3, 6])}#{
