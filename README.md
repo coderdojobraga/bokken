@@ -42,25 +42,25 @@ Start the development server and then you can visit
 [`localhost:4000`](http://localhost:4000) from your browser.
 
 ```
-mix phx.server
+bin/server
 ```
 
 Run the tests.
 
 ```
-mix test
+bin/test
 ```
 
 Lint your code.
 
 ```
-mix credo
+bin/lint
 ```
 
 Format your code.
 
 ```
-mix format
+bin/format
 ```
 
 ### :whale: Docker

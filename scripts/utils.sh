@@ -16,15 +16,6 @@ function not_installed() {
   [ ! -x "$(command -v "$@")" ]
 }
 
-function ensure_confirmation() {
-  read -r "confirmation?please confirm you want to continue [y/n] (default: y) "
-  confirmation=${confirmation:-"y"}
-
-  if [ "$confirmation" != "y" ]; then
-    exit 1
-  fi
-}
-
 function ask_for_sudo() {
   # Ask for the administrator password upfront.
   sudo -v &>/dev/null
@@ -40,4 +31,13 @@ function ask_for_sudo() {
   done &>/dev/null &
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.4.2 || true
+function ensure_confirmation() {
+  read -r "confirmation?please confirm you want to continue [y/n] (default: y) "
+  confirmation=${confirmation:-"y"}
+
+  if [ "$confirmation" != "y" ]; then
+    exit 1
+  fi
+}
+
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.0 || true
