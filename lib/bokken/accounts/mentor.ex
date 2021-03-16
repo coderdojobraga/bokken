@@ -22,10 +22,7 @@ defmodule Bokken.Accounts.Mentor do
 
     field :trial, :boolean, default: true
 
-    embeds_many :socials, Social do
-      field :name, Ecto.Enum, values: [:scratch, :codewars, :github, :gitlab]
-      field :username, :string
-    end
+    embeds_many :socials, Bokken.Accounts.Social
 
     belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
 
@@ -38,6 +35,7 @@ defmodule Bokken.Accounts.Mentor do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_embed(:socials, with: &social_changeset/2)
     |> validate_required(@required_fields)
+    |> assoc_constraint(:user)
   end
 
   defp social_changeset(social, params) do
