@@ -13,6 +13,8 @@ defmodule BokkenWeb.Router do
     pipe_through :api
 
     resources "/mentors", MentorController, except: [:new, :edit]
+
+    resources "/guardians", GuardianController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development

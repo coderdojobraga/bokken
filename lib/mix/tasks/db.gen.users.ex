@@ -3,6 +3,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
   A task to populate the database with some users.
   """
   use Mix.Task
+  alias Bokken.Cities.Citieslist
 
   @spec run(any) :: list
   def run(_) do
@@ -17,6 +18,16 @@ defmodule Mix.Tasks.Db.Gen.Users do
       "Branca de Neve"
     ]
     |> create_users(:mentor)
+
+    # Great Singers
+    [
+      "Amalia Rodrigues",
+      "Freddie Mercury",
+      "Gordon Matthew Thomas Sting",
+      "Elis Regina",
+      "Aretha Franklin"
+    ]
+    |> create_users(:guardian)
   end
 
   defp create_users(characters, role) when role in [:mentor] do
@@ -42,6 +53,28 @@ defmodule Mix.Tasks.Db.Gen.Users do
             Enum.into(names, %{user_id: user_id, mobile: mobile, trial: false, birthday: birthday})
 
           Bokken.Accounts.create_mentor(mentor)
+      end
+    end
+  end
+
+  defp create_users(characters, role) when role in [:guardian] do
+    for character <- characters do
+      user = gen_user(character, role)
+
+      names = split_names(character)
+
+      case Bokken.Accounts.create_user(user) do
+        {:ok, %{id: user_id}} when role == :guardian ->
+          mobile =
+            "+351 9#{Enum.random([1, 2, 3, 6])}#{
+              for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
+            }"
+
+          city = Enum.random(Citieslist.get_all_cities())
+
+          guardian = Enum.into(names, %{user_id: user_id, mobile: mobile, city: city})
+
+          Bokken.Accounts.create_guardian(guardian)
       end
     end
   end
