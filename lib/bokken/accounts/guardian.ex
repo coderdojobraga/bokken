@@ -31,7 +31,7 @@ defmodule Bokken.Accounts.Guardian do
     if cityname == Citieslist.get_city(cityname) do
       changeset
     else
-      {:error, "is not a city"}
+      {:error, "Invalid city"}
     end
   end
 

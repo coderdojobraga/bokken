@@ -30,7 +30,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
     |> create_users(:guardian)
   end
 
-  defp create_users(characters, role) when role in [:mentor] do
+  defp create_users(characters, role) when role in [:mentor, :guardian] do
     for character <- characters do
       user = gen_user(character, role)
 
@@ -53,17 +53,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
             Enum.into(names, %{user_id: user_id, mobile: mobile, trial: false, birthday: birthday})
 
           Bokken.Accounts.create_mentor(mentor)
-      end
-    end
-  end
 
-  defp create_users(characters, role) when role in [:guardian] do
-    for character <- characters do
-      user = gen_user(character, role)
-
-      names = split_names(character)
-
-      case Bokken.Accounts.create_user(user) do
         {:ok, %{id: user_id}} when role == :guardian ->
           mobile =
             "+351 9#{Enum.random([1, 2, 3, 6])}#{
