@@ -3,7 +3,6 @@ defmodule Mix.Tasks.Db.Gen.Users do
   A task to populate the database with some users.
   """
   use Mix.Task
-  alias Bokken.Cities.Citieslist
 
   @spec run(any) :: list
   def run(_) do
@@ -38,7 +37,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
 
       case Bokken.Accounts.create_user(user) do
         {:error, changeset} ->
-          Mix.Shell.IO.error(Kernel.inspect(changeset.errors))
+          Mix.shell.error(Kernel.inspect(changeset.errors))
 
         {:ok, %{id: user_id}} when role == :mentor ->
           mobile =
@@ -63,7 +62,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
               for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
             }"
 
-          city = Enum.random(Citieslist.get_all_cities())
+          city = Enum.random(Jason.decode!(File.read!("data/concelhos.json")))
 
           guardian = Enum.into(names, %{user_id: user_id, mobile: mobile, city: city})
 

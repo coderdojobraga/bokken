@@ -127,6 +127,79 @@ defmodule Bokken.Accounts do
     User.changeset(user, attrs)
   end
 
+  alias Bokken.Accounts.Guardian
+
+  @doc """
+  Returns the list of guardians.
+  ## Examples
+      iex> list_guardians()
+      [%Guardian{}, ...]
+  """
+  def list_guardians do
+    Repo.all(Guardian)
+  end
+
+  @doc """
+  Gets a single guardian.
+  Raises `Ecto.NoResultsError` if the Guardian does not exist.
+  ## Examples
+      iex> get_guardian!(123)
+      %Guardian{}
+      iex> get_guardian!(456)
+      ** (Ecto.NoResultsError)
+  """
+  def get_guardian!(id), do: Repo.get!(Guardian, id)
+
+  @doc """
+  Creates a guardian.
+  ## Examples
+      iex> create_guardian(%{field: value})
+      {:ok, %Guardian{}}
+      iex> create_guardian(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def create_guardian(attrs \\ %{}) do
+    %Guardian{}
+    |> Guardian.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a guardian.
+  ## Examples
+      iex> update_guardian(guardian, %{field: new_value})
+      {:ok, %Guardian{}}
+      iex> update_guardian(guardian, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_guardian(%Guardian{} = guardian, attrs) do
+    guardian
+    |> Guardian.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a guardian.
+  ## Examples
+      iex> delete_guardian(guardian)
+      {:ok, %Guardian{}}
+      iex> delete_guardian(guardian)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_guardian(%Guardian{} = guardian) do
+    Repo.delete(guardian)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking guardian changes.
+  ## Examples
+      iex> change_guardian(guardian)
+      %Ecto.Changeset{data: %Guardian{}}
+  """
+  def change_guardian(%Guardian{} = guardian, attrs \\ %{}) do
+    Guardian.changeset(guardian, attrs)
+  end
+
   alias Bokken.Accounts.Mentor
 
   @doc """
@@ -223,99 +296,99 @@ defmodule Bokken.Accounts do
     Mentor.changeset(mentor, attrs)
   end
 
-  alias Bokken.Accounts.Guardian
+  alias Bokken.Accounts.Ninja
 
   @doc """
-  Returns the list of guardians.
+  Returns the list of ninjas.
 
   ## Examples
 
-      iex> list_guardians()
-      [%Guardian{}, ...]
+      iex> list_ninjas()
+      [%Ninja{}, ...]
 
   """
-  def list_guardians do
-    Repo.all(Guardian)
+  def list_ninjas do
+    Repo.all(Ninja)
   end
 
   @doc """
-  Gets a single guardian.
+  Gets a single ninja.
 
-  Raises `Ecto.NoResultsError` if the Guardian does not exist.
+  Raises `Ecto.NoResultsError` if the Ninja does not exist.
 
   ## Examples
 
-      iex> get_guardian!(123)
-      %Guardian{}
+      iex> get_ninja!(123)
+      %Ninja{}
 
-      iex> get_guardian!(456)
+      iex> get_ninja!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_guardian!(id), do: Repo.get!(Guardian, id)
+  def get_ninja!(id), do: Repo.get!(Ninja, id)
 
   @doc """
-  Creates a guardian.
+  Creates a ninja.
 
   ## Examples
 
-      iex> create_guardian(%{field: value})
-      {:ok, %Guardian{}}
+      iex> create_ninja(%{field: value})
+      {:ok, %Ninja{}}
 
-      iex> create_guardian(%{field: bad_value})
+      iex> create_ninja(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_guardian(attrs \\ %{}) do
-    %Guardian{}
-    |> Guardian.changeset(attrs)
+  def create_ninja(attrs \\ %{}) do
+    %Ninja{}
+    |> Ninja.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a guardian.
+  Updates a ninja.
 
   ## Examples
 
-      iex> update_guardian(guardian, %{field: new_value})
-      {:ok, %Guardian{}}
+      iex> update_ninja(ninja, %{field: new_value})
+      {:ok, %Ninja{}}
 
-      iex> update_guardian(guardian, %{field: bad_value})
+      iex> update_ninja(ninja, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_guardian(%Guardian{} = guardian, attrs) do
-    guardian
-    |> Guardian.changeset(attrs)
+  def update_ninja(%Ninja{} = ninja, attrs) do
+    ninja
+    |> Ninja.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a guardian.
+  Deletes a ninja.
 
   ## Examples
 
-      iex> delete_guardian(guardian)
-      {:ok, %Guardian{}}
+      iex> delete_ninja(ninja)
+      {:ok, %Ninja{}}
 
-      iex> delete_guardian(guardian)
+      iex> delete_ninja(ninja)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_guardian(%Guardian{} = guardian) do
-    Repo.delete(guardian)
+  def delete_ninja(%Ninja{} = ninja) do
+    Repo.delete(ninja)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking guardian changes.
+  Returns an `%Ecto.Changeset{}` for tracking ninja changes.
 
   ## Examples
 
-      iex> change_guardian(guardian)
-      %Ecto.Changeset{data: %Guardian{}}
+      iex> change_ninja(ninja)
+      %Ecto.Changeset{data: %Ninja{}}
 
   """
-  def change_guardian(%Guardian{} = guardian, attrs \\ %{}) do
-    Guardian.changeset(guardian, attrs)
+  def change_ninja(%Ninja{} = ninja, attrs \\ %{}) do
+    Ninja.changeset(ninja, attrs)
   end
 end

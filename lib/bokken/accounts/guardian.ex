@@ -2,10 +2,10 @@ defmodule Bokken.Accounts.Guardian do
   @moduledoc """
   A guardian is the ninja's legal responsible.
   """
-
   use Ecto.Schema
-  alias Bokken.Cities.Citieslist
   import Ecto.Changeset
+
+  @portuguese_cities Jason.decode!(File.read!("data/concelhos.json"))
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
   @optional_fields [:photo, :city]
@@ -28,10 +28,10 @@ defmodule Bokken.Accounts.Guardian do
   defp validate_city_name(changeset) do
     cityname = get_field(changeset, :city)
 
-    if cityname == Citieslist.get_city(cityname) do
+    if Enum.member?(@portuguese_cities, cityname) do
       changeset
     else
-      {:error, "Invalid city"}
+      add_error(changeset, :city, "invalid city")
     end
   end
 
