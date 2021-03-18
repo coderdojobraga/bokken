@@ -21,6 +21,12 @@ defmodule Bokken.Accounts do
     Repo.all(User)
   end
 
+  def get_user(attrs) when is_list(attrs) do
+    Repo.get_by(User, attrs)
+  end
+
+  def get_user(id), do: Repo.get(User, id)
+
   @doc """
   Gets a single user.
 
@@ -87,6 +93,25 @@ defmodule Bokken.Accounts do
   """
   def delete_user(%User{} = user) do
     Repo.delete(user)
+  end
+
+  @doc false
+  def authenticate_user(email, password) do
+    get_user(email: email)
+    |> authenticate_resource(password)
+  end
+
+  defp authenticate_resource(nil, _password) do
+    Argon2.no_user_verify()
+    {:error, :not_registered}
+  end
+
+  defp authenticate_resource(user, password) do
+    if Argon2.verify_pass(password, user.password_hash) do
+      {:ok, user}
+    else
+      {:error, :invalid_credentials}
+    end
   end
 
   @doc """

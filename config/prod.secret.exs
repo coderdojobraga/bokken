@@ -30,6 +30,17 @@ config :bokken, BokkenWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
+secret_key_guardian =
+  System.get_env("SECRET_KEY_GUARDIAN") ||
+    raise """
+    environment variable SECRET_KEY_BASE is missing.
+    You can generate one by calling: mix guardian.gen.secret
+    """
+
+config :bokken, BokkenWeb.Authorization,
+  issuer: "bokken",
+  secret_key: secret_key_guardian
+
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix

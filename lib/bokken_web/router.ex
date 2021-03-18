@@ -5,12 +5,27 @@ defmodule BokkenWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authenticated do
+    plug BokkenWeb.Auth.Pipeline
+  end
+
   scope "/", BokkenWeb do
     get "/", PageController, :index
   end
 
   scope "/api", BokkenWeb do
     pipe_through :api
+
+    scope "/auth" do
+      post "/sign_up", AuthController, :sign_up
+      post "/sign_in", AuthController, :sign_in
+
+      pipe_through :authenticated
+
+      get "/me", AuthController, :show
+    end
+
+    pipe_through :authenticated
 
     resources "/mentors", MentorController, except: [:new, :edit]
 
