@@ -5,7 +5,7 @@ defmodule Bokken.Accounts.Guardian do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @portuguese_cities Jason.decode!(File.read!("data/concelhos.json"))
+  @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
   @optional_fields [:photo, :city]
