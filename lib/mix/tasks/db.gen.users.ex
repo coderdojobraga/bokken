@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
 
       case Bokken.Accounts.create_user(user) do
         {:error, changeset} ->
-          Mix.shell.error(Kernel.inspect(changeset.errors))
+          Mix.shell().error(Kernel.inspect(changeset.errors))
 
         {:ok, %{id: user_id}} when role == :mentor ->
           mobile =
