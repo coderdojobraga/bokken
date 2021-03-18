@@ -39,4 +39,8 @@ defmodule Bokken.Accounts.User do
   defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
+
+  defp encrypt_password(changeset) do
+    changeset
+  end
 end
