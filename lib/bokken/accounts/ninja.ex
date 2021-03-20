@@ -37,6 +37,7 @@ defmodule Bokken.Accounts.Ninja do
     |> validate_required(@required_fields)
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
+    |> unique_constraint(:user_id)
   end
 
   defp social_changeset(social, params) do

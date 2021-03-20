@@ -10,14 +10,14 @@ defmodule Bokken.Repo.Migrations.CreateNinjas do
       add :birthday, :date, null: false
       add :belt, :string
       add :notes, :text
-      add :social, {:array, :map}, default: []
-      add :guardian_id, references(:guardians, on_delete: :nothing, type: :binary_id)
+      add :socials, {:array, :map}, default: []
+      add :guardian_id, references(:guardians, on_delete: :nothing, type: :binary_id), null: false
       add :user_id, references(:users, on_delete: :delete_all, type: :binary_id)
 
       timestamps()
     end
 
     create index(:ninjas, [:guardian_id])
-    create index(:ninjas, [:user_id])
+    create unique_index(:ninjas, [:user_id])
   end
 end

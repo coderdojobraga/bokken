@@ -36,6 +36,7 @@ defmodule Bokken.Accounts.Mentor do
     |> cast_embed(:socials, with: &social_changeset/2)
     |> validate_required(@required_fields)
     |> assoc_constraint(:user)
+    |> unique_constraint(:user_id)
   end
 
   defp social_changeset(social, params) do

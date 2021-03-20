@@ -58,7 +58,7 @@ defmodule Mix.Tasks.Db.Gen.Users do
           gen_mentor(names, user_id)
 
         {:ok, %{id: user_id}} when role == :ninja ->
-          gen_ninja(names, user)
+          gen_ninja(names, user_id)
       end
     end
   end
@@ -130,7 +130,13 @@ defmodule Mix.Tasks.Db.Gen.Users do
     photo = "https://robohash.org/#{names.first_name}-#{names.last_name}"
 
     mentor =
-      Enum.into(names, %{user_id: user_id, mobile: mobile, trial: false, photo: photo, birthday: birthday})
+      Enum.into(names, %{
+        user_id: user_id,
+        mobile: mobile,
+        trial: false,
+        photo: photo,
+        birthday: birthday
+      })
 
     Bokken.Accounts.create_mentor(mentor)
   end

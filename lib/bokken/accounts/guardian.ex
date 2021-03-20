@@ -40,7 +40,8 @@ defmodule Bokken.Accounts.Guardian do
     guardian
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> validate_city_name()
     |> assoc_constraint(:user)
-    |> validate_city_name
+    |> unique_constraint(:user_id)
   end
 end
