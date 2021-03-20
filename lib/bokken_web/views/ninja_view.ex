@@ -13,10 +13,12 @@ defmodule BokkenWeb.NinjaView do
   def render("ninja.json", %{ninja: ninja}) do
     %{
       id: ninja.id,
+      first_name: ninja.first_name,
+      last_name: ninja.last_name,
       birthday: ninja.birthday,
       belt: ninja.belt,
       notes: ninja.notes,
-      social: ninja.social
+      socials: ninja.socials
     }
   end
 end
