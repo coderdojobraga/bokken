@@ -22,7 +22,7 @@ function __log() {
   [[ $(tput cols) -ge 80 ]] && SIZE=80 || SIZE=$(tput cols)
 
   # Get symbols from https://coolsymbol.com/
-  printf "_${COLOR}${BOLD}${LABEL}${RESET}_╞%*s\n" $(($SIZE - ${#LABEL} - 3)) " " | sed -e 's/ /═/g' | sed -e 's/_/ /g'
+  printf "_${COLOR}${BOLD}${LABEL}${RESET}_╞%*s\n" $((SIZE - ${#LABEL} - 3)) " " | sed -e 's/ /═/g' | sed -e 's/_/ /g'
   for M in "${MSG[@]}"; do
     echo "• $M"
   done
@@ -52,4 +52,4 @@ function log_info() {
   __log "${LABEL}" "$CYAN" "$@"
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.0 || true
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.3 || true

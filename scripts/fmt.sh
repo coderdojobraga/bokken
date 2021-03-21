@@ -114,13 +114,19 @@ function format() {
     echo -en "\\033[0;${TYPE:-0}m"
   fi
 
-  if [[ ${#TEXT[@]} -gt 0 ]]; then
+  if [[ ${#TEXT[@]} -gt 1 ]]; then
     for text in "${TEXT[@]}"; do
       echo "$text"
+    done
+
+    echo -en '\033[0;0m'
+  elif [[ ${#TEXT[@]} -eq 1 ]]; then
+    for text in "${TEXT[@]}"; do
+      echo -n "$text"
     done
 
     echo -en '\033[0;0m'
   fi
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.0 || true
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.3 || true
