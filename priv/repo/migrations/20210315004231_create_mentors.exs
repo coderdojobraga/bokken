@@ -17,6 +17,6 @@ defmodule Bokken.Repo.Migrations.CreateMentors do
       timestamps()
     end
 
-    create index(:mentors, [:user_id])
+    create unique_index(:mentors, [:user_id])
   end
 end
