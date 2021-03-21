@@ -27,15 +27,15 @@ defmodule Bokken.AccountsTest do
     end
 
     def attrs do
-      valid_attrs = valid_attr
-      user = valid_user
+      valid_attrs = valid_attr()
+      user = valid_user()
       new_user = Accounts.create_user(user)
       user_id = elem(new_user, 1).id
       Map.put(valid_attrs, :user_id, user_id)
     end
 
     def guardian_fixture(atributes \\ %{}) do
-      valid_attrs = attrs
+      valid_attrs = attrs()
 
       {:ok, guardian} =
         atributes
