@@ -46,3 +46,17 @@ jobs:
 
       - name: Run the tests
         run: mix test
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - run: npm install -g newman
+
+      - name: Run newman
+        env:
+          MIX_ENV: test
+        run: |
+         mix db.gen.users
+         mix test.run.newman

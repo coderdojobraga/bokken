@@ -1,3 +1,4 @@
+[postman]: https://app.getpostman.com/run-collection/9e8cf2564229382d6619
 [contributing]: CONTRIBUTING.md
 [code_of_conduct]: CODE_OF_CONDUCT.md
 [license]: LICENSE.txt
@@ -5,6 +6,8 @@
 # bokken
 
 > :crossed_swords: **bok**ken + shuri**ken**
+
+[![Run in Postman](https://run.pstmn.io/button.svg)][postman]
 
 Platform support API for managing session registrations and recording ninjas'
 progress.
@@ -45,7 +48,8 @@ Start the development server and then you can visit
 bin/server
 ```
 
-Run the tests.
+Run the tests. You need to have [newman](https://www.npmjs.com/package/newman)
+installed.
 
 ```
 bin/test
@@ -62,6 +66,11 @@ Format your code.
 ```
 bin/format
 ```
+
+###  :hammer_and_wrench: Tools
+
+As a complementary tool for development and testing, we use
+[Postman](https://www.postman.com/downloads/).
 
 ### :whale: Docker
 
