@@ -51,4 +51,5 @@ jobs:
           export SECRET_KEY_BASE=$(mix phx.gen.secret)
           export SECRET_KEY_GUARDIAN=$(mix guardian.gen.secret)
           export DATABASE_URL="ecto://bokken:secret@0.0.0.0:5432/bokken_prod"
+          export FRONTEND_APP_URL="http://localhost:3000"
           MIX_ENV=prod mix compile

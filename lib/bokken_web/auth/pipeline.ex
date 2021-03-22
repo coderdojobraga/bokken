@@ -9,6 +9,7 @@ defmodule BokkenWeb.Auth.Pipeline do
     module: BokkenWeb.Authorization,
     error_handler: BokkenWeb.Auth.ErrorHandler
 
+  plug Guardian.Plug.VerifySession
   plug Guardian.Plug.VerifyHeader
   plug Guardian.Plug.EnsureAuthenticated
   plug Guardian.Plug.LoadResource

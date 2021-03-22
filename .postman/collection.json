@@ -18,16 +18,22 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.environment.set(\"jwt\", `${pm.response.json().jwt}`);"
+											"pm.test(\"Test Sign up\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"set-cookie is present\", function () {",
+											"    pm.response.to.have.header(\"set-cookie\");",
+											"});",
+											"",
+											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
+											"pm.environment.set(\"token\", token);"
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -56,9 +62,6 @@
 						{
 							"name": "Sign in",
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -371,9 +374,6 @@
 		{
 			"name": "Hello, Bokken 👋",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -389,22 +389,17 @@
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{jwt}}",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"const token = pm.environment.get(\"token\");",
+					"",
+					"if (token) {",
+					"    pm.request.headers.add({ key: \"Cookie\", value: `_bokken_key=${token}`})",
+					"}",
 					""
 				]
 			}
