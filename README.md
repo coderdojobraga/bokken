@@ -1,4 +1,11 @@
-[postman]: https://app.getpostman.com/run-collection/9e8cf2564229382d6619
+[postman-badge]: https://img.shields.io/badge/Postman-ef5b25.svg?logo=postman&colorA=ef5b25&logoColor=white
+[postman-collection]: https://app.getpostman.com/run-collection/9e8cf2564229382d6619
+[ci-build-status]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml/badge.svg
+[ci-build-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml
+[ci-test-status]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml/badge.svg
+[ci-test-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml
+[ci-style-status]: https://github.com/coderdojobraga/bokken/actions/workflows/style.yml/badge.svg
+[ci-style-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/style.yml
 [contributing]: CONTRIBUTING.md
 [code_of_conduct]: CODE_OF_CONDUCT.md
 [license]: LICENSE.txt
@@ -7,7 +14,10 @@
 
 > :crossed_swords: **bok**ken + shuri**ken**
 
-[![Run in Postman](https://run.pstmn.io/button.svg)][postman]
+[![Postman][postman-badge]][postman-collection]
+[![CI build][ci-build-status]][ci-build-workflow]
+[![CI test][ci-test-status]][ci-test-workflow]
+[![CI style][ci-test-status]][ci-style-workflow]
 
 Platform support API for managing session registrations and recording ninjas'
 progress.
