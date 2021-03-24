@@ -33,7 +33,7 @@ config :bokken, BokkenWeb.Endpoint,
 secret_key_guardian =
   System.get_env("SECRET_KEY_GUARDIAN") ||
     raise """
-    environment variable SECRET_KEY_BASE is missing.
+    environment variable SECRET_KEY_GUARDIAN is missing.
     You can generate one by calling: mix guardian.gen.secret
     """
 
