@@ -5,12 +5,6 @@ defmodule BokkenWeb.AuthView do
   alias BokkenWeb.MentorView
   alias BokkenWeb.NinjaView
 
-  def render("token.json", %{jwt: token}) do
-    %{
-      jwt: token
-    }
-  end
-
   def render("me.json", %{user: %{active: false} = user}) do
     render_one(user, AuthView, "user.json")
   end

@@ -23,6 +23,10 @@ config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
   secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
 
+config :cors_plug,
+  origin: ["http://localhost:3000"],
+  max_age: 86400
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
