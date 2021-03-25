@@ -1,12 +1,43 @@
-if Mix.env() == :prod do
-  System.halt(0)
-end
-
 defmodule Bokken.DbSeeder do
   @moduledoc """
   Script for populating the database with fake data. You can run it as:
        mix run priv/repo/seeds.exs
   """
+
+  def run do
+    # Great Singers
+    [
+      "Amalia Rodrigues",
+      "Freddie Mercury",
+      "Gordon Matthew Thomas Sting",
+      "Elis Regina",
+      "Aretha Franklin"
+    ]
+    |> create_users(:guardian)
+
+    # Disney Characters
+    [
+      "Peter Pan",
+      "Buzz Lightyear",
+      "Pato Donald",
+      "Cruella de Vil",
+      "Branca de Neve"
+    ]
+    |> create_users(:mentor)
+
+    # Pokémons
+    [
+      "Bulbasaur Fushigidane",
+      "Charmander Hitokage",
+      "Squirtle Zenigame",
+      "Pikachu Pikachu",
+      "Nidorina Nidorina",
+      "Psyduck Kodakku",
+      "Snorlax Kabigon"
+    ]
+    |> create_users(:ninja)
+  end
+
   def create_users(characters, role) when role in [:guardian, :mentor, :ninja] do
     for character <- characters do
       user = gen_user(character, role)
@@ -18,13 +49,13 @@ defmodule Bokken.DbSeeder do
           Mix.shell().error(Kernel.inspect(changeset.errors))
 
         {:ok, %{id: user_id}} when role == :guardian ->
-          gen_guardian(names, user_id)
+          create_guardian(names, user_id)
 
         {:ok, %{id: user_id}} when role == :mentor ->
-          gen_mentor(names, user_id)
+          create_mentor(names, user_id)
 
         {:ok, %{id: user_id}} when role == :ninja ->
-          gen_ninja(names, user_id)
+          create_ninja(names, user_id)
       end
     end
   end
@@ -41,7 +72,7 @@ defmodule Bokken.DbSeeder do
     }
   end
 
-  defp gen_guardian(names, user_id) do
+  def create_guardian(names, user_id) do
     mobile =
       "+351 9#{Enum.random([1, 2, 3, 6])}#{
         for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
@@ -56,7 +87,7 @@ defmodule Bokken.DbSeeder do
     Bokken.Accounts.create_guardian(guardian)
   end
 
-  defp gen_ninja(names, user_id) do
+  def create_ninja(names, user_id) do
     birthday = %Date{
       year: Enum.random(1995..2013),
       month: Enum.random(1..12),
@@ -81,7 +112,7 @@ defmodule Bokken.DbSeeder do
     Bokken.Accounts.create_ninja(ninja)
   end
 
-  defp gen_mentor(names, user_id) do
+  def create_mentor(names, user_id) do
     mobile =
       "+351 9#{Enum.random([1, 2, 3, 6])}#{
         for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
@@ -114,34 +145,4 @@ defmodule Bokken.DbSeeder do
   end
 end
 
-# Great Singers
-[
-  "Amalia Rodrigues",
-  "Freddie Mercury",
-  "Gordon Matthew Thomas Sting",
-  "Elis Regina",
-  "Aretha Franklin"
-]
-|> Bokken.DbSeeder.create_users(:guardian)
-
-# Disney Characters
-[
-  "Peter Pan",
-  "Buzz Lightyear",
-  "Pato Donald",
-  "Cruella de Vil",
-  "Branca de Neve"
-]
-|> Bokken.DbSeeder.create_users(:mentor)
-
-# Pokémons
-[
-  "Bulbasaur Fushigidane",
-  "Charmander Hitokage",
-  "Squirtle Zenigame",
-  "Pikachu Pikachu",
-  "Nidorina Nidorina",
-  "Psyduck Kodakku",
-  "Snorlax Kabigon"
-]
-|> Bokken.DbSeeder.create_users(:ninja)
+Bokken.DbSeeder.run()
