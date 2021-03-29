@@ -26,6 +26,8 @@ defmodule Bokken.Accounts.Ninja do
     belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
     belongs_to :guardian, Bokken.Accounts.Guardian, foreign_key: :guardian_id
 
+    many_to_many :badges, Bokken.Gamification.Badge, join_through: "bagdes_ninjas"
+
     timestamps()
   end
 
@@ -43,5 +45,12 @@ defmodule Bokken.Accounts.Ninja do
   defp social_changeset(social, params) do
     social
     |> cast(params, [:name, :username])
+  end
+
+  def changeset_update_badges(ninja, badge) do
+    ninja
+    |> cast(%{}, @required_fields)
+    # associate badges to ninja
+    |> put_assoc(:badges_ninja, badge)
   end
 end

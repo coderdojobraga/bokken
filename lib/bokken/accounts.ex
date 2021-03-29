@@ -326,7 +326,10 @@ defmodule Bokken.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_ninja!(id), do: Repo.get!(Ninja, id)
+  def get_ninja!(id) do
+    Repo.get!(Ninja, id)
+    |> Repo.preload(:badges)
+  end
 
   @doc """
   Creates a ninja.
@@ -391,5 +394,13 @@ defmodule Bokken.Accounts do
   """
   def change_ninja(%Ninja{} = ninja, attrs \\ %{}) do
     Ninja.changeset(ninja, attrs)
+  end
+
+  alias Bokken.Gamification.Badge
+
+  def upsert_ninja_badges(%Ninja{} = ninja, badge_id) do
+    ninja
+    |> Ninja.changeset_update_projects(badge_id)
+    |> Repo.update()
   end
 end
