@@ -95,31 +95,50 @@ easily do it with [docker-compose](https://docs.docker.com/compose/install/).
 Create and start the database containers.
 
 ```
-docker-compose up -d db
+docker-compose -f docker-compose.dev.yml up -d db
 ```
 
 Start the previously created containers.
 
 ```
-docker-compose start
+docker-compose -f docker-compose.dev.yml start
 ```
 
 Stop the containers.
 
 ```
-docker-compose stop
+docker-compose -f docker-compose.dev.yml stop
 ```
 
 Destroy the containers and volumes created.
 
 ```
-docker-compose down -v
+docker-compose -f docker-compose.dev.yml down -v
 ```
 
 ### :package: Deployment
 
-Ready to run in production? Please [check the official deployment
-guides](https://hexdocs.pm/phoenix/deployment.html).
+To release a new version you can run the following script. Make sure you
+update the project version number in the `mix.exs` file in advance.
+
+```
+bin/release
+```
+
+You can deploy with the help of docker containers using the following script.
+
+```
+bin/deploy (prod | stg)
+```
+
+Please [check the official deployment
+guides](https://hexdocs.pm/phoenix/deployment.html) for more information.
+
+## :handshake: Contributing
+
+Please read [CONTRIBUTING][contributing] and [CODE_OF_CONDUCT][code_of_conduct]
+for details on our code of conduct and the process for submitting pull requests
+to us.
 
 ### :link: References
 
@@ -131,12 +150,6 @@ uses.
 - [Elixir School Course](https://elixirschool.com/en/)
 - [Phoenix Guides Overview](https://hexdocs.pm/phoenix/overview.html)
 - [Phoenix Documentation](https://hexdocs.pm/phoenix)
-
-## :handshake: Contributing
-
-Please read [CONTRIBUTING][contributing] and [CODE_OF_CONDUCT][code_of_conduct]
-for details on our code of conduct and the process for submitting pull requests
-to us.
 
 ## :memo: License
 

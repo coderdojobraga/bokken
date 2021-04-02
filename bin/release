@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/helpers.sh
+. scripts/helpers.sh
+# shellcheck source=../scripts/logging.sh
+. scripts/logging.sh
+# shellcheck source=../scripts/utils.sh
+. scripts/utils.sh
+
+PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
+VERSION=0.5.4
+
+function display_help() {
+  cat <<EOF
+  $(help_title_section Usage)
+    ${PROGRAM} [options]
+
+  $(help_title_section Options)
+    -h --help         Show this screen.
+    -v --version      Show version.
+EOF
+}
+
+case ${1:-skip} in
+  -h | --help)
+    display_help
+    ;;
+  -v | --version)
+    display_version "${VERSION}" "${PROGRAM}"
+    ;;
+esac
+
+function build_image() {
+  local current_project_version
+
+  current_project_version=$(get_elixir_project_version)
+
+  docker build --rm \
+    -t coderdojobraga/bokken:latest \
+    -t coderdojobraga/bokken:"$current_project_version" \
+    -f Dockerfile .
+}
+
+function push_image() {
+  docker push coderdojobraga/bokken --all-tags
+}
+
+if [[ $(git branch --show-current) != 'main' ]]; then
+  log_error "You're trying to release from git branch $(git branch --show-current) instead of main." \
+    "To prevent releases from unstable branches, releases are only allowed from main."
+  exit 1
+fi
+
+if [[ $(git status -s) ]]; then
+  log_error "There are some uncommitted changes in this repository." \
+    "This might introduce unwanted artifacts in the release." \
+    "Please stash or commit your changes prior to cooking a new release."
+  exit 2
+fi
+
+build_image
+push_image

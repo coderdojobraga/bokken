@@ -17,15 +17,15 @@ function not_installed() {
 }
 
 function load_env_file() {
-    local file="${1:-.env}"
-    if [ -f "$file" ]; then
-        log_info "Loading ${file} file..."
-        set -o allexport
-        source "$file"
-        set +o allexport
-    else
-        log_warn "${file} file not found, skipping..."
-    fi
+  local file="${1:-.env}"
+  if [ -f "$file" ]; then
+    log_info "Environment" "Loading ${BLUE}${file}${RESET}..." $(cat "${file}")
+    set -o allexport
+    source "$file"
+    set +o allexport
+  else
+    log_warn "${file} file not found, skipping..."
+  fi
 }
 
 function ask_for_sudo() {
@@ -52,4 +52,8 @@ function ensure_confirmation() {
   fi
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.3 || true
+function get_elixir_project_version() {
+  grep 'version' mix.exs | cut -d '"' -f2
+}
+
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.4 || true
