@@ -1,5 +1,5 @@
 [postman-badge]: https://img.shields.io/badge/Postman-ef5b25.svg?logo=postman&colorA=ef5b25&logoColor=white
-[postman-collection]: https://app.getpostman.com/run-collection/9e8cf2564229382d6619
+[postman-documentation]: https://documenter.getpostman.com/view/14049085/TzCTXj9E
 [ci-build-status]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml/badge.svg
 [ci-build-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml
 [ci-test-status]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml/badge.svg
@@ -14,7 +14,7 @@
 
 > :crossed_swords: **bok**ken + shuri**ken**
 
-[![Postman][postman-badge]][postman-collection]
+[![Postman][postman-badge]][postman-documentation]
 [![CI build][ci-build-status]][ci-build-workflow]
 [![CI test][ci-test-status]][ci-test-workflow]
 [![CI style][ci-test-status]][ci-style-workflow]
