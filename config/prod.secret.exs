@@ -33,13 +33,25 @@ config :bokken, BokkenWeb.Endpoint,
 secret_key_guardian =
   System.get_env("SECRET_KEY_GUARDIAN") ||
     raise """
-    environment variable SECRET_KEY_BASE is missing.
+    environment variable SECRET_KEY_GUARDIAN is missing.
     You can generate one by calling: mix guardian.gen.secret
     """
 
 config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
-  secret_key: secret_key_guardian
+  secret_key: secret_key_guardian,
+  ttl: {1, :day}
+
+frontend_app_url =
+  System.get_env("FRONTEND_APP_URL") ||
+    raise """
+    environment variable FRONTEND_APP_URL is missing.
+    Setup the URL where your frontend app will run as a regex expression.
+    """
+
+config :cors_plug,
+  origin: ~r/#{frontend_app_url}/,
+  max_age: 86400
 
 # ## Using releases (Elixir v1.9+)
 #

@@ -19,8 +19,9 @@ defmodule Bokken.Accounts.User do
     field :verified, :boolean, default: false
     field :role, Ecto.Enum, values: [:ninja, :guardian, :mentor, :organizer]
 
-    has_one :mentor, Bokken.Accounts.Mentor, on_delete: :delete_all
     has_one :guardian, Bokken.Accounts.Guardian, on_delete: :delete_all
+    has_one :mentor, Bokken.Accounts.Mentor, on_delete: :delete_all
+    has_one :ninja, Bokken.Accounts.Guardian, on_delete: :delete_all
 
     timestamps()
   end
@@ -38,5 +39,9 @@ defmodule Bokken.Accounts.User do
 
   defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password_hash: Argon2.hash_pwd_salt(password))
+  end
+
+  defp encrypt_password(changeset) do
+    changeset
   end
 end

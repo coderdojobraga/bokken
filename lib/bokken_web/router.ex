@@ -2,6 +2,7 @@ defmodule BokkenWeb.Router do
   use BokkenWeb, :router
 
   pipeline :api do
+    plug :fetch_session
     plug :accepts, ["json"]
   end
 
@@ -23,13 +24,14 @@ defmodule BokkenWeb.Router do
       pipe_through :authenticated
 
       get "/me", AuthController, :show
+      delete "/sign_out", AuthController, :sign_out
     end
 
     pipe_through :authenticated
 
-    resources "/mentors", MentorController, except: [:new, :edit]
-
     resources "/guardians", GuardianController, except: [:new, :edit]
+    resources "/mentors", MentorController, except: [:new, :edit]
+    resources "/ninjas", NinjaController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development

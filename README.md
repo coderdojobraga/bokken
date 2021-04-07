@@ -1,3 +1,11 @@
+[postman-badge]: https://img.shields.io/badge/Postman-ef5b25.svg?logo=postman&colorA=ef5b25&logoColor=white
+[postman-collection]: https://app.getpostman.com/run-collection/9e8cf2564229382d6619
+[ci-build-status]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml/badge.svg
+[ci-build-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml
+[ci-test-status]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml/badge.svg
+[ci-test-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml
+[ci-style-status]: https://github.com/coderdojobraga/bokken/actions/workflows/style.yml/badge.svg
+[ci-style-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/style.yml
 [contributing]: CONTRIBUTING.md
 [code_of_conduct]: CODE_OF_CONDUCT.md
 [license]: LICENSE.txt
@@ -5,6 +13,11 @@
 # bokken
 
 > :crossed_swords: **bok**ken + shuri**ken**
+
+[![Postman][postman-badge]][postman-collection]
+[![CI build][ci-build-status]][ci-build-workflow]
+[![CI test][ci-test-status]][ci-test-workflow]
+[![CI style][ci-test-status]][ci-style-workflow]
 
 Platform support API for managing session registrations and recording ninjas'
 progress.
@@ -47,7 +60,8 @@ Start the development server and then you can visit
 bin/server
 ```
 
-Run the tests.
+Run the tests. You need to have [newman](https://www.npmjs.com/package/newman)
+installed.
 
 ```
 bin/test
@@ -64,6 +78,11 @@ Format your code.
 ```
 bin/format
 ```
+
+###  :hammer_and_wrench: Tools
+
+As a complementary tool for development and testing, we use
+[Postman](https://www.postman.com/downloads/).
 
 ### :whale: Docker
 

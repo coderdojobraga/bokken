@@ -1,0 +1,417 @@
+{
+	"info": {
+		"_postman_id": "6f410fa7-6468-4358-8372-84752d562888",
+		"name": "Bokken",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Sign up",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test Sign up\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"set-cookie is present\", function () {",
+											"    pm.response.to.have.header(\"set-cookie\");",
+											"});",
+											"",
+											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
+											"pm.environment.set(\"token\", token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/sign_up",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"sign_up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sign in",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/sign_in",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"sign_in"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get current user",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/me",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mentors",
+					"item": [
+						{
+							"name": "List Mentors",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"    <table bgcolor=\"#FFFFFF\">",
+											"        <tr>",
+											"            <th>Photo</th>",
+											"            <th>Name</th>",
+											"            <th>Mobile</th>",
+											"            <th>Birthday</th>",
+											"            <th>Major</th>",
+											"            <th>Trial</th>",
+											"        </tr>",
+											"",
+											"        {{#each response}}",
+											"            <tr>",
+											"                <td><img height=100 src=\"{{photo}}\" /></td>",
+											"                <td>{{first_name}} {{last_name}}</td>",
+											"                <td>{{mobile}}</td>",
+											"                <td>{{birthday}}</td>",
+											"                <td>{{major}}</td>",
+											"                <td>{{trial}}</td>",
+											"            </tr>",
+											"        {{/each}}",
+											"    </table>",
+											"`;",
+											"",
+											"// Set visualizer",
+											"pm.visualizer.set(template, {",
+											"    // Pass the response body parsed as JSON as `data`",
+											"    response: pm.response.json().data",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a valid Mentor",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+											"    console.log(response.json());",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"    <table bgcolor=\"#FFFFFF\">",
+											"        <tr>",
+											"            <th>Photo</th>",
+											"            <th>Name</th>",
+											"            <th>Mobile</th>",
+											"            <th>Birthday</th>",
+											"            <th>Major</th>",
+											"            <th>Trial</th>",
+											"        </tr>",
+											"",
+											"            <tr>",
+											"                <td><img height=100 src=\"{{photo}}\" /></td>",
+											"                <td>{{first_name}} {{last_name}}</td>",
+											"                <td>{{mobile}}</td>",
+											"                <td>{{birthday}}</td>",
+											"                <td>{{major}}</td>",
+											"                <td>{{trial}}</td>",
+											"            </tr>",
+											"    </table>",
+											"`;",
+											"",
+											"// Set visualizer",
+											"pm.visualizer.set(template, {",
+											"    // Pass the response body parsed as JSON as `data`",
+											"    response: pm.response.json().data",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"{{$randomFirstName}}\",\n        \"last_name\": \"{{$randomLastName}}\",\n        \"photo\": \"https://robohash.org/{{$randomUserName}}\",\n        \"mobile\": \"+351 912 345 678\",\n        \"birthday\": \"1995-03-29\",\n        \"major\": \"{{$randomJobTitle}}\",\n        \"user_id\": \"b431a4d5-5707-4072-8e60-189287b644f4\",\n        \"socials\": [\n            {\n                \"name\": \"github\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"scratch\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"gitlab\",\n                \"username\": \"nelsonmestevao\"\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create invalid Mentor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"Estevão\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"b2508c21-d022-47d1-a403-46939ce649f6\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Guardians",
+					"item": [
+						{
+							"name": "List Guardians",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"    <table bgcolor=\"#FFFFFF\">",
+											"        <tr>",
+											"            <th>Photo</th>",
+											"            <th>Name</th>",
+											"            <th>Mobile</th>",
+											"            <th>City</th>",
+											"        </tr>",
+											"",
+											"        {{#each response}}",
+											"            <tr>",
+											"                <td><img height=100 src=\"{{photo}}\" /></td>",
+											"                <td>{{first_name}} {{last_name}}</td>",
+											"                <td>{{mobile}}</td>",
+											"                <td>{{city}}</td>",
+											"            </tr>",
+											"        {{/each}}",
+											"    </table>",
+											"`;",
+											"",
+											"// Set visualizer",
+											"pm.visualizer.set(template, {",
+											"    // Pass the response body parsed as JSON as `data`",
+											"    response: pm.response.json().data",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/guardians",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"guardians"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a valid Guardian",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"guardian\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 91234567\",\n        \"user_id\": \"\",\n        \"city\": \"Vieira do Minho\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/guardians",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"guardians"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Hello, Bokken 👋",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const token = pm.environment.get(\"token\");",
+					"",
+					"if (token) {",
+					"    pm.request.headers.add({ key: \"Cookie\", value: `_bokken_key=${token}`})",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
