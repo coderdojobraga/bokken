@@ -49,7 +49,7 @@ MIX_ENV=$env mix local.hex --force
 MIX_ENV=$env mix local.rebar --force
 MIX_ENV=$env mix deps.get
 
-log_info "setup" "Creating and running migrations on database..."
+log_info "setup" "Creating, running migrations and populating database..."
 MIX_ENV=$env mix ecto.setup
 
 log_info "setup" "You're good to go! Run bin/server to get the development server running."

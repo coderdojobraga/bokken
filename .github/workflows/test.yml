@@ -58,5 +58,5 @@ jobs:
         env:
           MIX_ENV: test
         run: |
-         mix db.gen.users
+         mix run priv/repo/seeds.exs
          mix test.run.newman
