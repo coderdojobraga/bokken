@@ -21,7 +21,8 @@ function display_help() {
     ${PROGRAM} [options] <command>
 
   $(help_title_section Commands)
-    all               Run all tests in test environment.
+    prod              Deploy to production environment.
+    stg               Deploy to staging environment [default command].
 
   $(help_title_section Options)
     -h --help         Show this screen.
@@ -29,18 +30,35 @@ function display_help() {
 EOF
 }
 
-case ${1:-all} in
+function deploy() {
+  local file
+  local env
+
+  env=${1:-stg}
+
+  file="docker-compose.prod.yml"
+
+  load_env_file ".env.${env}"
+
+  [ -z "${DOCKER_HOST?${RED}Remote server is required${RESET}}" ] && exit 1
+
+  docker-compose -f "$file" pull
+  docker-compose -f "$file" up -d db
+  docker-compose -f "$file" run --rm api eval "Bokken.Release.migrate"
+  docker-compose -f "$file" up -d api
+
+  log_success "Successfully deployed to ${CYAN}${DOCKER_HOST}${RESET}"
+}
+
+case ${1:-stg} in
   -h | --help)
     display_help
     ;;
   -v | --version)
     display_version "${VERSION}" "${PROGRAM}"
     ;;
-  all)
-    load_env_file
-    MIX_ENV=test mix ecto.reset
-    mix test
-    MIX_ENV=test mix test.run.newman
+  prod | stg)
+    deploy "${1:-stg}"
     ;;
   *)
     display_help >&2

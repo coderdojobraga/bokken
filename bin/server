@@ -13,7 +13,7 @@ cd "${BASE_DIR}/.." || exit 127
 . scripts/utils.sh
 
 PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
-VERSION=0.5.3
+VERSION=0.5.4
 
 function display_help() {
   cat <<EOF
@@ -37,8 +37,8 @@ case ${1:-start} in
     display_version "${VERSION}" "${PROGRAM}"
     ;;
   start)
-      load_env_file
-      iex -S mix phx.server
+    load_env_file
+    iex -S mix phx.server
     ;;
   *)
     display_help >&2

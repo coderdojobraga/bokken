@@ -32,3 +32,4 @@ bokken-*.tar
 .env.dev
 .env.test
 .env.prod
+.env.stg

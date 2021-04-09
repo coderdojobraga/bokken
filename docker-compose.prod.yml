@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13.2
+    container_name: bokken_db
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
+  api:
+    image: coderdojobraga/bokken:latest
+    container_name: bokken_api
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL
+      - SECRET_KEY_BASE
+      - SECRET_KEY_GUARDIAN
+      - FRONTEND_APP_URL
+    ports:
+      - ${PORT}:4001
+
+volumes:
+  pgdata:
+
