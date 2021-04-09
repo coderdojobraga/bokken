@@ -1,5 +1,6 @@
 defmodule BokkenWeb.PageController do
   use BokkenWeb, :controller
+
   @name Mix.Project.config()[:app]
   @description Mix.Project.config()[:description]
   @version Mix.Project.config()[:version]

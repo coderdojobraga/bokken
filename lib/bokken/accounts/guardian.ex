@@ -22,6 +22,8 @@ defmodule Bokken.Accounts.Guardian do
 
     belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
 
+    has_many :ninjas, Bokken.Accounts.Ninja
+
     timestamps()
   end
 
