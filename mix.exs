@@ -49,7 +49,8 @@ defmodule Bokken.MixProject do
       {:jason, "~> 1.0"},
       {:guardian, "~> 2.0"},
       {:argon2_elixir, "~> 2.0"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
