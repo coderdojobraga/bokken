@@ -33,7 +33,7 @@ defmodule BokkenWeb.Router do
     resources "/mentors", MentorController, except: [:new, :edit]
 
     resources "/ninjas", NinjaController, except: [:new, :edit] do
-      resources "/badges", BadgeController, except: [:new, :edit]
+      resources "/badges", BadgeController, only: [:index, :create, :delete]
     end
 
     resources "/badges", BadgeController, except: [:new, :edit]

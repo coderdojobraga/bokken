@@ -415,7 +415,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"guardian\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 91234567\",\n        \"user_id\": \"\",\n        \"city\": \"Vieira do Minho\"\n    }\n}",
+									"raw": "{\n    \"guardian\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"{{user_id}}\",\n        \"city\": \"Vieira do Minho\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -655,6 +655,90 @@
 										"api",
 										"badges",
 										"{{badge_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "Get a Ninja to work with",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "Get Badges given to a Ninja",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Give a badge to a Ninja",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"badge_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a Badge from a Ninja",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges",
+										"1"
 									]
 								}
 							},

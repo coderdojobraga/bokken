@@ -6,7 +6,9 @@ defmodule Bokken.Gamification do
   import Ecto.Query, warn: false
   alias Bokken.Repo
 
+  alias Bokken.Accounts
   alias Bokken.Gamification.Badge
+  alias Bokken.Gamification.BadgeNinja
 
   @doc """
   Returns the list of badges.
@@ -23,23 +25,17 @@ defmodule Bokken.Gamification do
 
   """
   @spec list_badges(map()) :: list(%Badge{})
-  def list_badges(args \\ %{}) do
+  def list_badges(args \\ %{})
+
+  def list_badges(%{"ninja_id" => ninja_id}) do
+    ninja_id
+    |> Accounts.get_ninja!([:badges])
+    |> Map.fetch!(:badges)
+  end
+
+  def list_badges(_args) do
     Badge
-    |> maybe_limit(args[:limit])
-    |> filter_by_ninja(args[:ninja_id])
     |> Repo.all()
-  end
-
-  defp maybe_limit(query, nil), do: query
-
-  defp maybe_limit(query, limit) do
-    from c in query, limit: ^limit
-  end
-
-  defp filter_by_ninja(query, nil), do: query
-
-  defp filter_by_ninja(query, ninja_id) do
-    from c in query, where: ilike(c.ninja_id, ^ninja_id)
   end
 
   @doc """
@@ -129,5 +125,14 @@ defmodule Bokken.Gamification do
     %BadgeNinja{}
     |> BadgeNinja.changeset(%{badge_id: badge_id, ninja_id: ninja_id})
     |> Repo.insert()
+  end
+
+  def remove_badge(badge_id, ninja_id) do
+    query =
+      from bn in BadgeNinja,
+        where: bn.badge_id == ^badge_id,
+        where: bn.ninja_id == ^ninja_id
+
+    Repo.delete_all(query)
   end
 end

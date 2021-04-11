@@ -3,12 +3,24 @@ defmodule BokkenWeb.BadgeController do
 
   alias Bokken.Gamification
   alias Bokken.Gamification.Badge
+  alias Bokken.Gamification.BadgeNinja
 
   action_fallback BokkenWeb.FallbackController
 
   def index(conn, params) do
     badges = Gamification.list_badges(params)
     render(conn, "index.json", badges: badges)
+  end
+
+  def create(conn, %{"badge_id" => badge_id, "ninja_id" => ninja_id}) do
+    with {:ok, %BadgeNinja{} = badge_ninja} <- Gamification.give_badge(badge_id, ninja_id) do
+      badge = Gamification.get_badge!(badge_ninja.badge_id)
+
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.badge_path(conn, :show, badge))
+      |> render("show.json", badge: badge)
+    end
   end
 
   def create(conn, %{"badge" => badge_params}) do
@@ -20,7 +32,7 @@ defmodule BokkenWeb.BadgeController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id} = params) when not is_map_key(params, :ninja_id) do
     badge = Gamification.get_badge!(id)
     render(conn, "show.json", badge: badge)
   end
@@ -33,7 +45,13 @@ defmodule BokkenWeb.BadgeController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => badge_id, "ninja_id" => ninja_id}) do
+    with {_n, nil} <- Gamification.remove_badge(badge_id, ninja_id) do
+      send_resp(conn, :no_content, "")
+    end
+  end
+
+  def delete(conn, %{"id" => id} = params) when not is_map_key(params, :ninja_id) do
     badge = Gamification.get_badge!(id)
 
     with {:ok, %Badge{}} <- Gamification.delete_badge(badge) do
