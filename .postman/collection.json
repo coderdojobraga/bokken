@@ -481,13 +481,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/guardians",
+									"raw": "{{host}}/api/ninjas",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"guardians"
+										"ninjas"
 									]
 								}
 							},
@@ -667,10 +667,31 @@
 					"item": [
 						{
 							"name": "Get a Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": null
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
 							},
 							"response": []
 						},
