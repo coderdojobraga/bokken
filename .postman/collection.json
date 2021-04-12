@@ -60,7 +60,75 @@
 							"response": []
 						},
 						{
+							"name": "Sign out",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.unset(\"token\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/auth/sign_out",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"sign_out"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Sign in",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test Sign in\", function(){",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"set-cookie is present\", function () {",
+											"    pm.response.to.have.header(\"set-cookie\");",
+											"});",
+											"",
+											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
+											"pm.environment.set(\"token\", token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -88,7 +156,7 @@
 							"response": []
 						},
 						{
-							"name": "Get current user",
+							"name": "Get current User",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -347,7 +415,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"guardian\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 91234567\",\n        \"user_id\": \"\",\n        \"city\": \"Vieira do Minho\"\n    }\n}",
+									"raw": "{\n    \"guardian\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"{{user_id}}\",\n        \"city\": \"Vieira do Minho\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -368,8 +436,318 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "List Ninjas",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `",
+											"    <table bgcolor=\"#FFFFFF\">",
+											"        <tr>",
+											"            <th>Photo</th>",
+											"            <th>Name</th>",
+											"            <th>Mobile</th>",
+											"            <th>City</th>",
+											"        </tr>",
+											"",
+											"        {{#each response}}",
+											"            <tr>",
+											"                <td><img height=100 src=\"{{photo}}\" /></td>",
+											"                <td>{{first_name}} {{last_name}}</td>",
+											"                <td>{{mobile}}</td>",
+											"                <td>{{city}}</td>",
+											"            </tr>",
+											"        {{/each}}",
+											"    </table>",
+											"`;",
+											"",
+											"// Set visualizer",
+											"pm.visualizer.set(template, {",
+											"    // Pass the response body parsed as JSON as `data`",
+											"    response: pm.response.json().data",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/guardians",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"guardians"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
+		},
+		{
+			"name": "Gamification",
+			"item": [
+				{
+					"name": "Badges",
+					"item": [
+						{
+							"name": "List Badges",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/badges/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"badges",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a Badge",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const { data: { id } } = pm.response.json();",
+											"",
+											"pm.environment.set(\"badge_id\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"badge\": {\n        \"name\": \"Built {{$randomInt}} projects\",\n        \"description\": \"Para o ninja que farta-se de criar projetos\",\n        \"image\": \"{{$randomAbstractImage}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/badges/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"badges",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a Badge",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"badge\": {\n        \"image\": \"{{$randomImageUrl}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/badges/{{badge_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"badges",
+										"{{badge_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a Badge",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/badges/{{badge_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"badges",
+										"{{badge_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "Get a Ninja to work with",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "Get Badges given to a Ninja",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Give a badge to a Ninja",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"badge_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove a Badge from a Ninja",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"badges",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Requests referring to badges"
 		},
 		{
 			"name": "Hello, Bokken 👋",

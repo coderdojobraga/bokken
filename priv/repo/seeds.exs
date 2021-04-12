@@ -36,6 +36,28 @@ defmodule Bokken.DbSeeder do
       "Snorlax Kabigon"
     ]
     |> create_users(:ninja)
+
+    [
+      "Loop Master",
+      "My First Project",
+      "Finished 5 Projects",
+      "Finished 10 Projects",
+      "Conditions Master"
+    ]
+    |> create_badges()
+  end
+
+  def create_badges(names) do
+    for character <- names do
+      random = Enum.random(1..100)
+
+      image = "https://robohash.org/#{random}"
+      description = character
+
+      badge = %{description: description, name: character, image: image}
+
+      Bokken.Gamification.create_badge(badge)
+    end
   end
 
   def create_users(characters, role) when role in [:guardian, :mentor, :ninja] do

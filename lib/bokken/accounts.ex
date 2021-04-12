@@ -41,7 +41,9 @@ defmodule Bokken.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id, preloads \\ []) do
+    Repo.get!(User, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a user.
@@ -326,7 +328,9 @@ defmodule Bokken.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_ninja!(id), do: Repo.get!(Ninja, id)
+  def get_ninja!(id, preloads \\ []) do
+    Repo.get!(Ninja, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a ninja.

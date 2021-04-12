@@ -1,6 +1,6 @@
 defmodule Bokken.Accounts.User do
   @moduledoc """
-  A user of the application.
+  A user of the application capable of authenticating.
   """
   use Ecto.Schema
   import Ecto.Changeset

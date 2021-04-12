@@ -4,6 +4,8 @@ defmodule Bokken.Accounts.Ninja do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  alias Bokken.Accounts.{Guardian, Social, User}
+  alias Bokken.Gamification.{Badge, BadgeNinja}
 
   @required_fields [:first_name, :last_name, :birthday, :guardian_id]
   @optional_fields [:photo, :notes, :user_id]
@@ -21,10 +23,12 @@ defmodule Bokken.Accounts.Ninja do
 
     field :notes, :string
 
-    embeds_many :socials, Bokken.Accounts.Social
+    embeds_many :socials, Social
 
-    belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
-    belongs_to :guardian, Bokken.Accounts.Guardian, foreign_key: :guardian_id
+    belongs_to :user, User, foreign_key: :user_id
+    belongs_to :guardian, Guardian, foreign_key: :guardian_id
+
+    many_to_many :badges, Badge, join_through: BadgeNinja
 
     timestamps()
   end
