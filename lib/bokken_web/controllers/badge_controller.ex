@@ -23,7 +23,7 @@ defmodule BokkenWeb.BadgeController do
     end
   end
 
-  def create(conn, %{"badge" => badge_params}) do
+  def create(conn, %{"badge" => badge_params} = params) when not is_map_key(params, :ninja_id) do
     with {:ok, %Badge{} = badge} <- Gamification.create_badge(badge_params) do
       conn
       |> put_status(:created)
