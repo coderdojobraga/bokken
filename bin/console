@@ -21,7 +21,7 @@ function display_help() {
     ${PROGRAM} [options] <command>
 
   $(help_title_section Commands)
-    start             Start development server [default command].
+    start             Start development server inside iex [default command].
 
   $(help_title_section Options)
     -h --help         Show this screen.
@@ -38,7 +38,7 @@ case ${1:-start} in
     ;;
   start)
     load_env_file
-    mix phx.server
+    iex -S mix phx.server
     ;;
   *)
     display_help >&2

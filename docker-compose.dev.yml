@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:13.2
     container_name: bokken_db
-    env_file: .env
+    env_file: .env.dev
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}

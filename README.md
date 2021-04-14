@@ -49,7 +49,8 @@ cd bokken
 bin/setup
 ```
 
-If you want use different ENV variables, you have to export the `.env`. You can do that using [direnv](https://direnv.net/).
+If you want use different ENV variables, you have to export the `.env.dev`. You
+can do that using [direnv](https://direnv.net/).
 
 ### :hammer: Development
 
