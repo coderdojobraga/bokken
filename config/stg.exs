@@ -85,6 +85,4 @@ frontend_app_url =
     Setup the URL where your frontend app will run as a regex expression.
     """
 
-config :cors_plug,
-  origin: ~r/#{frontend_app_url}/,
-  max_age: 86_400
+config :bokken, :corsica, origin: ~r{#{frontend_app_url}}

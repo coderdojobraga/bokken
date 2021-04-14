@@ -44,7 +44,7 @@ defmodule Bokken.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:plug_cowboy, "~> 2.0"},
-      {:cors_plug, "~> 2.0"},
+      {:corsica, "~> 1.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:guardian, "~> 2.0"},

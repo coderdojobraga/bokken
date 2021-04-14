@@ -44,23 +44,26 @@ function build_image() {
     -t coderdojobraga/bokken:latest \
     -t coderdojobraga/bokken:"$current_project_version" \
     -f Dockerfile .
+  docker image prune --force
 }
 
 function push_image() {
   docker push coderdojobraga/bokken --all-tags
 }
 
-if [[ $(git branch --show-current) != 'main' ]]; then
-  log_error "You're trying to release from git branch $(git branch --show-current) instead of main." \
-    "To prevent releases from unstable branches, releases are only allowed from main."
-  exit 1
-fi
+if [[ "${1:-no-force}" != "--force" ]]; then
+  if [[ $(git branch --show-current) != 'main' ]]; then
+    log_error "You're trying to release from git branch $(git branch --show-current) instead of main." \
+      "To prevent releases from unstable branches, releases are only allowed from main."
+    exit 1
+  fi
 
-if [[ $(git status -s) ]]; then
-  log_error "There are some uncommitted changes in this repository." \
-    "This might introduce unwanted artifacts in the release." \
-    "Please stash or commit your changes prior to cooking a new release."
-  exit 2
+  if [[ $(git status -s) ]]; then
+    log_error "There are some uncommitted changes in this repository." \
+      "This might introduce unwanted artifacts in the release." \
+      "Please stash or commit your changes prior to cooking a new release."
+    exit 2
+  fi
 fi
 
 build_image

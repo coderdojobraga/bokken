@@ -47,12 +47,9 @@ frontend_app_url =
     Setup the URL where your frontend app will run as a regex expression.
     """
 
-config :cors_plug,
-  origin: ~r/#{frontend_app_url}/,
-  max_age: 86400
+config :bokken, :corsica, origin: ~r{#{frontend_app_url}}
 
 # ## Using releases (Elixir v1.9+)
-#
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 config :bokken, BokkenWeb.Endpoint, server: true
