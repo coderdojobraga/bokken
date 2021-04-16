@@ -53,8 +53,6 @@ defmodule Bokken.DbSeeder do
       "Qi"
     ]
     |> create_teams()
-
-
   end
 
   def create_teams(names) do

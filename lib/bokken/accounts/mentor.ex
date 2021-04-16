@@ -6,7 +6,6 @@ defmodule Bokken.Accounts.Mentor do
   import Ecto.Changeset
   alias Bokken.Classes.{Team, TeamNinja}
 
-
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
   @optional_fields [:photo, :birthday, :major]
 
@@ -29,7 +28,6 @@ defmodule Bokken.Accounts.Mentor do
     belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
 
     many_to_many :teams, Team, join_through: TeamNinja
-
 
     timestamps()
   end

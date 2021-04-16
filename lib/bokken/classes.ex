@@ -102,7 +102,6 @@ defmodule Bokken.Classes do
     Team.changeset(team, attrs)
   end
 
-
   alias Bokken.Classes.TeamNinja
 
   def add_ninja_to_team(team_id, ninja_id) do
@@ -120,7 +119,6 @@ defmodule Bokken.Classes do
     Repo.delete_all(query)
   end
 
-
   alias Bokken.Classes.TeamMentor
 
   def add_mentor_to_team(team_id, mentor_id) do
@@ -137,5 +135,4 @@ defmodule Bokken.Classes do
 
     Repo.delete_all(query)
   end
-
 end

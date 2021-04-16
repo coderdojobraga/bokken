@@ -32,7 +32,6 @@ defmodule Bokken.Accounts.Ninja do
     many_to_many :badges, Badge, join_through: BadgeNinja
     many_to_many :teams, Team, join_through: TeamNinja
 
-
     timestamps()
   end
 

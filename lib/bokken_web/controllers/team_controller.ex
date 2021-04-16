@@ -2,7 +2,7 @@ defmodule BokkenWeb.TeamController do
   use BokkenWeb, :controller
 
   alias Bokken.Classes
-  alias Bokken.Classes.{Team, TeamNinja, TeamMentor}
+  alias Bokken.Classes.{Team, TeamMentor, TeamNinja}
 
   action_fallback BokkenWeb.FallbackController
 
@@ -12,7 +12,7 @@ defmodule BokkenWeb.TeamController do
   end
 
   def create(conn, %{"team_id" => team_id, "ninja_id" => ninja_id} = params)
-  when not is_map_key(params, :mentor_id) do
+      when not is_map_key(params, :mentor_id) do
     with {:ok, %TeamNinja{} = team_ninja} <- Classes.add_ninja_to_team(team_id, ninja_id) do
       team = Classes.get_team!(team_ninja.team_id)
 
@@ -24,7 +24,7 @@ defmodule BokkenWeb.TeamController do
   end
 
   def create(conn, %{"team_id" => team_id, "mentor_id" => mentor_id} = params)
-  when not is_map_key(params, :ninja_id) do
+      when not is_map_key(params, :ninja_id) do
     with {:ok, %TeamMentor{} = team_mentor} <- Classes.add_mentor_to_team(team_id, mentor_id) do
       team = Classes.get_team!(team_mentor.team_id)
 
@@ -35,8 +35,8 @@ defmodule BokkenWeb.TeamController do
     end
   end
 
-  def create(conn, %{"team" => team_params} = params) when
-    (not is_map_key(params, :ninja_id) or not is_map_key(params, :mentor_id)) do
+  def create(conn, %{"team" => team_params} = params)
+      when not is_map_key(params, :ninja_id) or not is_map_key(params, :mentor_id) do
     with {:ok, %Team{} = team} <- Classes.create_team(team_params) do
       conn
       |> put_status(:created)
@@ -58,22 +58,23 @@ defmodule BokkenWeb.TeamController do
     end
   end
 
-  def delete(conn, %{"id" => team_id, "ninja_id" => ninja_id} = params) when
-    not is_map_key(params, :mentor_id) do
+  def delete(conn, %{"id" => team_id, "ninja_id" => ninja_id} = params)
+      when not is_map_key(params, :mentor_id) do
     with {_n, nil} <- Classes.remove_ninja_team(team_id, ninja_id) do
       send_resp(conn, :no_content, "")
     end
   end
 
-  def delete(conn, %{"id" => team_id, "mentor_id" => mentor_id} = params) when
-    not is_map_key(params, :ninja_id) do
+  def delete(conn, %{"id" => team_id, "mentor_id" => mentor_id} = params)
+      when not is_map_key(params, :ninja_id) do
     with {_n, nil} <- Classes.remove_mentor_team(team_id, mentor_id) do
       send_resp(conn, :no_content, "")
     end
   end
 
-  def delete(conn, %{"id" => id} = params) when (not is_map_key(params, :ninja_id) or
-  not is_map_key(params, :mentor_id)) do
+  def delete(conn, %{"id" => id} = params)
+      when not is_map_key(params, :ninja_id) or
+             not is_map_key(params, :mentor_id) do
     team = Classes.get_team!(id)
 
     with {:ok, %Team{}} <- Classes.delete_team(team) do

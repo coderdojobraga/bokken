@@ -1,4 +1,7 @@
 defmodule Bokken.Classes.Team do
+  @moduledoc """
+  A team is a working group formed by ninjas and mentors.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.Ninja

@@ -1,9 +1,11 @@
 defmodule Bokken.Classes.TeamNinja do
+  @moduledoc """
+  Team and Ninja join table
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.Ninja
   alias Bokken.Classes.Team
-
 
   @required_fields [:team_id, :ninja_id]
   @optional_fields []

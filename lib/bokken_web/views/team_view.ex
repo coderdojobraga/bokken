@@ -11,8 +11,6 @@ defmodule BokkenWeb.TeamView do
   end
 
   def render("team.json", %{team: team}) do
-    %{id: team.id,
-      name: team.name,
-      description: team.description}
+    %{id: team.id, name: team.name, description: team.description}
   end
 end
