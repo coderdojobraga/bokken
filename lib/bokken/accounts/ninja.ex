@@ -5,6 +5,7 @@ defmodule Bokken.Accounts.Ninja do
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.{Guardian, Social, User}
+  alias Bokken.Classes.{Team, TeamNinja}
   alias Bokken.Gamification.{Badge, BadgeNinja}
 
   @required_fields [:first_name, :last_name, :birthday, :guardian_id]
@@ -29,6 +30,8 @@ defmodule Bokken.Accounts.Ninja do
     belongs_to :guardian, Guardian, foreign_key: :guardian_id
 
     many_to_many :badges, Badge, join_through: BadgeNinja
+    many_to_many :teams, Team, join_through: TeamNinja
+
 
     timestamps()
   end

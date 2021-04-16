@@ -30,13 +30,19 @@ defmodule BokkenWeb.Router do
     pipe_through :authenticated
 
     resources "/guardians", GuardianController, except: [:new, :edit]
-    resources "/mentors", MentorController, except: [:new, :edit]
+
+    resources "/mentors", MentorController, except: [:new, :edit] do
+      resources "/teams", TeamController, only: [:index, :create, :delete]
+    end
 
     resources "/ninjas", NinjaController, except: [:new, :edit] do
       resources "/badges", BadgeController, only: [:index, :create, :delete]
+      resources "/teams", TeamController, only: [:index, :create, :delete]
     end
 
     resources "/badges", BadgeController, except: [:new, :edit]
+    resources "/teams", TeamController, except: [:new, :edit]
+
   end
 
   # Enables LiveDashboard only for development
