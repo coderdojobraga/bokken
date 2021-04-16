@@ -6,8 +6,8 @@ defmodule BokkenWeb.TeamController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, _params) do
-    teams = Classes.list_teams()
+  def index(conn, params) do
+    teams = Classes.list_teams(params)
     render(conn, "index.json", teams: teams)
   end
 
@@ -36,7 +36,7 @@ defmodule BokkenWeb.TeamController do
   end
 
   def create(conn, %{"team" => team_params} = params)
-      when not is_map_key(params, :ninja_id) or not is_map_key(params, :mentor_id) do
+      when not is_map_key(params, :ninja_id) and not is_map_key(params, :mentor_id) do
     with {:ok, %Team{} = team} <- Classes.create_team(team_params) do
       conn
       |> put_status(:created)
@@ -73,8 +73,8 @@ defmodule BokkenWeb.TeamController do
   end
 
   def delete(conn, %{"id" => id} = params)
-      when not is_map_key(params, :ninja_id) or
-             not is_map_key(params, :mentor_id) do
+      when (not is_map_key(params, :ninja_id) and
+             not is_map_key(params, :mentor_id)) do
     team = Classes.get_team!(id)
 
     with {:ok, %Team{}} <- Classes.delete_team(team) do

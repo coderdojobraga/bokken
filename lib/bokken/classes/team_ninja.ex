@@ -11,7 +11,6 @@ defmodule Bokken.Classes.TeamNinja do
   @optional_fields []
 
   @primary_key false
-  @foreign_key_type :binary_id
   schema "teams_ninjas" do
     belongs_to :team, Team, type: :binary_id
     belongs_to :ninja, Ninja, type: :binary_id

@@ -5,7 +5,7 @@ defmodule Bokken.Classes do
 
   import Ecto.Query, warn: false
   alias Bokken.Repo
-
+  alias Bokken.Accounts
   alias Bokken.Classes.Team
 
   @doc """
@@ -17,8 +17,24 @@ defmodule Bokken.Classes do
       [%Team{}, ...]
 
   """
-  def list_teams do
-    Repo.all(Team)
+  @spec list_teams(map()) :: list(%Team{})
+  def list_teams(args \\ %{})
+
+  def list_teams(%{"ninja_id" => ninja_id}) do
+    ninja_id
+    |> Accounts.get_ninja!([:teams])
+    |> Map.fetch!(:teams)
+  end
+
+  def list_teams(%{"mentor_id" => mentor_id}) do
+    mentor_id
+    |> Accounts.get_mentor!([:teams])
+    |> Map.fetch!(:teams)
+  end
+
+  def list_teams(_args) do
+    Team
+    |> Repo.all()
   end
 
   @doc """

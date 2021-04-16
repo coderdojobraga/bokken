@@ -232,7 +232,9 @@ defmodule Bokken.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_mentor!(id), do: Repo.get!(Mentor, id)
+  def get_mentor!(id, preloads \\ []) do
+    Repo.get!(Mentor, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a mentor.

@@ -11,10 +11,9 @@ defmodule Bokken.Classes.TeamMentor do
   @optional_fields []
 
   @primary_key false
-  @foreign_key_type :binary_id
   schema "teams_mentors" do
-    belongs_to :team_id, Team, type: :binary_id
-    belongs_to :mentor_id, Mentor, type: :binary_id
+    belongs_to :team, Team, type: :binary_id
+    belongs_to :mentor, Mentor, type: :binary_id
 
     timestamps()
   end
@@ -26,6 +25,6 @@ defmodule Bokken.Classes.TeamMentor do
     |> validate_required(@required_fields)
     |> assoc_constraint(:team)
     |> assoc_constraint(:mentor)
-    |> unique_constraint([:team_id, :mentor_id])
+    |> unique_constraint([:team_id, :mentor_id], name: :teams_mentors_pkey)
   end
 end
