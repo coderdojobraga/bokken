@@ -3,11 +3,17 @@ defmodule BokkenWeb.NinjaController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Ninja
+  alias Bokken.Classes
 
   action_fallback BokkenWeb.FallbackController
 
   def index(conn, _params) do
     ninjas = Accounts.list_ninjas()
+    render(conn, "index.json", ninjas: ninjas)
+  end
+
+  def ninjas(conn, %{"team_id" => team_id}) do
+    ninjas = Classes.list_team_ninjas(team_id)
     render(conn, "index.json", ninjas: ninjas)
   end
 

@@ -3,11 +3,17 @@ defmodule BokkenWeb.MentorController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
+  alias Bokken.Classes
 
   action_fallback BokkenWeb.FallbackController
 
   def index(conn, _params) do
     mentors = Accounts.list_mentors()
+    render(conn, "index.json", mentors: mentors)
+  end
+
+  def mentors(conn, %{"team_id" => team_id}) do
+    mentors = Classes.list_team_mentors(team_id)
     render(conn, "index.json", mentors: mentors)
   end
 

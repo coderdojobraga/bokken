@@ -4,9 +4,10 @@ defmodule Bokken.Classes do
   """
 
   import Ecto.Query, warn: false
-  alias Bokken.Repo
   alias Bokken.Accounts
+  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Classes.Team
+  alias Bokken.Repo
 
   @doc """
   Returns the list of teams.
@@ -135,6 +136,18 @@ defmodule Bokken.Classes do
     Repo.delete_all(query)
   end
 
+  def list_team_ninjas(team_id) do
+    tn = from team in TeamNinja, where: team.team_id == ^team_id
+
+    query =
+      from n in Ninja,
+        join: ^tn,
+        on: [ninja_id: n.id],
+        select: n
+
+    Repo.all(query)
+  end
+
   alias Bokken.Classes.TeamMentor
 
   def add_mentor_to_team(team_id, mentor_id) do
@@ -150,5 +163,17 @@ defmodule Bokken.Classes do
         where: team_mentor.mentor_id == ^mentor_id
 
     Repo.delete_all(query)
+  end
+
+  def list_team_mentors(team_id) do
+    tm = from team in TeamMentor, where: team.team_id == ^team_id
+
+    query =
+      from m in Mentor,
+        join: ^tm,
+        on: [mentor_id: m.id],
+        select: m
+
+    Repo.all(query)
   end
 end

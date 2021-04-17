@@ -41,7 +41,11 @@ defmodule BokkenWeb.Router do
     end
 
     resources "/badges", BadgeController, except: [:new, :edit]
-    resources "/teams", TeamController, except: [:new, :edit]
+
+    resources "/teams", TeamController, except: [:new, :edit] do
+      get "/ninjas", NinjaController, :ninjas
+      get "/mentors", MentorController, :mentors
+    end
   end
 
   # Enables LiveDashboard only for development
