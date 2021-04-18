@@ -56,10 +56,10 @@ defmodule Bokken.DbSeeder do
   end
 
   def create_teams(names) do
-    for character <- names do
-      description = "Best team ever"
+    for name <- names do
+      description = "#{name} is the best team ever"
 
-      team = %{description: description, name: character}
+      team = %{description: description, name: name}
 
       Bokken.Events.create_team(team)
     end
