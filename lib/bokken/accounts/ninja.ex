@@ -5,7 +5,7 @@ defmodule Bokken.Accounts.Ninja do
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.{Guardian, Social, User}
-  alias Bokken.Classes.{Team, TeamNinja}
+  alias Bokken.Events.{Team, TeamNinja}
   alias Bokken.Gamification.{Badge, BadgeNinja}
 
   @required_fields [:first_name, :last_name, :birthday, :guardian_id]

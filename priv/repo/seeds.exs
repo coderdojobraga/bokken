@@ -61,7 +61,7 @@ defmodule Bokken.DbSeeder do
 
       team = %{description: description, name: character}
 
-      Bokken.Classes.create_team(team)
+      Bokken.Events.create_team(team)
     end
   end
 

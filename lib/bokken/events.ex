@@ -1,12 +1,12 @@
-defmodule Bokken.Classes do
+defmodule Bokken.Events do
   @moduledoc """
-  The Classes context.
+  The Events context.
   """
 
   import Ecto.Query, warn: false
 
   alias Bokken.Accounts
-  alias Bokken.Classes.Team
+  alias Bokken.Events.Team
   alias Bokken.Repo
 
   @doc """

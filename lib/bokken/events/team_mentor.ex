@@ -1,11 +1,11 @@
-defmodule Bokken.Classes.TeamMentor do
+defmodule Bokken.Events.TeamMentor do
   @moduledoc """
   Team and Mentor join table
   """
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.Mentor
-  alias Bokken.Classes.Team
+  alias Bokken.Events.Team
 
   @required_fields [:team_id, :mentor_id]
   @optional_fields []

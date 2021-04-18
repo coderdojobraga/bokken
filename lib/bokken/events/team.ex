@@ -1,11 +1,11 @@
-defmodule Bokken.Classes.Team do
+defmodule Bokken.Events.Team do
   @moduledoc """
   A team is a working group formed by ninjas and mentors.
   """
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.{Mentor, Ninja}
-  alias Bokken.Classes.{TeamMentor, TeamNinja}
+  alias Bokken.Events.{TeamMentor, TeamNinja}
 
   @required_fields [:name]
   @optional_fields [:description]

@@ -3,7 +3,7 @@ defmodule BokkenWeb.MentorController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
-  alias Bokken.Classes.TeamMentor
+  alias Bokken.Events.TeamMentor
 
   action_fallback BokkenWeb.FallbackController
 

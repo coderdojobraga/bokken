@@ -7,8 +7,8 @@ defmodule Bokken.Accounts do
   alias Bokken.Repo
 
   alias Bokken.Accounts.User
-  alias Bokken.Classes
-  alias Bokken.Classes.{TeamMentor, TeamNinja}
+  alias Bokken.Events
+  alias Bokken.Events.{TeamMentor, TeamNinja}
 
   @doc """
   Returns the list of users.
@@ -221,7 +221,7 @@ defmodule Bokken.Accounts do
 
   def list_mentors(%{"team_id" => team_id}) do
     team_id
-    |> Classes.get_team!([:mentors])
+    |> Events.get_team!([:mentors])
     |> Map.fetch!(:mentors)
   end
 
@@ -345,7 +345,7 @@ defmodule Bokken.Accounts do
 
   def list_ninjas(%{"team_id" => team_id}) do
     team_id
-    |> Classes.get_team!([:ninjas])
+    |> Events.get_team!([:ninjas])
     |> Map.fetch!(:ninjas)
   end
 

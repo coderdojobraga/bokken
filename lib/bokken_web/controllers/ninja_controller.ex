@@ -3,7 +3,7 @@ defmodule BokkenWeb.NinjaController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Ninja
-  alias Bokken.Classes.TeamNinja
+  alias Bokken.Events.TeamNinja
 
   action_fallback BokkenWeb.FallbackController
 

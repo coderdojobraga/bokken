@@ -4,7 +4,7 @@ defmodule Bokken.Accounts.Mentor do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Bokken.Classes.{Team, TeamMentor}
+  alias Bokken.Events.{Team, TeamMentor}
 
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
   @optional_fields [:photo, :birthday, :major]
