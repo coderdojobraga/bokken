@@ -32,19 +32,19 @@ defmodule BokkenWeb.Router do
     resources "/guardians", GuardianController, except: [:new, :edit]
 
     resources "/mentors", MentorController, except: [:new, :edit] do
-      resources "/teams", TeamController, only: [:index, :create, :delete]
+      get "/teams", TeamController, :index
     end
 
     resources "/ninjas", NinjaController, except: [:new, :edit] do
       resources "/badges", BadgeController, only: [:index, :create, :delete]
-      resources "/teams", TeamController, only: [:index, :create, :delete]
+      get "/teams", TeamController, :index
     end
 
     resources "/badges", BadgeController, except: [:new, :edit]
 
     resources "/teams", TeamController, except: [:new, :edit] do
-      get "/ninjas", NinjaController, :ninjas
-      get "/mentors", MentorController, :mentors
+      resources "/ninjas", NinjaController, only: [:index, :create, :delete]
+      resources "/mentors", MentorController, only: [:index, :create, :delete]
     end
   end
 

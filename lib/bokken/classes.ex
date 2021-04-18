@@ -4,8 +4,8 @@ defmodule Bokken.Classes do
   """
 
   import Ecto.Query, warn: false
+
   alias Bokken.Accounts
-  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Classes.Team
   alias Bokken.Repo
 
@@ -21,15 +21,15 @@ defmodule Bokken.Classes do
   @spec list_teams(map()) :: list(%Team{})
   def list_teams(args \\ %{})
 
-  def list_teams(%{"ninja_id" => ninja_id}) do
-    ninja_id
-    |> Accounts.get_ninja!([:teams])
-    |> Map.fetch!(:teams)
-  end
-
   def list_teams(%{"mentor_id" => mentor_id}) do
     mentor_id
     |> Accounts.get_mentor!([:teams])
+    |> Map.fetch!(:teams)
+  end
+
+  def list_teams(%{"ninja_id" => ninja_id}) do
+    ninja_id
+    |> Accounts.get_ninja!([:teams])
     |> Map.fetch!(:teams)
   end
 
@@ -52,7 +52,9 @@ defmodule Bokken.Classes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_team!(id), do: Repo.get!(Team, id)
+  def get_team!(id, preloads \\ []) do
+    Repo.get!(Team, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a team.
@@ -117,63 +119,5 @@ defmodule Bokken.Classes do
   """
   def change_team(%Team{} = team, attrs \\ %{}) do
     Team.changeset(team, attrs)
-  end
-
-  alias Bokken.Classes.TeamNinja
-
-  def add_ninja_to_team(team_id, ninja_id) do
-    %TeamNinja{}
-    |> TeamNinja.changeset(%{team_id: team_id, ninja_id: ninja_id})
-    |> Repo.insert()
-  end
-
-  def remove_ninja_team(team_id, ninja_id) do
-    query =
-      from team_ninja in TeamNinja,
-        where: team_ninja.team_id == ^team_id,
-        where: team_ninja.ninja_id == ^ninja_id
-
-    Repo.delete_all(query)
-  end
-
-  def list_team_ninjas(team_id) do
-    tn = from team in TeamNinja, where: team.team_id == ^team_id
-
-    query =
-      from n in Ninja,
-        join: ^tn,
-        on: [ninja_id: n.id],
-        select: n
-
-    Repo.all(query)
-  end
-
-  alias Bokken.Classes.TeamMentor
-
-  def add_mentor_to_team(team_id, mentor_id) do
-    %TeamMentor{}
-    |> TeamMentor.changeset(%{team_id: team_id, mentor_id: mentor_id})
-    |> Repo.insert()
-  end
-
-  def remove_mentor_team(team_id, mentor_id) do
-    query =
-      from team_mentor in TeamMentor,
-        where: team_mentor.team_id == ^team_id,
-        where: team_mentor.mentor_id == ^mentor_id
-
-    Repo.delete_all(query)
-  end
-
-  def list_team_mentors(team_id) do
-    tm = from team in TeamMentor, where: team.team_id == ^team_id
-
-    query =
-      from m in Mentor,
-        join: ^tm,
-        on: [mentor_id: m.id],
-        select: m
-
-    Repo.all(query)
   end
 end

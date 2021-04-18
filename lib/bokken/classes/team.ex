@@ -4,8 +4,8 @@ defmodule Bokken.Classes.Team do
   """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Bokken.Accounts.Ninja
-  alias Bokken.Classes.TeamNinja
+  alias Bokken.Accounts.{Mentor, Ninja}
+  alias Bokken.Classes.{TeamMentor, TeamNinja}
 
   @required_fields [:name]
   @optional_fields [:description]
@@ -17,6 +17,7 @@ defmodule Bokken.Classes.Team do
     field :name, :string
 
     many_to_many :ninjas, Ninja, join_through: TeamNinja
+    many_to_many :mentors, Mentor, join_through: TeamMentor
 
     timestamps()
   end

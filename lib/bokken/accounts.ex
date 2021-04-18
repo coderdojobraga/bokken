@@ -7,6 +7,8 @@ defmodule Bokken.Accounts do
   alias Bokken.Repo
 
   alias Bokken.Accounts.User
+  alias Bokken.Classes
+  alias Bokken.Classes.{TeamMentor, TeamNinja}
 
   @doc """
   Returns the list of users.
@@ -214,8 +216,18 @@ defmodule Bokken.Accounts do
       [%Mentor{}, ...]
 
   """
-  def list_mentors do
-    Repo.all(Mentor)
+  @spec list_mentors(map()) :: list(%Mentor{})
+  def list_mentors(args \\ %{})
+
+  def list_mentors(%{"team_id" => team_id}) do
+    team_id
+    |> Classes.get_team!([:mentors])
+    |> Map.fetch!(:mentors)
+  end
+
+  def list_mentors(_args) do
+    Mentor
+    |> Repo.all()
   end
 
   @doc """
@@ -301,6 +313,21 @@ defmodule Bokken.Accounts do
     Mentor.changeset(mentor, attrs)
   end
 
+  def add_mentor_to_team(team_id, mentor_id) do
+    %TeamMentor{}
+    |> TeamMentor.changeset(%{team_id: team_id, mentor_id: mentor_id})
+    |> Repo.insert()
+  end
+
+  def remove_mentor_team(team_id, mentor_id) do
+    query =
+      from team_mentor in TeamMentor,
+        where: team_mentor.team_id == ^team_id,
+        where: team_mentor.mentor_id == ^mentor_id
+
+    Repo.delete_all(query)
+  end
+
   alias Bokken.Accounts.Ninja
 
   @doc """
@@ -312,8 +339,19 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
-  def list_ninjas do
-    Repo.all(Ninja)
+
+  @spec list_ninjas(map()) :: list(%Ninja{})
+  def list_ninjas(args \\ %{})
+
+  def list_ninjas(%{"team_id" => team_id}) do
+    team_id
+    |> Classes.get_team!([:ninjas])
+    |> Map.fetch!(:ninjas)
+  end
+
+  def list_ninjas(_args) do
+    Ninja
+    |> Repo.all()
   end
 
   @doc """
@@ -397,5 +435,20 @@ defmodule Bokken.Accounts do
   """
   def change_ninja(%Ninja{} = ninja, attrs \\ %{}) do
     Ninja.changeset(ninja, attrs)
+  end
+
+  def add_ninja_to_team(team_id, ninja_id) do
+    %TeamNinja{}
+    |> TeamNinja.changeset(%{team_id: team_id, ninja_id: ninja_id})
+    |> Repo.insert()
+  end
+
+  def remove_ninja_team(team_id, ninja_id) do
+    query =
+      from team_ninja in TeamNinja,
+        where: team_ninja.team_id == ^team_id,
+        where: team_ninja.ninja_id == ^ninja_id
+
+    Repo.delete_all(query)
   end
 end
