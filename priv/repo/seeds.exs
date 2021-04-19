@@ -45,6 +45,24 @@ defmodule Bokken.DbSeeder do
       "Conditions Master"
     ]
     |> create_badges()
+
+    # Great Teams
+    [
+      "Yin",
+      "Yang",
+      "Qi"
+    ]
+    |> create_teams()
+  end
+
+  def create_teams(names) do
+    for name <- names do
+      description = "#{name} is the best team ever"
+
+      team = %{description: description, name: name}
+
+      Bokken.Events.create_team(team)
+    end
   end
 
   def create_badges(names) do
