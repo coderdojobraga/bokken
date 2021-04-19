@@ -1242,6 +1242,144 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Locations",
+					"item": [
+						{
+							"name": "Get locations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create location",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\",\n        \"address\": \"{{$randomStreetName}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete location",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations/{{location_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"{{location_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Location to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"location_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"location_id\", location_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update location",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/locations/{{location_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"{{location_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -1286,6 +1424,12 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomNum",
+			"value": ""
 		}
 	]
 }

@@ -53,6 +53,25 @@ defmodule Bokken.DbSeeder do
       "Qi"
     ]
     |> create_teams()
+
+    # Some Locations
+    [
+      "Braga",
+      "Guimarães",
+      "Vieira do Minho"
+    ]
+    |> create_locations()
+  end
+
+  def create_locations(names) do
+    for name <- names do
+      random = Enum.random(1..100)
+      address = "Rua da Estrada, n.º #{random}, #{name}"
+
+      location = %{name: name, address: address}
+
+      Bokken.Events.create_location(location)
+    end
   end
 
   def create_teams(names) do
