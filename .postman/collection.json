@@ -1037,16 +1037,6 @@
 						{
 							"name": "Get all ninjas from team",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -1109,16 +1099,6 @@
 								}
 							],
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
