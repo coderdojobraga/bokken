@@ -46,6 +46,8 @@ defmodule BokkenWeb.Router do
       resources "/ninjas", NinjaController, only: [:index, :create, :delete]
       resources "/mentors", MentorController, only: [:index, :create, :delete]
     end
+
+    resources "/locations", LocationController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
