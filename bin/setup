@@ -12,15 +12,16 @@ cd "${BASE_DIR}/.." || exit 127
 
 env=${1:-"dev"}
 
-log_info "setup" "Setting up the env..."
+log_info "setup" "Setting up the .env & .env.dev..."
 if [ ! -f .env ]; then
-  cp .env.sample .env
-  log_success "env file created, you might want to open .env and set the
+  echo "MIX_ENV=dev" >.env
+  cp .env.sample .env.dev
+  log_success ".env.dev file created, you might want to open .env and set the
     correct values. Make sure you export them into your environment before
     runing this script again."
   exit
 else
-  log_warn ".env file already exists, skipping..."
+  log_warn ".env.dev file already exists, skipping..."
 fi
 
 log_info "setup" "Installing required languages..."
@@ -42,7 +43,7 @@ else
   asdf install
 fi
 
-. "./.env"
+load_env_file ".env.$env"
 
 log_info "setup" "Installing dependencies..."
 MIX_ENV=$env mix local.hex --force
