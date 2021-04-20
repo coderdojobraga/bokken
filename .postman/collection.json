@@ -646,6 +646,36 @@
 					"name": "Ninjas",
 					"item": [
 						{
+							"name": "Get a Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get Badges given to a Ninja",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -672,36 +702,6 @@
 										"ninjas",
 										"{{ninja_id}}",
 										"badges"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get a Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
 									]
 								}
 							},
@@ -882,6 +882,36 @@
 					"name": "Ninjas",
 					"item": [
 						{
+							"name": "Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get ninja's team",
 							"event": [
 								{
@@ -912,128 +942,6 @@
 							},
 							"response": []
 						},
-						{
-							"name": "Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"description": "Getting the ninja team.",
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "Mentors",
-					"item": [
-						{
-							"name": "Get a mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get mentor's team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors/{{mentor_id}}/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors",
-										"{{mentor_id}}",
-										"teams"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"description": "Get the mentor's team"
-				},
-				{
-					"name": "TeamNinja",
-					"item": [
 						{
 							"name": "Get all ninjas from team",
 							"request": {
@@ -1126,7 +1034,7 @@
 							"response": []
 						}
 					],
-					"description": "Requests about a specific team related to ninjas",
+					"description": "Getting the ninja team.",
 					"auth": {
 						"type": "bearer",
 						"bearer": [
@@ -1136,11 +1044,81 @@
 								"type": "string"
 							}
 						]
-					}
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
 				},
 				{
-					"name": "TeamMentor",
+					"name": "Mentors",
 					"item": [
+						{
+							"name": "Get a mentor to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"mentor_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"mentor_id\", mentor_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get mentor's team",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors/{{mentor_id}}/teams",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors",
+										"{{mentor_id}}",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "Get all mentors from team",
 							"request": {
@@ -1168,7 +1146,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n   \"mentor_id\": \"086d8b50-9e33-484f-ac98-62f827915914\" \n} ",
+									"raw": "{\n   \"mentor_id\": \"{{mentor_id}}\" \n} ",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1210,16 +1188,97 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"description": "Get the mentor's team"
+				},
+				{
+					"name": "Locations",
+					"item": [
+						{
+							"name": "Get locations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
 						},
 						{
-							"name": "Mentor to work with",
+							"name": "Create location",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\",\n        \"address\": \"{{$randomStreetName}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete location",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations/{{location_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"{{location_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Location to work with",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"mentor_id = pm.response.json().data[2].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
+											"location_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"location_id\", location_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1229,13 +1288,41 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/mentors",
+									"raw": "{{host}}/api/locations",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"mentors"
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update location",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/locations/{{location_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"{{location_id}}"
 									]
 								}
 							},
@@ -1286,6 +1373,12 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomNum",
+			"value": ""
 		}
 	]
 }
