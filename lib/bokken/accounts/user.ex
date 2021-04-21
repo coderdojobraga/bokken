@@ -21,7 +21,7 @@ defmodule Bokken.Accounts.User do
 
     has_one :guardian, Bokken.Accounts.Guardian, on_delete: :delete_all
     has_one :mentor, Bokken.Accounts.Mentor, on_delete: :delete_all
-    has_one :ninja, Bokken.Accounts.Guardian, on_delete: :delete_all
+    has_one :ninja, Bokken.Accounts.Ninja, on_delete: :delete_all
 
     timestamps()
   end
