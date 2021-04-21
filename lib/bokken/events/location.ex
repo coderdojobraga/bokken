@@ -5,6 +5,8 @@ defmodule Bokken.Events.Location do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Bokken.Events.Event
+
   @required_fields [:address, :name]
   @optional_fields []
 
@@ -13,6 +15,8 @@ defmodule Bokken.Events.Location do
   schema "locations" do
     field :address, :string
     field :name, :string
+
+    has_many :event, Event, on_delete: :nothing
 
     timestamps()
   end
