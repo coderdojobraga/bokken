@@ -19,7 +19,7 @@ defmodule Bokken.Events.Team do
     many_to_many :ninjas, Ninja, join_through: TeamNinja
     many_to_many :mentors, Mentor, join_through: TeamMentor
 
-    has_many :event, Event, on_delete: :nothing
+    has_many :events, Event, on_delete: :nothing
 
     timestamps()
   end

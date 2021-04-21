@@ -646,36 +646,6 @@
 					"name": "Ninjas",
 					"item": [
 						{
-							"name": "Get a Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Get Badges given to a Ninja",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -702,6 +672,36 @@
 										"ninjas",
 										"{{ninja_id}}",
 										"badges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
 									]
 								}
 							},
@@ -768,6 +768,31 @@
 				{
 					"name": "Teams",
 					"item": [
+						{
+							"name": "Events",
+							"item": [
+								{
+									"name": "Events by team",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/teams/{{team_id}}/events",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"teams",
+												"{{team_id}}",
+												"events"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "List teams",
 							"request": {
@@ -1196,6 +1221,31 @@
 					"name": "Locations",
 					"item": [
 						{
+							"name": "Events",
+							"item": [
+								{
+									"name": "Events by Location",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/locations/{{location_id}}/events",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												"{{location_id}}",
+												"events"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Get locations",
 							"request": {
 								"method": "GET",
@@ -1323,6 +1373,231 @@
 										"api",
 										"locations",
 										"{{location_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Event",
+					"item": [
+						{
+							"name": "Team in Event",
+							"item": [
+								{
+									"name": "All teams in Event",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/events/{{event_id}}/teams",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"events",
+												"{{event_id}}",
+												"teams"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Event to work with",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"event_id = pm.response.json().data[1].id",
+													"pm.environment.set(\"event_id\", event_id);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/events",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"events"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "List events",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create an event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const { data: { id } } = pm.response.json();",
+											"",
+											"pm.environment.set(\"event_id\", id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Location to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"location_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"location_id\", location_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Team to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"team_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"team_id\", team_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Event",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event\": {\n        \"notes\": \"Changing event's notes on {{$isoTimestamp}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete event",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}"
 									]
 								}
 							},

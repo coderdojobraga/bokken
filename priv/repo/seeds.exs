@@ -98,10 +98,6 @@ defmodule Bokken.DbSeeder do
       %{id: location_id} = Enum.random(Bokken.Events.list_locations())
       %{id: team_id} = Enum.random(Bokken.Events.list_teams())
 
-      IO.inspect("PORRORORORORROROOROROR")
-      IO.inspect(location_id)
-      IO.inspect(team_id)
-
       event = %{
         title: name,
         online: false,
@@ -111,8 +107,6 @@ defmodule Bokken.DbSeeder do
       }
 
       Bokken.Events.create_event(event)
-
-      IO.inspect(event)
     end
   end
 

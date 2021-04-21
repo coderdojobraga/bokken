@@ -6,6 +6,7 @@ defmodule Bokken.Events do
   import Ecto.Query, warn: false
 
   alias Bokken.Accounts
+  alias Bokken.Events
   alias Bokken.Events.Team
   alias Bokken.Repo
 
@@ -33,6 +34,17 @@ defmodule Bokken.Events do
     |> Map.fetch!(:teams)
   end
 
+  def list_teams(%{"event_id" => event_id}) do
+    event = Events.get_event!(event_id, [:team])
+    data = Repo.preload(event, team: [events: :team])
+
+    for e <- data.team.events do
+      if e.id == event_id do
+        e.team
+      end
+    end
+  end
+
   def list_teams(_args) do
     Team
     |> Repo.all()
@@ -53,7 +65,8 @@ defmodule Bokken.Events do
 
   """
   def get_team!(id, preloads \\ []) do
-    Repo.get!(Team, id) |> Repo.preload(preloads)
+    Repo.get!(Team, id)
+    |> Repo.preload(preloads)
   end
 
   @doc """
@@ -230,8 +243,25 @@ defmodule Bokken.Events do
       [%Event{}, ...]
 
   """
-  def list_events do
-    Repo.all(Event)
+
+  @spec list_events(map()) :: list(%Event{})
+  def list_events(args \\ %{})
+
+  def list_events(%{"team_id" => team_id}) do
+    team_id
+    |> Events.get_team!([:events])
+    |> Map.fetch!(:events)
+  end
+
+  def list_events(%{"location_id" => location_id}) do
+    location_id
+    |> Events.get_location!([:events])
+    |> Map.fetch!(:events)
+  end
+
+  def list_events(_args) do
+    Event
+    |> Repo.all()
   end
 
   @doc """
@@ -248,7 +278,10 @@ defmodule Bokken.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_event!(id), do: Repo.get!(Event, id)
+  def get_event!(id, preloads \\ []) do
+    Repo.get!(Event, id)
+    |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a event.
@@ -263,10 +296,9 @@ defmodule Bokken.Events do
 
   """
   def create_event(attrs \\ %{}) do
-    event =
-      %Event{}
-      |> Event.changeset(attrs)
-      |> Repo.insert()
+    %Event{}
+    |> Event.changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """

@@ -16,7 +16,7 @@ defmodule Bokken.Events.Location do
     field :address, :string
     field :name, :string
 
-    has_many :event, Event, on_delete: :nothing
+    has_many :events, Event, on_delete: :nothing
 
     timestamps()
   end
