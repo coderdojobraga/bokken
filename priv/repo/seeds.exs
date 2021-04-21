@@ -111,7 +111,8 @@ defmodule Bokken.DbSeeder do
           create_guardian(names, user_id)
 
         {:ok, %{id: user_id}} when role == :mentor ->
-          create_mentor(names, user_id)
+          {:ok, mentor} = create_mentor(names, user_id)
+          create_organizer(mentor)
 
         {:ok, %{id: user_id}} when role == :ninja ->
           create_ninja(names, user_id)
@@ -195,6 +196,16 @@ defmodule Bokken.DbSeeder do
       })
 
     Bokken.Accounts.create_mentor(mentor)
+  end
+
+  def create_organizer(mentor) do
+    organizer = %{
+      champion: true,
+      user_id: mentor.user_id,
+      mentor_id: mentor.id
+    }
+
+    Bokken.Accounts.create_organizer(organizer)
   end
 
   defp split_names(name) do

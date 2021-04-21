@@ -451,4 +451,100 @@ defmodule Bokken.Accounts do
 
     Repo.delete_all(query)
   end
+
+  alias Bokken.Accounts.Organizer
+
+  @doc """
+  Returns the list of organizers.
+
+  ## Examples
+
+      iex> list_organizers()
+      [%Organizer{}, ...]
+
+  """
+  def list_organizers do
+    Repo.all(Organizer)
+  end
+
+  @doc """
+  Gets a single organizer.
+
+  Raises `Ecto.NoResultsError` if the Organizer does not exist.
+
+  ## Examples
+
+      iex> get_organizer!(123)
+      %Organizer{}
+
+      iex> get_organizer!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_organizer!(id), do: Repo.get!(Organizer, id)
+
+  @doc """
+  Creates a organizer.
+
+  ## Examples
+
+      iex> create_organizer(%{field: value})
+      {:ok, %Organizer{}}
+
+      iex> create_organizer(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_organizer(attrs \\ %{}) do
+    %Organizer{}
+    |> Organizer.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a organizer.
+
+  ## Examples
+
+      iex> update_organizer(organizer, %{field: new_value})
+      {:ok, %Organizer{}}
+
+      iex> update_organizer(organizer, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_organizer(%Organizer{} = organizer, attrs) do
+    organizer
+    |> Organizer.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a organizer.
+
+  ## Examples
+
+      iex> delete_organizer(organizer)
+      {:ok, %Organizer{}}
+
+      iex> delete_organizer(organizer)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_organizer(%Organizer{} = organizer) do
+    Repo.delete(organizer)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking organizer changes.
+
+  ## Examples
+
+      iex> change_organizer(organizer)
+      %Ecto.Changeset{data: %Organizer{}}
+
+  """
+  def change_organizer(%Organizer{} = organizer, attrs \\ %{}) do
+    Organizer.changeset(organizer, attrs)
+  end
 end
