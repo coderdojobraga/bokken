@@ -1,7 +1,8 @@
 {
 	"info": {
 		"_postman_id": "6f410fa7-6468-4358-8372-84752d562888",
-		"name": "Bokken",
+		"name": "Bokken - Documentation",
+		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -18,11 +19,11 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Test Sign up\", function(){",
+											"pm.test(\"Sign up status is OK\", function(){",
 											"    pm.response.to.have.status(200);",
 											"})",
 											"",
-											"pm.test(\"set-cookie is present\", function () {",
+											"pm.test(\"Token with set-cookie is present\", function () {",
 											"    pm.response.to.have.header(\"set-cookie\");",
 											"});",
 											"",
@@ -61,7 +62,8 @@
 										"auth",
 										"sign_up"
 									]
-								}
+								},
+								"description": "The signup sets an auth cookie in all the following requests."
 							},
 							"response": []
 						},
@@ -157,7 +159,8 @@
 										"auth",
 										"sign_in"
 									]
-								}
+								},
+								"description": "The signup sets an auth cookie in all the following requests."
 							},
 							"response": []
 						},
@@ -1167,105 +1170,34 @@
 							"response": []
 						},
 						{
-							"name": "Team to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"team_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"team_id\", team_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Associate a ninja to a team",
+							"name": "Associate a Ninja to a Team",
 							"event": [
 								{
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-											"    console.log(response.json());",
-											"});"
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -1274,27 +1206,9 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"var template = `",
-											"    <table bgcolor=\"#FFFFFF\">",
-											"        <tr>",
-											"            <th>Photo</th>",
-											"            <th>Name</th>",
-											"            <th>Birthday</th>",
-											"        </tr>",
-											"",
-											"            <tr>",
-											"                <td><img height=100 src=\"{{photo}}\" /></td>",
-											"                <td>{{first_name}} {{last_name}}</td>",
-											"                <td>{{birthday}}</td>",
-											"            </tr>",
-											"    </table>",
-											"`;",
-											"",
-											"// Set visualizer",
-											"pm.visualizer.set(template, {",
-											"    // Pass the response body parsed as JSON as `data`",
-											"    response: pm.response.json().data",
-											"});"
+											"pm.test(\"Status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"})"
 										],
 										"type": "text/javascript"
 									}
@@ -1305,7 +1219,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n   \"ninja_id\": \"7af9e34f-a926-4180-a88a-1c1b0db1b2ba\" \n} ",
+									"raw": "{\n   \"ninja_id\": \"{{ninja_id}}\"\n} ",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1329,6 +1243,50 @@
 						},
 						{
 							"name": "Associate Mentor to Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -1401,36 +1359,6 @@
 							"response": []
 						},
 						{
-							"name": "Location to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"location_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"location_id\", location_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Create location",
 							"event": [
 								{
@@ -1438,6 +1366,16 @@
 									"script": {
 										"exec": [
 											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"location_id = pm.response.json().data.id",
+											"pm.environment.set(\"location_id\", location_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1677,7 +1615,7 @@
 										"exec": [
 											"event_id = pm.response.json().data.id",
 											"",
-											"pm.environment.set(\"event_id\", id);"
+											"pm.environment.set(\"event_id\", event_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1784,6 +1722,19 @@
 		},
 		{
 			"name": "Hello, Bokken 👋",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Bokken API is running\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1809,8 +1760,82 @@
 					"const token = pm.environment.get(\"token\");",
 					"",
 					"if (token) {",
-					"    pm.request.headers.add({ key: \"Cookie\", value: `_bokken_key=${token}`})",
+					"  pm.request.headers.add({ key: \"Cookie\", value: `_bokken_key=${token}` });",
 					"}",
+					"",
+					"pm.environment.set(\"utils\", `() => {",
+					"    function get_random_index(values) {",
+					"        return Math.floor(values.length * Math.random());",
+					"    }",
+					"",
+					"    function setup_request(err, response, item) {",
+					"        // Throw if we get an error",
+					"        if (err) {",
+					"            throw err;",
+					"        }",
+					"",
+					"        // Handle error response",
+					"        if (response.code >= 400) {",
+					"            console.log(\\`PROBLEM :: \\${response.code} error while getting \\${item}.\\`);",
+					"            console.log(response.text());",
+					"",
+					"            // Throw",
+					"            throw new Error(\\`Couldn\\'t get \\${item}. Check console logs.\\`);",
+					"        }",
+					"    }",
+					"",
+					"  function get_guardian(err, response) {",
+					"    setup_request(err, response, \"guardian\");",
+					"",
+					"    // Store one guardian ID",
+					"    const { data }= response.json();",
+					"",
+					"    const guardian_id = data[get_random_index(data)].id;",
+					"",
+					"    pm.environment.set(\"guardian_id\", guardian_id);",
+					"  }",
+					"",
+					"  function get_ninja(err, response) {",
+					"    setup_request(err, response, \"ninja\");",
+					"",
+					"    // Store one ninja ID",
+					"    const { data }= response.json();",
+					"",
+					"    const ninja_id = data[get_random_index(data)].id;",
+					"",
+					"    pm.environment.set(\"ninja_id\", ninja_id);",
+					"  }",
+					"  function get_mentor(err, response) {",
+					"    setup_request(err, response, \"mentor\");",
+					"",
+					"    // Store one ninja ID",
+					"    const { data } = response.json();",
+					"",
+					"    const mentor_id = data[get_random_index(data)].id;",
+					"",
+					"    pm.environment.set(\"mentor_id\", mentor_id);",
+					"  }",
+					"",
+					"  function get_team(err, response) {",
+					"    setup_request(err, response, \"team\");",
+					"    ",
+					"    // Store one team ID",
+					"    const { data } = response.json();",
+					"",
+					"    const team_id = data[get_random_index(data)].id;",
+					"",
+					"    pm.environment.set(\"team_id\", team_id);",
+					"  }",
+					"",
+					"  return { ",
+					"        requests: {",
+					"            get_guardian,",
+					"            get_mentor,",
+					"            get_ninja,",
+					"            get_team",
+					"        } ",
+					"    }",
+					"}`)",
 					""
 				]
 			}
@@ -1823,12 +1848,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "randomNum",
-			"value": ""
 		}
 	]
 }
