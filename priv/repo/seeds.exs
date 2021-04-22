@@ -24,6 +24,7 @@ defmodule Bokken.DbSeeder do
       "Branca de Neve"
     ]
     |> create_users(:mentor)
+    |> create_organizer()
 
     # Pokémons
     [
@@ -111,8 +112,7 @@ defmodule Bokken.DbSeeder do
           create_guardian(names, user_id)
 
         {:ok, %{id: user_id}} when role == :mentor ->
-          {:ok, mentor} = create_mentor(names, user_id)
-          create_organizer(mentor)
+          create_mentor(names, user_id)
 
         {:ok, %{id: user_id}} when role == :ninja ->
           create_ninja(names, user_id)
@@ -198,14 +198,20 @@ defmodule Bokken.DbSeeder do
     Bokken.Accounts.create_mentor(mentor)
   end
 
-  def create_organizer(mentor) do
-    organizer = %{
-      champion: true,
-      user_id: mentor.user_id,
-      mentor_id: mentor.id
-    }
+  def create_organizer(mentors) do
+    mentors = Enum.take(mentors, 2)
 
-    Bokken.Accounts.create_organizer(organizer)
+    for m <- mentors do
+      mentor = elem(m, 1)
+
+      organizer = %{
+        champion: true,
+        user_id: mentor.user_id,
+        mentor_id: mentor.id
+      }
+
+      Bokken.Accounts.create_organizer(organizer)
+    end
   end
 
   defp split_names(name) do

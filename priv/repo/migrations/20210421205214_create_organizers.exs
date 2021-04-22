@@ -12,6 +12,6 @@ defmodule Bokken.Repo.Migrations.CreateOrganizers do
     end
 
     create unique_index(:organizers, [:user_id])
-    create index(:organizers, [:mentor_id])
+    create unique_index(:organizers, [:mentor_id])
   end
 end
