@@ -7,8 +7,8 @@ defmodule Bokken.Accounts.Organizer do
 
   alias Bokken.Accounts.{Mentor, User}
 
-  @required_fields [:champion, :mentor_id, :user_id]
-  @optional_fields []
+  @required_fields [:champion, :user_id]
+  @optional_fields [:mentor_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -29,5 +29,6 @@ defmodule Bokken.Accounts.Organizer do
     |> assoc_constraint(:mentor)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
+    |> unique_constraint(:mentor_id)
   end
 end
