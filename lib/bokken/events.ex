@@ -34,16 +34,6 @@ defmodule Bokken.Events do
     |> Map.fetch!(:teams)
   end
 
-  def list_teams(%{"event_id" => event_id}) do
-    event = Events.get_event!(event_id, team: [events: :team])
-
-    for e <- event.team.events do
-      if e.id == event_id do
-        e.team
-      end
-    end
-  end
-
   def list_teams(_args) do
     Team
     |> Repo.all()
@@ -261,6 +251,7 @@ defmodule Bokken.Events do
   def list_events(_args) do
     Event
     |> Repo.all()
+    |> Repo.preload([:location, :team])
   end
 
   @doc """

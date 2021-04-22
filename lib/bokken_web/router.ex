@@ -52,9 +52,7 @@ defmodule BokkenWeb.Router do
       get "/events", EventController, :index
     end
 
-    resources "/events", EventController, except: [:new, :edit] do
-      get "/team", EventController, :index
-    end
+    resources "/events", EventController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
