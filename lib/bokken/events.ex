@@ -35,10 +35,9 @@ defmodule Bokken.Events do
   end
 
   def list_teams(%{"event_id" => event_id}) do
-    event = Events.get_event!(event_id, [:team])
-    data = Repo.preload(event, team: [events: :team])
+    event = Events.get_event!(event_id, team: [events: :team])
 
-    for e <- data.team.events do
+    for e <- event.team.events do
       if e.id == event_id do
         e.team
       end
