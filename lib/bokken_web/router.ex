@@ -53,7 +53,7 @@ defmodule BokkenWeb.Router do
     end
 
     resources "/events", EventController, except: [:new, :edit] do
-      get "/teams", TeamController, :index
+      get "/team", EventController, :index
     end
   end
 

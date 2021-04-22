@@ -6,6 +6,14 @@ defmodule BokkenWeb.EventController do
 
   action_fallback BokkenWeb.FallbackController
 
+  def index(conn, %{"event_id" => event_id}) do
+    team = Events.get_event!(event_id, [:team]).team
+
+    conn
+    |> put_view(BokkenWeb.TeamView)
+    |> render("team.json", team: team)
+  end
+
   def index(conn, params) do
     events = Events.list_events(params)
     render(conn, "index.json", events: events)
