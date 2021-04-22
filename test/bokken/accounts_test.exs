@@ -93,3 +93,4 @@ defmodule Bokken.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_guardian(guardian)
     end
   end
+end
