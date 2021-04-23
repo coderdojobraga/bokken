@@ -21,7 +21,7 @@ defmodule BokkenWeb.EventController do
   end
 
   def show(conn, %{"id" => id}) do
-    event = Events.get_event!(id)
+    event = Events.get_event!(id, [:location, :team])
     render(conn, "show.json", event: event)
   end
 
