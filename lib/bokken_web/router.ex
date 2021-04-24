@@ -45,9 +45,14 @@ defmodule BokkenWeb.Router do
     resources "/teams", TeamController, except: [:new, :edit] do
       resources "/ninjas", NinjaController, only: [:index, :create, :delete]
       resources "/mentors", MentorController, only: [:index, :create, :delete]
+      get "/events", EventController, :index
     end
 
-    resources "/locations", LocationController, except: [:new, :edit]
+    resources "/locations", LocationController, except: [:new, :edit] do
+      get "/events", EventController, :index
+    end
+
+    resources "/events", EventController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
