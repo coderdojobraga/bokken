@@ -35,7 +35,10 @@ defmodule BokkenWeb.AuthController do
   end
 
   def show(conn, _params) do
-    user = Authorization.Plug.current_resource(conn) |> Repo.preload([:mentor, :guardian, :ninja])
+    user =
+      Authorization.Plug.current_resource(conn)
+      |> Repo.preload([:mentor, :guardian, :ninja, :organizer])
+
     render(conn, "me.json", user: user)
   end
 end

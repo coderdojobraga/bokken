@@ -4,7 +4,6 @@ defmodule Bokken.Accounts.Organizer do
   """
   use Ecto.Schema
   import Ecto.Changeset
-
   alias Bokken.Accounts.{Mentor, User}
 
   @required_fields [:champion, :user_id]
