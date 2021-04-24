@@ -4,6 +4,7 @@ defmodule Bokken.Accounts.User do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  alias Bokken.Accounts.{Guardian, Mentor, Ninja}
 
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified]
@@ -19,9 +20,9 @@ defmodule Bokken.Accounts.User do
     field :verified, :boolean, default: false
     field :role, Ecto.Enum, values: [:ninja, :guardian, :mentor, :organizer]
 
-    has_one :guardian, Bokken.Accounts.Guardian, on_delete: :delete_all
-    has_one :mentor, Bokken.Accounts.Mentor, on_delete: :delete_all
-    has_one :ninja, Bokken.Accounts.Guardian, on_delete: :delete_all
+    has_one :guardian, Guardian, on_delete: :delete_all
+    has_one :mentor, Mentor, on_delete: :delete_all
+    has_one :ninja, Ninja, on_delete: :delete_all
 
     timestamps()
   end
