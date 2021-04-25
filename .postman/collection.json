@@ -993,6 +993,18 @@
 						},
 						{
 							"name": "List teams",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"team_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"team_id\", team_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1004,6 +1016,26 @@
 									"path": [
 										"api",
 										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Events by team",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"events"
 									]
 								}
 							},
@@ -1584,26 +1616,6 @@
 						{
 							"name": "Team in Event",
 							"item": [
-								{
-									"name": "All teams in Event",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/events/{{event_id}}/teams",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"events",
-												"{{event_id}}",
-												"teams"
-											]
-										}
-									},
-									"response": []
-								},
 								{
 									"name": "Event to work with",
 									"event": [

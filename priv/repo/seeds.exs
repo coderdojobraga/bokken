@@ -62,6 +62,12 @@ defmodule Bokken.DbSeeder do
       "Vieira do Minho"
     ]
     |> create_locations()
+
+    [
+      "Especial dia da Mãe",
+      "Especial Natal"
+    ]
+    |> create_new_events()
   end
 
   def create_locations(names) do
@@ -82,6 +88,26 @@ defmodule Bokken.DbSeeder do
       team = %{description: description, name: name}
 
       Bokken.Events.create_team(team)
+    end
+  end
+
+  def create_new_events(title) do
+    for name <- title do
+      randomNumber = Enum.random(1..100)
+      notes = "Great #{randomNumber} event"
+
+      %{id: location_id} = Enum.random(Bokken.Events.list_locations())
+      %{id: team_id} = Enum.random(Bokken.Events.list_teams())
+
+      event = %{
+        title: name,
+        online: false,
+        notes: notes,
+        location_id: location_id,
+        team_id: team_id
+      }
+
+      Bokken.Events.create_event(event)
     end
   end
 
