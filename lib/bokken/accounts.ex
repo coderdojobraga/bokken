@@ -102,7 +102,7 @@ defmodule Bokken.Accounts do
   @doc false
   def authenticate_user(email, password) do
     get_user(email: email)
-    |> Repo.preload([:mentor, :guardian, :ninja])
+    |> Repo.preload([:mentor, :guardian, :ninja, :organizer])
     |> authenticate_resource(password)
   end
 
@@ -481,7 +481,9 @@ defmodule Bokken.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_organizer!(id), do: Repo.get!(Organizer, id)
+  def get_organizer!(id, preloads \\ []) do
+    Repo.get!(Organizer, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a organizer.

@@ -24,7 +24,7 @@ defmodule Bokken.DbSeeder do
       "Branca de Neve"
     ]
     |> create_users(:mentor)
-    |> create_organizer()
+    |> create_organizers()
 
     # Pokémons
     [
@@ -198,7 +198,7 @@ defmodule Bokken.DbSeeder do
     Bokken.Accounts.create_mentor(mentor)
   end
 
-  def create_organizer(mentors) do
+  def create_organizers(mentors) do
     mentors = Enum.take(mentors, 2)
 
     for m <- mentors do
