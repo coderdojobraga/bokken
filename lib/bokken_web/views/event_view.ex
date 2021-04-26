@@ -13,13 +13,24 @@ defmodule BokkenWeb.EventView do
   end
 
   def render("event.json", %{event: event}) do
-    %{
-      id: event.id,
-      online: event.online,
-      notes: event.notes,
-      title: event.title,
-      team: render_one(event.team, TeamView, "team.json"),
-      location: render_one(event.location, LocationView, "location.json")
-    }
+    if Ecto.assoc_loaded?(event.team) and Ecto.assoc_loaded?(event.location) do
+      %{
+        id: event.id,
+        online: event.online,
+        notes: event.notes,
+        title: event.title,
+        team: render_one(event.team, TeamView, "team.json"),
+        location: render_one(event.location, LocationView, "location.json")
+      }
+    else
+      %{
+        id: event.id,
+        online: event.online,
+        notes: event.notes,
+        title: event.title,
+        team_id: event.team_id,
+        location_id: event.location_id
+      }
+    end
   end
 end
