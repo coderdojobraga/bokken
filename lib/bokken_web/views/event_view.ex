@@ -12,39 +12,10 @@ defmodule BokkenWeb.EventView do
     %{data: render_one(event, EventView, "event.json")}
   end
 
-  def render("event.json", %{
-        event:
-          %{team: %Ecto.Association.NotLoaded{}, location: %Ecto.Association.NotLoaded{}} = event
-      }) do
-    base(event)
-    |> Map.merge(%{
-      team_id: event.team_id
-    })
-    |> Map.merge(%{location_id: event.location_id})
-  end
-
-  def render("event.json", %{event: %{team: %Ecto.Association.NotLoaded{}} = event}) do
-    base(event)
-    |> Map.merge(%{
-      team_id: event.team_id
-    })
-    |> Map.merge(%{location: render_one(event.location, LocationView, "location.json")})
-  end
-
-  def render("event.json", %{event: %{location: %Ecto.Association.NotLoaded{}} = event}) do
-    base(event)
-    |> Map.merge(%{
-      team: render_one(event.team, TeamView, "team.json")
-    })
-    |> Map.merge(%{location_id: event.location_id})
-  end
-
   def render("event.json", %{event: event}) do
     base(event)
-    |> Map.merge(%{
-      team: render_one(event.team, TeamView, "team.json")
-    })
-    |> Map.merge(%{location: render_one(event.location, LocationView, "location.json")})
+    |> Map.merge(location(event))
+    |> Map.merge(team(event))
   end
 
   defp base(event) do
@@ -53,6 +24,26 @@ defmodule BokkenWeb.EventView do
       online: event.online,
       notes: event.notes,
       title: event.title
+    }
+  end
+
+  defp location(%{location: %Ecto.Association.NotLoaded{}} = event) do
+    %{location_id: event.location_id}
+  end
+
+  defp location(event) do
+    %{location: render_one(event.location, LocationView, "location.json")}
+  end
+
+  defp team(%{location: %Ecto.Association.NotLoaded{}} = event) do
+    %{
+      team_id: event.team_id
+    }
+  end
+
+  defp team(event) do
+    %{
+      team: render_one(event.team, TeamView, "team.json")
     }
   end
 end
