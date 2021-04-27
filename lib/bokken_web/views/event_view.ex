@@ -13,13 +13,33 @@ defmodule BokkenWeb.EventView do
   end
 
   def render("event.json", %{event: event}) do
+    base(event)
+    |> Map.merge(location(event))
+    |> Map.merge(team(event))
+  end
+
+  defp base(event) do
     %{
       id: event.id,
       online: event.online,
       notes: event.notes,
-      title: event.title,
-      team: render_one(event.team, TeamView, "team.json"),
-      location: render_one(event.location, LocationView, "location.json")
+      title: event.title
     }
+  end
+
+  defp location(event) do
+    if Ecto.assoc_loaded?(event.location) do
+      %{location: render_one(event.location, LocationView, "location.json")}
+    else
+      %{location_id: event.location_id}
+    end
+  end
+
+  defp team(event) do
+    if Ecto.assoc_loaded?(event.team) do
+      %{team: render_one(event.team, TeamView, "team.json")}
+    else
+      %{team_id: event.team_id}
+    end
   end
 end

@@ -924,6 +924,36 @@
 					"name": "Ninjas",
 					"item": [
 						{
+							"name": "Get a Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Get Badges given to a Ninja",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -950,36 +980,6 @@
 										"ninjas",
 										"{{ninja_id}}",
 										"badges"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get a Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
 									]
 								}
 							},
@@ -1539,6 +1539,36 @@
 							"response": []
 						},
 						{
+							"name": "Event to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"event_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"event_id\", event_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Location to work with",
 							"event": [
 								{
@@ -1593,6 +1623,46 @@
 									"path": [
 										"api",
 										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Events by team",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Events by Location",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/locations/{{location_id}}/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"locations",
+										"{{location_id}}",
+										"events"
 									]
 								}
 							},
@@ -1680,56 +1750,6 @@
 										"api",
 										"events",
 										"{{event_id}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Event to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"event_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"event_id\", event_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Events by team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"events"
 									]
 								}
 							},
