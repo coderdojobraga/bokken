@@ -27,23 +27,19 @@ defmodule BokkenWeb.EventView do
     }
   end
 
-  defp location(%{location: %Ecto.Association.NotLoaded{}} = event) do
-    %{location_id: event.location_id}
-  end
-
   defp location(event) do
-    %{location: render_one(event.location, LocationView, "location.json")}
-  end
-
-  defp team(%{location: %Ecto.Association.NotLoaded{}} = event) do
-    %{
-      team_id: event.team_id
-    }
+    if Ecto.assoc_loaded?(event.location) do
+      %{location: render_one(event.location, LocationView, "location.json")}
+    else
+      %{location_id: event.location_id}
+    end
   end
 
   defp team(event) do
-    %{
-      team: render_one(event.team, TeamView, "team.json")
-    }
+    if Ecto.assoc_loaded?(event.team) do
+      %{team: render_one(event.team, TeamView, "team.json")}
+    else
+      %{team_id: event.team_id}
+    end
   end
 end
