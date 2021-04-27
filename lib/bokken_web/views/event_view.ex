@@ -12,30 +12,47 @@ defmodule BokkenWeb.EventView do
     %{data: render_one(event, EventView, "event.json")}
   end
 
+  def render("event.json", %{
+        event:
+          %{team: %Ecto.Association.NotLoaded{}, location: %Ecto.Association.NotLoaded{}} = event
+      }) do
+    base(event)
+    |> Map.merge(%{
+      team_id: event.team_id
+    })
+    |> Map.merge(%{location_id: event.location_id})
+  end
+
+  def render("event.json", %{event: %{team: %Ecto.Association.NotLoaded{}} = event}) do
+    base(event)
+    |> Map.merge(%{
+      team_id: event.team_id
+    })
+    |> Map.merge(%{location: render_one(event.location, LocationView, "location.json")})
+  end
+
+  def render("event.json", %{event: %{location: %Ecto.Association.NotLoaded{}} = event}) do
+    base(event)
+    |> Map.merge(%{
+      team: render_one(event.team, TeamView, "team.json")
+    })
+    |> Map.merge(%{location_id: event.location_id})
+  end
+
   def render("event.json", %{event: event}) do
+    base(event)
+    |> Map.merge(%{
+      team: render_one(event.team, TeamView, "team.json")
+    })
+    |> Map.merge(%{location: render_one(event.location, LocationView, "location.json")})
+  end
+
+  defp base(event) do
     %{
       id: event.id,
       online: event.online,
       notes: event.notes,
       title: event.title
     }
-    |> (fn map ->
-          if Ecto.assoc_loaded?(event.team) do
-            Map.merge(map, %{
-              team: render_one(event.team, TeamView, "team.json")
-            })
-          else
-            Map.merge(map, %{
-              team_id: event.team_id
-            })
-          end
-        end).()
-    |> (fn map ->
-          if Ecto.assoc_loaded?(event.location) do
-            Map.merge(map, %{location: render_one(event.location, LocationView, "location.json")})
-          else
-            Map.merge(map, %{location_id: event.location_id})
-          end
-        end).()
   end
 end
