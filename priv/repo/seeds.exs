@@ -24,6 +24,7 @@ defmodule Bokken.DbSeeder do
       "Branca de Neve"
     ]
     |> create_users(:mentor)
+    |> create_organizers()
 
     # Pokémons
     [
@@ -221,6 +222,22 @@ defmodule Bokken.DbSeeder do
       })
 
     Bokken.Accounts.create_mentor(mentor)
+  end
+
+  def create_organizers(mentors) do
+    mentors = Enum.take(mentors, 2)
+
+    for m <- mentors do
+      mentor = elem(m, 1)
+
+      organizer = %{
+        champion: true,
+        user_id: mentor.user_id,
+        mentor_id: mentor.id
+      }
+
+      Bokken.Accounts.create_organizer(organizer)
+    end
   end
 
   defp split_names(name) do

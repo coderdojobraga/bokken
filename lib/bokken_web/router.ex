@@ -35,6 +35,8 @@ defmodule BokkenWeb.Router do
       get "/teams", TeamController, :index
     end
 
+    resources "/organizers", OrganizerController, except: [:new, :edit]
+
     resources "/ninjas", NinjaController, except: [:new, :edit] do
       resources "/badges", BadgeController, only: [:index, :create, :delete]
       get "/teams", TeamController, :index

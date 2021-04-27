@@ -4,6 +4,7 @@ defmodule Bokken.Accounts.Mentor do
   """
   use Ecto.Schema
   import Ecto.Changeset
+  alias Bokken.Accounts.{Organizer, Social, User}
   alias Bokken.Events.{Team, TeamMentor}
 
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
@@ -23,11 +24,13 @@ defmodule Bokken.Accounts.Mentor do
 
     field :trial, :boolean, default: true
 
-    embeds_many :socials, Bokken.Accounts.Social
+    embeds_many :socials, Social
 
-    belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
+    belongs_to :user, User, foreign_key: :user_id
 
     many_to_many :teams, Team, join_through: TeamMentor
+
+    has_one :organizer, Organizer, on_delete: :delete_all
 
     timestamps()
   end
