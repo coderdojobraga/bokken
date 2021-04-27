@@ -16,7 +16,15 @@ defmodule BokkenWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
-  plug CORSPlug
+  plug Corsica,
+    allow_headers: :all,
+    allow_credentials: true,
+    origins: {__MODULE__, :check_corsica_origin}
+
+  def check_corsica_origin(origin) do
+    regex = Application.fetch_env!(:bokken, :corsica)[:origin]
+    Regex.match?(regex, origin)
+  end
 
   # Serve at "/" the static files from "priv/static" directory.
   #

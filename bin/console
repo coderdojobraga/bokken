@@ -37,8 +37,8 @@ case ${1:-start} in
     display_version "${VERSION}" "${PROGRAM}"
     ;;
   start)
-    load_env_file
-    iex -S mix phx.server
+    load_env_file ".env.$MIX_ENV"
+    iex -S mix
     ;;
   *)
     display_help >&2
