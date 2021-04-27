@@ -30,14 +30,16 @@
 											"pm.environment.set(\"token\", token);",
 											"",
 											"user_id = pm.response.json().id",
-											"pm.environment.set(\"user_id\", user_id);",
-											""
+											"pm.environment.set(\"user_id\", user_id);"
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -198,48 +200,6 @@
 										"me"
 									]
 								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create a Team",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const { data: { id } } = pm.response.json();",
-											"",
-											"pm.environment.set(\"team_id\", id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"team\": {\n        \"name\": \"Yang {{$randomInt}}\",\n        \"description\": \"The best team is {{$name}}\"\n    }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/teams/",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										""
-									]
-								},
-								"description": "Request that creates a new team."
 							},
 							"response": []
 						}
@@ -407,6 +367,29 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -492,6 +475,29 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -550,6 +556,29 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -558,6 +587,9 @@
 						{
 							"name": "List Organizers",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -580,7 +612,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"mentor_id = pm.response.json().data[0].id",
+											"mentor_id = pm.response.json().data[2].id",
 											"pm.environment.set(\"mentor_id\", mentor_id);",
 											""
 										],
@@ -589,6 +621,9 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -620,6 +655,9 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -647,6 +685,9 @@
 						{
 							"name": "Update organizer",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "PUT",
 								"header": [],
 								"body": {
@@ -675,6 +716,9 @@
 						{
 							"name": "Delete organizer",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "DELETE",
 								"header": [],
 								"url": {
@@ -691,7 +735,53 @@
 							},
 							"response": []
 						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -704,16 +794,6 @@
 						{
 							"name": "List Badges",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -967,31 +1047,6 @@
 					"name": "Teams",
 					"item": [
 						{
-							"name": "Events",
-							"item": [
-								{
-									"name": "Events by team",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/teams/{{team_id}}/events",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"teams",
-												"{{team_id}}",
-												"events"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
 							"name": "List teams",
 							"event": [
 								{
@@ -1016,26 +1071,6 @@
 									"path": [
 										"api",
 										"teams"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Events by team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"events"
 									]
 								}
 							},
@@ -1130,12 +1165,37 @@
 								}
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "Ninjas",
-					"item": [
+						},
+						{
+							"name": "Team to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"team_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"team_id\", team_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "Ninja to work with",
 							"event": [
@@ -1167,13 +1227,14 @@
 							"response": []
 						},
 						{
-							"name": "Get ninja's team",
+							"name": "Mentor to work with",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"mentor_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"mentor_id\", mentor_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1183,35 +1244,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/teams",
+									"raw": "{{host}}/api/mentors",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"teams"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get all ninjas from team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"ninjas"
+										"mentors"
 									]
 								}
 							},
@@ -1287,112 +1326,6 @@
 								}
 							},
 							"response": []
-						}
-					],
-					"description": "Getting the ninja team.",
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY3RpdmUiOmZhbHNlLCJhdWQiOiJib2trZW4iLCJleHAiOjE2MTkwMjc0MTUsImlhdCI6MTYxNjYwODIxNSwiaXNzIjoiYm9ra2VuIiwianRpIjoiOGY5YmM4NGYtODY5Yi00ZDVlLTg0NGUtNTdmNjNmNDNkNzEzIiwibmJmIjoxNjE2NjA4MjE0LCJyb2xlIjoibWVudG9yIiwic3ViIjoiZmZhYzgxYmQtNjcyMy00OGE5LTljMTctZjhlNzMxMWY3NDIwIiwidHlwIjoiYWNjZXNzIn0.xpfcZLjAGpmJfGo8t68YegewSgnONc8FBf6W22oS8Zjr54-WCZuD9mqDGeEn4r4h_HsmUErIR7bSb81x-PoXYg",
-								"type": "string"
-							}
-						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "Mentors",
-					"item": [
-						{
-							"name": "Get a mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get mentor's team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors/{{mentor_id}}/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors",
-										"{{mentor_id}}",
-										"teams"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get all mentors from team",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors"
-									]
-								}
-							},
-							"response": []
 						},
 						{
 							"name": "Associate Mentor to Team",
@@ -1444,37 +1377,11 @@
 							},
 							"response": []
 						}
-					],
-					"description": "Get the mentor's team"
+					]
 				},
 				{
 					"name": "Locations",
 					"item": [
-						{
-							"name": "Events",
-							"item": [
-								{
-									"name": "Events by Location",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/locations/{{location_id}}/events",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"locations",
-												"{{location_id}}",
-												"events"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
 						{
 							"name": "Get locations",
 							"request": {
@@ -1614,41 +1521,6 @@
 					"name": "Event",
 					"item": [
 						{
-							"name": "Team in Event",
-							"item": [
-								{
-									"name": "Event to work with",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"event_id = pm.response.json().data[1].id",
-													"pm.environment.set(\"event_id\", event_id);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/events",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"events"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
 							"name": "List events",
 							"request": {
 								"method": "GET",
@@ -1733,7 +1605,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
+											"event_id = pm.response.json().data.id",
 											"",
 											"pm.environment.set(\"event_id\", id);"
 										],
@@ -1812,8 +1684,81 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Event to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"event_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"event_id\", event_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Events by team",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"events"
+									]
+								}
+							},
+							"response": []
 						}
 					]
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
