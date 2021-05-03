@@ -44,12 +44,14 @@ defmodule Bokken.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:plug_cowboy, "~> 2.0"},
-      {:browser, "~> 0.4.4"},
-      {:corsica, "~> 1.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
+      {:browser, "~> 0.4.4"},
+      {:corsica, "~> 1.0"},
       {:guardian, "~> 2.0"},
       {:argon2_elixir, "~> 2.0"},
+      {:waffle, "~> 1.1"},
+      {:waffle_ecto, "~> 0.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
