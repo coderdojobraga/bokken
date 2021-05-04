@@ -44,15 +44,10 @@ defmodule Bokken.Accounts.Mentor do
   def changeset(mentor, attrs) do
     mentor
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_embed(:socials, with: &social_changeset/2)
+    |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
-  end
-
-  defp social_changeset(social, params) do
-    social
-    |> cast(params, [:name, :username])
   end
 end
