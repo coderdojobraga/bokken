@@ -12,6 +12,8 @@ defmodule BokkenWeb.Router do
 
   scope "/", BokkenWeb do
     get "/", PageController, :index
+
+    get "/humans.txt", FileController, :humans_txt
   end
 
   scope "/api", BokkenWeb do
