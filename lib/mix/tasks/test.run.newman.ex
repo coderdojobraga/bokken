@@ -8,8 +8,11 @@ defmodule Mix.Tasks.Test.Run.Newman do
   def run(_) do
     Mix.Task.run("app.start")
 
-    Mix.shell().cmd(
-      "newman run .postman/collection.json --environment .postman/env.#{Mix.env()}.json"
-    )
+    result_status =
+      Mix.shell().cmd(
+        "newman run .postman/collection.json --environment .postman/env.#{Mix.env()}.json"
+      )
+
+    exit({:shutdown, result_status})
   end
 end
