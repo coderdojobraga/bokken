@@ -22,6 +22,8 @@ services:
       - SECRET_KEY_BASE
       - SECRET_KEY_GUARDIAN
       - FRONTEND_APP_URL
+      - HOST_URL
+      - PORT
     ports:
       - ${PORT}:4001
 
