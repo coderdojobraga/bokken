@@ -6,6 +6,8 @@ defmodule BokkenWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
+    secure: true,
+    extra: "SameSite=None",
     key: "_bokken_key",
     signing_salt: "82k4BOy+"
   ]
