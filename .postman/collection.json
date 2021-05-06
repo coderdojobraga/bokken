@@ -20,7 +20,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Sign up status is OK\", function(){",
-											"    pm.response.to.have.status(200);",
+											"    pm.response.to.have.status(201);",
 											"})",
 											"",
 											"pm.test(\"Token with set-cookie is present\", function () {",
@@ -138,6 +138,9 @@
 								}
 							],
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -161,6 +164,34 @@
 									]
 								},
 								"description": "The signup sets an auth cookie in all the following requests."
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Account",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/verify",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"verify"
+									]
+								}
 							},
 							"response": []
 						},
@@ -270,6 +301,18 @@
 						},
 						{
 							"name": "Create a Mentor with avatar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"mentor_assistant_id = pm.response.json().data.id",
+											"pm.environment.set(\"mentor_assistant_id\", mentor_assistant_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -279,7 +322,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "julia.png"
+											"src": "./.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -306,12 +349,7 @@
 											"value": "{{user_id}}",
 											"type": "text"
 										}
-									],
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{host}}/api/mentors",
@@ -327,15 +365,13 @@
 							"response": []
 						},
 						{
-							"name": "Create a valid Mentor",
+							"name": "Can't create a Mentor with same user_id",
 							"event": [
 								{
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-											"    console.log(response.json());",
-											"});"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -370,7 +406,8 @@
 											"pm.visualizer.set(template, {",
 											"    // Pass the response body parsed as JSON as `data`",
 											"    response: pm.response.json().data",
-											"});"
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -381,34 +418,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"{{$randomFirstName}}\",\n        \"last_name\": \"{{$randomLastName}}\",\n        \"mobile\": \"+351 912 345 678\",\n        \"birthday\": \"1995-03-29\",\n        \"major\": \"{{$randomJobTitle}}\",\n        \"user_id\": \"{{user_id}}\",\n        \"socials\": [\n            {\n                \"name\": \"github\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"scratch\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"gitlab\",\n                \"username\": \"nelsonmestevao\"\n            }\n        ]\n    }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create invalid Mentor",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"Estevão\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"b2508c21-d022-47d1-a403-46939ce649f6\"\n    }\n}",
+									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"{{$randomFirstName}}\",\n        \"last_name\": \"{{$randomLastName}}\",\n        \"mobile\": \"+351 912 345 678\",\n        \"birthday\": \"1995-03-29\",\n        \"major\": \"{{$randomJobTitle}}\",\n        \"user_id\": \"{{user_id}}\",\n        \"trial\": true,\n        \"socials\": [\n            {\n                \"name\": \"github\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"scratch\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"gitlab\",\n                \"username\": \"nelsonmestevao\"\n            }\n        ]\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -429,9 +439,6 @@
 							"response": []
 						}
 					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
@@ -570,7 +577,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "ruby.png"
+											"src": "./.postman/avatar.png"
 										}
 									]
 								},
@@ -589,9 +596,6 @@
 							"response": []
 						}
 					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
@@ -670,9 +674,6 @@
 							"response": []
 						}
 					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
@@ -700,9 +701,6 @@
 						{
 							"name": "List Organizers",
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -713,40 +711,6 @@
 									"path": [
 										"api",
 										"organizers"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[2].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
 									]
 								}
 							},
@@ -765,12 +729,49 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"email = `nelson${parseInt((Math.random() * 100), 10)}@mail.com`",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_up`,",
+											"    header: {",
+											"        'Content-Type': 'application/json'",
+											"    },",
+											"    method: 'POST',",
+											"    body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify({",
+											"            \"email\": email,",
+											"            \"password\": \"password1234\",",
+											"            \"role\": \"organizer\"",
+											"        })",
+											"    }",
+											"}, utils.create_user)",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -798,9 +799,6 @@
 						{
 							"name": "Update organizer",
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "PUT",
 								"header": [],
 								"body": {
@@ -829,9 +827,6 @@
 						{
 							"name": "Delete organizer",
 							"request": {
-								"auth": {
-									"type": "noauth"
-								},
 								"method": "DELETE",
 								"header": [],
 								"url": {
@@ -849,9 +844,6 @@
 							"response": []
 						}
 					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
@@ -874,9 +866,6 @@
 					]
 				}
 			],
-			"auth": {
-				"type": "noauth"
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1423,27 +1412,26 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						},
 						{
-							"name": "Delete mentor from team",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors",
-										"{{mentor_id}}"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -1562,6 +1550,26 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -1803,12 +1811,164 @@
 							},
 							"response": []
 						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Lectures",
+					"item": [
+						{
+							"name": "Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mentor to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"mentor_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"mentor_id\", mentor_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List lectures",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/lectures",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create lecture",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentor\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/lectures",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				}
 			],
-			"auth": {
-				"type": "noauth"
-			},
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1846,6 +2006,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -1861,6 +2024,16 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -1893,52 +2066,73 @@
 					"            throw new Error(\\`Couldn\\'t get \\${item}. Check console logs.\\`);",
 					"        }",
 					"    }",
-					"",
-					"  function get_guardian(err, response) {",
-					"    setup_request(err, response, \"guardian\");",
-					"",
-					"    // Store one guardian ID",
-					"    const { data }= response.json();",
-					"",
-					"    const guardian_id = data[get_random_index(data)].id;",
-					"",
-					"    pm.environment.set(\"guardian_id\", guardian_id);",
-					"  }",
-					"",
-					"  function get_ninja(err, response) {",
-					"    setup_request(err, response, \"ninja\");",
-					"",
-					"    // Store one ninja ID",
-					"    const { data }= response.json();",
-					"",
-					"    const ninja_id = data[get_random_index(data)].id;",
-					"",
-					"    pm.environment.set(\"ninja_id\", ninja_id);",
-					"  }",
-					"  function get_mentor(err, response) {",
-					"    setup_request(err, response, \"mentor\");",
-					"",
-					"    // Store one ninja ID",
-					"    const { data } = response.json();",
-					"",
-					"    const mentor_id = data[get_random_index(data)].id;",
-					"",
-					"    pm.environment.set(\"mentor_id\", mentor_id);",
-					"  }",
-					"",
-					"  function get_team(err, response) {",
-					"    setup_request(err, response, \"team\");",
 					"    ",
-					"    // Store one team ID",
-					"    const { data } = response.json();",
+					"    function create_user(err, response) {",
+					"        if (err) {",
+					"            throw err;",
+					"        }",
 					"",
-					"    const team_id = data[get_random_index(data)].id;",
+					"        if (response.code >= 400) {",
+					"            console.log(\\`PROBLEM :: \\${response.code} error while creating a new user.\\`);",
+					"            console.log(response.text());",
 					"",
-					"    pm.environment.set(\"team_id\", team_id);",
-					"  }",
+					"            // Throw",
+					"            throw new Error(\\`Check console logs.\\`);",
+					"        }",
 					"",
-					"  return { ",
+					"        const user = response.json();",
+					"",
+					"        pm.environment.set(\"user_id\", user.id);",
+					"    }",
+					"",
+					"",
+					"    function get_guardian(err, response) {",
+					"        setup_request(err, response, \"guardian\");",
+					"",
+					"        // Store one guardian ID",
+					"        const { data }= response.json();",
+					"",
+					"        const guardian_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"guardian_id\", guardian_id);",
+					"    }",
+					"",
+					"    function get_ninja(err, response) {",
+					"        setup_request(err, response, \"ninja\");",
+					"",
+					"        // Store one ninja ID",
+					"        const { data }= response.json();",
+					"",
+					"        const ninja_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"ninja_id\", ninja_id);",
+					"    }",
+					"  ",
+					"    function get_mentor(err, response) {",
+					"        setup_request(err, response, \"mentor\");",
+					"",
+					"        // Store one ninja ID",
+					"        const { data } = response.json();",
+					"",
+					"        const mentor_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"mentor_id\", mentor_id);",
+					"    }",
+					"",
+					"    function get_team(err, response) {",
+					"        setup_request(err, response, \"team\");",
+					"    ",
+					"        // Store one team ID",
+					"        const { data } = response.json();",
+					"",
+					"        const team_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"team_id\", team_id);",
+					"    }",
+					"",
+					"    return { ",
 					"        requests: {",
+					"            create_user,",
 					"            get_guardian,",
 					"            get_mentor,",
 					"            get_ninja,",

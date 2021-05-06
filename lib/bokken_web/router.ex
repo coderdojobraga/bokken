@@ -30,6 +30,7 @@ defmodule BokkenWeb.Router do
       pipe_through :authenticated
 
       get "/me", AuthController, :show
+      post "/verify", AuthController, :verify
       delete "/sign_out", AuthController, :sign_out
     end
 
@@ -62,6 +63,12 @@ defmodule BokkenWeb.Router do
 
     resources "/events", EventController, except: [:new, :edit]
   end
+
+  # credo:disable-for-next-line
+  # TODO: Check this before production
+  # if Mix.env() in [:dev, :stg] do
+  forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  # end
 
   # Enables LiveDashboard only for development
   #

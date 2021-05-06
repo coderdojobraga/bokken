@@ -1,6 +1,8 @@
 defmodule BokkenWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :bokken
 
+  @app :bokken
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -24,7 +26,7 @@ defmodule BokkenWeb.Endpoint do
     origins: {__MODULE__, :check_corsica_origin}
 
   def check_corsica_origin(origin) do
-    regex = Application.fetch_env!(:bokken, :corsica)[:origin]
+    regex = Application.fetch_env!(@app, BokkenWeb.Endpoint)[:allowed_origins]
     Regex.match?(regex, origin)
   end
 
@@ -34,7 +36,7 @@ defmodule BokkenWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :bokken,
+    from: @app,
     gzip: false,
     only: ~w(css fonts images js favicon.ico dojo.html robots.txt)
 
@@ -42,7 +44,7 @@ defmodule BokkenWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :bokken
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: @app
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
