@@ -349,8 +349,10 @@ defmodule Bokken.Events do
       [%Lecture{}, ...]
 
   """
-  def list_lectures do
-    Repo.all(Lecture)
+  def list_lectures(_args) do
+    Lecture
+    |> Repo.all()
+    |> Repo.preload([:assistants_mentors])
   end
 
   @doc """
@@ -367,7 +369,11 @@ defmodule Bokken.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_lecture!(id), do: Repo.get!(Lecture, id)
+  def get_lecture!(id, preloads \\ []) do
+    Lecture
+    |> Repo.get!(id)
+    |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a lecture.
@@ -383,6 +389,7 @@ defmodule Bokken.Events do
   """
   def create_lecture(attrs \\ %{}) do
     %Lecture{}
+    |> Repo.preload([:assistants_mentors])
     |> Lecture.changeset(attrs)
     |> Repo.insert()
   end

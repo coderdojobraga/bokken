@@ -6,8 +6,8 @@ defmodule BokkenWeb.LectureController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, _params) do
-    lectures = Events.list_lectures()
+  def index(conn, params) do
+    lectures = Events.list_lectures(params)
     render(conn, "index.json", lectures: lectures)
   end
 
