@@ -5,7 +5,7 @@ defmodule Bokken.Accounts.Mentor do
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.{Organizer, Social, User}
-  alias Bokken.Events.{Team, TeamMentor}
+  alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
 
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
   @optional_fields [:photo, :birthday, :major]
@@ -29,6 +29,8 @@ defmodule Bokken.Accounts.Mentor do
     belongs_to :user, User, foreign_key: :user_id
 
     many_to_many :teams, Team, join_through: TeamMentor
+
+    many_to_many :lectures, Lecture, join_through: LectureMentorAssistant
 
     has_one :organizer, Organizer, on_delete: :delete_all
 

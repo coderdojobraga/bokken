@@ -337,4 +337,100 @@ defmodule Bokken.Events do
   def change_event(%Event{} = event, attrs \\ %{}) do
     Event.changeset(event, attrs)
   end
+
+  alias Bokken.Events.Lecture
+
+  @doc """
+  Returns the list of lectures.
+
+  ## Examples
+
+      iex> list_lectures()
+      [%Lecture{}, ...]
+
+  """
+  def list_lectures do
+    Repo.all(Lecture)
+  end
+
+  @doc """
+  Gets a single lecture.
+
+  Raises `Ecto.NoResultsError` if the Lecture does not exist.
+
+  ## Examples
+
+      iex> get_lecture!(123)
+      %Lecture{}
+
+      iex> get_lecture!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_lecture!(id), do: Repo.get!(Lecture, id)
+
+  @doc """
+  Creates a lecture.
+
+  ## Examples
+
+      iex> create_lecture(%{field: value})
+      {:ok, %Lecture{}}
+
+      iex> create_lecture(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_lecture(attrs \\ %{}) do
+    %Lecture{}
+    |> Lecture.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a lecture.
+
+  ## Examples
+
+      iex> update_lecture(lecture, %{field: new_value})
+      {:ok, %Lecture{}}
+
+      iex> update_lecture(lecture, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_lecture(%Lecture{} = lecture, attrs) do
+    lecture
+    |> Lecture.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a lecture.
+
+  ## Examples
+
+      iex> delete_lecture(lecture)
+      {:ok, %Lecture{}}
+
+      iex> delete_lecture(lecture)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_lecture(%Lecture{} = lecture) do
+    Repo.delete(lecture)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking lecture changes.
+
+  ## Examples
+
+      iex> change_lecture(lecture)
+      %Ecto.Changeset{data: %Lecture{}}
+
+  """
+  def change_lecture(%Lecture{} = lecture, attrs \\ %{}) do
+    Lecture.changeset(lecture, attrs)
+  end
 end

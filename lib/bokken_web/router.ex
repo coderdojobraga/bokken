@@ -57,6 +57,8 @@ defmodule BokkenWeb.Router do
     end
 
     resources "/events", EventController, except: [:new, :edit]
+
+    resources "/lectures", LectureController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
