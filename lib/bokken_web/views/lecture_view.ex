@@ -11,6 +11,14 @@ defmodule BokkenWeb.LectureView do
   end
 
   def render("lecture.json", %{lecture: lecture}) do
-    %{id: lecture.id, summary: lecture.summary, notes: lecture.notes}
+    %{
+      id: lecture.id,
+      summary: lecture.summary,
+      notes: lecture.notes,
+      mentor_id: lecture.mentor_id,
+      ninja_id: lecture.ninja_id,
+      event_id: lecture.event_id,
+      assistants_mentors: lecture.assistants_mentors
+    }
   end
 end
