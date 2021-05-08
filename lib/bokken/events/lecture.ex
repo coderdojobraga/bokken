@@ -5,7 +5,7 @@ defmodule Bokken.Events.Lecture do
   use Ecto.Schema
   import Ecto.Changeset
   alias Bokken.Accounts.{Mentor, Ninja}
-  alias Bokken.Events.{LectureMentorAssistant, Event}
+  alias Bokken.Events.{Event, LectureMentorAssistant}
 
   @required_fields [:ninja_id, :mentor_id, :event_id]
   @optional_fields [:notes, :summary]
@@ -20,7 +20,9 @@ defmodule Bokken.Events.Lecture do
     belongs_to :event, Event, foreign_key: :event_id
     belongs_to :ninja, Ninja, foreign_key: :ninja_id
 
-    many_to_many :assistants_mentors, Mentor, join_through: LectureMentorAssistant
+    many_to_many :assistants_mentors, Mentor,
+      join_through: LectureMentorAssistant,
+      join_keys: [lecture_id: :id, mentor_id: :id]
 
     timestamps()
   end
@@ -30,5 +32,8 @@ defmodule Bokken.Events.Lecture do
     lecture
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> assoc_constraint(:mentor)
+    |> assoc_constraint(:event)
+    |> assoc_constraint(:ninja)
   end
 end
