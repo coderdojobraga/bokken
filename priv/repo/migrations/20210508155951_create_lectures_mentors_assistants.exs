@@ -3,7 +3,6 @@ defmodule Bokken.Repo.Migrations.CreateLecturesMentorsAssistants do
 
   def change do
     create table(:lectures_mentors_assistants, primary_key: false) do
-      add :id, :binary_id, primary_key: true
       add :lecture_id, references(:lectures, on_delete: :nothing, type: :binary_id)
       add :mentor_id, references(:mentors, on_delete: :nothing, type: :binary_id)
 

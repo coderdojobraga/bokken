@@ -20,9 +20,7 @@ defmodule Bokken.Events.Lecture do
     belongs_to :event, Event, foreign_key: :event_id
     belongs_to :ninja, Ninja, foreign_key: :ninja_id
 
-    many_to_many :assistants_mentors, Mentor,
-      join_through: LectureMentorAssistant,
-      join_keys: [lecture_id: :id, mentor_id: :id]
+    many_to_many :assistant_mentor, Mentor, join_through: LectureMentorAssistant
 
     timestamps()
   end
