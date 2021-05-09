@@ -7,7 +7,7 @@ defmodule Bokken.Events do
 
   alias Bokken.Accounts
   alias Bokken.Events
-  alias Bokken.Events.Team
+  alias Bokken.Events.{LectureMentorAssistant, Team}
   alias Bokken.Repo
 
   @doc """
@@ -349,10 +349,11 @@ defmodule Bokken.Events do
       [%Lecture{}, ...]
 
   """
+
   def list_lectures(_args) do
     Lecture
     |> Repo.all()
-    |> Repo.preload([:assistants_mentors])
+    |> Repo.preload([:ninja, :event, :mentor, :assistant_mentor])
   end
 
   @doc """
@@ -389,10 +390,29 @@ defmodule Bokken.Events do
   """
   def create_lecture(attrs \\ %{}) do
     %Lecture{}
-    |> Repo.preload([:assistants_mentors])
     |> Lecture.changeset(attrs)
     |> Repo.insert()
   end
+
+  def create_lecture_assistant(attrs \\ %{}) do
+    {:ok, %Lecture{} = l} = %Lecture{} |> Lecture.changeset(attrs) |> Repo.insert()
+
+    ids = Map.get(attrs, "assistant_mentor")
+
+
+   [:ok, %LectureMentorAssistant{}] = add_mentor_assistant(l.id, ids)
+  end
+
+  defp add_mentor_assistant(lecture_id, list_ids) do
+    for assistant_id <- list_ids do
+
+
+      l = LectureMentorAssistant.changeset(%LectureMentorAssistant{}, %{lecture_id: lecture_id, mentor_id: assistant_id})
+      IO.inspect( Repo.insert(l))
+
+    end
+  end
+
 
   @doc """
   Updates a lecture.
