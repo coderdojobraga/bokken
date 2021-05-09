@@ -3,17 +3,22 @@ defmodule Bokken.Accounts.Mentor do
   A mentor is a user who helps ninjas to progress in their training.
   """
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
+
   alias Bokken.Accounts.{Organizer, Social, User}
   alias Bokken.Events.{Team, TeamMentor}
+  alias Bokken.Uploaders.Avatar
 
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
-  @optional_fields [:photo, :birthday, :major]
+  @optional_fields [:birthday, :major]
+  @attachment_fields [:photo]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "mentors" do
-    field :photo, :string
+    field :photo, Avatar.Type
     field :first_name, :string
     field :last_name, :string
 
@@ -39,14 +44,10 @@ defmodule Bokken.Accounts.Mentor do
   def changeset(mentor, attrs) do
     mentor
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_embed(:socials, with: &social_changeset/2)
+    |> cast_embed(:socials, with: &Social.changeset/2)
+    |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
-  end
-
-  defp social_changeset(social, params) do
-    social
-    |> cast(params, [:name, :username])
   end
 end

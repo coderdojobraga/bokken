@@ -25,6 +25,10 @@ config :bokken, BokkenWeb.Authorization,
 
 config :bokken, :corsica, origin: ~r{https?://(.)*}
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: {:system, "HOST_URL"}
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

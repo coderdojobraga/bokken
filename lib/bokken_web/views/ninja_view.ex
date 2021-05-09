@@ -1,5 +1,6 @@
 defmodule BokkenWeb.NinjaView do
   use BokkenWeb, :view
+  alias Bokken.Uploaders.Avatar
   alias BokkenWeb.NinjaView
 
   def render("index.json", %{ninjas: ninjas}) do
@@ -13,6 +14,7 @@ defmodule BokkenWeb.NinjaView do
   def render("ninja.json", %{ninja: ninja}) do
     %{
       id: ninja.id,
+      photo: Avatar.url({ninja.photo, ninja}, :thumb),
       first_name: ninja.first_name,
       last_name: ninja.last_name,
       birthday: ninja.birthday,

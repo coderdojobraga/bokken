@@ -12,8 +12,12 @@ defmodule BokkenWeb.Router do
 
   scope "/", BokkenWeb do
     get "/", PageController, :index
-
     get "/humans.txt", FileController, :humans_txt
+
+    pipe_through [:fetch_session]
+    pipe_through :authenticated
+
+    get "/uploads/avatars/:user_id/:file", FileController, :avatars
   end
 
   scope "/api", BokkenWeb do

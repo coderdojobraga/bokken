@@ -1,5 +1,6 @@
 defmodule BokkenWeb.MentorView do
   use BokkenWeb, :view
+  alias Bokken.Uploaders.Avatar
   alias BokkenWeb.MentorView
 
   def render("index.json", %{mentors: mentors}) do
@@ -13,7 +14,7 @@ defmodule BokkenWeb.MentorView do
   def render("mentor.json", %{mentor: mentor}) do
     %{
       id: mentor.id,
-      photo: mentor.photo,
+      photo: Avatar.url({mentor.photo, mentor}, :thumb),
       first_name: mentor.first_name,
       last_name: mentor.last_name,
       mobile: mentor.mobile,
