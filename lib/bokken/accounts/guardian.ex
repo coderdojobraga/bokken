@@ -3,26 +3,32 @@ defmodule Bokken.Accounts.Guardian do
   A guardian is the ninja's legal responsible.
   """
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
+
+  alias Bokken.Accounts.{Ninja, User}
+  alias Bokken.Uploaders.Avatar
 
   @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
-  @optional_fields [:photo, :city]
+  @optional_fields [:city]
+  @attachment_fields [:photo]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "guardians" do
+    field :photo, Avatar.Type
     field :first_name, :string
     field :last_name, :string
 
     field :mobile, :string
     field :city, :string
-    field :photo, :string
 
-    belongs_to :user, Bokken.Accounts.User, foreign_key: :user_id
+    belongs_to :user, User, foreign_key: :user_id
 
-    has_many :ninjas, Bokken.Accounts.Ninja
+    has_many :ninjas, Ninja
 
     timestamps()
   end
@@ -41,6 +47,7 @@ defmodule Bokken.Accounts.Guardian do
   def changeset(guardian, attrs) do
     guardian
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields)
     |> validate_city_name()
     |> assoc_constraint(:user)

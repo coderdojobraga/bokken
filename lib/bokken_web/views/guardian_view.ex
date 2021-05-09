@@ -1,5 +1,6 @@
 defmodule BokkenWeb.GuardianView do
   use BokkenWeb, :view
+  alias Bokken.Uploaders.Avatar
   alias BokkenWeb.GuardianView
 
   def render("index.json", %{guardians: guardians}) do
@@ -13,7 +14,7 @@ defmodule BokkenWeb.GuardianView do
   def render("guardian.json", %{guardian: guardian}) do
     %{
       id: guardian.id,
-      photo: guardian.photo,
+      photo: Avatar.url({guardian.photo, guardian}, :thumb),
       first_name: guardian.first_name,
       last_name: guardian.last_name,
       mobile: guardian.mobile,

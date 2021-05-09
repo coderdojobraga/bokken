@@ -33,6 +33,9 @@ RUN mix do compile, release
 FROM alpine:3.13.3 AS app
 RUN apk add --no-cache openssl ncurses-libs
 
+# add imagemagick support
+RUN apk add --no-cache file imagemagick
+
 WORKDIR /app
 
 RUN chown nobody:nobody /app

@@ -269,6 +269,64 @@
 							"response": []
 						},
 						{
+							"name": "Create a Mentor with avatar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "mentor[photo]",
+											"type": "file",
+											"src": "julia.png"
+										},
+										{
+											"key": "mentor[first_name]",
+											"value": "Nelson",
+											"type": "text"
+										},
+										{
+											"key": "mentor[last_name]",
+											"value": "Estevão",
+											"type": "text"
+										},
+										{
+											"key": "mentor[mobile]",
+											"value": "+351 914 360 875",
+											"type": "text"
+										},
+										{
+											"key": "mentor[major]",
+											"value": "Engenharia Informática",
+											"type": "text"
+										},
+										{
+											"key": "mentor[user_id]",
+											"value": "{{user_id}}",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Create a valid Mentor",
 							"event": [
 								{
@@ -323,7 +381,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"{{$randomFirstName}}\",\n        \"last_name\": \"{{$randomLastName}}\",\n        \"photo\": \"https://robohash.org/{{$randomUserName}}\",\n        \"mobile\": \"+351 912 345 678\",\n        \"birthday\": \"1995-03-29\",\n        \"major\": \"{{$randomJobTitle}}\",\n        \"user_id\": \"b431a4d5-5707-4072-8e60-189287b644f4\",\n        \"socials\": [\n            {\n                \"name\": \"github\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"scratch\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"gitlab\",\n                \"username\": \"nelsonmestevao\"\n            }\n        ]\n    }\n}",
+									"raw": "{\n    \"mentor\": {\n        \"first_name\": \"{{$randomFirstName}}\",\n        \"last_name\": \"{{$randomLastName}}\",\n        \"mobile\": \"+351 912 345 678\",\n        \"birthday\": \"1995-03-29\",\n        \"major\": \"{{$randomJobTitle}}\",\n        \"user_id\": \"{{user_id}}\",\n        \"socials\": [\n            {\n                \"name\": \"github\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"scratch\",\n                \"username\": \"nelsonmestevao\"\n            },\n            {\n                \"name\": \"gitlab\",\n                \"username\": \"nelsonmestevao\"\n            }\n        ]\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -473,6 +531,58 @@
 									"path": [
 										"api",
 										"guardians"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Guardian's photo",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/guardians`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_guardian);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "guardian[photo]",
+											"type": "file",
+											"src": "ruby.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/guardians/{{guardian_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"guardians",
+										"{{guardian_id}}"
 									]
 								}
 							},

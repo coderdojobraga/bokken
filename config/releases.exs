@@ -49,6 +49,17 @@ frontend_app_url =
 
 config :bokken, :corsica, origin: ~r{#{frontend_app_url}}
 
+host_url =
+  System.get_env("HOST_URL") ||
+    raise """
+    environment variable HOST_URL is missing.
+    Setup the URL where you are hosting the server.
+    """
+
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: host_url
+
 # ## Using releases (Elixir v1.9+)
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
