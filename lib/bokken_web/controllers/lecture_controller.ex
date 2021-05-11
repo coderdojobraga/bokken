@@ -11,7 +11,7 @@ defmodule BokkenWeb.LectureController do
     render(conn, "index.json", lectures: lectures)
   end
 
-  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentor") do
+  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentors") do
     IO.inspect("Controller params")
     IO.inspect(params)
     with {:ok, [:ok, %LectureMentorAssistant{}] = lecture_mentor_assistant} <-

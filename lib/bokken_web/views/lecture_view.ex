@@ -18,7 +18,7 @@ defmodule BokkenWeb.LectureView do
     |> Map.merge(ninja(lecture))
     |> Map.merge(mentor(lecture))
     |> Map.merge(event(lecture))
-    |> Map.merge(mentor_assistant(lecture))
+    |> Map.merge(mentor_assistants(lecture))
   end
 
   defp base(lecture) do
@@ -45,11 +45,11 @@ defmodule BokkenWeb.LectureView do
     end
   end
 
-  defp mentor_assistant(lecture) do
-    if Ecto.assoc_loaded?(lecture.assistant_mentor) do
-      %{assistant_mentor: render_many(lecture.assistant_mentor, MentorView, "mentor.json")}
+  defp mentor_assistants(lecture) do
+    if Ecto.assoc_loaded?(lecture.assistant_mentors) do
+      %{assistant_mentors: render_many(lecture.assistant_mentors, MentorView, "mentor.json")}
     else
-      %{assistant_mentor_id: lecture.mentor_id}
+      %{}
     end
   end
 

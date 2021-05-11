@@ -257,7 +257,12 @@ defmodule Bokken.DbSeeder do
 
       %{id: event_id} = Enum.random(Bokken.Events.list_events())
 
-      lecture = %{summary: summary, mentor_id: mentor_id, event_id: event_id, ninja_id: ninja_id}
+      lecture = %{
+        summary: summary,
+        mentor_id: mentor_id,
+        event_id: event_id,
+        ninja_id: ninja_id,
+      }
 
       Bokken.Events.create_lecture(lecture)
     end
