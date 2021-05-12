@@ -350,7 +350,7 @@ defmodule Bokken.Events do
 
   """
 
-  def list_lectures(_args) do
+  def list_lectures do
     Lecture
     |> Repo.all()
     |> Repo.preload([:ninja, :event, :mentor, :assistant_mentors])
@@ -397,20 +397,21 @@ defmodule Bokken.Events do
   def create_lecture_assistant(attrs \\ %{}) do
     {:ok, %Lecture{} = l} = %Lecture{} |> Lecture.changeset(attrs) |> Repo.insert()
 
-    ids = Map.get(attrs, "assistant_mentors")
+    ids = Map.get(attrs, :assistant_mentors)
 
-    [:ok, %LectureMentorAssistant{}] = add_mentor_assistant(l.id, ids)
+    add_mentor_assistants(l.id, ids)
+
+    Repo.get(Lecture, l.id)
   end
 
-  defp add_mentor_assistant(lecture_id, list_ids) do
+  defp add_mentor_assistants(lecture_id, list_ids) do
     for assistant_id <- list_ids do
-      l =
-        LectureMentorAssistant.changeset(%LectureMentorAssistant{}, %{
-          lecture_id: lecture_id,
-          mentor_id: assistant_id
-        })
-
-      IO.inspect(Repo.insert(l))
+      %LectureMentorAssistant{}
+      |> LectureMentorAssistant.changeset(%{
+        lecture_id: lecture_id,
+        mentor_id: assistant_id
+      })
+      |> Repo.insert()
     end
   end
 

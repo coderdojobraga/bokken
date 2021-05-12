@@ -1,9 +1,9 @@
 defmodule BokkenWeb.LectureView do
   use BokkenWeb, :view
-  alias BokkenWeb.LectureView
   alias BokkenWeb.EventView
-  alias BokkenWeb.NinjaView
+  alias BokkenWeb.LectureView
   alias BokkenWeb.MentorView
+  alias BokkenWeb.NinjaView
 
   def render("index.json", %{lectures: lectures}) do
     %{data: render_many(lectures, LectureView, "lecture.json")}
