@@ -31,7 +31,7 @@ local machine for development and testing purposes.
 
 The following software is required to be installed on your system:
 
-- [Erlang 23+](https://www.erlang.org/downloads)
+- [Erlang 24+](https://www.erlang.org/downloads)
 - [Elixir 1.11+](https://elixir-lang.org/install.html)
 - [PostgreSQL 13+](https://www.postgresql.org/download/)
 
