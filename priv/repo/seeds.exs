@@ -160,9 +160,7 @@ defmodule Bokken.DbSeeder do
 
   def create_guardian(names, user_id) do
     mobile =
-      "+351 9#{Enum.random([1, 2, 3, 6])}#{
-        for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
-      }"
+      "+351 9#{Enum.random([1, 2, 3, 6])}#{for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()}"
 
     city = Enum.random(Jason.decode!(File.read!("data/pt/cities.json")))
 
@@ -200,9 +198,7 @@ defmodule Bokken.DbSeeder do
 
   def create_mentor(names, user_id) do
     mobile =
-      "+351 9#{Enum.random([1, 2, 3, 6])}#{
-        for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()
-      }"
+      "+351 9#{Enum.random([1, 2, 3, 6])}#{for _ <- 1..7, do: Enum.random(0..9) |> Integer.to_string()}"
 
     birthday = %Date{
       year: Enum.random(1995..2013),
