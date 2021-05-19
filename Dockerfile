@@ -1,4 +1,4 @@
-FROM elixir:1.11.4-alpine AS build
+FROM elixir:1.12-alpine AS build
 
 # install build dependencies
 RUN apk add --no-cache build-base git python3
@@ -30,7 +30,7 @@ COPY priv priv
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.13.3 AS app
+FROM alpine:3.13.5 AS app
 RUN apk add --no-cache openssl ncurses-libs
 
 # add imagemagick support
