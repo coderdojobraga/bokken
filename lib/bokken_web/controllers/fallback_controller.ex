@@ -28,4 +28,11 @@ defmodule BokkenWeb.FallbackController do
     |> put_view(BokkenWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :invalid_credentials}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"404")
+  end
 end
