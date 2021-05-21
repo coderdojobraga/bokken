@@ -9,6 +9,7 @@ defmodule Bokken.Events.Lecture do
 
   @required_fields [:ninja_id, :mentor_id, :event_id]
   @optional_fields [:notes, :summary]
+  @association_fields [:assistant_mentors]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -20,7 +21,7 @@ defmodule Bokken.Events.Lecture do
     belongs_to :event, Event, foreign_key: :event_id
     belongs_to :ninja, Ninja, foreign_key: :ninja_id
 
-    many_to_many :assistant_mentor, Mentor, join_through: LectureMentorAssistant
+    many_to_many :assistant_mentors, Mentor, join_through: LectureMentorAssistant
 
     timestamps()
   end

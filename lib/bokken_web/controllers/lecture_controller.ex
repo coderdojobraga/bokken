@@ -7,21 +7,12 @@ defmodule BokkenWeb.LectureController do
   action_fallback BokkenWeb.FallbackController
 
   def index(conn, params) do
-    lectures = Events.list_lectures(params)
+    lectures = Events.list_lectures()
     render(conn, "index.json", lectures: lectures)
   end
 
-  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentor") do
-    IO.inspect("Controller params")
-    IO.inspect(params)
-    with {:ok, [:ok, %LectureMentorAssistant{}] = lecture_mentor_assistant} <-
-           Events.create_lecture_assistant(params) do
-
-      IO.inspect("LECTURE NO CONTROLLER")
-      IO.inspect(lecture_mentor_assistant)
-
-      lecture = Events.get_lecture!(params)
-
+  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentors") do
+    with {:ok, %Lecture{} = lecture} <- Events.create_lecture_assistant(params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.badge_path(conn, :show, lecture))
