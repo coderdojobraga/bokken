@@ -7,7 +7,13 @@ alias Bokken.{
   Accounts.Guardian,
   Accounts.Mentor,
   Accounts.Ninja,
+  Accounts.Organizer,
   Accounts.User,
+  Events.Event,
+  Events.Events,
+  Events.Lecture,
+  Events.Location,
+  Events.Team,
   Gamification,
   Gamification.Badge,
   Repo
