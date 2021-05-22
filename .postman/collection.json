@@ -20,7 +20,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Sign up status is OK\", function(){",
-											"    pm.response.to.have.status(200);",
+											"    pm.response.to.have.status(201);",
 											"})",
 											"",
 											"pm.test(\"Token with set-cookie is present\", function () {",
