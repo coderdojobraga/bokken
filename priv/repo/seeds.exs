@@ -246,22 +246,27 @@ defmodule Bokken.DbSeeder do
   end
 
   def create_lectures(summaries) do
-    for summary <- summaries do
+    ninjas = Bokken.Accounts.list_ninjas()
+
+    list_tuples_summary_ninja = Enum.zip(ninjas, summaries)
+
+    for summary_ninja <- list_tuples_summary_ninja do
       %{id: mentor_id} = Enum.random(Bokken.Accounts.list_mentors())
 
       %{id: mentor_assistant_1} = Enum.random(Bokken.Accounts.list_mentors())
       %{id: mentor_assistant_2} = Enum.random(Bokken.Accounts.list_mentors())
       %{id: mentor_assistant_3} = Enum.random(Bokken.Accounts.list_mentors())
 
-      %{id: ninja_id} = Enum.random(Bokken.Accounts.list_ninjas())
-
       %{id: event_id} = Enum.random(Bokken.Events.list_events())
+
+      summary = elem(summary_ninja, 1)
+      ninja = elem(summary_ninja, 0)
 
       lecture = %{
         summary: summary,
         mentor_id: mentor_id,
         event_id: event_id,
-        ninja_id: ninja_id,
+        ninja_id: ninja.id,
         assistant_mentors: [mentor_assistant_1, mentor_assistant_2, mentor_assistant_3]
       }
 
