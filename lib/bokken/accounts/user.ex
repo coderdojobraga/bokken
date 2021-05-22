@@ -28,11 +28,19 @@ defmodule Bokken.Accounts.User do
     timestamps()
   end
 
-  @doc false
+  def changeset(user, attrs) when not is_nil(user.password_hash) do
+    verifications(user, attrs, @required_fields -- [:password])
+  end
+
   def changeset(user, attrs) do
+    verifications(user, attrs, @required_fields)
+  end
+
+  @doc false
+  defp verifications(user, attrs, required_fields) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> validate_required(required_fields)
     |> unique_constraint(:email, downcase: true)
     |> validate_format(:email, ~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
     |> validate_length(:password, min: 8)

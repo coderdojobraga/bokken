@@ -28,12 +28,30 @@ config :bokken, BokkenWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
+allowed_origins =
+  System.get_env("ALLOWED_ORIGINS") ||
+    raise """
+    environment variable ALLOWED_ORIGINS is missing.
+    Setup the URL where your frontend app will run as a regex expression.
+    """
+
+frontend_url =
+  System.get_env("FRONTEND_URL") ||
+    raise """
+    environment variable FRONTEND_URL is missing.
+    Setup the URL where your frontend app will run.
+    """
+
+config :bokken, BokkenWeb.Endpoint,
+  allowed_origins: ~r{#{allowed_origins}},
+  frontend_url: frontend_url
+
 secret_key_guardian =
   System.get_env("SECRET_KEY_GUARDIAN") ||
-    raise """
+    raise("""
     environment variable SECRET_KEY_GUARDIAN is missing.
     You can generate one by calling: mix guardian.gen.secret
-    """
+    """)
 
 config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",

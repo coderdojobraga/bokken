@@ -120,6 +120,23 @@ defmodule Bokken.Accounts do
   end
 
   @doc """
+  Verifies a user email
+
+  ## Examples
+
+      iex> verify_user(user, email_to_check_against)
+      {:ok, %User{}}
+
+  """
+  def verify_user(%User{} = user, email) do
+    if user.email == email do
+      update_user(user, %{verified: true})
+    else
+      {:error, :wrong_email}
+    end
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 
   ## Examples

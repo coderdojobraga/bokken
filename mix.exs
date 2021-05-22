@@ -52,6 +52,8 @@ defmodule Bokken.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
+      {:bamboo, "~> 2.1.0"},
+      {:bamboo_phoenix, "~> 1.0.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]

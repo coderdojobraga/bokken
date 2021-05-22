@@ -66,6 +66,15 @@ config :bokken, BokkenWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
+allowed_origins =
+  System.get_env("ALLOWED_ORIGINS") ||
+    raise """
+    environment variable ALLOWED_ORIGINS is missing.
+    Setup the URL where your frontend app will run as a regex expression.
+    """
+
+config :bokken, BokkenWeb.Endpoint, allowed_origins: ~r{#{allowed_origins}}
+
 secret_key_guardian =
   System.get_env("SECRET_KEY_GUARDIAN") ||
     raise """
@@ -77,12 +86,3 @@ config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
   secret_key: secret_key_guardian,
   ttl: {1, :day}
-
-frontend_app_url =
-  System.get_env("FRONTEND_APP_URL") ||
-    raise """
-    environment variable FRONTEND_APP_URL is missing.
-    Setup the URL where your frontend app will run as a regex expression.
-    """
-
-config :bokken, :corsica, origin: ~r{#{frontend_app_url}}

@@ -1,0 +1,11 @@
+Olá 👋
+
+Obrigado por te registares! Para confirmares o teu email deves clicar no botão
+que te aparece a seguir.
+
+Copia este link para o teu browser:
+
+                          <%= @link %>
+
+Estamos contentes por teres demonstrado interesse em fazer parte do CoderDojo
+Braga. Estamos ansiosos por te ver na próxima sessão.
