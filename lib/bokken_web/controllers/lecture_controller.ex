@@ -2,11 +2,11 @@ defmodule BokkenWeb.LectureController do
   use BokkenWeb, :controller
 
   alias Bokken.Events
-  alias Bokken.Events.{Lecture, LectureMentorAssistant}
+  alias Bokken.Events.Lecture
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, params) do
+  def index(conn, _params) do
     lectures = Events.list_lectures()
     render(conn, "index.json", lectures: lectures)
   end
@@ -15,7 +15,7 @@ defmodule BokkenWeb.LectureController do
     with {:ok, %Lecture{} = lecture} <- Events.create_lecture_assistant(params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.badge_path(conn, :show, lecture))
+      |> put_resp_header("location", Routes.lecture_path(conn, :show, lecture))
       |> render("show.json", lecture: lecture)
     end
   end
