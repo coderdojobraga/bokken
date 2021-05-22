@@ -397,11 +397,15 @@ defmodule Bokken.Events do
   def create_lecture_assistant(attrs \\ %{}) do
     {:ok, %Lecture{} = l} = %Lecture{} |> Lecture.changeset(attrs) |> Repo.insert()
 
-    ids = Map.get(attrs, :assistant_mentors)
+    ids = Map.get(attrs, "assistant_mentors")
 
     add_mentor_assistants(l.id, ids)
 
-    Repo.get(Lecture, l.id)
+    try do
+      {:ok, get_lecture!(l.id, [:assistant_mentors])}
+    rescue
+      e in Repo -> {:error, e}
+    end
   end
 
   defp add_mentor_assistants(lecture_id, list_ids) do
