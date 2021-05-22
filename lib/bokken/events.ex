@@ -443,6 +443,26 @@ defmodule Bokken.Events do
     |> Repo.update()
   end
 
+  def update_lecture_assistant_mentors(id, attrs) do
+    ids = Map.get(attrs, "assistant_mentors")
+    update_mentor_assistants(id, ids)
+
+    try do
+      {:ok, get_lecture!(id, [:assistant_mentors])}
+    rescue
+      e in Repo -> {:error, e}
+    end
+  end
+
+  defp update_mentor_assistants(lecture_id, list_ids) do
+    query =
+      from l in LectureMentorAssistant,
+        where: l.lecture_id == ^lecture_id
+
+    Repo.delete_all(query)
+    add_mentor_assistants(lecture_id, list_ids)
+  end
+
   @doc """
   Deletes a lecture.
 

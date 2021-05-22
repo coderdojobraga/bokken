@@ -34,6 +34,13 @@ defmodule BokkenWeb.LectureController do
     render(conn, "show.json", lecture: lecture)
   end
 
+  def update(conn, %{"id" => id, "lecture" => params})
+      when is_map_key(params, "assistant_mentors") do
+    with {:ok, %Lecture{} = lecture} <- Events.update_lecture_assistant_mentors(id, params) do
+      render(conn, "show.json", lecture: lecture)
+    end
+  end
+
   def update(conn, %{"id" => id, "lecture" => lecture_params}) do
     lecture = Events.get_lecture!(id)
 
