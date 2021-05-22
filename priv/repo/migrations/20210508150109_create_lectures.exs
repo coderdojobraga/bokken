@@ -15,6 +15,6 @@ defmodule Bokken.Repo.Migrations.CreateLectures do
 
     create index(:lectures, [:mentor_id])
     create index(:lectures, [:event_id])
-    create index(:lectures, [:ninja_id])
+    create index(:lectures, [:ninja_id, :event_id], [name: :ninja_event_index, unique: true])
   end
 end

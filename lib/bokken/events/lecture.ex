@@ -33,6 +33,6 @@ defmodule Bokken.Events.Lecture do
     |> validate_required(@required_fields)
     |> assoc_constraint(:mentor)
     |> assoc_constraint(:event)
-    |> assoc_constraint(:ninja)
+    |> unique_constraint(:ninja_event_constraint, name: :ninja_event_index)
   end
 end

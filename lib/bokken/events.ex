@@ -397,9 +397,15 @@ defmodule Bokken.Events do
   def create_lecture_assistant(attrs \\ %{}) do
     {:ok, %Lecture{} = l} = %Lecture{} |> Lecture.changeset(attrs) |> Repo.insert()
 
-    ids = Map.get(attrs, "assistant_mentors")
+    if attrs["assistant_mentors"] do
+      ids = Map.get(attrs, "assistant_mentors")
+      add_mentor_assistants(l.id, ids)
+    end
 
-    add_mentor_assistants(l.id, ids)
+    if attrs[:assistant_mentors] do
+      ids = Map.get(attrs, :assistant_mentors)
+      add_mentor_assistants(l.id, ids)
+    end
 
     try do
       {:ok, get_lecture!(l.id, [:assistant_mentors])}
