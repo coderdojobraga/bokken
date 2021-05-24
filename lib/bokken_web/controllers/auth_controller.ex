@@ -44,26 +44,26 @@ defmodule BokkenWeb.AuthController do
   end
 
   def verify(conn, %{"token" => token}) do
-    user = Authorization.Plug.current_resource(conn)
-
     with {:ok, %{"email" => email}} <- Authorization.decode_and_verify(token),
-         {:ok, %User{} = user} <- Accounts.verify_user(user, email) do
+         {:ok, %User{} = user} <- Accounts.verify_user_email(email) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
       |> render("me.json", %{user: user})
     end
   end
 
-  def verify(conn, _params) do
+  def resend(conn, _params) do
     user = Authorization.Plug.current_resource(conn)
 
-    unless user.verified do
+    if user.verified do
+      conn
+      |> send_resp(:no_content, "")
+    else
       send_verification_token(user)
-    end
 
-    conn
-    |> put_status(:created)
-    |> render("me.json", %{user: user})
+      conn
+      |> send_resp(:created, "")
+    end
   end
 
   defp send_verification_token(user) do
