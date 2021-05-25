@@ -45,7 +45,7 @@ defmodule BokkenWeb.NinjaController do
     end
   end
 
-  def delete(conn, %{"team_id" => team_id, "ninja_id" => ninja_id}) do
+  def delete(conn, %{"team_id" => team_id, "id" => ninja_id}) do
     with {_n, nil} <- Accounts.remove_ninja_team(team_id, ninja_id) do
       send_resp(conn, :no_content, "")
     end

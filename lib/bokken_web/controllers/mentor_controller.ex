@@ -45,7 +45,7 @@ defmodule BokkenWeb.MentorController do
     end
   end
 
-  def delete(conn, %{"team_id" => team_id, "mentor_id" => mentor_id}) do
+  def delete(conn, %{"team_id" => team_id, "id" => mentor_id}) do
     with {_n, nil} <- Accounts.remove_mentor_team(team_id, mentor_id) do
       send_resp(conn, :no_content, "")
     end
