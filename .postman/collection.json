@@ -479,6 +479,7 @@
 									},
 									"status": "Not Found",
 									"code": 404,
+
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
@@ -862,7 +863,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./postman/avatar.png"
+											"src": "./.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1117,7 +1118,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "./postman/avatar.png"
+											"src": "./.postman/avatar.png"
 										}
 									]
 								},
@@ -2424,7 +2425,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"ninja_id = pm.response.json().data[0].id",
+									"ninja_id = pm.response.json().data[1].id",
 									"pm.environment.set(\"ninja_id\", ninja_id);",
 									""
 								],
@@ -2577,6 +2578,25 @@
 								}
 							}
 						},
+						"url": {
+							"raw": "{{host}}/api/lectures/{{lecture_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lectures",
+								"{{lecture_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Lecture",
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "{{host}}/api/lectures/{{lecture_id}}",
 							"host": [

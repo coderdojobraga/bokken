@@ -6,6 +6,7 @@ defmodule Bokken.Repo.Migrations.CreateLectures do
       add :id, :binary_id, primary_key: true
       add :summary, :text
       add :notes, :text
+      add :attendance, :boolean, default: false, null: false
       add :mentor_id, references(:mentors, on_delete: :nothing, type: :binary_id)
       add :event_id, references(:events, on_delete: :nothing, type: :binary_id)
       add :ninja_id, references(:ninjas, on_delete: :nothing, type: :binary_id)
