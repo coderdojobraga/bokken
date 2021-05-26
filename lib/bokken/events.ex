@@ -480,11 +480,6 @@ defmodule Bokken.Events do
 
   """
   def delete_lecture(%Lecture{} = lecture) do
-    query =
-      from l in LectureMentorAssistant,
-        where: l.lecture_id == ^lecture.id
-
-    Repo.delete_all(query)
     Repo.delete(lecture)
   end
 
