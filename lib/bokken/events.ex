@@ -397,15 +397,19 @@ defmodule Bokken.Events do
   def create_lecture_assistant(attrs \\ %{}) do
     {:ok, %Lecture{} = l} = %Lecture{} |> Lecture.changeset(attrs) |> Repo.insert()
 
-    if attrs["assistant_mentors"] do
-      ids = Map.get(attrs, "assistant_mentors")
-      add_mentor_assistants(l.id, ids)
-    end
+    ids =
+      attrs
+      |> (fn x ->
+            cond do
+              x["assistant_mentors"] ->
+                Map.get(attrs, "assistant_mentors")
 
-    if attrs[:assistant_mentors] do
-      ids = Map.get(attrs, :assistant_mentors)
-      add_mentor_assistants(l.id, ids)
-    end
+              x[:assistant_mentors] ->
+                Map.get(attrs, :assistant_mentors)
+            end
+          end).()
+
+    add_mentor_assistants(l.id, ids)
 
     try do
       {:ok, get_lecture!(l.id, [:assistant_mentors])}
@@ -476,6 +480,11 @@ defmodule Bokken.Events do
 
   """
   def delete_lecture(%Lecture{} = lecture) do
+    query =
+      from l in LectureMentorAssistant,
+        where: l.lecture_id == lecture.id
+
+    Repo.delete_all(query)
     Repo.delete(lecture)
   end
 
