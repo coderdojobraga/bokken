@@ -854,7 +854,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/nelson/Pictures/sei.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1109,7 +1109,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "ruby.png"
 										}
 									]
 								},
@@ -2363,141 +2363,6 @@
 							"response": []
 						}
 					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					]
-				},
-				{
-					"name": "Lectures",
-					"item": [
-						{
-							"name": "Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "List lectures",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/lectures",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create lecture",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentor\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/lectures",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
