@@ -394,64 +394,6 @@
 									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"registered\": false,\n    \"verified\": true\n}"
 								},
 								{
-									"name": "Verify Account with wrong email (should never happen anyway)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "33"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Mon, 24 May 2021 10:05:33 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoH4pkt5J1MtnpMAAAVh"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
-								},
-								{
 									"name": "Verify Account with expired token",
 									"originalRequest": {
 										"method": "POST",
@@ -508,6 +450,64 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
+								},
+								{
+									"name": "Verify Account with wrong email (should never happen anyway)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "33"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:05:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4pkt5J1MtnpMAAAVh"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
 								}
 							]
 						},
@@ -862,7 +862,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/nelson/Pictures/sei.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1117,7 +1117,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "ruby.png"
 										}
 									]
 								},
