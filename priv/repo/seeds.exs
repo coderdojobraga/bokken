@@ -275,7 +275,6 @@ defmodule Bokken.DbSeeder do
         assistant_mentors: [mentor_assistant_1, mentor_assistant_2, mentor_assistant_3]
       }
 
-      # Bokken.Events.create_lecture(lecture)
       Bokken.Events.create_lecture_assistant(lecture)
     end
   end
