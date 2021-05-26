@@ -12,6 +12,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:5432
+    restart: always
   api:
     image: coderdojobraga/bokken:latest
     container_name: bokken_api
@@ -27,6 +28,7 @@ services:
       - PORT
     ports:
       - ${PORT}:4001
+    restart: always
 
 volumes:
   pgdata:
