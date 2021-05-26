@@ -26,11 +26,12 @@ defmodule BokkenWeb.Router do
     scope "/auth" do
       post "/sign_up", AuthController, :sign_up
       post "/sign_in", AuthController, :sign_in
+      post "/verify", AuthController, :verify
 
       pipe_through :authenticated
 
       get "/me", AuthController, :show
-      post "/verify", AuthController, :verify
+      post "/resend", AuthController, :resend
       delete "/sign_out", AuthController, :sign_out
     end
 

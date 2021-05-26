@@ -35,4 +35,11 @@ defmodule BokkenWeb.FallbackController do
     |> put_view(BokkenWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :token_expired}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"401")
+  end
 end

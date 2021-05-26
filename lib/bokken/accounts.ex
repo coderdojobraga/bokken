@@ -124,15 +124,17 @@ defmodule Bokken.Accounts do
 
   ## Examples
 
-      iex> verify_user(user, email_to_check_against)
+      iex> verify_user_email(user_email)
       {:ok, %User{}}
 
   """
-  def verify_user(%User{} = user, email) do
-    if user.email == email do
-      update_user(user, %{verified: true})
+  def verify_user_email(email) do
+    user = get_user(email: email)
+
+    if is_nil(user) do
+      {:error, :not_found}
     else
-      {:error, :wrong_email}
+      update_user(user, %{verified: true})
     end
   end
 
