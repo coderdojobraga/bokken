@@ -27,6 +27,10 @@
 											"    pm.response.to.have.header(\"set-cookie\");",
 											"});",
 											"",
+											"pm.test(\"User is not registered\", function () {",
+											"    pm.expect(pm.response.json().registered).to.eql(false);",
+											"});",
+											"",
 											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
 											"pm.environment.set(\"token\", token);",
 											"",
@@ -65,7 +69,70 @@
 								},
 								"description": "The signup sets an auth cookie in all the following requests."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Sign up",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "151"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Wed, 26 May 2021 15:24:06 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoKnMUCp4EEukywAAAAk"
+										},
+										{
+											"key": "set-cookie",
+											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUTBOakU0TkRjc0ltbGhkQ0k2TVRZeU1qQTBNalkwTnl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2lZelppWlRVd1kyRXROVEkyTlMwME9EWTVMV0V3TnpJdFlXVm1aR1ZpTlRJM1lqUTFJaXdpYm1KbUlqb3hOakl5TURReU5qUTJMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVpHTmhOalV4TWpRdE0yVTBPQzAwT0RFM0xUazFNbUl0TVRSak1EUXpZamMzT0dWaUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLmZNZW1neFBEdGdHR1ZjMnhBbXA0R2xKbnV2b01zNkRUcThjZkJMLTlCeDNuWUprRzh6SEIyWFZKYktTUzBfamhmMzNsNWlrREdQWFNkQ1FIMGc2d0pB.qzMEtQ9ilri4BvJ_MIXhHNMlOTyIo4OhSyb6Wwnbr80; path=/; secure; HttpOnly; SameSite=None"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"email\": \"Maximillia.Bartell@yahoo.com\",\n    \"id\": \"dca65124-3e48-4817-952b-14c043b778eb\",\n    \"registered\": false,\n    \"role\": \"mentor\",\n    \"verified\": false\n}"
+								}
+							]
 						},
 						{
 							"name": "Sign out",
@@ -130,6 +197,10 @@
 											"    pm.response.to.have.header(\"set-cookie\");",
 											"});",
 											"",
+											"pm.test(\"user is registered\", function () {",
+											"    pm.expect(pm.response.json().registered).to.eql(true);",
+											"});",
+											"",
 											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
 											"pm.environment.set(\"token\", token);"
 										],
@@ -165,11 +236,77 @@
 								},
 								"description": "The signup sets an auth cookie in all the following requests."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Sign in as Registered Mentor",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "358"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Wed, 26 May 2021 15:24:10 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoKnMmCVXZma0mAAAAAi"
+										},
+										{
+											"key": "set-cookie",
+											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ5leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT25SeWRXVXNJbUYxWkNJNkltSnZhMnRsYmlJc0ltVjRjQ0k2TVRZeU5EUTJNVGcxTVN3aWFXRjBJam94TmpJeU1EUXlOalV4TENKcGMzTWlPaUppYjJ0clpXNGlMQ0pxZEdraU9pSmtaV1JsWkdSak15MWxabVUxTFRRNVlXSXRZVEU1WmkwMU1qRm1NMkZqWWpOalpXSWlMQ0p1WW1ZaU9qRTJNakl3TkRJMk5UQXNJbkp2YkdVaU9pSnRaVzUwYjNJaUxDSnpkV0lpT2lKa1kyRmtZelV6Tnkwek9XVTNMVFF4TURZdFlURXhNUzFqWXpoa056SmlaalJsTWpFaUxDSjBlWEFpT2lKaFkyTmxjM01pZlEuaGFlczlqbDZHMU9ZdzJuTW1ZUnpsTF9GUEFPVWp3SkRmaXFpbExteWEwTGp4LWZQSXVjNG9jbnMteWM3b1dIVV8xUHNRTlJrWTkwSWRHR3p4R3RNRGc.m-I1FfS-vygNBFh_uEWbxGeJhiNG7EzQ7yZY_F7lHUU; path=/; secure; HttpOnly; SameSite=None"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": true,\n    \"birthday\": \"2008-01-24\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"dcadc537-39e7-4106-a111-cc8d72bf4e21\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"ae8a5c03-8462-4380-b226-b83d9cf7c9c9\",\n    \"mobile\": \"+351 911646914\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
+								}
+							]
 						},
 						{
 							"name": "Verify Account",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -193,7 +330,292 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Verify Account",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "127"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 00:02:11 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoHXuWAaBchT4qwAAAGB"
+										},
+										{
+											"key": "set-cookie",
+											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUXlNek0zTXpJc0ltbGhkQ0k2TVRZeU1UZ3hORFV6TWl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2laVFJsT0dOallUQXRZV0prWWkwMFpqUXhMVGt3WVRrdE9Ea3haVE5pTWpreFpESXhJaXdpYm1KbUlqb3hOakl4T0RFME5UTXhMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVltSTBaalUxT1RrdFpEQTVNeTAwWTJObUxUaGtZVEV0TnpJd01EQXdPVEJpTURVeUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLjdvTzNFRkxjR0l6V1dVVDkyUDRNX09DWno0dGM5LVotZTBPUU0xcUxzLTFiWTROUUhzeVJzc0VJZ0Z3RmxaYnV6ZkZpSC03d2pFelpKY0hCbHo3aHR3.Y_SNuodC9S-E3S2n1GZjagNfM6kDiH88L96MPvxaOR8; path=/; secure; HttpOnly; SameSite=None"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"registered\": false,\n    \"verified\": true\n}"
+								},
+								{
+									"name": "Verify Account with wrong email (should never happen anyway)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "33"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:05:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4pkt5J1MtnpMAAAVh"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
+								},
+								{
+									"name": "Verify Account with expired token",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "36"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 09:54:12 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4B4wxFZc0L-cAAAKC"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Resend verification email",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/auth/resend",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"resend"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Verification email resent",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/auth/resend",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"resend"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "0"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:09:19 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH42r0bTdIPDiIAAAHh"
+										}
+									],
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Verification email not sent because email is already verified",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/auth/resend",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"resend"
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:11:43 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4_IWRmY5fEDcAAACj"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
 						},
 						{
 							"name": "Get current User",
@@ -236,7 +658,124 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Mentor before register",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/me",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "127"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 00:02:29 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoHXvYx3Rbr1FHgAAAFD"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"verified\": true\n}"
+								},
+								{
+									"name": "Mentor after register",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/me",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "340"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 00:03:04 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoHXxcLRWuNqxlUAAABC"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": true,\n    \"birthday\": \"1997-03-20\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"b9f9582b-5e98-4b4e-b4d6-4c55eb25c464\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"7f34a42f-ff51-412d-b397-9c78443b1f06\",\n    \"mobile\": \"+351 964428503\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
+								}
+							]
 						}
 					]
 				},
@@ -323,7 +862,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./postman/avatar.png"
+											"src": "./.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -578,7 +1117,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "./postman/avatar.png"
+											"src": "./.postman/avatar.png"
 										}
 									]
 								},
@@ -1885,7 +2424,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"ninja_id = pm.response.json().data[0].id",
+									"ninja_id = pm.response.json().data[1].id",
 									"pm.environment.set(\"ninja_id\", ninja_id);",
 									""
 								],
@@ -2038,6 +2577,25 @@
 								}
 							}
 						},
+						"url": {
+							"raw": "{{host}}/api/lectures/{{lecture_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lectures",
+								"{{lecture_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Lecture",
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "{{host}}/api/lectures/{{lecture_id}}",
 							"host": [

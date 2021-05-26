@@ -271,6 +271,7 @@ defmodule Bokken.DbSeeder do
         mentor_id: mentor_id,
         event_id: event_id,
         ninja_id: ninja.id,
+        attendance: true,
         assistant_mentors: [mentor_assistant_1, mentor_assistant_2, mentor_assistant_3]
       }
 

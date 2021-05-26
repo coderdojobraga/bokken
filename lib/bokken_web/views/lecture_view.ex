@@ -25,7 +25,8 @@ defmodule BokkenWeb.LectureView do
     %{
       id: lecture.id,
       summary: lecture.summary,
-      notes: lecture.notes
+      notes: lecture.notes,
+      attendance: lecture.attendance
     }
   end
 
