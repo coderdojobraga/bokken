@@ -21,13 +21,6 @@ secret_key_base =
     You can generate one by calling: mix phx.gen.secret
     """
 
-config :bokken, BokkenWeb.Endpoint,
-  http: [
-    port: String.to_integer(System.get_env("PORT") || "4001"),
-    transport_options: [socket_opts: [:inet6]]
-  ],
-  secret_key_base: secret_key_base
-
 allowed_origins =
   System.get_env("ALLOWED_ORIGINS") ||
     raise """
@@ -43,6 +36,11 @@ frontend_url =
     """
 
 config :bokken, BokkenWeb.Endpoint,
+  http: [
+    port: String.to_integer(System.get_env("PORT") || "4001"),
+    transport_options: [socket_opts: [:inet6]]
+  ],
+  secret_key_base: secret_key_base,
   allowed_origins: ~r{#{allowed_origins}},
   frontend_url: frontend_url
 
@@ -57,15 +55,6 @@ config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
   secret_key: secret_key_guardian,
   ttl: {1, :day}
-
-frontend_app_url =
-  System.get_env("FRONTEND_APP_URL") ||
-    raise """
-    environment variable FRONTEND_APP_URL is missing.
-    Setup the URL where your frontend app will run as a regex expression.
-    """
-
-config :bokken, :corsica, origin: ~r{#{frontend_app_url}}
 
 host_url =
   System.get_env("HOST_URL") ||

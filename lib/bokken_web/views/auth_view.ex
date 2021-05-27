@@ -37,7 +37,7 @@ defmodule BokkenWeb.AuthView do
   def render("user.json", %{auth: user}) do
     registered =
       [user.mentor, user.guardian, user.ninja, user.organizer]
-      |> Enum.any?(&Ecto.assoc_loaded?(&1))
+      |> Enum.any?(&(Ecto.assoc_loaded?(&1) and not is_nil(&1)))
 
     %{
       id: user.id,

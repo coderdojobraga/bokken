@@ -716,7 +716,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"verified\": true\n}"
+									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"verified\": true,\n    \"registered\": false\n}"
 								},
 								{
 									"name": "Mentor after register",
@@ -774,7 +774,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"active\": true,\n    \"birthday\": \"1997-03-20\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"b9f9582b-5e98-4b4e-b4d6-4c55eb25c464\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"7f34a42f-ff51-412d-b397-9c78443b1f06\",\n    \"mobile\": \"+351 964428503\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
+									"body": "{\n    \"active\": true,\n    \"birthday\": \"1997-03-20\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"b9f9582b-5e98-4b4e-b4d6-4c55eb25c464\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"7f34a42f-ff51-412d-b397-9c78443b1f06\",\n    \"mobile\": \"+351 964428503\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true,\n    \"registered\": true\n}"
 								}
 							]
 						}
