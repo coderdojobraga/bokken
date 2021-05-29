@@ -68,6 +68,15 @@ defmodule Bokken.DbSeeder do
       "Especial Natal"
     ]
     |> create_new_events()
+
+    # Some Lectures
+    [
+      "Scratch from scratch",
+      "First python program",
+      "Learning loops",
+      "Practicing conditional statements"
+    ]
+    |> create_lectures()
   end
 
   def create_locations(names) do
@@ -233,6 +242,36 @@ defmodule Bokken.DbSeeder do
       }
 
       Bokken.Accounts.create_organizer(organizer)
+    end
+  end
+
+  def create_lectures(summaries) do
+    ninjas = Bokken.Accounts.list_ninjas()
+
+    list_tuples_summary_ninja = Enum.zip(ninjas, summaries)
+
+    for summary_ninja <- list_tuples_summary_ninja do
+      %{id: mentor_id} = Enum.random(Bokken.Accounts.list_mentors())
+
+      %{id: mentor_assistant_1} = Enum.random(Bokken.Accounts.list_mentors())
+      %{id: mentor_assistant_2} = Enum.random(Bokken.Accounts.list_mentors())
+      %{id: mentor_assistant_3} = Enum.random(Bokken.Accounts.list_mentors())
+
+      %{id: event_id} = Enum.random(Bokken.Events.list_events())
+
+      summary = elem(summary_ninja, 1)
+      ninja = elem(summary_ninja, 0)
+
+      lecture = %{
+        summary: summary,
+        mentor_id: mentor_id,
+        event_id: event_id,
+        ninja_id: ninja.id,
+        attendance: true,
+        assistant_mentors: [mentor_assistant_1, mentor_assistant_2, mentor_assistant_3]
+      }
+
+      Bokken.Events.create_lecture_assistant(lecture)
     end
   end
 

@@ -5,7 +5,7 @@ defmodule Bokken.Events.Event do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Bokken.Events.{Location, Team}
+  alias Bokken.Events.{Lecture, Location, Team}
 
   @required_fields [:team_id, :location_id, :online]
   @optional_fields [:notes, :title]
@@ -19,6 +19,8 @@ defmodule Bokken.Events.Event do
 
     belongs_to :location, Location, foreign_key: :location_id
     belongs_to :team, Team, foreign_key: :team_id
+
+    has_many :lectures, Lecture, on_delete: :nothing
 
     timestamps()
   end
