@@ -330,7 +330,7 @@
 										"verify"
 									]
 								},
-								"description": "Verifies if the account is valid and authentic by requesting the token that was previous sent by the app."
+								"description": "Verifies if the account is valid and authentic by requesting the token that was previous sent by email to the user upon signup/resend request."
 							},
 							"response": [
 								{
@@ -906,7 +906,7 @@
 										"mentors"
 									]
 								},
-								"description": "creating a new mentor with an avatar."
+								"description": "Creates a new mentor with an avatar."
 							},
 							"response": []
 						},
@@ -2574,7 +2574,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"attendance\": \"both_present\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
+							"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2591,7 +2591,7 @@
 								"lectures"
 							]
 						},
-						"description": "Posting a new lecture."
+						"description": "Posts a new lecture."
 					},
 					"response": []
 				},

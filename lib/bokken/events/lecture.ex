@@ -7,8 +7,8 @@ defmodule Bokken.Events.Lecture do
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Event, LectureMentorAssistant}
 
-  @required_fields [:ninja_id, :mentor_id, :event_id, :attendance]
-  @optional_fields [:notes, :summary]
+  @required_fields [:ninja_id, :mentor_id, :event_id]
+  @optional_fields [:notes, :summary, :attendance]
   @association_fields [:assistant_mentors]
 
   @primary_key {:id, :binary_id, autogenerate: true}

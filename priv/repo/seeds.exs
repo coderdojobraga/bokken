@@ -69,7 +69,6 @@ defmodule Bokken.DbSeeder do
       "Jessica Rabbit",
       "Judge Doom",
       "Roger Rabbit",
-      "Buzz Lightyear",
       "Potato Head",
       "Bo Peep",
       "Lightning McQueen",
@@ -388,9 +387,7 @@ defmodule Bokken.DbSeeder do
       %{id: mentor_assistant_3} = Enum.random(Bokken.Accounts.list_mentors())
 
       %{id: event_id} = Enum.random(Bokken.Events.list_events())
-      attendance = Enum.random([:both_presente, :both_absent, :ninja_absent, :mentor_absent])
-
-      IO.inspect(attendance)
+      attendance = Enum.random([:both_present, :both_absent, :ninja_absent, :mentor_absent])
 
       summary = elem(summary_ninja, 1)
       ninja = elem(summary_ninja, 0)
