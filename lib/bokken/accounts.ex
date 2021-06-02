@@ -102,7 +102,7 @@ defmodule Bokken.Accounts do
   @doc false
   def authenticate_user(email, password) do
     get_user(email: email)
-    |> Repo.preload([:mentor, :guardian, :ninja, :organizer])
+    |> then(&Repo.preload(&1, [&1.role]))
     |> authenticate_resource(password)
   end
 

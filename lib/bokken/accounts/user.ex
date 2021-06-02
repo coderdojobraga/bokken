@@ -18,6 +18,7 @@ defmodule Bokken.Accounts.User do
 
     field :active, :boolean, default: false
     field :verified, :boolean, default: false
+    field :registered, :boolean, virtual: true, default: false
     field :role, Ecto.Enum, values: [:ninja, :guardian, :mentor, :organizer]
 
     has_one :guardian, Guardian, on_delete: :delete_all
