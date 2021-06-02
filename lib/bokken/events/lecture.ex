@@ -7,8 +7,8 @@ defmodule Bokken.Events.Lecture do
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Event, LectureMentorAssistant}
 
-  @required_fields [:ninja_id, :mentor_id, :event_id, :attendance]
-  @optional_fields [:notes, :summary]
+  @required_fields [:ninja_id, :mentor_id, :event_id]
+  @optional_fields [:notes, :summary, :attendance]
   @association_fields [:assistant_mentors]
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -16,7 +16,9 @@ defmodule Bokken.Events.Lecture do
   schema "lectures" do
     field :notes, :string
     field :summary, :string
-    field :attendance, :boolean, default: false
+
+    field :attendance, Ecto.Enum,
+      values: [:both_present, :both_absent, :ninja_absent, :mentor_absent]
 
     belongs_to :mentor, Mentor, foreign_key: :mentor_id
     belongs_to :event, Event, foreign_key: :event_id
