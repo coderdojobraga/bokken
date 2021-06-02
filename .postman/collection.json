@@ -169,7 +169,8 @@
 										"auth",
 										"sign_out"
 									]
-								}
+								},
+								"description": "User signs out from app."
 							},
 							"response": []
 						},
@@ -328,7 +329,8 @@
 										"auth",
 										"verify"
 									]
-								}
+								},
+								"description": "Verifies if the account is valid and authentic by requesting the token that was previous sent by the app."
 							},
 							"response": [
 								{
@@ -394,6 +396,64 @@
 									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"registered\": false,\n    \"verified\": true\n}"
 								},
 								{
+									"name": "Verify Account with wrong email (should never happen anyway)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "33"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:05:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4pkt5J1MtnpMAAAVh"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
+								},
+								{
 									"name": "Verify Account with expired token",
 									"originalRequest": {
 										"method": "POST",
@@ -450,65 +510,6 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
-								},
-								{
-									"name": "Verify Account with wrong email (should never happen anyway)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "33"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Mon, 24 May 2021 10:05:33 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoH4pkt5J1MtnpMAAAVh"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
 								}
 							]
 						},
@@ -527,7 +528,8 @@
 										"auth",
 										"resend"
 									]
-								}
+								},
+								"description": "Sends a new verification email."
 							},
 							"response": [
 								{
@@ -657,7 +659,8 @@
 										"auth",
 										"me"
 									]
-								}
+								},
+								"description": "Getting the information about current user."
 							},
 							"response": [
 								{
@@ -836,7 +839,8 @@
 										"api",
 										"mentors"
 									]
-								}
+								},
+								"description": "Lists all the mentors."
 							},
 							"response": []
 						},
@@ -901,7 +905,8 @@
 										"api",
 										"mentors"
 									]
-								}
+								},
+								"description": "creating a new mentor with an avatar."
 							},
 							"response": []
 						},
@@ -975,7 +980,8 @@
 										"api",
 										"mentors"
 									]
-								}
+								},
+								"description": "Creates a mentor with an user_id already taken by another entity."
 							},
 							"response": []
 						}
@@ -1253,7 +1259,8 @@
 										"api",
 										"organizers"
 									]
-								}
+								},
+								"description": "Lists all the organizers."
 							},
 							"response": []
 						},
@@ -1331,7 +1338,8 @@
 										"api",
 										"organizers"
 									]
-								}
+								},
+								"description": "Creates a new organizer."
 							},
 							"response": []
 						},
@@ -1359,7 +1367,8 @@
 										"organizers",
 										"{{organizer_id}}"
 									]
-								}
+								},
+								"description": "Updates a certain organizer."
 							},
 							"response": []
 						},
@@ -1378,7 +1387,8 @@
 										"organizers",
 										"{{organizer_id}}"
 									]
-								}
+								},
+								"description": "Removes an organizer."
 							},
 							"response": []
 						}
@@ -1447,7 +1457,8 @@
 										"badges",
 										""
 									]
-								}
+								},
+								"description": "Lists all existing badges."
 							},
 							"response": []
 						},
@@ -1497,7 +1508,8 @@
 										"badges",
 										""
 									]
-								}
+								},
+								"description": "Creates a new badge."
 							},
 							"response": []
 						},
@@ -1536,7 +1548,8 @@
 										"badges",
 										"{{badge_id}}"
 									]
-								}
+								},
+								"description": "Updates a badge's field."
 							},
 							"response": []
 						},
@@ -1555,7 +1568,8 @@
 										"badges",
 										"{{badge_id}}"
 									]
-								}
+								},
+								"description": "Removes a badge from the system."
 							},
 							"response": []
 						}
@@ -1713,7 +1727,8 @@
 										"api",
 										"teams"
 									]
-								}
+								},
+								"description": "Lists all teams."
 							},
 							"response": []
 						},
@@ -1803,7 +1818,8 @@
 										"teams",
 										"{{team_id}}"
 									]
-								}
+								},
+								"description": "Deletes a team."
 							},
 							"response": []
 						},
@@ -1875,7 +1891,8 @@
 										"{{team_id}}",
 										"ninjas"
 									]
-								}
+								},
+								"description": "Associates a certain ninja to a certain team."
 							},
 							"response": []
 						},
@@ -1948,7 +1965,8 @@
 										"{{team_id}}",
 										"mentors"
 									]
-								}
+								},
+								"description": "Associates a mentor to a certain team."
 							},
 							"response": []
 						},
@@ -1969,7 +1987,8 @@
 										"mentors",
 										"{{mentor_id}}"
 									]
-								}
+								},
+								"description": "Disengages a certain mentor from a certain team."
 							},
 							"response": []
 						}
@@ -1999,7 +2018,7 @@
 					"name": "Locations",
 					"item": [
 						{
-							"name": "Get locations",
+							"name": "List locations",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2012,7 +2031,8 @@
 										"api",
 										"locations"
 									]
-								}
+								},
+								"description": "Lists all the locations."
 							},
 							"response": []
 						},
@@ -2060,7 +2080,8 @@
 										"api",
 										"locations"
 									]
-								}
+								},
+								"description": "Creates a new location."
 							},
 							"response": []
 						},
@@ -2088,7 +2109,8 @@
 										"locations",
 										"{{location_id}}"
 									]
-								}
+								},
+								"description": "Updates some field of a certain location."
 							},
 							"response": []
 						},
@@ -2107,7 +2129,8 @@
 										"locations",
 										"{{location_id}}"
 									]
-								}
+								},
+								"description": "Deletes one location."
 							},
 							"response": []
 						}
@@ -2150,7 +2173,8 @@
 										"api",
 										"events"
 									]
-								}
+								},
+								"description": "Lists all the events."
 							},
 							"response": []
 						},
@@ -2260,7 +2284,8 @@
 										"{{team_id}}",
 										"events"
 									]
-								}
+								},
+								"description": "Lists all the events of a certain team."
 							},
 							"response": []
 						},
@@ -2280,7 +2305,8 @@
 										"{{location_id}}",
 										"events"
 									]
-								}
+								},
+								"description": "Lists all the events that took place at the same location."
 							},
 							"response": []
 						},
@@ -2320,7 +2346,8 @@
 										"api",
 										"events"
 									]
-								}
+								},
+								"description": "Creates an event."
 							},
 							"response": []
 						},
@@ -2348,7 +2375,8 @@
 										"events",
 										"{{event_id}}"
 									]
-								}
+								},
+								"description": "Updates a field of a specific event."
 							},
 							"response": []
 						},
@@ -2367,7 +2395,8 @@
 										"events",
 										"{{event_id}}"
 									]
-								}
+								},
+								"description": "Removes an event."
 							},
 							"response": []
 						}
@@ -2425,7 +2454,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"ninja_id = pm.response.json().data[1].id",
+									"ninja_id = pm.response.json().data[30].id",
 									"pm.environment.set(\"ninja_id\", ninja_id);",
 									""
 								],
@@ -2487,14 +2516,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"lecture_id = pm.response.json().data[0].id",
-									"pm.environment.set(\"lecture_id\", lecture_id);",
-									"",
 									"mentor_assistant0 = pm.response.json().data[0].assistant_mentors[0].id",
 									"pm.environment.set(\"mentor_assistant0\", mentor_assistant0);",
 									"",
 									"mentor_assistant1= pm.response.json().data[0].assistant_mentors[1].id",
 									"pm.environment.set(\"mentor_assistant1\", mentor_assistant1);",
+									"",
+									"lecture_id = pm.response.json().data[0].id",
+									"pm.environment.set(\"lecture_id\", lecture_id);",
 									""
 								],
 								"type": "text/javascript"
@@ -2513,7 +2542,8 @@
 								"api",
 								"lectures"
 							]
-						}
+						},
+						"description": "Lists all lectures."
 					},
 					"response": []
 				},
@@ -2544,7 +2574,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
+							"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"attendance\": \"both_present\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2560,7 +2590,8 @@
 								"api",
 								"lectures"
 							]
-						}
+						},
+						"description": "Posting a new lecture."
 					},
 					"response": []
 				},
@@ -2588,7 +2619,8 @@
 								"lectures",
 								"{{lecture_id}}"
 							]
-						}
+						},
+						"description": "Changing one lecture."
 					},
 					"response": []
 				},
@@ -2607,7 +2639,8 @@
 								"lectures",
 								"{{lecture_id}}"
 							]
-						}
+						},
+						"description": "Deletes a lecture."
 					},
 					"response": []
 				}
