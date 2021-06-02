@@ -164,7 +164,7 @@ defmodule Bokken.DbSeeder do
       "Somniam Somnivora",
       "Dusselgurr Navitaub",
       "Fasasnob Elezeba",
-      "Zebritz Kiesling",
+      "Zebritz Kiesling"
     ]
     |> create_users(:ninja)
 

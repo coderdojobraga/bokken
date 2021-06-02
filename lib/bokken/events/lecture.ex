@@ -16,8 +16,9 @@ defmodule Bokken.Events.Lecture do
   schema "lectures" do
     field :notes, :string
     field :summary, :string
+
     field :attendance, Ecto.Enum,
-    values: [:both_present, :both_absent, :ninja_absent, :mentor_absent]
+      values: [:both_present, :both_absent, :ninja_absent, :mentor_absent]
 
     belongs_to :mentor, Mentor, foreign_key: :mentor_id
     belongs_to :event, Event, foreign_key: :event_id
