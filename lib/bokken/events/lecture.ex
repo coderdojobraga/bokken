@@ -9,7 +9,6 @@ defmodule Bokken.Events.Lecture do
 
   @required_fields [:ninja_id, :mentor_id, :event_id]
   @optional_fields [:notes, :summary, :attendance]
-  @association_fields [:assistant_mentors]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
