@@ -9,6 +9,7 @@ defmodule Bokken.Gamification do
   alias Bokken.Accounts
   alias Bokken.Gamification.Badge
   alias Bokken.Gamification.BadgeNinja
+  alias Bokken.Uploaders.Emblem
 
   @doc """
   Returns the list of badges.
@@ -67,9 +68,19 @@ defmodule Bokken.Gamification do
 
   """
   def create_badge(attrs \\ %{}) do
-    %Badge{}
-    |> Badge.changeset(attrs)
-    |> Repo.insert()
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:badge, Badge.changeset(%Badge{}, attrs))
+      |> Ecto.Multi.update(:badge_with_image, &Badge.image_changeset(&1.badge, attrs))
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{badge: badge, badge_with_image: badge_with_image}} ->
+        {:ok, %{badge | image: badge_with_image.image}}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
   end
 
   @doc """
@@ -86,7 +97,7 @@ defmodule Bokken.Gamification do
   """
   def update_badge(%Badge{} = badge, attrs) do
     badge
-    |> Badge.changeset(attrs)
+    |> change_badge(attrs)
     |> Repo.update()
   end
 
@@ -103,6 +114,7 @@ defmodule Bokken.Gamification do
 
   """
   def delete_badge(%Badge{} = badge) do
+    Emblem.delete({badge.image, badge})
     Repo.delete(badge)
   end
 
@@ -116,7 +128,9 @@ defmodule Bokken.Gamification do
 
   """
   def change_badge(%Badge{} = badge, attrs \\ %{}) do
-    Badge.changeset(badge, attrs)
+    badge
+    |> Badge.changeset(attrs)
+    |> Badge.image_changeset(attrs)
   end
 
   alias Bokken.Gamification.BadgeNinja
@@ -129,9 +143,10 @@ defmodule Bokken.Gamification do
 
   def remove_badge(badge_id, ninja_id) do
     query =
-      from bn in BadgeNinja,
+      from(bn in BadgeNinja,
         where: bn.badge_id == ^badge_id,
         where: bn.ninja_id == ^ninja_id
+      )
 
     Repo.delete_all(query)
   end

@@ -6,11 +6,23 @@ defmodule Bokken.GamificationTest do
   describe "badges" do
     alias Bokken.Gamification.Badge
 
-    @valid_attrs %{description: "some description", name: "some name", image: "some image"}
+    @valid_attrs %{
+      description: "some description",
+      name: "some name",
+      image: %Plug.Upload{
+        content_type: "image/png",
+        filename: "avatar.png",
+        path: "./.postman/avatar.png"
+      }
+    }
     @update_attrs %{
       description: "some updated description",
       name: "some updated name",
-      image: "some updated image"
+      image: %Plug.Upload{
+        content_type: "image/png",
+        filename: "scratch.png",
+        path: "./.postman/scratch.png"
+      }
     }
     @invalid_attrs %{description: nil, name: nil, image: nil}
 
@@ -37,7 +49,7 @@ defmodule Bokken.GamificationTest do
       assert {:ok, %Badge{} = badge} = Gamification.create_badge(@valid_attrs)
       assert badge.description == "some description"
       assert badge.name == "some name"
-      assert badge.image == "some image"
+      assert badge.image.file_name == "avatar.png"
     end
 
     test "create_badge/1 with invalid data returns error changeset" do
@@ -49,7 +61,7 @@ defmodule Bokken.GamificationTest do
       assert {:ok, %Badge{} = badge} = Gamification.update_badge(badge, @update_attrs)
       assert badge.description == "some updated description"
       assert badge.name == "some updated name"
-      assert badge.image == "some updated image"
+      assert badge.image.file_name == "scratch.png"
     end
 
     test "update_badge/2 with invalid data returns error changeset" do

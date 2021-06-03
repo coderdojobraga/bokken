@@ -4,21 +4,32 @@ defmodule Bokken.Gamification.Badge do
   projects.
   """
   use Ecto.Schema
+  use Waffle.Ecto.Schema
+
   import Ecto.Changeset
+
   alias Bokken.Accounts.Ninja
   alias Bokken.Gamification.BadgeNinja
+  alias Bokken.Uploaders.Emblem
 
-  @required_fields [:name, :image]
+  @required_fields [:name]
   @optional_fields [:description]
+  @attachment_fields [:image]
 
   schema "badges" do
     field :name, :string
     field :description, :string
-    field :image, :string
+    field :image, Emblem.Type
 
     many_to_many :ninjas, Ninja, join_through: BadgeNinja
 
     timestamps()
+  end
+
+  @doc false
+  def image_changeset(badge, attrs) do
+    badge
+    |> cast_attachments(attrs, @attachment_fields)
   end
 
   @doc false

@@ -1,9 +1,11 @@
-defmodule Bokken.Uploaders.Avatar do
-  @moduledoc false
+defmodule Bokken.Uploaders.Emblem do
+  @moduledoc """
+  Emblem is the image for an Badge.
+  """
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
-  @versions [:original, :thumb]
+  @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
 
   # Whitelist file extensions:
@@ -14,13 +16,6 @@ defmodule Bokken.Uploaders.Avatar do
     |> then(&Enum.member?(@extension_whitelist, &1))
   end
 
-  # Define a thumbnail transformation:
-  def transform(:thumb, _) do
-    {:convert,
-     "-strip -thumbnail 250x250^ -gravity center -background none -extent 250x250 -format png",
-     :png}
-  end
-
   # Override the persisted filenames:
   def filename(version, _) do
     version
@@ -28,11 +23,11 @@ defmodule Bokken.Uploaders.Avatar do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, scope}) do
-    "uploads/avatars/#{scope.user_id}"
+    "uploads/badges/#{scope.id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
-  def default_url(_version, scope) do
-    "https://robohash.org/#{scope.first_name}-#{scope.last_name}"
+  def default_url(_version, _scope) do
+    BokkenWeb.Endpoint.url() <> "/images/default_badge.png"
   end
 end

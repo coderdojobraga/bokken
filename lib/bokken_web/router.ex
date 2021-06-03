@@ -17,7 +17,7 @@ defmodule BokkenWeb.Router do
     pipe_through [:fetch_session]
     pipe_through :authenticated
 
-    get "/uploads/avatars/:user_id/:file", FileController, :avatars
+    get "/uploads/:type/:id/:file", FileController, :images
   end
 
   scope "/api", BokkenWeb do

@@ -396,64 +396,6 @@
 									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"registered\": false,\n    \"verified\": true\n}"
 								},
 								{
-									"name": "Verify Account with wrong email (should never happen anyway)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "33"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Mon, 24 May 2021 10:05:33 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoH4pkt5J1MtnpMAAAVh"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
-								},
-								{
 									"name": "Verify Account with expired token",
 									"originalRequest": {
 										"method": "POST",
@@ -510,6 +452,64 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
+								},
+								{
+									"name": "Verify Account with wrong email (should never happen anyway)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "33"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 10:05:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4pkt5J1MtnpMAAAVh"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
 								}
 							]
 						},
@@ -867,7 +867,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/nelson/Pictures/sei.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1490,8 +1490,24 @@
 								"method": "POST",
 								"header": [],
 								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"badge\": {\n        \"name\": \"Built {{$randomInt}} projects\",\n        \"description\": \"Para o ninja que farta-se de criar projetos\",\n        \"image\": \"{{$randomAbstractImage}}\"\n    }\n}",
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "badge[name]",
+											"value": "Built {{$randomInt}} projects",
+											"type": "text"
+										},
+										{
+											"key": "badge[description]",
+											"value": "Para o ninja que farta-se de criar projetos",
+											"type": "text"
+										},
+										{
+											"key": "badge[image]",
+											"type": "file",
+											"src": "./.postman/scratch.png"
+										}
+									],
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1511,7 +1527,86 @@
 								},
 								"description": "Creates a new badge."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Create a Badge with image",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "badge[name]",
+													"value": "Built {{$randomInt}} projects",
+													"type": "text"
+												},
+												{
+													"key": "badge[description]",
+													"value": "Para o ninja que farta-se de criar projetos",
+													"type": "text"
+												},
+												{
+													"key": "badge[image]",
+													"type": "file",
+													"src": "/home/nelson/Code/bokken/.postman/scratch.png"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/badges/",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"badges",
+												""
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "183"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Fri, 04 Jun 2021 20:07:14 GMT"
+										},
+										{
+											"key": "location",
+											"value": "/api/badges/20"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoV53gsFuE_J8MUAAALi"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"description\": \"Para o ninja que farta-se de criar projetos\",\n        \"id\": 20,\n        \"image\": \"https://bokken.di.uminho.pt/uploads/badges/20/original.png?v=63790056435\",\n        \"name\": \"Built 151 projects\"\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Update a Badge",
@@ -1531,7 +1626,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"badge\": {\n        \"image\": \"{{$randomImageUrl}}\"\n    }\n}",
+									"raw": "{\n    \"badge\": {\n        \"description\": \"The ninja is a maker\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
