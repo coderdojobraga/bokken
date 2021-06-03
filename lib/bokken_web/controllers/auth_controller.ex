@@ -13,16 +13,16 @@ defmodule BokkenWeb.AuthController do
   def show(conn, _params) do
     user =
       Authorization.Plug.current_resource(conn)
-      |> Repo.preload([:mentor, :guardian, :ninja, :organizer])
+      |> then(&Repo.preload(&1, [&1.role]))
 
-    render(conn, "me.json", %{user: user, registered: is_registered(user)})
+    render(conn, "me.json", %{user: check_registered(user)})
   end
 
   def sign_in(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- Accounts.authenticate_user(email, password) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: user, registered: is_registered(user)})
+      |> render("me.json", %{user: check_registered(user)})
     end
   end
 
@@ -39,7 +39,7 @@ defmodule BokkenWeb.AuthController do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
       |> put_status(:created)
-      |> render("me.json", %{user: user, registered: false})
+      |> render("me.json", %{user: user})
     end
   end
 
@@ -48,7 +48,7 @@ defmodule BokkenWeb.AuthController do
          {:ok, %User{} = user} <- Accounts.verify_user_email(email) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: user, registered: is_registered(user)})
+      |> render("me.json", %{user: check_registered(user)})
     end
   end
 
@@ -73,8 +73,12 @@ defmodule BokkenWeb.AuthController do
     Email.verify_user_email(token, to: user.email) |> Mailer.deliver_later!()
   end
 
-  defp is_registered(user) do
-    [user.mentor, user.guardian, user.ninja, user.organizer]
-    |> Enum.any?(&(Ecto.assoc_loaded?(&1) and not is_nil(&1)))
+  defp check_registered(user) do
+    registered =
+      [mentor: user.mentor, guardian: user.guardian, ninja: user.ninja, organizer: user.organizer]
+      |> Keyword.get(user.role)
+      |> then(&(Ecto.assoc_loaded?(&1) and not is_nil(&1)))
+
+    user |> Map.merge(%{registered: registered})
   end
 end
