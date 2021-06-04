@@ -18,7 +18,7 @@ defmodule Bokken.Accounts.User do
 
     field :active, :boolean, default: false
     field :verified, :boolean, default: false
-    field :registered, :boolean, virtual: true, default: false
+    field :registered, :boolean, default: false, virtual: true
     field :role, Ecto.Enum, values: [:ninja, :guardian, :mentor, :organizer]
 
     has_one :guardian, Guardian, on_delete: :delete_all
@@ -46,13 +46,20 @@ defmodule Bokken.Accounts.User do
     |> validate_format(:email, ~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
     |> validate_length(:password, min: 8)
     |> encrypt_password()
+    |> check_if_email_changed()
   end
 
   defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
 
-  defp encrypt_password(changeset) do
-    changeset
+  defp encrypt_password(changeset), do: changeset
+
+  defp check_if_email_changed(
+         %Ecto.Changeset{valid?: true, changes: %{email: _email}} = changeset
+       ) do
+    change(changeset, verified: false)
   end
+
+  defp check_if_email_changed(changeset), do: changeset
 end

@@ -304,6 +304,19 @@
 						},
 						{
 							"name": "Verify Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Sign up status is OK\", function(){",
+											"    pm.response.to.have.status(401);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -780,6 +793,34 @@
 									"body": "{\n    \"active\": true,\n    \"birthday\": \"1997-03-20\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"b9f9582b-5e98-4b4e-b4d6-4c55eb25c464\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"7f34a42f-ff51-412d-b397-9c78443b1f06\",\n    \"mobile\": \"+351 964428503\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true,\n    \"registered\": true\n}"
 								}
 							]
+						},
+						{
+							"name": "Update current User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-06-04\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/me",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1507,12 +1548,7 @@
 											"type": "file",
 											"src": "./.postman/scratch.png"
 										}
-									],
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{host}}/api/badges/",
@@ -2568,6 +2604,36 @@
 							"path": [
 								"api",
 								"ninjas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event to work with",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"event_id = pm.response.json().data[1].id",
+									"pm.environment.set(\"event_id\", event_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"events"
 							]
 						}
 					},
