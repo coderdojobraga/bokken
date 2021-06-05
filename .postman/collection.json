@@ -867,7 +867,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "/home/nelson/Pictures/sei.png"
+											"src": "./.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1549,7 +1549,7 @@
 												{
 													"key": "badge[image]",
 													"type": "file",
-													"src": "/home/nelson/Code/bokken/.postman/scratch.png"
+													"src": "./.postman/scratch.png"
 												}
 											],
 											"options": {
