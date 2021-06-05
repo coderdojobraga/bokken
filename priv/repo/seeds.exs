@@ -35,45 +35,47 @@ defmodule Bokken.DbSeeder do
 
     # Disney Characters
     [
-      "Peter Pan",
+      "Bo Peep",
+      "Bugs Bunny",
       "Buzz Lightyear",
-      "Cruella de Vil",
-      "Snow White",
-      "Mickey Mouse",
-      "Minnie Mouse",
-      "Donald Duck",
-      "Daisy Duck",
-      "Huey Duck",
-      "Dewey Duck",
-      "Louie Duck",
-      "Scrooge McDuck",
-      "Clarabelle Cow",
-      "Max Goof",
-      "Horace Horsecollar",
-      "Clara Cluck",
-      "Mortimer Mouse",
-      "Queen of Hearts",
-      "Tweedle Dee",
-      "Tweedle Dum",
-      "White Rabbit",
       "Captain Hook",
-      "Tiger Lily",
-      "Tinker Bell",
-      "Wendy Darling",
-      "Prince John",
-      "Robin Hood",
-      "Sheriff of Nottingham",
-      "Little John",
-      "Maid Marian",
+      "Clara Cluck",
+      "Clarabelle Cow",
+      "Cruella de Vil",
+      "Daisy Duck",
+      "Dewey Duck",
+      "Doc Hudson",
+      "Donald Duck",
       "Eddie Valiant",
+      "Horace Horsecollar",
+      "Huey Duck",
       "Jessica Rabbit",
       "Judge Doom",
-      "Roger Rabbit",
-      "Potato Head",
-      "Bo Peep",
       "Lightning McQueen",
+      "Little John",
+      "Louie Duck",
+      "Maid Marian",
+      "Max Goof",
+      "Mickey Mouse",
+      "Minnie Mouse",
+      "Mortimer Mouse",
+      "Peter Pan",
+      "Potato Head",
+      "Prince John",
+      "Queen of Hearts",
+      "Robin Hood",
+      "Roger Rabbit",
       "Sally Carrera",
-      "Doc Hudson"
+      "Scrooge McDuck",
+      "Speedy Gonzalez",
+      "Sheriff of Nottingham",
+      "Snow White",
+      "Tiger Lily",
+      "Tinker Bell",
+      "Tweedle Dee",
+      "Tweedle Dum",
+      "Wendy Darling",
+      "White Rabbit"
     ]
     |> create_users(:mentor)
     |> create_organizers()
@@ -163,19 +165,19 @@ defmodule Bokken.DbSeeder do
     |> create_users(:ninja)
 
     [
-      "Loop Master",
-      "My First Project",
+      "Conditions Master",
       "Finished 5 Projects",
       "Finished 10 Projects",
-      "Conditions Master"
+      "Loop Master",
+      "My First Project"
     ]
     |> create_badges()
 
     # Great Teams
     [
+      "Qi",
       "Yin",
-      "Yang",
-      "Qi"
+      "Yang"
     ]
     |> create_teams()
 
@@ -188,8 +190,11 @@ defmodule Bokken.DbSeeder do
     |> create_locations()
 
     [
-      "Especial dia da Mãe",
-      "Especial Natal"
+      "Especial Dia da Crianca",
+      "Especial Dia da Mae",
+      "Especial Ferias",
+      "Especial Natal",
+      "Semana de Engenharia Informatica"
     ]
     |> create_new_events()
 
