@@ -10,26 +10,12 @@ defmodule BokkenWeb.AuthController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def show(conn, _params) do
-    user =
-      Authorization.Plug.current_resource(conn)
-      |> then(&Repo.preload(&1, [&1.role]))
-
-    render(conn, "me.json", %{user: check_registered(user)})
-  end
-
   def sign_in(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- Accounts.authenticate_user(email, password) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: check_registered(user)})
+      |> render("me.json", %{user: add_registered(user)})
     end
-  end
-
-  def sign_out(conn, _) do
-    conn
-    |> Authorization.Plug.sign_out()
-    |> send_resp(:no_content, "")
   end
 
   def sign_up(conn, user_info) do
@@ -43,12 +29,39 @@ defmodule BokkenWeb.AuthController do
     end
   end
 
+  def sign_out(conn, _) do
+    conn
+    |> Authorization.Plug.sign_out()
+    |> send_resp(:no_content, "")
+  end
+
+  def show(conn, _params) do
+    user =
+      Authorization.Plug.current_resource(conn)
+      |> then(&Repo.preload(&1, [&1.role]))
+      |> add_registered
+
+    render(conn, "me.json", %{user: user})
+  end
+
+  def update(conn, %{"user" => user_params}) do
+    user =
+      Authorization.Plug.current_resource(conn)
+      |> then(&Repo.preload(&1, [&1.role]))
+      |> add_registered
+
+    with :ok <- is_registered(user),
+         {:ok, %User{} = user} <- Accounts.update_user(user, user_params, user.role) do
+      render(conn, "me.json", %{user: user})
+    end
+  end
+
   def verify(conn, %{"token" => token}) do
     with {:ok, %{"email" => email}} <- Authorization.decode_and_verify(token),
          {:ok, %User{} = user} <- Accounts.verify_user_email(email) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: check_registered(user)})
+      |> render("me.json", %{user: add_registered(user)})
     end
   end
 
@@ -73,7 +86,15 @@ defmodule BokkenWeb.AuthController do
     Email.verify_user_email(token, to: user.email) |> Mailer.deliver_later!()
   end
 
-  defp check_registered(user) do
+  defp is_registered(user) do
+    if user.registered do
+      :ok
+    else
+      {:error, :not_registered}
+    end
+  end
+
+  defp add_registered(user) do
     registered =
       [mentor: user.mentor, guardian: user.guardian, ninja: user.ninja, organizer: user.organizer]
       |> Keyword.get(user.role)
