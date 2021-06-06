@@ -11,7 +11,7 @@ defmodule BokkenWeb.FileController do
     end
   end
 
-  def avatars(conn, %{"user_id" => user_id, "file" => avatar}) do
-    send_file(conn, 200, "uploads/avatars/#{user_id}/#{avatar}")
+  def images(conn, %{"type" => type, "id" => id, "file" => image}) do
+    send_file(conn, 200, "uploads/#{type}/#{id}/#{image}")
   end
 end

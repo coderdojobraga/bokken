@@ -8,8 +8,8 @@ defmodule Bokken.Accounts.Mentor do
   import Ecto.Changeset
 
   alias Bokken.Accounts.{Organizer, Social, User}
-  alias Bokken.Uploaders.Avatar
   alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
+  alias Bokken.Uploaders.Avatar
 
   @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
   @optional_fields [:birthday, :major]
