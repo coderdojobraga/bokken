@@ -27,6 +27,8 @@ config :bokken, BokkenWeb.Authorization,
 
 config :bokken, Bokken.Mailer, adapter: Bamboo.LocalAdapter
 
+config :bokken, BokkenWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
+
 config :waffle,
   storage: Waffle.Storage.Local,
   asset_host: {:system, "HOST_URL"}

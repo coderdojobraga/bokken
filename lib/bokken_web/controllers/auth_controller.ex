@@ -51,7 +51,8 @@ defmodule BokkenWeb.AuthController do
       |> add_registered
 
     with :ok <- is_registered(user),
-         {:ok, %User{} = user} <- Accounts.update_user(user, user_params, user.role) do
+         {:ok, %User{} = user} <-
+           Accounts.update_user(user, Map.drop(user_params, [:active, :verified]), user.role) do
       render(conn, "me.json", %{user: user})
     end
   end
