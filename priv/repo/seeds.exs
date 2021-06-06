@@ -191,10 +191,10 @@ defmodule Bokken.DbSeeder do
 
     [
       "Especial Dia da Crianca",
-      "Especial Dia da Mae",
-      "Especial Ferias",
+      "Especial Dia da Mãe",
+      "Especial Férias",
       "Especial Natal",
-      "Semana de Engenharia Informatica"
+      "Semana de Engenharia Informática"
     ]
     |> create_new_events()
 
