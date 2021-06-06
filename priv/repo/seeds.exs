@@ -192,7 +192,7 @@ defmodule Bokken.DbSeeder do
     [
       "Especial Dia da Criança",
       "Especial Dia da Mãe",
-      "Especial Ferias",
+      "Especial Férias",
       "Especial Natal",
       "Semana da Engenharia Informática"
     ]
