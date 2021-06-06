@@ -484,6 +484,12 @@ defmodule Bokken.Accounts do
     |> Repo.insert()
   end
 
+  def register_user(attrs \\ %{}) do
+    %User{}
+    |> User.register_changeset(attrs)
+    |> Repo.insert()
+  end
+
   @doc """
   Updates a user.
 
@@ -502,10 +508,10 @@ defmodule Bokken.Accounts do
     |> Repo.update()
   end
 
-  def update_user(%User{} = user, attrs, role) do
+  def edit_user(%User{} = user, attrs, role) do
     result =
       Ecto.Multi.new()
-      |> Ecto.Multi.update(:user, User.changeset(user, attrs))
+      |> Ecto.Multi.update(:user, User.edit_changeset(user, attrs))
       |> Ecto.Multi.update(role, &update_user_role(&1, attrs))
       |> Repo.transaction()
 

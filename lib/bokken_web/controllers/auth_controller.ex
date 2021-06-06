@@ -19,7 +19,7 @@ defmodule BokkenWeb.AuthController do
   end
 
   def sign_up(conn, user_info) do
-    with {:ok, %User{} = user} <- Accounts.create_user(Map.drop(user_info, [:active, :verified])) do
+    with {:ok, %User{} = user} <- Accounts.register_user(user_info) do
       send_verification_token(user)
 
       conn
@@ -36,23 +36,17 @@ defmodule BokkenWeb.AuthController do
   end
 
   def show(conn, _params) do
-    user =
-      Authorization.Plug.current_resource(conn)
-      |> then(&Repo.preload(&1, [&1.role]))
-      |> add_registered
+    user = get_current_user(conn)
 
     render(conn, "me.json", %{user: user})
   end
 
   def update(conn, %{"user" => user_params}) do
-    user =
-      Authorization.Plug.current_resource(conn)
-      |> then(&Repo.preload(&1, [&1.role]))
-      |> add_registered
+    user = get_current_user(conn)
 
     with :ok <- is_registered(user),
          {:ok, %User{} = user} <-
-           Accounts.update_user(user, Map.drop(user_params, [:active, :verified]), user.role) do
+           Accounts.edit_user(user, user_params, user.role) do
       render(conn, "me.json", %{user: user})
     end
   end
@@ -93,6 +87,13 @@ defmodule BokkenWeb.AuthController do
     else
       {:error, :not_registered}
     end
+  end
+
+  defp get_current_user(conn) do
+    user =
+      Authorization.Plug.current_resource(conn)
+      |> then(&Repo.preload(&1, [&1.role]))
+      |> add_registered
   end
 
   defp add_registered(user) do
