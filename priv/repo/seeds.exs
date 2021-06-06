@@ -190,7 +190,7 @@ defmodule Bokken.DbSeeder do
     |> create_locations()
 
     [
-      "Especial Dia da Crianca",
+      "Especial Dia da Criança",
       "Especial Dia da Mae",
       "Especial Ferias",
       "Especial Natal",
