@@ -2,11 +2,11 @@ defmodule BokkenWeb.Router do
   use BokkenWeb, :router
 
   pipeline :api do
-    plug :fetch_session
     plug :accepts, ["json"]
   end
 
   pipeline :authenticated do
+    plug :fetch_session
     plug BokkenWeb.Auth.Pipeline
   end
 
@@ -14,7 +14,6 @@ defmodule BokkenWeb.Router do
     get "/", PageController, :index
     get "/humans.txt", FileController, :humans_txt
 
-    pipe_through [:fetch_session]
     pipe_through :authenticated
 
     get "/uploads/:type/:id/:file", FileController, :images
@@ -24,6 +23,7 @@ defmodule BokkenWeb.Router do
     pipe_through :api
 
     scope "/auth" do
+      pipe_through [:fetch_session]
       post "/sign_up", AuthController, :sign_up
       post "/sign_in", AuthController, :sign_in
       post "/verify", AuthController, :verify
