@@ -5,6 +5,8 @@ defmodule BokkenWeb.FallbackController do
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
   use BokkenWeb, :controller
+  defguard is_404(reason) when reason in [:not_found, :not_registered, :invalid_credentials]
+  defguard is_401(reason) when reason in [:token_expired]
 
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
@@ -14,29 +16,14 @@ defmodule BokkenWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
-  # This clause is an example of how to handle resources that cannot be found.
-  def call(conn, {:error, :not_found}) do
+  def call(conn, {:error, reason}) when is_404(reason) do
     conn
     |> put_status(:not_found)
     |> put_view(BokkenWeb.ErrorView)
     |> render(:"404")
   end
 
-  def call(conn, {:error, :not_registered}) do
-    conn
-    |> put_status(:not_found)
-    |> put_view(BokkenWeb.ErrorView)
-    |> render(:"404")
-  end
-
-  def call(conn, {:error, :invalid_credentials}) do
-    conn
-    |> put_status(:not_found)
-    |> put_view(BokkenWeb.ErrorView)
-    |> render(:"404")
-  end
-
-  def call(conn, {:error, :token_expired}) do
+  def call(conn, {:error, reason}) when is_401(reason) do
     conn
     |> put_status(:unauthorized)
     |> put_view(BokkenWeb.ErrorView)
