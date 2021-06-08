@@ -169,6 +169,7 @@ defmodule Bokken.DbSeeder do
       "Finished 5 Projects",
       "Finished 10 Projects",
       "Loop Master",
+      "Scratch",
       "My First Project"
     ]
     |> create_badges()
@@ -231,8 +232,8 @@ defmodule Bokken.DbSeeder do
 
   def create_new_events(title) do
     for name <- title do
-      randomNumber = Enum.random(1..100)
-      notes = "Great #{randomNumber} event"
+      random_number = Enum.random(1..100)
+      notes = "Great #{random_number} event"
 
       %{id: location_id} = Enum.random(Bokken.Events.list_locations())
       %{id: team_id} = Enum.random(Bokken.Events.list_teams())
@@ -249,14 +250,28 @@ defmodule Bokken.DbSeeder do
     end
   end
 
-  def create_badges(names) do
-    for character <- names do
-      random = Enum.random(1..100)
+  def create_badges(titles) do
+    for title <- titles do
+      image =
+        case Mix.env() do
+          :dev ->
+            path =
+              case title do
+                "Scratch" -> "./.postman/scratch.png"
+                _ -> "./.postman/question.png"
+              end
 
-      image = "https://robohash.org/#{random}"
-      description = character
+            %Plug.Upload{
+              content_type: "image/png",
+              filename: "badge.png",
+              path: path
+            }
 
-      badge = %{description: description, name: character, image: image}
+          _ ->
+            nil
+        end
+
+      badge = %{description: title, name: title, image: image}
 
       Bokken.Gamification.create_badge(badge)
     end
@@ -302,7 +317,7 @@ defmodule Bokken.DbSeeder do
 
     city = Enum.random(Jason.decode!(File.read!("data/pt/cities.json")))
 
-    photo = "https://robohash.org/#{names.first_name}-#{names.last_name}"
+    photo = nil
 
     guardian = Enum.into(names, %{user_id: user_id, photo: photo, mobile: mobile, city: city})
 
@@ -320,7 +335,7 @@ defmodule Bokken.DbSeeder do
 
     %{id: guardian_id} = Enum.random(Bokken.Accounts.list_guardians())
 
-    photo = "https://robohash.org/#{names.first_name}-#{names.last_name}"
+    photo = nil
 
     ninja =
       Enum.into(names, %{
@@ -344,7 +359,7 @@ defmodule Bokken.DbSeeder do
       day: Enum.random(1..28)
     }
 
-    photo = "https://robohash.org/#{names.first_name}-#{names.last_name}"
+    photo = nil
 
     mentor =
       Enum.into(names, %{
