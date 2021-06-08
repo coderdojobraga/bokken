@@ -195,9 +195,10 @@ defmodule Bokken.DbSeeder do
       "Especial Dia da Mãe",
       "Especial Férias",
       "Especial Natal",
-      "Semana de Engenharia Informática"
+      "Semana de Engenharia Informática",
+      nil
     ]
-    |> create_new_events()
+    |> create_events()
 
     # Some Lectures
     [
@@ -230,7 +231,7 @@ defmodule Bokken.DbSeeder do
     end
   end
 
-  def create_new_events(title) do
+  def create_events(title) do
     for name <- title do
       random_number = Enum.random(1..100)
       notes = "Great #{random_number} event"
@@ -242,6 +243,8 @@ defmodule Bokken.DbSeeder do
         title: name,
         online: false,
         notes: notes,
+        start_time: ~U[2021-08-08 10:00:00.0Z],
+        end_time: ~U[2021-08-08 12:30:00.0Z],
         location_id: location_id,
         team_id: team_id
       }

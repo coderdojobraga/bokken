@@ -21,9 +21,11 @@ defmodule BokkenWeb.EventView do
   defp base(event) do
     %{
       id: event.id,
+      title: event.title,
+      start_time: event.start_time,
+      end_time: event.end_time,
       online: event.online,
-      notes: event.notes,
-      title: event.title
+      notes: event.notes
     }
   end
 
