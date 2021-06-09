@@ -801,7 +801,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-06-04\"\n    }\n}",
+									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-07-05\"    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1540,7 +1540,7 @@
 										},
 										{
 											"key": "badge[description]",
-											"value": "Para o ninja que farta-se de criar projetos",
+											"value": "For the ninja who never stops building things",
 											"type": "text"
 										},
 										{
@@ -2165,7 +2165,56 @@
 								},
 								"description": "Lists all the locations."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "List locations",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/locations",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"locations"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "352"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:54:43 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9U_Mjx0QktZQAAAAj"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": [\n        {\n            \"address\": \"Rua da Estrada, n.º 39, Braga\",\n            \"id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n            \"name\": \"Braga\"\n        },\n        {\n            \"address\": \"Rua da Estrada, n.º 15, Guimarães\",\n            \"id\": \"c5dd9b94-3b8c-4e79-b718-6d44b0a8be97\",\n            \"name\": \"Guimarães\"\n        },\n        {\n            \"address\": \"Rua da Estrada, n.º 12, Vieira do Minho\",\n            \"id\": \"db396337-bc09-451e-b414-4492605dfa44\",\n            \"name\": \"Vieira do Minho\"\n        }\n    ]\n}"
+								}
+							]
 						},
 						{
 							"name": "Create location",
@@ -2214,7 +2263,69 @@
 								},
 								"description": "Creates a new location."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Create location",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\",\n        \"address\": \"{{$randomStreetName}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/locations",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"locations"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "97"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:54:54 GMT"
+										},
+										{
+											"key": "location",
+											"value": "/api/locations/17648888-5ccc-4aaa-9b6b-fecf5b70d091"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9Vmm8tC-a0mAAAAFB"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"address\": \"Stanton Fords\",\n        \"id\": \"17648888-5ccc-4aaa-9b6b-fecf5b70d091\",\n        \"name\": \"Westton\"\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Update location",
@@ -2243,7 +2354,66 @@
 								},
 								"description": "Updates some field of a certain location."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Update location",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"location\": {\n        \"name\": \"{{$randomCity}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/locations/{{location_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												"{{location_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "104"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:55:02 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9WEHdx10X_SwAAAKE"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"address\": \"Stanton Fords\",\n        \"id\": \"17648888-5ccc-4aaa-9b6b-fecf5b70d091\",\n        \"name\": \"North Fannyton\"\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Delete location",
@@ -2263,7 +2433,49 @@
 								},
 								"description": "Deletes one location."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Delete location",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/locations/{{location_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												"{{location_id}}"
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:55:10 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9WjNM_1J-fa8AAABD"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
 						}
 					],
 					"event": [
@@ -2307,7 +2519,56 @@
 								},
 								"description": "Lists all the events."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "List events",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/events",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"events"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "2085"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:48:40 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa8_2rO2sMQ8m8AAACB"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": [\n        {\n            \"end_time\": \"2021-08-08T12:30:00Z\",\n            \"id\": \"9b0bacdf-5413-4a18-b514-388e786b2c10\",\n            \"location\": {\n                \"address\": \"Rua da Estrada, n.º 39, Braga\",\n                \"id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n                \"name\": \"Braga\"\n            },\n            \"notes\": \"Great 79 event\",\n            \"online\": false,\n            \"start_time\": \"2021-08-08T10:00:00Z\",\n            \"team\": {\n                \"description\": \"Yin is the best team ever\",\n                \"id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n                \"name\": \"Yin\"\n            },\n            \"title\": \"Especial Dia da Criança\"\n        },\n        {\n            \"end_time\": \"2021-08-08T12:30:00Z\",\n            \"id\": \"e6ed6e26-96bb-4a10-8bda-ba2a39f2aaa3\",\n            \"location\": {\n                \"address\": \"Rua da Estrada, n.º 39, Braga\",\n                \"id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n                \"name\": \"Braga\"\n            },\n            \"notes\": \"Great 45 event\",\n            \"online\": false,\n            \"start_time\": \"2021-08-08T10:00:00Z\",\n            \"team\": {\n                \"description\": \"Yin is the best team ever\",\n                \"id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n                \"name\": \"Yin\"\n            },\n            \"title\": \"Especial Dia da Mãe\"\n        },\n        {\n            \"end_time\": \"2021-08-08T12:30:00Z\",\n            \"id\": \"9ee521af-cbd2-4b38-bdfc-ca835bb1015f\",\n            \"location\": {\n                \"address\": \"Rua da Estrada, n.º 39, Braga\",\n                \"id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n                \"name\": \"Braga\"\n            },\n            \"notes\": \"Great 94 event\",\n            \"online\": false,\n            \"start_time\": \"2021-08-08T10:00:00Z\",\n            \"team\": {\n                \"description\": \"Yin is the best team ever\",\n                \"id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n                \"name\": \"Yin\"\n            },\n            \"title\": \"Especial Natal\"\n        }\n    ]\n}"
+								}
+							]
 						},
 						{
 							"name": "Event to work with",
@@ -2461,7 +2722,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2480,7 +2741,69 @@
 								},
 								"description": "Creates an event."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Create an event",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"start_time\": \"2021-08-06T10:00:00Z\",\n        \"end_time\": \"2021-08-06T12:30:00Z\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/events",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"events"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "287"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:58:28 GMT"
+										},
+										{
+											"key": "location",
+											"value": "/api/events/21d7c385-67c6-46ca-9593-9f7cecb71f3a"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9iD2bWmo6h-QAAACj"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"end_time\": \"2021-08-06T12:30:00Z\",\n        \"id\": \"21d7c385-67c6-46ca-9593-9f7cecb71f3a\",\n        \"location_id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n        \"notes\": \"Great 73 event\",\n        \"online\": true,\n        \"start_time\": \"2021-08-06T10:00:00Z\",\n        \"team_id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n        \"title\": \"Special 980\"\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Update Event",
@@ -2509,7 +2832,66 @@
 								},
 								"description": "Updates a field of a specific event."
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Update Event",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"event\": {\n        \"notes\": \"Changing event's notes on {{$isoTimestamp}}\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/events/{{event_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"events",
+												"{{event_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "323"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Tue, 08 Jun 2021 22:58:40 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "Foa9iv7DhF6MYnUAAADC"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"end_time\": \"2021-08-06T12:30:00Z\",\n        \"id\": \"21d7c385-67c6-46ca-9593-9f7cecb71f3a\",\n        \"location_id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n        \"notes\": \"Changing event's notes on 2021-06-08T22:58:40.279Z\",\n        \"online\": true,\n        \"start_time\": \"2021-08-06T10:00:00Z\",\n        \"team_id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n        \"title\": \"Special 980\"\n    }\n}"
+								}
+							]
 						},
 						{
 							"name": "Delete event",

@@ -7,7 +7,7 @@ defmodule Bokken.Events.Event do
 
   alias Bokken.Events.{Lecture, Location, Team}
 
-  @required_fields [:team_id, :location_id, :online]
+  @required_fields [:team_id, :location_id, :online, :start_time, :end_time]
   @optional_fields [:notes, :title]
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -16,6 +16,8 @@ defmodule Bokken.Events.Event do
     field :notes, :string
     field :online, :boolean
     field :title, :string
+    field :start_time, :utc_datetime
+    field :end_time, :utc_datetime
 
     belongs_to :location, Location, foreign_key: :location_id
     belongs_to :team, Team, foreign_key: :team_id

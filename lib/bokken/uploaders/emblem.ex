@@ -28,6 +28,10 @@ defmodule Bokken.Uploaders.Emblem do
 
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(_version, _scope) do
-    BokkenWeb.Endpoint.url() <> "/images/default_badge.png"
+    base_url() <> "/images/default_badge.png"
+  end
+
+  defp base_url do
+    Application.fetch_env!(:waffle, :asset_host)
   end
 end

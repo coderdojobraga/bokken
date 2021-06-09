@@ -7,6 +7,8 @@ defmodule Bokken.Repo.Migrations.CreateEvents do
       add :online, :boolean, null: false, default: false
       add :notes, :text
       add :title, :string
+      add :start_time, :utc_datetime
+      add :end_time, :utc_datetime
 
       add :location_id, references(:locations, on_delete: :nothing, type: :binary_id)
       add :team_id, references(:teams, on_delete: :nothing, type: :binary_id)
