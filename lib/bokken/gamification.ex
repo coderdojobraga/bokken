@@ -68,19 +68,9 @@ defmodule Bokken.Gamification do
 
   """
   def create_badge(attrs \\ %{}) do
-    transaction =
-      Ecto.Multi.new()
-      |> Ecto.Multi.insert(:badge, Badge.changeset(%Badge{}, attrs))
-      |> Ecto.Multi.update(:badge_with_image, &Badge.image_changeset(&1.badge, attrs))
-      |> Repo.transaction()
-
-    case transaction do
-      {:ok, %{badge: badge, badge_with_image: badge_with_image}} ->
-        {:ok, %{badge | image: badge_with_image.image}}
-
-      {:error, _transation, errors, _changes_so_far} ->
-        {:error, errors}
-    end
+    %Badge{}
+    |> Badge.changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """
@@ -130,7 +120,6 @@ defmodule Bokken.Gamification do
   def change_badge(%Badge{} = badge, attrs \\ %{}) do
     badge
     |> Badge.changeset(attrs)
-    |> Badge.image_changeset(attrs)
   end
 
   alias Bokken.Gamification.BadgeNinja

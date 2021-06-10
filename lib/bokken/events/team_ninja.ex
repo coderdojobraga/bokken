@@ -2,8 +2,8 @@ defmodule Bokken.Events.TeamNinja do
   @moduledoc """
   Team and Ninja join table
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.Ninja
   alias Bokken.Events.Team
 

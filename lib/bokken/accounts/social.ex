@@ -2,9 +2,9 @@ defmodule Bokken.Accounts.Social do
   @moduledoc """
   A social media embedded struct schema.
   """
-  use Ecto.Schema
-  import Ecto.Changeset
-  alias Bokken.Accounts.Social
+  use Bokken.Schema
+
+  alias __MODULE__
 
   @required_fields [:name, :username]
   @optional_fields []

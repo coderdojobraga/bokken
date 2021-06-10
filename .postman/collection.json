@@ -1778,7 +1778,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"badge_id\": 2\n}",
+									"raw": "{\n    \"badge_id\": \"{{badge_id}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

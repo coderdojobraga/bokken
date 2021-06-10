@@ -2,16 +2,14 @@ defmodule Bokken.Events.Lecture do
   @moduledoc """
   one on one lecture
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Event, LectureMentorAssistant}
 
   @required_fields [:ninja_id, :mentor_id, :event_id]
   @optional_fields [:notes, :summary, :attendance]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "lectures" do
     field :notes, :string
     field :summary, :string
