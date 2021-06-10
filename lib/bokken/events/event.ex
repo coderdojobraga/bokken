@@ -2,16 +2,13 @@ defmodule Bokken.Events.Event do
   @moduledoc """
   An event of CoderDojo
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
 
   alias Bokken.Events.{Lecture, Location, Team}
 
   @required_fields [:team_id, :location_id, :online, :start_time, :end_time]
   @optional_fields [:notes, :title]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "events" do
     field :notes, :string
     field :online, :boolean

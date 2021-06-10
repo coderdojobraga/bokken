@@ -3,10 +3,8 @@ defmodule Bokken.Gamification.Badge do
   Badges are awards earned by ninjas for conquering challenges and finishing
   projects.
   """
-  use Ecto.Schema
+  use Bokken.Schema
   use Waffle.Ecto.Schema
-
-  import Ecto.Changeset
 
   alias Bokken.Accounts.Ninja
   alias Bokken.Gamification.BadgeNinja
@@ -27,15 +25,10 @@ defmodule Bokken.Gamification.Badge do
   end
 
   @doc false
-  def image_changeset(badge, attrs) do
-    badge
-    |> cast_attachments(attrs, @attachment_fields)
-  end
-
-  @doc false
   def changeset(badge, attrs) do
     badge
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields)
   end
 end

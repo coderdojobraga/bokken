@@ -2,15 +2,13 @@ defmodule Bokken.Accounts.User do
   @moduledoc """
   A user of the application capable of authenticating.
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.{Guardian, Mentor, Ninja, Organizer}
 
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "users" do
     field :email, :string
     field :password_hash, :string

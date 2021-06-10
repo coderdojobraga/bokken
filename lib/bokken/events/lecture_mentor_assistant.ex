@@ -2,8 +2,8 @@ defmodule Bokken.Events.LectureMentorAssistant do
   @moduledoc """
   Lecture and Mentor Assistant join table
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.Mentor
   alias Bokken.Events.Lecture
 

@@ -2,8 +2,8 @@ defmodule Bokken.Gamification.BadgeNinja do
   @moduledoc """
   Badge and Ninja join table
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.Ninja
   alias Bokken.Gamification.Badge
 
@@ -12,7 +12,7 @@ defmodule Bokken.Gamification.BadgeNinja do
 
   @primary_key false
   schema "badges_ninjas" do
-    belongs_to :badge, Badge
+    belongs_to :badge, Badge, type: :binary_id
     belongs_to :ninja, Ninja, type: :binary_id
 
     timestamps()

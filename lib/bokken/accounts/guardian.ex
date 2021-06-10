@@ -2,10 +2,8 @@ defmodule Bokken.Accounts.Guardian do
   @moduledoc """
   A guardian is the ninja's legal responsible.
   """
-  use Ecto.Schema
+  use Bokken.Schema
   use Waffle.Ecto.Schema
-
-  import Ecto.Changeset
 
   alias Bokken.Accounts.{Ninja, User}
   alias Bokken.Uploaders.Avatar
@@ -16,8 +14,6 @@ defmodule Bokken.Accounts.Guardian do
   @optional_fields [:city]
   @attachment_fields [:photo]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "guardians" do
     field :photo, Avatar.Type
     field :first_name, :string

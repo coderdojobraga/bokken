@@ -2,10 +2,8 @@ defmodule Bokken.Accounts.Mentor do
   @moduledoc """
   A mentor is a user who helps ninjas to progress in their training.
   """
-  use Ecto.Schema
+  use Bokken.Schema
   use Waffle.Ecto.Schema
-
-  import Ecto.Changeset
 
   alias Bokken.Accounts.{Organizer, Social, User}
   alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
@@ -15,8 +13,6 @@ defmodule Bokken.Accounts.Mentor do
   @optional_fields [:birthday, :major]
   @attachment_fields [:photo]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "mentors" do
     field :photo, Avatar.Type
     field :first_name, :string

@@ -2,15 +2,13 @@ defmodule Bokken.Accounts.Organizer do
   @moduledoc """
   An organizer is a person who arranges the details of an event.
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Bokken.Schema
+
   alias Bokken.Accounts.{Mentor, User}
 
   @required_fields [:champion, :user_id]
   @optional_fields [:mentor_id]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   schema "organizers" do
     field :champion, :boolean, default: false
 
