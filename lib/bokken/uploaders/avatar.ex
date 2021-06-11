@@ -1,5 +1,7 @@
 defmodule Bokken.Uploaders.Avatar do
-  @moduledoc false
+  @moduledoc """
+  Avatar is used for user photos.
+  """
   use Waffle.Definition
   use Waffle.Ecto.Definition
 

@@ -26,10 +26,13 @@ services:
       - FRONTEND_URL
       - HOST_URL
       - PORT
+    volumes:
+      - uploads:/app/uploads
     ports:
       - ${PORT}:4001
     restart: always
 
 volumes:
   pgdata:
+  uploads:
 
