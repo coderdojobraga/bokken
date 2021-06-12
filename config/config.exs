@@ -33,6 +33,14 @@ config :waffle,
   storage: Waffle.Storage.Local,
   asset_host: {:system, "HOST_URL"}
 
+config :kaffy,
+  otp_app: :bokken,
+  admin_title: "CoderDojo Braga",
+  admin_logo: "/images/logo-lettering.png",
+  admin_logo_mini: "/images/logo.svg",
+  ecto_repo: Bokken.Repo,
+  router: BokkenWeb.Router
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

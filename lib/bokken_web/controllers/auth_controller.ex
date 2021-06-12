@@ -90,10 +90,9 @@ defmodule BokkenWeb.AuthController do
   end
 
   defp get_current_user(conn) do
-    user =
-      Authorization.Plug.current_resource(conn)
-      |> then(&Repo.preload(&1, [&1.role]))
-      |> add_registered
+    Authorization.Plug.current_resource(conn)
+    |> then(&Repo.preload(&1, [&1.role]))
+    |> add_registered
   end
 
   defp add_registered(user) do
