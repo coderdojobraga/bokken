@@ -16,7 +16,6 @@ defmodule Bokken.Gamification do
 
   Takes a map with the following optional arguments:
 
-    * `:limit` - The maximum number of badges to return.
     * `:ninja_id` - A ninja id to filter the results by.
 
   ## Examples
@@ -53,7 +52,9 @@ defmodule Bokken.Gamification do
       ** (Ecto.NoResultsError)
 
   """
-  def get_badge!(id), do: Repo.get!(Badge, id)
+  def get_badge!(id, preloads \\ []) do
+    Repo.get!(Badge, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a badge.
