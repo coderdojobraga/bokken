@@ -9,6 +9,8 @@ defmodule Bokken.Accounts do
   alias Bokken.Events
   alias Bokken.Events.{TeamMentor, TeamNinja}
 
+  alias Bokken.Gamification
+
   alias Bokken.Accounts.Guardian
 
   @doc """
@@ -210,6 +212,11 @@ defmodule Bokken.Accounts do
   @doc """
   Returns the list of ninjas.
 
+  Takes a map with the following optional arguments:
+
+    * `:badge_id` - A badge id to filter the results by.
+    * `:team_id` - A badge id to filter the results by.
+
   ## Examples
 
       iex> list_ninjas()
@@ -223,6 +230,12 @@ defmodule Bokken.Accounts do
   def list_ninjas(%{"team_id" => team_id}) do
     team_id
     |> Events.get_team!([:ninjas])
+    |> Map.fetch!(:ninjas)
+  end
+
+  def list_ninjas(%{"badge_id" => badge_id}) do
+    badge_id
+    |> Gamification.get_badge!([:ninjas])
     |> Map.fetch!(:ninjas)
   end
 

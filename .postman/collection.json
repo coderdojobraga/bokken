@@ -1230,6 +1230,7 @@
 											"                <td>{{first_name}} {{last_name}}</td>",
 											"                <td>{{mobile}}</td>",
 											"                <td>{{city}}</td>",
+											"                <td bgcolor=\"{{belt}}\"></td>",
 											"            </tr>",
 											"        {{/each}}",
 											"    </table>",
@@ -1248,6 +1249,56 @@
 							"request": {
 								"method": "GET",
 								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a valid Ninja",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/guardians`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_guardian);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ninja\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"{{user_id}}\",\n        \"city\": \"Vieira do Minho\",\n        \"birthday\": \"1996-12-12\",\n        \"belt\": \"white\",\n        \"guardian_id\": \"{{guardian_id}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{host}}/api/ninjas",
 									"host": [
@@ -1565,7 +1616,7 @@
 							},
 							"response": [
 								{
-									"name": "Create a Badge with image",
+									"name": "Create a Badge",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
@@ -1579,7 +1630,7 @@
 												},
 												{
 													"key": "badge[description]",
-													"value": "Para o ninja que farta-se de criar projetos",
+													"value": "For the ninja who never stops building things",
 													"type": "text"
 												},
 												{
@@ -1587,12 +1638,7 @@
 													"type": "file",
 													"src": "./.postman/scratch.png"
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{host}}/api/badges/",
@@ -1616,7 +1662,7 @@
 										},
 										{
 											"key": "content-length",
-											"value": "183"
+											"value": "255"
 										},
 										{
 											"key": "content-type",
@@ -1624,11 +1670,11 @@
 										},
 										{
 											"key": "date",
-											"value": "Fri, 04 Jun 2021 20:07:14 GMT"
+											"value": "Fri, 11 Jun 2021 22:35:10 GMT"
 										},
 										{
 											"key": "location",
-											"value": "/api/badges/20"
+											"value": "/api/badges/380b3725-a37a-4c7d-a15b-50c61de1573c"
 										},
 										{
 											"key": "server",
@@ -1636,11 +1682,11 @@
 										},
 										{
 											"key": "x-request-id",
-											"value": "FoV53gsFuE_J8MUAAALi"
+											"value": "FoeoAH6uk7bckTMAAAjB"
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"description\": \"Para o ninja que farta-se de criar projetos\",\n        \"id\": 20,\n        \"image\": \"https://bokken.di.uminho.pt/uploads/badges/20/original.png?v=63790056435\",\n        \"name\": \"Built 151 projects\"\n    }\n}"
+									"body": "{\n    \"data\": {\n        \"description\": \"For the ninja who never stops building things\",\n        \"id\": \"380b3725-a37a-4c7d-a15b-50c61de1573c\",\n        \"image\": \"https://bokken.di.uminho.pt/uploads/badges/380b3725-a37a-4c7d-a15b-50c61de1573c/original.png?v=63790670110\",\n        \"name\": \"Built 695 projects\"\n    }\n}"
 								}
 							]
 						},
@@ -1710,29 +1756,26 @@
 					"name": "Ninjas",
 					"item": [
 						{
-							"name": "Get a Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
+							"name": "List Ninjas with Badge",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"method": "GET",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
-									"raw": "{{host}}/api/ninjas",
+									"raw": "{{host}}/api/badges/{{badge_id}}/ninjas",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
+										"badges",
+										"{{badge_id}}",
 										"ninjas"
 									]
 								}
