@@ -54,6 +54,7 @@ defmodule Bokken.MixProject do
       {:waffle_ecto, "~> 0.0"},
       {:bamboo, "~> 2.1.0"},
       {:bamboo_phoenix, "~> 1.0.0"},
+      {:kaffy, github: "aesmail/kaffy", commit: "cf35712714856816aef47a1afe93a466e055f080"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
