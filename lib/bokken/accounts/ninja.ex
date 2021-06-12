@@ -11,7 +11,7 @@ defmodule Bokken.Accounts.Ninja do
   alias Bokken.Uploaders.Avatar
 
   @required_fields [:first_name, :last_name, :birthday, :guardian_id]
-  @optional_fields [:notes, :user_id]
+  @optional_fields [:notes, :user_id, :belt]
   @attachment_fields [:photo]
 
   schema "ninjas" do
@@ -21,7 +21,8 @@ defmodule Bokken.Accounts.Ninja do
     field :birthday, :date
 
     field :belt, Ecto.Enum,
-      values: [nil, :white, :yellow, :blue, :green, :orange, :red, :purple, :black]
+      values: [nil, :white, :yellow, :blue, :green, :orange, :red, :purple, :black],
+      default: nil
 
     field :notes, :string
 

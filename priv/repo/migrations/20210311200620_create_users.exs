@@ -11,6 +11,7 @@ defmodule Bokken.Repo.Migrations.CreateUsers do
 
       add :verified, :boolean, default: false, null: false
       add :active, :boolean, default: false, null: false
+      add :registered, :boolean, default: false, null: false
 
       timestamps()
     end

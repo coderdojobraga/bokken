@@ -42,6 +42,10 @@ RUN chown nobody:nobody /app
 
 USER nobody:nobody
 
+RUN mkdir -p /app/uploads
+
+VOLUME ["/app/uploads"]
+
 COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/bokken ./
 
 ENV HOME=/app

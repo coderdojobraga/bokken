@@ -13,4 +13,5 @@ defmodule BokkenWeb.Auth.Pipeline do
   plug Guardian.Plug.VerifyHeader
   plug Guardian.Plug.EnsureAuthenticated
   plug Guardian.Plug.LoadResource
+  plug BokkenWeb.Auth.CurrentUser
 end

@@ -135,6 +135,163 @@
 							]
 						},
 						{
+							"name": "Register Mentor",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Sign up status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"})",
+											"",
+											"pm.test(\"User is not registered\", function () {",
+											"    pm.expect(pm.response.json().registered).to.eql(true);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "user[first_name]",
+											"value": "Carlos",
+											"type": "text"
+										},
+										{
+											"key": "user[last_name]",
+											"value": "Ribeiro",
+											"type": "text"
+										},
+										{
+											"key": "user[photo]",
+											"type": "file",
+											"src": "./.postman/avatar.png"
+										},
+										{
+											"key": "user[mobile]",
+											"value": "+351912345678",
+											"type": "text"
+										},
+										{
+											"key": "user[birthday]",
+											"value": "1999-12-19",
+											"type": "text"
+										},
+										{
+											"key": "user[major]",
+											"value": "Engenharia Informática",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/me",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Register Mentor",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "user[first_name]",
+													"value": "Carlos",
+													"type": "text"
+												},
+												{
+													"key": "user[last_name]",
+													"value": "Ribeiro",
+													"type": "text"
+												},
+												{
+													"key": "user[photo]",
+													"type": "file",
+													"src": "./.postman/avatar.png"
+												},
+												{
+													"key": "user[mobile]",
+													"value": "+351912345678",
+													"type": "text"
+												},
+												{
+													"key": "user[birthday]",
+													"value": "1999-12-19",
+													"type": "text"
+												},
+												{
+													"key": "user[major]",
+													"value": "Engenharia Informática",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/me",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "454"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Sat, 12 Jun 2021 15:52:35 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FofgnRNUSVQSPmoAAAGE"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"birthday\": \"1999-12-19\",\n    \"email\": \"Garrett85@yahoo.com\",\n    \"first_name\": \"Carlos\",\n    \"id\": \"0ee9f8c0-c619-471f-84fe-3cfe209a85ee\",\n    \"last_name\": \"Ribeiro\",\n    \"major\": \"Engenharia Informática\",\n    \"mentor_id\": \"48af0d9e-82f0-451d-93b9-0cf338cc6c8e\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://bokken.di.uminho.pt/uploads/avatars/0ee9f8c0-c619-471f-84fe-3cfe209a85ee/thumb.png?v=63790732356\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": true,\n    \"verified\": false\n}"
+								}
+							]
+						},
+						{
 							"name": "Sign out",
 							"event": [
 								{
@@ -801,7 +958,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-07-05\"    }\n}",
+									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-07-05\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -897,6 +1054,37 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"email = `nelson${parseInt((Math.random() * 100), 10)}@mail.com`,",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_up`,",
+											"    method: 'POST',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"    body: {",
+											"\t    mode: 'raw',",
+											"\t\traw: JSON.stringify({",
+											"\t\t\t\"email\": email,",
+											"\t\t\t\"password\": \"password1234\",",
+											"\t\t\t\"role\": \"mentor\",",
+											"\t\t}),",
+											"\t},",
+											"}, utils.create_user);",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -933,6 +1121,11 @@
 										{
 											"key": "mentor[user_id]",
 											"value": "{{user_id}}",
+											"type": "text"
+										},
+										{
+											"key": "mentor[birthday]",
+											"value": "1999-07-24",
 											"type": "text"
 										}
 									]
@@ -1540,14 +1733,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/badges/",
+									"raw": "{{host}}/api/badges",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"badges",
-										""
+										"badges"
 									]
 								},
 								"description": "Lists all existing badges."
@@ -1602,14 +1794,13 @@
 									]
 								},
 								"url": {
-									"raw": "{{host}}/api/badges/",
+									"raw": "{{host}}/api/badges",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"badges",
-										""
+										"badges"
 									]
 								},
 								"description": "Creates a new badge."
@@ -1792,7 +1983,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"badge_id\": \"1\"\n}",
+									"raw": "",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1816,6 +2007,41 @@
 						},
 						{
 							"name": "Give a badge to a Ninja",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											"",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/badges`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_badge);",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -3149,6 +3375,35 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"const token = pm.environment.get(\"token\");",
+									"",
+									"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+									"",
+									"pm.sendRequest({",
+									"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+									"    method: 'GET',",
+									"    header: {",
+									"        'Content-Type': 'application/json',",
+									"        'Cookie': `_bokken_key=${token}`",
+									"    },",
+									"}, utils.get_mentor);",
+									"",
+									"const mentor_id = pm.environment.get(\"mentor_id\");",
+									"",
+									"pm.environment.set(\"mentor_id\", mentor_id);",
+									"",
+									"pm.sendRequest({",
+									"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+									"    method: 'GET',",
+									"    header: {",
+									"        'Content-Type': 'application/json',",
+									"        'Cookie': `_bokken_key=${token}`",
+									"    },",
+									"}, utils.get_mentor);",
+									"",
+									"const mentor_assistant_id = pm.environment.get(\"mentor_id\");",
+									"",
+									"pm.environment.set(\"mentor_id\", mentor_assistant_id);",
 									""
 								],
 								"type": "text/javascript"
@@ -3395,13 +3650,25 @@
 					"        pm.environment.set(\"team_id\", team_id);",
 					"    }",
 					"",
+					"    function get_badge(err, response) {",
+					"        setup_request(err, response, \"badge\");",
+					"    ",
+					"        // Store one team ID",
+					"        const { data } = response.json();",
+					"",
+					"        const badge_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"badge_id\", badge_id);",
+					"    }",
+					"",
 					"    return { ",
 					"        requests: {",
 					"            create_user,",
 					"            get_guardian,",
 					"            get_mentor,",
 					"            get_ninja,",
-					"            get_team",
+					"            get_team,",
+					"            get_badge",
 					"        } ",
 					"    }",
 					"}`)",

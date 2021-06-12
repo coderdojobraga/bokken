@@ -9,8 +9,8 @@ defmodule Bokken.Accounts.Mentor do
   alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
   alias Bokken.Uploaders.Avatar
 
-  @required_fields [:first_name, :last_name, :mobile, :trial, :user_id]
-  @optional_fields [:birthday, :major]
+  @required_fields [:first_name, :last_name, :mobile, :user_id]
+  @optional_fields [:birthday, :major, :trial]
   @attachment_fields [:photo]
 
   schema "mentors" do

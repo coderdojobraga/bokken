@@ -5,21 +5,22 @@ defmodule BokkenWeb.AuthController do
   alias Bokken.Accounts.User
   alias Bokken.Email
   alias Bokken.Mailer
-  alias Bokken.Repo
   alias BokkenWeb.Authorization
 
   action_fallback BokkenWeb.FallbackController
+
+  defguard is_registered(conn) when conn.assigns.current_user.registered
 
   def sign_in(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- Accounts.authenticate_user(email, password) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: add_registered(user)})
+      |> render("me.json", %{user: user})
     end
   end
 
   def sign_up(conn, user_info) do
-    with {:ok, %User{} = user} <- Accounts.register_user(user_info) do
+    with {:ok, %User{} = user} <- Accounts.sign_up_user(user_info) do
       send_verification_token(user)
 
       conn
@@ -36,17 +37,24 @@ defmodule BokkenWeb.AuthController do
   end
 
   def show(conn, _params) do
-    user = get_current_user(conn)
-
-    render(conn, "me.json", %{user: user})
+    render(conn, "me.json", %{user: conn.assigns.current_user})
   end
 
-  def update(conn, %{"user" => user_params}) do
-    user = get_current_user(conn)
+  def create(conn, %{"user" => user_params}) do
+    current_user = conn.assigns.current_user
 
-    with :ok <- is_registered(user),
-         {:ok, %User{} = user} <-
-           Accounts.edit_user(user, user_params, user.role) do
+    with {:ok, %User{} = user} <-
+           Accounts.register_user(current_user, user_params) do
+      conn
+      |> put_status(:created)
+      |> render("me.json", %{user: user})
+    end
+  end
+
+  def update(conn, %{"user" => user_params}) when is_registered(conn) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, %User{} = user} <- Accounts.edit_user(current_user, user_params, current_user.role) do
       render(conn, "me.json", %{user: user})
     end
   end
@@ -56,18 +64,18 @@ defmodule BokkenWeb.AuthController do
          {:ok, %User{} = user} <- Accounts.verify_user_email(email) do
       conn
       |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
-      |> render("me.json", %{user: add_registered(user)})
+      |> render("me.json", %{user: user})
     end
   end
 
   def resend(conn, _params) do
-    user = Authorization.Plug.current_resource(conn)
+    current_user = conn.assigns.current_user
 
-    if user.verified do
+    if current_user.verified do
       conn
       |> send_resp(:no_content, "")
     else
-      send_verification_token(user)
+      send_verification_token(current_user)
 
       conn
       |> send_resp(:created, "")
@@ -79,28 +87,5 @@ defmodule BokkenWeb.AuthController do
       Authorization.encode_and_sign(user, %{email: user.email}, ttl: {15, :minute})
 
     Email.verify_user_email(token, to: user.email) |> Mailer.deliver_later!()
-  end
-
-  defp is_registered(user) do
-    if user.registered do
-      :ok
-    else
-      {:error, :not_registered}
-    end
-  end
-
-  defp get_current_user(conn) do
-    Authorization.Plug.current_resource(conn)
-    |> then(&Repo.preload(&1, [&1.role]))
-    |> add_registered
-  end
-
-  defp add_registered(user) do
-    registered =
-      [mentor: user.mentor, guardian: user.guardian, ninja: user.ninja, organizer: user.organizer]
-      |> Keyword.get(user.role)
-      |> then(&(Ecto.assoc_loaded?(&1) and not is_nil(&1)))
-
-    user |> Map.merge(%{registered: registered})
   end
 end
