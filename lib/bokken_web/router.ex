@@ -1,5 +1,6 @@
 defmodule BokkenWeb.Router do
   use BokkenWeb, :router
+  use Kaffy.Routes, scope: "/admin", pipe_through: [:authenticated, :protect_from_forgery]
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -85,7 +86,7 @@ defmodule BokkenWeb.Router do
 
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
-      live_dashboard "/dashboard", metrics: BokkenWeb.Telemetry, ecto_repos: [Bokken.Repo]
+      live_dashboard "/sysadmin", metrics: BokkenWeb.Telemetry, ecto_repos: [Bokken.Repo]
     end
   end
 end
