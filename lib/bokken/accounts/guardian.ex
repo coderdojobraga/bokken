@@ -29,23 +29,13 @@ defmodule Bokken.Accounts.Guardian do
     timestamps()
   end
 
-  defp validate_city_name(changeset) do
-    cityname = get_field(changeset, :city)
-
-    if Enum.member?(@portuguese_cities, cityname) do
-      changeset
-    else
-      add_error(changeset, :city, "invalid city")
-    end
-  end
-
   @doc false
   def changeset(guardian, attrs) do
     guardian
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields)
-    |> validate_city_name()
+    |> validate_inclusion(:city, @portuguese_cities)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
