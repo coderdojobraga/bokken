@@ -582,7 +582,6 @@ defmodule Bokken.Accounts do
     if Argon2.verify_pass(password, user.password_hash) do
       {:ok, user}
     else
-      Argon2.no_user_verify()
       {:error, :invalid_credentials}
     end
   end
