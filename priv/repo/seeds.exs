@@ -309,6 +309,7 @@ defmodule Bokken.DbSeeder do
       email: email <> "@mail.com",
       password: "password1234",
       verified: true,
+      registered: true,
       active: true,
       role: role
     }

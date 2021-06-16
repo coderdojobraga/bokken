@@ -31,7 +31,7 @@ defmodule BokkenWeb.Router do
 
       pipe_through :authenticated
 
-      resources "/me", AuthController, only: [:show, :update], singleton: true
+      resources "/me", AuthController, only: [:show, :create, :update], singleton: true
       post "/resend", AuthController, :resend
       delete "/sign_out", AuthController, :sign_out
     end

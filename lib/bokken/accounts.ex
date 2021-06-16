@@ -497,10 +497,38 @@ defmodule Bokken.Accounts do
     |> Repo.insert()
   end
 
-  def register_user(attrs \\ %{}) do
+  def sign_up_user(attrs \\ %{}) do
     %User{}
     |> User.register_changeset(attrs)
     |> Repo.insert()
+  end
+
+  def register_user(%User{} = user, attrs \\ %{}) do
+    result =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:user, User.changeset(user, %{registered: true}))
+      |> Ecto.Multi.insert(user.role, &create_role_changeset(&1, attrs))
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{user: user}} ->
+        {:ok, user |> Repo.preload(user.role, force: true)}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
+  end
+
+  defp create_role_changeset(%{user: user}, attrs) do
+    attrs = Map.put(attrs, "user_id", user.id)
+
+    case user.role do
+      :mentor ->
+        Mentor.changeset(%Mentor{}, attrs)
+
+      :guardian ->
+        Guardian.changeset(%Guardian{}, attrs)
+    end
   end
 
   @doc """
@@ -525,7 +553,7 @@ defmodule Bokken.Accounts do
     result =
       Ecto.Multi.new()
       |> Ecto.Multi.update(:user, User.edit_changeset(user, attrs))
-      |> Ecto.Multi.update(role, &update_user_role(&1, attrs))
+      |> Ecto.Multi.update(role, &update_role_changeset(&1, attrs))
       |> Repo.transaction()
 
     case result do
@@ -537,7 +565,7 @@ defmodule Bokken.Accounts do
     end
   end
 
-  defp update_user_role(%{user: user}, attrs) do
+  defp update_role_changeset(%{user: user}, attrs) do
     case user.role do
       :mentor ->
         Mentor.changeset(user.mentor, attrs)
@@ -569,7 +597,6 @@ defmodule Bokken.Accounts do
   @doc false
   def authenticate_user(email, password) do
     get_user(email: email)
-    |> then(&Repo.preload(&1, [&1.role]))
     |> authenticate_resource(password)
   end
 
@@ -580,7 +607,7 @@ defmodule Bokken.Accounts do
 
   defp authenticate_resource(user, password) do
     if Argon2.verify_pass(password, user.password_hash) do
-      {:ok, user}
+      {:ok, user |> then(&Repo.preload(&1, [&1.role]))}
     else
       {:error, :invalid_credentials}
     end
