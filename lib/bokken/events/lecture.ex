@@ -5,6 +5,7 @@ defmodule Bokken.Events.Lecture do
   use Bokken.Schema
 
   alias Bokken.Accounts.{Mentor, Ninja}
+  alias Bokken.Documents.File
   alias Bokken.Events.{Event, LectureMentorAssistant}
 
   @required_fields [:ninja_id, :mentor_id, :event_id]
@@ -22,6 +23,7 @@ defmodule Bokken.Events.Lecture do
     belongs_to :ninja, Ninja, foreign_key: :ninja_id
 
     many_to_many :assistant_mentors, Mentor, join_through: LectureMentorAssistant
+    has_many :files, File, on_delete: :nothing
 
     timestamps()
   end

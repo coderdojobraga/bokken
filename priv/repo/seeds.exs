@@ -208,6 +208,13 @@ defmodule Bokken.DbSeeder do
       "Practicing conditional statements"
     ]
     |> create_lectures()
+
+    # Some files
+    [
+      "My first project",
+      "Learning strategies for organizing code"
+    ]
+    |> create_files()
   end
 
   def create_locations(names) do
@@ -421,6 +428,35 @@ defmodule Bokken.DbSeeder do
       }
 
       Bokken.Events.create_lecture_assistant(lecture)
+    end
+  end
+
+  def create_files(titles) do
+    for title <- titles do
+      document =
+        case Mix.env() do
+          :dev ->
+            path =
+              case title do
+                "Scratch" -> "./.postman/scratch.png"
+                _ -> "./.postman/question.png"
+              end
+
+            %Plug.Upload{
+              content_type: "image/png",
+              filename: "project.png",
+              path: path
+            }
+
+          _ ->
+            nil
+        end
+
+      %{id: ninja_id} = Enum.random(Bokken.Accounts.list_ninjas())
+
+      file = %{description: title, document: document, ninja_id: ninja_id}
+
+      Bokken.Document.create_file(file)
     end
   end
 

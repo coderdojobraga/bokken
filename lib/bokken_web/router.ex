@@ -68,6 +68,8 @@ defmodule BokkenWeb.Router do
     resources "/events", EventController, except: [:new, :edit]
 
     resources "/lectures", LectureController, except: [:new, :edit]
+
+    resources "/files", FileController, except: [:new, :edit]
   end
 
   # credo:disable-for-next-line
