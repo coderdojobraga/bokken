@@ -566,64 +566,6 @@
 									"body": "{\n    \"active\": false,\n    \"email\": \"Loy_Hudson48@hotmail.com\",\n    \"id\": \"bb4f5599-d093-4ccf-8da1-72000090b052\",\n    \"role\": \"mentor\",\n    \"registered\": false,\n    \"verified\": true\n}"
 								},
 								{
-									"name": "Verify Account with expired token",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
-									},
-									"status": "Unauthorized",
-									"code": 401,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "36"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Mon, 24 May 2021 09:54:12 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoH4B4wxFZc0L-cAAAKC"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
-								},
-								{
 									"name": "Verify Account with wrong email (should never happen anyway)",
 									"originalRequest": {
 										"method": "POST",
@@ -680,6 +622,64 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"errors\": {\n        \"detail\": \"Not Found\"\n    }\n}"
+								},
+								{
+									"name": "Verify Account with expired token",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/verify",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"verify"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "36"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Mon, 24 May 2021 09:54:12 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FoH4B4wxFZc0L-cAAAKC"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"errors\": {\n        \"detail\": \"Unauthorized\"\n    }\n}"
 								}
 							]
 						},
@@ -1096,7 +1096,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/nelson/Pictures/sei.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1789,7 +1789,7 @@
 										{
 											"key": "badge[image]",
 											"type": "file",
-											"src": "./.postman/scratch.png"
+											"src": "./.postman/avatar.png"
 										}
 									]
 								},
@@ -1827,7 +1827,7 @@
 												{
 													"key": "badge[image]",
 													"type": "file",
-													"src": "./.postman/scratch.png"
+													"src": "./.postman/avatar.png"
 												}
 											]
 										},
@@ -2087,6 +2087,27 @@
 										"1"
 									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ninja's files",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/files",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"files"
+									]
+								},
+								"description": "Get all the files from a ninja"
 							},
 							"response": []
 						}
@@ -3509,6 +3530,163 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "List files",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/files",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"files"
+							]
+						},
+						"description": "List all files"
+					},
+					"response": []
+				},
+				{
+					"name": "Ninja to work with",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"ninja_id = pm.response.json().data[49].id",
+									"pm.environment.set(\"ninja_id\", ninja_id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/ninjas",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"ninjas"
+							]
+						},
+						"description": "Getting a ninja to associate to a new project."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const { data: { id } } = pm.response.json();",
+									"",
+									"pm.environment.set(\"file_id\", id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file[description]",
+									"value": "Game number {{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "file[document]",
+									"type": "file",
+									"src": "./.postman/scratch.png"
+								},
+								{
+									"key": "file[ninja_id]",
+									"value": "{{ninja_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/files",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update File",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"file\": {\n        \"description\": \"My super {{$randomColor}} project\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/files/{{file_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"{{file_id}}"
+							]
+						},
+						"description": "Changing a file field."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete File",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/files/{{file_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"files",
+								"{{file_id}}"
+							]
+						},
+						"description": "Removes a file"
+					},
+					"response": []
+				}
+			],
+			"description": "Files or Documents that a ninja has done during a lecture or as homework.\nThese files can be uploaded by the ninja or his mentors."
 		},
 		{
 			"name": "Hello, Bokken 👋",

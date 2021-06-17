@@ -456,7 +456,7 @@ defmodule Bokken.DbSeeder do
 
       file = %{description: title, document: document, ninja_id: ninja_id}
 
-      Bokken.Document.create_file(file)
+      Bokken.Documents.create_file(file)
     end
   end
 

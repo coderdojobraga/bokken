@@ -9,7 +9,7 @@ defmodule Bokken.Uploaders.Document do
 
   # Override the persisted filenames:
   def filename(_version, {file, _scope}) do
-    file.file_name
+    Path.basename(file.file_name, Path.extname(file.file_name))
   end
 
   # Override the storage directory:

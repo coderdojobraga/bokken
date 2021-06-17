@@ -208,7 +208,6 @@ defmodule Bokken.Accounts do
   end
 
   alias Bokken.Accounts.Ninja
-  alias Bokken.Uploaders.Document
 
   @doc """
   Returns the list of ninjas.
@@ -312,7 +311,6 @@ defmodule Bokken.Accounts do
 
   """
   def delete_ninja(%Ninja{} = ninja) do
-    Document.delete({ninja.files.document, ninja})
     Repo.delete(ninja)
   end
 

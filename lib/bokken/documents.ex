@@ -4,6 +4,7 @@ defmodule Bokken.Documents do
   """
 
   import Ecto.Query, warn: false
+  alias Bokken.Accounts
   alias Bokken.Documents.File
   alias Bokken.Repo
   alias Bokken.Uploaders.Document
@@ -17,8 +18,24 @@ defmodule Bokken.Documents do
       [%File{}, ...]
 
   """
-  def list_files do
-    Repo.all(File)
+  @spec list_files(map()) :: list(%File{})
+  def list_files(args \\ %{})
+
+  def list_files(%{"ninja_id" => ninja_id}) do
+    ninja_id
+    |> Accounts.get_ninja!([:files])
+    |> Map.fetch!(:files)
+  end
+
+  def list_files(%{"mentor_id" => mentor_id}) do
+    mentor_id
+    |> Accounts.get_mentor!([:files])
+    |> Map.fetch!(:files)
+  end
+
+  def list_files(_args) do
+    File
+    |> Repo.all()
   end
 
   @doc """

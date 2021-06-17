@@ -18,8 +18,8 @@ defmodule BokkenWeb.FileController do
     send_file(conn, 200, "uploads/#{type}/#{id}/#{image}")
   end
 
-  def index(conn, _params) do
-    files = Documents.list_files()
+  def index(conn, params) do
+    files = Documents.list_files(params)
     render(conn, "index.json", files: files)
   end
 
