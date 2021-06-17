@@ -1096,7 +1096,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "/home/nelson/Pictures/sei.png"
+											"src": "./.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1789,7 +1789,7 @@
 										{
 											"key": "badge[image]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "./.postman/scratch.png"
 										}
 									]
 								},
@@ -1827,7 +1827,7 @@
 												{
 													"key": "badge[image]",
 													"type": "file",
-													"src": "./.postman/avatar.png"
+													"src": "./.postman/scratch.png"
 												}
 											]
 										},

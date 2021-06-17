@@ -438,13 +438,13 @@ defmodule Bokken.DbSeeder do
           :dev ->
             path =
               case title do
-                "Scratch" -> "./.postman/scratch.png"
-                _ -> "./.postman/question.png"
+                "My first project" -> "./.postman/file.txt"
+                _ -> "./.postman/file2.txt"
               end
 
             %Plug.Upload{
-              content_type: "image/png",
-              filename: "project.png",
+              content_type: "text/plain",
+              filename: "project.txt",
               path: path
             }
 
