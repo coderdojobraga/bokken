@@ -1,5 +1,6 @@
 defmodule BokkenWeb.FileView do
   use BokkenWeb, :view
+  alias Bokken.Uploaders.Document
   alias BokkenWeb.FileView
 
   def render("index.json", %{files: files}) do
@@ -11,6 +12,8 @@ defmodule BokkenWeb.FileView do
   end
 
   def render("file.json", %{file: file}) do
-    %{id: file.id, document: file.document, description: file.description}
+    title = file.document.file_name
+    doc = Document.url({title, file})
+    %{id: file.id, document: doc, description: file.description}
   end
 end

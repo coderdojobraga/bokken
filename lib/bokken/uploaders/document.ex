@@ -5,7 +5,7 @@ defmodule Bokken.Uploaders.Document do
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
-  @versions [:original, :project]
+  @versions [:snippet, :project]
 
   # Override the persisted filenames:
   def filename(_version, {file, _scope}) do
