@@ -12,8 +12,7 @@ defmodule BokkenWeb.FileView do
   end
 
   def render("file.json", %{file: file}) do
-    title = file.document.file_name
-    doc = Document.url({title, file})
+    doc = Document.url({file.document, file}, :snippet)
     %{id: file.id, document: doc, description: file.description}
   end
 end

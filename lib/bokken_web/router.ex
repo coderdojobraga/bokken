@@ -17,6 +17,7 @@ defmodule BokkenWeb.Router do
 
     pipe_through :authenticated
 
+    get "/uploads/:typed/:version/:id/:file", FileController, :files
     get "/uploads/:type/:id/:file", FileController, :images
   end
 
