@@ -20,7 +20,8 @@ defmodule BokkenWeb.NinjaView do
       birthday: ninja.birthday,
       belt: ninja.belt,
       notes: ninja.notes,
-      socials: ninja.socials
+      socials: ninja.socials,
+      since: ninja.inserted_at
     }
   end
 end
