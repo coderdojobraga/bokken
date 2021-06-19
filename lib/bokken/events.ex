@@ -353,7 +353,7 @@ defmodule Bokken.Events do
   def list_lectures do
     Lecture
     |> Repo.all()
-    |> Repo.preload([:ninja, :event, :mentor, :assistant_mentors])
+    |> Repo.preload([:ninja, :event, :mentor, :assistant_mentors, :files])
   end
 
   @doc """

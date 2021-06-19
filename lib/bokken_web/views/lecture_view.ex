@@ -1,6 +1,7 @@
 defmodule BokkenWeb.LectureView do
   use BokkenWeb, :view
   alias BokkenWeb.EventView
+  alias BokkenWeb.FileView
   alias BokkenWeb.LectureView
   alias BokkenWeb.MentorView
   alias BokkenWeb.NinjaView
@@ -19,6 +20,7 @@ defmodule BokkenWeb.LectureView do
     |> Map.merge(mentor(lecture))
     |> Map.merge(event(lecture))
     |> Map.merge(mentor_assistants(lecture))
+    |> Map.merge(files(lecture))
   end
 
   defp base(lecture) do
@@ -59,6 +61,14 @@ defmodule BokkenWeb.LectureView do
       %{event: render_one(lecture.event, EventView, "event.json")}
     else
       %{event_id: lecture.event_id}
+    end
+  end
+
+  defp files(lecture) do
+    if Ecto.assoc_loaded?(lecture.files) do
+      %{files: render_many(lecture.files, FileView, "file.json")}
+    else
+      %{}
     end
   end
 end

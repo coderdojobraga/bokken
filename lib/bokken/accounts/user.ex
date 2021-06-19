@@ -5,6 +5,7 @@ defmodule Bokken.Accounts.User do
   use Bokken.Schema
 
   alias Bokken.Accounts.{Guardian, Mentor, Ninja, Organizer}
+  alias Bokken.Documents.File
 
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified, :registered]
@@ -23,6 +24,8 @@ defmodule Bokken.Accounts.User do
     has_one :mentor, Mentor, on_delete: :delete_all
     has_one :ninja, Ninja, on_delete: :delete_all
     has_one :organizer, Organizer, on_delete: :delete_all
+
+    has_many :files, File, on_delete: :delete_all
 
     timestamps()
   end

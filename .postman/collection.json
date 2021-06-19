@@ -141,11 +141,11 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Sign up status is OK\", function(){",
+											"pm.test(\"Register status is OK\", function(){",
 											"    pm.response.to.have.status(201);",
 											"})",
 											"",
-											"pm.test(\"User is not registered\", function () {",
+											"pm.test(\"User is registered\", function () {",
 											"    pm.expect(pm.response.json().registered).to.eql(true);",
 											"});",
 											""
@@ -958,7 +958,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"user\": {\n        \"birthday\": \"2004-07-05\"\n    }\n}",
+									"raw": "{\n    \"user\": {\n        \"birthday\": \"2002-07-05\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2089,6 +2089,27 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Ninja's files",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/files",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"files"
+									]
+								},
+								"description": "Get all the files from a ninja"
+							},
+							"response": []
 						}
 					]
 				}
@@ -3203,6 +3224,333 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "Lectures",
+					"item": [
+						{
+							"name": "Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[30].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Event to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"event_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"event_id\", event_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mentor to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"mentor_id = pm.response.json().data[1].id",
+											"pm.environment.set(\"mentor_id\", mentor_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List lectures",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"lecture_id = pm.response.json().data[0].id",
+											"pm.environment.set(\"lecture_id\", lecture_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/lectures",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures"
+									]
+								},
+								"description": "Lists all lectures."
+							},
+							"response": [
+								{
+									"name": "List lectures",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/lectures",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"lectures"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "7310"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Sat, 19 Jun 2021 18:25:34 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FooPBh0r1XBqxlUAAACj"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": [\n        {\n            \"assistant_mentors\": [\n                {\n                    \"birthday\": \"1999-08-18\",\n                    \"first_name\": \"Potato\",\n                    \"id\": \"6a2677d4-a45d-4690-b888-543f66775e07\",\n                    \"last_name\": \"Head\",\n                    \"major\": null,\n                    \"mobile\": \"+351 934135802\",\n                    \"photo\": \"https://robohash.org/Potato-Head\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2009-04-22\",\n                    \"first_name\": \"Tweedle\",\n                    \"id\": \"c91bf1f8-0a41-4010-bd49-8112c520a634\",\n                    \"last_name\": \"Dum\",\n                    \"major\": null,\n                    \"mobile\": \"+351 965451954\",\n                    \"photo\": \"https://robohash.org/Tweedle-Dum\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2009-04-22\",\n                    \"first_name\": \"Tweedle\",\n                    \"id\": \"c91bf1f8-0a41-4010-bd49-8112c520a634\",\n                    \"last_name\": \"Dum\",\n                    \"major\": null,\n                    \"mobile\": \"+351 965451954\",\n                    \"photo\": \"https://robohash.org/Tweedle-Dum\",\n                    \"socials\": [],\n                    \"trial\": false\n                }\n            ],\n            \"attendance\": \"mentor_absent\",\n            \"event\": {\n                \"end_time\": \"2021-08-08T12:30:00Z\",\n                \"id\": \"fa22dbd4-df7f-40d3-860e-425e07582c16\",\n                \"location_id\": \"5ea40b8a-e0ae-4b68-b84a-30336c3c4c40\",\n                \"notes\": \"Great 12 event\",\n                \"online\": false,\n                \"start_time\": \"2021-08-08T10:00:00Z\",\n                \"team_id\": \"9160140a-731d-45f1-b9b5-aeea273742d8\",\n                \"title\": \"Especial Dia da Mãe\"\n            },\n            \"files\": [\n                {\n                    \"description\": \"Scratch from scratch\",\n                    \"document\": \"http://localhost:4000/uploads/snippets/3b981f21-080c-4125-86fd-c5d61a2b9320/3af595ec-aa8d-458f-8c43-7bac9b055e18/project.txt?v=63791345876\",\n                    \"id\": \"16645959-0519-458d-bb21-d9eead2334d5\",\n                    \"title\": \"Notes about the lesson\"\n                }\n            ],\n            \"id\": \"3af595ec-aa8d-458f-8c43-7bac9b055e18\",\n            \"mentor\": {\n                \"birthday\": \"2009-07-16\",\n                \"first_name\": \"Doc\",\n                \"id\": \"076e8f11-6861-4f67-8ffb-2151b771f96a\",\n                \"last_name\": \"Hudson\",\n                \"major\": null,\n                \"mobile\": \"+351 922945281\",\n                \"photo\": \"https://robohash.org/Doc-Hudson\",\n                \"socials\": [],\n                \"trial\": false\n            },\n            \"ninja\": {\n                \"belt\": \"purple\",\n                \"birthday\": \"2000-12-19\",\n                \"first_name\": \"Aberforth\",\n                \"id\": \"76b9ccd9-2338-4222-8116-7f2394f5131d\",\n                \"last_name\": \"Dumbledore\",\n                \"notes\": null,\n                \"photo\": \"https://robohash.org/Aberforth-Dumbledore\",\n                \"socials\": []\n            },\n            \"notes\": null,\n            \"summary\": \"Scratch from scratch\"\n        },\n        {\n            \"assistant_mentors\": [\n                {\n                    \"birthday\": \"2002-08-03\",\n                    \"first_name\": \"Speedy\",\n                    \"id\": \"ca16534a-b794-469e-8b6b-da32ff448414\",\n                    \"last_name\": \"Gonzalez\",\n                    \"major\": null,\n                    \"mobile\": \"+351 926359489\",\n                    \"photo\": \"https://robohash.org/Speedy-Gonzalez\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2011-10-10\",\n                    \"first_name\": \"Wendy\",\n                    \"id\": \"12547079-b607-4cc8-822c-a9ab5be2f7cb\",\n                    \"last_name\": \"Darling\",\n                    \"major\": null,\n                    \"mobile\": \"+351 965835593\",\n                    \"photo\": \"https://robohash.org/Wendy-Darling\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2000-05-20\",\n                    \"first_name\": \"Queen\",\n                    \"id\": \"93633006-9af3-447d-9c5b-a5e7c3ceb52a\",\n                    \"last_name\": \"of Hearts\",\n                    \"major\": null,\n                    \"mobile\": \"+351 917009109\",\n                    \"photo\": \"https://robohash.org/Queen-of Hearts\",\n                    \"socials\": [],\n                    \"trial\": false\n                }\n            ],\n            \"attendance\": \"mentor_absent\",\n            \"event\": {\n                \"end_time\": \"2021-08-08T12:30:00Z\",\n                \"id\": \"69177be4-c373-4946-abe0-159ee9a78fc1\",\n                \"location_id\": \"5ea40b8a-e0ae-4b68-b84a-30336c3c4c40\",\n                \"notes\": \"Great 1 event\",\n                \"online\": false,\n                \"start_time\": \"2021-08-08T10:00:00Z\",\n                \"team_id\": \"90a3d25c-d346-4093-9926-13769280bc17\",\n                \"title\": \"Especial Dia da Criança\"\n            },\n            \"files\": [\n                {\n                    \"description\": \"First python program\",\n                    \"document\": \"http://localhost:4000/uploads/snippets/08768111-a106-47a2-8a7d-50caf712582c/1d0bb7ab-60d5-4446-b855-c48595a206b8/project.txt?v=63791345876\",\n                    \"id\": \"6c37b2bb-30f5-40d3-aa0d-7a721bf6b7c9\",\n                    \"title\": \"Notes about the lesson\"\n                }\n            ],\n            \"id\": \"1d0bb7ab-60d5-4446-b855-c48595a206b8\",\n            \"mentor\": {\n                \"birthday\": \"1996-07-08\",\n                \"first_name\": \"Eddie\",\n                \"id\": \"26192bd1-07aa-45fb-aa47-1cb26912c710\",\n                \"last_name\": \"Valiant\",\n                \"major\": null,\n                \"mobile\": \"+351 915918886\",\n                \"photo\": \"https://robohash.org/Eddie-Valiant\",\n                \"socials\": [],\n                \"trial\": false\n            },\n            \"ninja\": {\n                \"belt\": null,\n                \"birthday\": \"2006-03-06\",\n                \"first_name\": \"Adrian\",\n                \"id\": \"0216c925-75df-4fbf-b206-534e28af6e8a\",\n                \"last_name\": \"Mole\",\n                \"notes\": null,\n                \"photo\": \"https://robohash.org/Adrian-Mole\",\n                \"socials\": []\n            },\n            \"notes\": null,\n            \"summary\": \"First python program\"\n        },\n        {\n            \"assistant_mentors\": [\n                {\n                    \"birthday\": \"2003-10-14\",\n                    \"first_name\": \"Tiger\",\n                    \"id\": \"664e50eb-1c5f-4940-89f9-3377677af356\",\n                    \"last_name\": \"Lily\",\n                    \"major\": null,\n                    \"mobile\": \"+351 963051633\",\n                    \"photo\": \"https://robohash.org/Tiger-Lily\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2010-06-16\",\n                    \"first_name\": \"Tinker\",\n                    \"id\": \"24bc5e0c-a04b-434b-b65d-d5de57dfb52b\",\n                    \"last_name\": \"Bell\",\n                    \"major\": null,\n                    \"mobile\": \"+351 931498597\",\n                    \"photo\": \"https://robohash.org/Tinker-Bell\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"1998-11-26\",\n                    \"first_name\": \"Scrooge\",\n                    \"id\": \"469144fa-0116-490e-b206-70afc54d6f16\",\n                    \"last_name\": \"McDuck\",\n                    \"major\": null,\n                    \"mobile\": \"+351 960130956\",\n                    \"photo\": \"https://robohash.org/Scrooge-McDuck\",\n                    \"socials\": [],\n                    \"trial\": false\n                }\n            ],\n            \"attendance\": \"both_present\",\n            \"event\": {\n                \"end_time\": \"2021-08-08T12:30:00Z\",\n                \"id\": \"18fffe81-9d24-4dc0-af88-90eeba51c286\",\n                \"location_id\": \"838feaaa-2328-4042-81cc-5216a17e1b8f\",\n                \"notes\": \"Great 69 event\",\n                \"online\": false,\n                \"start_time\": \"2021-08-08T10:00:00Z\",\n                \"team_id\": \"a37595c8-1fe4-43b0-ab8d-308e9d76e1be\",\n                \"title\": null\n            },\n            \"files\": [\n                {\n                    \"description\": \"Learning loops\",\n                    \"document\": \"http://localhost:4000/uploads/snippets/c3f43e39-c8ad-44b9-bbb8-a000cbdf9bc0/15fbcc53-1a6c-4609-a0db-9a7227e80b5d/project.txt?v=63791345876\",\n                    \"id\": \"a141a3d0-4540-43a3-b0f1-427ac883bd97\",\n                    \"title\": \"Notes about the lesson\"\n                }\n            ],\n            \"id\": \"15fbcc53-1a6c-4609-a0db-9a7227e80b5d\",\n            \"mentor\": {\n                \"birthday\": \"2013-08-28\",\n                \"first_name\": \"Roger\",\n                \"id\": \"04c7715d-f260-4ca8-9fd5-881b2d5cc120\",\n                \"last_name\": \"Rabbit\",\n                \"major\": null,\n                \"mobile\": \"+351 920395754\",\n                \"photo\": \"https://robohash.org/Roger-Rabbit\",\n                \"socials\": [],\n                \"trial\": false\n            },\n            \"ninja\": {\n                \"belt\": \"black\",\n                \"birthday\": \"1995-10-14\",\n                \"first_name\": \"Albus\",\n                \"id\": \"aa9de0c2-877e-4b4f-8573-dcb4ac527a2d\",\n                \"last_name\": \"Dumbledore\",\n                \"notes\": null,\n                \"photo\": \"https://robohash.org/Albus-Dumbledore\",\n                \"socials\": []\n            },\n            \"notes\": null,\n            \"summary\": \"Learning loops\"\n        },\n        {\n            \"assistant_mentors\": [\n                {\n                    \"birthday\": \"1995-10-06\",\n                    \"first_name\": \"Robin\",\n                    \"id\": \"82d8c6f6-6f03-4b50-b118-b248d809112d\",\n                    \"last_name\": \"Hood\",\n                    \"major\": null,\n                    \"mobile\": \"+351 939542722\",\n                    \"photo\": \"https://robohash.org/Robin-Hood\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2002-08-03\",\n                    \"first_name\": \"Speedy\",\n                    \"id\": \"ca16534a-b794-469e-8b6b-da32ff448414\",\n                    \"last_name\": \"Gonzalez\",\n                    \"major\": null,\n                    \"mobile\": \"+351 926359489\",\n                    \"photo\": \"https://robohash.org/Speedy-Gonzalez\",\n                    \"socials\": [],\n                    \"trial\": false\n                },\n                {\n                    \"birthday\": \"2009-09-24\",\n                    \"first_name\": \"Tweedle\",\n                    \"id\": \"86506244-54e0-48e5-b3af-94a0b0dba4d8\",\n                    \"last_name\": \"Dee\",\n                    \"major\": null,\n                    \"mobile\": \"+351 937846543\",\n                    \"photo\": \"https://robohash.org/Tweedle-Dee\",\n                    \"socials\": [],\n                    \"trial\": false\n                }\n            ],\n            \"attendance\": \"ninja_absent\",\n            \"event\": {\n                \"end_time\": \"2021-08-08T12:30:00Z\",\n                \"id\": \"83c37c7a-d03a-4be2-b1d7-3437ae311a81\",\n                \"location_id\": \"5ea40b8a-e0ae-4b68-b84a-30336c3c4c40\",\n                \"notes\": \"Great 19 event\",\n                \"online\": false,\n                \"start_time\": \"2021-08-08T10:00:00Z\",\n                \"team_id\": \"90a3d25c-d346-4093-9926-13769280bc17\",\n                \"title\": \"Especial Natal\"\n            },\n            \"files\": [\n                {\n                    \"description\": \"Practicing conditional statements\",\n                    \"document\": \"http://localhost:4000/uploads/snippets/c69dea7c-28d2-4e97-9e33-eab99a220eba/5e1f556d-feb0-4cb4-b528-0723e6664d18/project.txt?v=63791345876\",\n                    \"id\": \"552e90c9-2e20-466b-8494-009dc671cceb\",\n                    \"title\": \"Notes about the lesson\"\n                }\n            ],\n            \"id\": \"5e1f556d-feb0-4cb4-b528-0723e6664d18\",\n            \"mentor\": {\n                \"birthday\": \"1998-08-07\",\n                \"first_name\": \"Max\",\n                \"id\": \"6b56f5dd-f8d2-4f7c-919e-8aec2aff4ca0\",\n                \"last_name\": \"Goof\",\n                \"major\": null,\n                \"mobile\": \"+351 932264644\",\n                \"photo\": \"https://robohash.org/Max-Goof\",\n                \"socials\": [],\n                \"trial\": false\n            },\n            \"ninja\": {\n                \"belt\": \"blue\",\n                \"birthday\": \"2011-08-23\",\n                \"first_name\": \"Albus\",\n                \"id\": \"76e2d3f9-37a1-41d4-92d6-1976ce25c41c\",\n                \"last_name\": \"Sverus Potter\",\n                \"notes\": null,\n                \"photo\": \"https://robohash.org/Albus-Sverus Potter\",\n                \"socials\": []\n            },\n            \"notes\": null,\n            \"summary\": \"Practicing conditional statements\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Create lecture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											"const mentor_id = pm.environment.get(\"mentor_id\");",
+											"",
+											"pm.environment.set(\"mentor_id\", mentor_id);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											"const mentor_assistant_id = pm.environment.get(\"mentor_id\");",
+											"",
+											"pm.environment.set(\"mentor_id\", mentor_assistant_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/lectures",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures"
+									]
+								},
+								"description": "Posts a new lecture."
+							},
+							"response": []
+						},
+						{
+							"name": "Update lecture",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"lecture\": {\n        \"assistant_mentors\": [\"{{mentor_assistant0}}\", \"{{mentor_assistant1}}\"]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/lectures/{{lecture_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures",
+										"{{lecture_id}}"
+									]
+								},
+								"description": "Changing one lecture."
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Lecture",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/lectures/{{lecture_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lectures",
+										"{{lecture_id}}"
+									]
+								},
+								"description": "Deletes a lecture."
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
 				}
 			],
 			"event": [
@@ -3227,288 +3575,191 @@
 			]
 		},
 		{
-			"name": "Lectures",
+			"name": "Documents",
 			"item": [
 				{
-					"name": "Ninja to work with",
-					"event": [
+					"name": "Files",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"ninja_id = pm.response.json().data[30].id",
-									"pm.environment.set(\"ninja_id\", ninja_id);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/ninjas",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"ninjas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Event to work with",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"event_id = pm.response.json().data[1].id",
-									"pm.environment.set(\"event_id\", event_id);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/events",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"events"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Mentor to work with",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"mentor_id = pm.response.json().data[1].id",
-									"pm.environment.set(\"mentor_id\", mentor_id);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/mentors",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"mentors"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "List lectures",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"mentor_assistant0 = pm.response.json().data[0].assistant_mentors[0].id",
-									"pm.environment.set(\"mentor_assistant0\", mentor_assistant0);",
-									"",
-									"mentor_assistant1= pm.response.json().data[0].assistant_mentors[1].id",
-									"pm.environment.set(\"mentor_assistant1\", mentor_assistant1);",
-									"",
-									"lecture_id = pm.response.json().data[0].id",
-									"pm.environment.set(\"lecture_id\", lecture_id);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/lectures",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"lectures"
-							]
-						},
-						"description": "Lists all lectures."
-					},
-					"response": []
-				},
-				{
-					"name": "Create lecture",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+							"name": "List Files",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/files",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"files"
+									]
+								},
+								"description": "List all files"
+							},
+							"response": []
 						},
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const token = pm.environment.get(\"token\");",
-									"",
-									"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-									"",
-									"pm.sendRequest({",
-									"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
-									"    method: 'GET',",
-									"    header: {",
-									"        'Content-Type': 'application/json',",
-									"        'Cookie': `_bokken_key=${token}`",
-									"    },",
-									"}, utils.get_mentor);",
-									"",
-									"const mentor_id = pm.environment.get(\"mentor_id\");",
-									"",
-									"pm.environment.set(\"mentor_id\", mentor_id);",
-									"",
-									"pm.sendRequest({",
-									"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
-									"    method: 'GET',",
-									"    header: {",
-									"        'Content-Type': 'application/json',",
-									"        'Cookie': `_bokken_key=${token}`",
-									"    },",
-									"}, utils.get_mentor);",
-									"",
-									"const mentor_assistant_id = pm.environment.get(\"mentor_id\");",
-									"",
-									"pm.environment.set(\"mentor_id\", mentor_assistant_id);",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"lecture\": {\n        \"summary\": \"lecture number {{$randomInt}}\",\n        \"notes\": \"Ninja has made great progress\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"assistant_mentors\": [\"{{mentor_assistant_id}}\"]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Ninja to work with",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data[49].id",
+											"pm.environment.set(\"ninja_id\", ninja_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/lectures",
-							"host": [
-								"{{host}}"
 							],
-							"path": [
-								"api",
-								"lectures"
-							]
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas"
+									]
+								},
+								"description": "Getting a ninja to associate to a new project."
+							},
+							"response": []
 						},
-						"description": "Posts a new lecture."
-					},
-					"response": []
-				},
-				{
-					"name": "Update lecture",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"lecture\": {\n        \"assistant_mentors\": [\"{{mentor_assistant0}}\", \"{{mentor_assistant1}}\"]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Create a file",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const { data: { id } } = pm.response.json();",
+											"",
+											"pm.environment.set(\"file_id\", id);"
+										],
+										"type": "text/javascript"
+									}
 								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/lectures/{{lecture_id}}",
-							"host": [
-								"{{host}}"
 							],
-							"path": [
-								"api",
-								"lectures",
-								"{{lecture_id}}"
-							]
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file[description]",
+											"value": "Game number {{$randomInt}}",
+											"type": "text"
+										},
+										{
+											"key": "file[document]",
+											"type": "file",
+											"src": "./.postman/file.txt"
+										},
+										{
+											"key": "file[ninja_id]",
+											"value": "{{ninja_id}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/files",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"files"
+									]
+								}
+							},
+							"response": []
 						},
-						"description": "Changing one lecture."
-					},
-					"response": []
+						{
+							"name": "Update File",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"file\": {\n        \"description\": \"My super {{$randomColor}} project\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/files/{{file_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"files",
+										"{{file_id}}"
+									]
+								},
+								"description": "Changing a file field."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete File",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/files/{{file_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"files",
+										"{{file_id}}"
+									]
+								},
+								"description": "Removes a file"
+							},
+							"response": []
+						}
+					]
 				},
 				{
-					"name": "Remove Lecture",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/lectures/{{lecture_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"lectures",
-								"{{lecture_id}}"
-							]
-						},
-						"description": "Deletes a lecture."
-					},
-					"response": []
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "List Ninja files",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/files",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"ninjas",
+										"{{ninja_id}}",
+										"files"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			],
-			"auth": {
-				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
+			"description": "Files or Documents that a ninja has done during a lecture or as homework.\nThese files can be uploaded by the ninja or his mentors."
 		},
 		{
 			"name": "Hello, Bokken 👋",
