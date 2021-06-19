@@ -5,7 +5,6 @@ defmodule Bokken.Accounts.GuardianAdmin do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
-  alias Bokken.Accounts.User
   alias Bokken.Uploaders.Avatar
 
   def widgets(_schema, _conn) do

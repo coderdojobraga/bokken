@@ -1,7 +1,6 @@
 defmodule BokkenWeb.FileController do
   use BokkenWeb, :controller
 
-  alias Bokken.Accounts
   alias Bokken.Documents
   alias Bokken.Documents.File
 

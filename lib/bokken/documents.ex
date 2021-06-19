@@ -7,7 +7,6 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts
   alias Bokken.Documents.File
   alias Bokken.Repo
-  alias Bokken.Uploaders.Document
 
   @doc """
   Returns the list of files.
