@@ -21,7 +21,8 @@ defmodule BokkenWeb.MentorView do
       birthday: mentor.birthday,
       trial: mentor.trial,
       major: mentor.major,
-      socials: mentor.socials
+      socials: mentor.socials,
+      since: mentor.inserted_at
     }
   end
 end

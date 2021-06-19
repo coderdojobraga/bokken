@@ -18,7 +18,8 @@ defmodule BokkenWeb.GuardianView do
       first_name: guardian.first_name,
       last_name: guardian.last_name,
       mobile: guardian.mobile,
-      city: guardian.city
+      city: guardian.city,
+      since: guardian.inserted_at
     }
   end
 end
