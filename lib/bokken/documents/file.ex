@@ -5,22 +5,31 @@ defmodule Bokken.Documents.File do
   use Bokken.Schema
   use Waffle.Ecto.Schema
 
-  alias Bokken.Accounts.{Mentor, Ninja}
+  alias Bokken.Accounts.User
   alias Bokken.Events.Lecture
   alias Bokken.Uploaders.Document
 
-  @required_fields [:description]
-  @optional_fields [:ninja_id, :mentor_id, :lecture_id]
+  @required_fields [:user_id]
+  @optional_fields [:title, :description, :lecture_id]
   @attachment_fields [:document]
   schema "files" do
+    field :title, :string
     field :description, :string
     field :document, Document.Type
 
     belongs_to :lecture, Lecture, foreign_key: :lecture_id
-    belongs_to :mentor, Mentor, foreign_key: :mentor_id
-    belongs_to :ninja, Ninja, foreign_key: :ninja_id
+    belongs_to :user, User, foreign_key: :user_id
 
     timestamps()
+  end
+
+  @doc false
+  def update_changeset(file, attrs) do
+    file
+    |> cast(attrs, @optional_fields -- [:lecture_id])
+    |> cast_attachments(attrs, @attachment_fields)
+    |> validate_required(@required_fields ++ @attachment_fields)
+    |> assoc_constraint(:user)
   end
 
   @doc false
@@ -28,8 +37,7 @@ defmodule Bokken.Documents.File do
     file
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_attachments(attrs, @attachment_fields)
-    |> validate_required(@required_fields)
-    |> assoc_constraint(:ninja)
-    |> assoc_constraint(:mentor)
+    |> validate_required(@required_fields ++ @attachment_fields)
+    |> assoc_constraint(:user)
   end
 end

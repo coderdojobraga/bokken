@@ -6,7 +6,6 @@ defmodule Bokken.Accounts.Mentor do
   use Waffle.Ecto.Schema
 
   alias Bokken.Accounts.{Organizer, Social, User}
-  alias Bokken.Documents.File
   alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
   alias Bokken.Uploaders.Avatar
 
@@ -33,8 +32,6 @@ defmodule Bokken.Accounts.Mentor do
     many_to_many :teams, Team, join_through: TeamMentor
 
     many_to_many :lectures, Lecture, join_through: LectureMentorAssistant
-
-    has_many :files, File, on_delete: :delete_all
 
     has_one :organizer, Organizer, on_delete: :delete_all
 

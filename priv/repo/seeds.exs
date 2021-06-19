@@ -209,7 +209,7 @@ defmodule Bokken.DbSeeder do
     ]
     |> create_lectures()
 
-    # Some files
+    # Some Projects
     [
       "My first project",
       "Learning strategies for organizing code"
@@ -403,9 +403,7 @@ defmodule Bokken.DbSeeder do
   def create_lectures(summaries) do
     ninjas = Bokken.Accounts.list_ninjas()
 
-    list_tuples_summary_ninja = Enum.zip(ninjas, summaries)
-
-    for summary_ninja <- list_tuples_summary_ninja do
+    for {ninja, summary} <- Enum.zip(ninjas, summaries) do
       %{id: mentor_id} = Enum.random(Bokken.Accounts.list_mentors())
 
       %{id: mentor_assistant_1} = Enum.random(Bokken.Accounts.list_mentors())
@@ -414,9 +412,6 @@ defmodule Bokken.DbSeeder do
 
       %{id: event_id} = Enum.random(Bokken.Events.list_events())
       attendance = Enum.random([:both_present, :both_absent, :ninja_absent, :mentor_absent])
-
-      summary = elem(summary_ninja, 1)
-      ninja = elem(summary_ninja, 0)
 
       lecture = %{
         summary: summary,
@@ -427,36 +422,61 @@ defmodule Bokken.DbSeeder do
         assistant_mentors: [mentor_assistant_1, mentor_assistant_2, mentor_assistant_3]
       }
 
-      Bokken.Events.create_lecture_assistant(lecture)
+      {:ok, %{id: lecture_id}} = Bokken.Events.create_lecture_assistant(lecture)
+
+      if Mix.env() in [:dev, :test] do
+        document = %Plug.Upload{
+          content_type: "text/plain",
+          filename: "project.txt",
+          path: Enum.random(["./.postman/file.txt", "./.postman/file2.txt"])
+        }
+
+        file = %{
+          title: "Notes about the lesson",
+          description: summary,
+          document: document,
+          lecture_id: lecture_id,
+          user_id: ninja.user_id
+        }
+
+        Bokken.Documents.create_file(file)
+      end
     end
   end
 
   def create_files(titles) do
-    for title <- titles do
-      document =
-        case Mix.env() do
-          :dev ->
-            path =
-              case title do
-                "My first project" -> "./.postman/file.txt"
-                _ -> "./.postman/file2.txt"
-              end
+    if Mix.env() in [:dev, :test] do
+      for title <- titles do
+        document = %Plug.Upload{
+          content_type: "text/plain",
+          filename: "project.txt",
+          path: Enum.random(["./.postman/file.txt", "./.postman/file2.txt"])
+        }
 
-            %Plug.Upload{
-              content_type: "text/plain",
-              filename: "project.txt",
-              path: path
-            }
+        %{user_id: user_id} = Enum.random(Bokken.Accounts.list_ninjas())
 
-          _ ->
-            nil
-        end
+        file = %{title: title, description: title, document: document, user_id: user_id}
 
-      %{id: ninja_id} = Enum.random(Bokken.Accounts.list_ninjas())
+        Bokken.Documents.create_file(file)
+      end
+    end
+  end
 
-      file = %{description: title, document: document, ninja_id: ninja_id}
+  def create_files(titles, :snippet) do
+    if Mix.env() in [:dev, :test] do
+      for title <- titles do
+        document = %Plug.Upload{
+          content_type: "text/plain",
+          filename: "project.txt",
+          path: Enum.random(["./.postman/file.txt", "./.postman/file2.txt"])
+        }
 
-      Bokken.Documents.create_file(file)
+        %{user_id: user_id} = Enum.random(Bokken.Accounts.list_ninjas())
+
+        file = %{title: title, description: title, document: document, user_id: user_id}
+
+        Bokken.Documents.create_file(file)
+      end
     end
   end
 

@@ -17,8 +17,8 @@ defmodule BokkenWeb.Router do
 
     pipe_through :authenticated
 
-    get "/uploads/:typed/:version/:id/:file", FileController, :files
-    get "/uploads/:type/:id/:file", FileController, :images
+    get "/uploads/:type/:id/:file", FileController, :files
+    get "/uploads/snippets/:user_id/:lecture_id/:file", FileController, :snippets
   end
 
   scope "/api", BokkenWeb do
@@ -43,7 +43,7 @@ defmodule BokkenWeb.Router do
 
     resources "/mentors", MentorController, except: [:new, :edit] do
       get "/teams", TeamController, :index
-      resources "/files", FileController, only: [:index, :create, :delete]
+      get "/files", FileController, :index
     end
 
     resources "/organizers", OrganizerController, except: [:new, :edit]
@@ -51,7 +51,7 @@ defmodule BokkenWeb.Router do
     resources "/ninjas", NinjaController, except: [:new, :edit] do
       resources "/badges", BadgeController, only: [:index, :create, :delete]
       get "/teams", TeamController, :index
-      resources "/files", FileController, only: [:index, :create, :delete]
+      get "/files", FileController, :index
     end
 
     resources "/badges", BadgeController, except: [:new, :edit] do

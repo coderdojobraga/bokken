@@ -1,10 +1,14 @@
 defmodule BokkenWeb.FileController do
   use BokkenWeb, :controller
 
+  alias Bokken.Accounts
   alias Bokken.Documents
   alias Bokken.Documents.File
 
   action_fallback BokkenWeb.FallbackController
+
+  defguard is_image(type) when type in ~w(avatars emblems)
+  defguard is_document(type) when type in ~w(snippets projects)
 
   def humans_txt(conn, _params) do
     if Browser.known?(conn) do
@@ -14,21 +18,34 @@ defmodule BokkenWeb.FileController do
     end
   end
 
-  def images(conn, %{"type" => type, "id" => id, "file" => image}) do
-    send_file(conn, 200, "uploads/#{type}/#{id}/#{image}")
+  def files(conn, %{"type" => type, "id" => id, "file" => file})
+      when is_image(type) or type in ~w(projects) do
+    send_file(conn, 200, "uploads/#{type}/#{id}/#{file}")
   end
 
-  def files(conn, %{"type" => type, "id" => id, "version" => version, "file" => file}) do
-    send_file(conn, 200, "uploads/#{type}/#{version}/#{id}/#{file}")
+  def snippets(conn, %{"user_id" => user_id, "lecture_id" => lecture_id, "file" => file}) do
+    send_file(conn, 200, "uploads/snippets/#{user_id}/#{lecture_id}/#{file}")
   end
 
-  def index(conn, params) do
+  def index(conn, %{"ninja_id" => _ninja_id} = params) do
     files = Documents.list_files(params)
     render(conn, "index.json", files: files)
   end
 
+  def index(conn, %{"mentor_id" => _mentor_id} = params) do
+    files = Documents.list_files(params)
+    render(conn, "index.json", files: files)
+  end
+
+  def index(conn, _params) do
+    files = Documents.list_files()
+    render(conn, "index.json", files: files)
+  end
+
   def create(conn, %{"file" => file_params}) do
-    with {:ok, %File{} = file} <- Documents.create_file(file_params) do
+    user_id = conn.assigns.current_user.id
+
+    with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.file_path(conn, :show, file))

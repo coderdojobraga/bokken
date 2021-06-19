@@ -12,7 +12,13 @@ defmodule BokkenWeb.FileView do
   end
 
   def render("file.json", %{file: file}) do
-    doc = Document.url({file.document, file}, :snippet)
-    %{id: file.id, document: doc, description: file.description}
+    type = if is_nil(file.lecture_id), do: :projects, else: :snippets
+
+    %{
+      id: file.id,
+      title: file.title,
+      description: file.description,
+      document: Document.url({file.document, file}, type)
+    }
   end
 end

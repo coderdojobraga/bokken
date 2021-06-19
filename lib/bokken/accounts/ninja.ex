@@ -6,7 +6,6 @@ defmodule Bokken.Accounts.Ninja do
   use Waffle.Ecto.Schema
 
   alias Bokken.Accounts.{Guardian, Social, User}
-  alias Bokken.Documents.File
   alias Bokken.Events.{Lecture, Team, TeamNinja}
   alias Bokken.Gamification.{Badge, BadgeNinja}
   alias Bokken.Uploaders.Avatar
@@ -36,7 +35,6 @@ defmodule Bokken.Accounts.Ninja do
     many_to_many :teams, Team, join_through: TeamNinja
 
     has_many :lectures, Lecture, on_delete: :nothing
-    has_many :files, File, on_delete: :delete_all
 
     timestamps()
   end

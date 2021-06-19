@@ -22,14 +22,14 @@ defmodule Bokken.Documents do
   def list_files(args \\ %{})
 
   def list_files(%{"ninja_id" => ninja_id}) do
-    ninja_id
-    |> Accounts.get_ninja!([:files])
+    Accounts.get_ninja!(ninja_id).user_id
+    |> Accounts.get_user!([:files])
     |> Map.fetch!(:files)
   end
 
   def list_files(%{"mentor_id" => mentor_id}) do
-    mentor_id
-    |> Accounts.get_mentor!([:files])
+    Accounts.get_mentor!(mentor_id).user_id
+    |> Accounts.get_user!([:files])
     |> Map.fetch!(:files)
   end
 
@@ -86,7 +86,7 @@ defmodule Bokken.Documents do
   """
   def update_file(%File{} = file, attrs) do
     file
-    |> File.changeset(attrs)
+    |> File.update_changeset(attrs)
     |> Repo.update()
   end
 
