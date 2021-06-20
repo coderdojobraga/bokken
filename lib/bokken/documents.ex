@@ -102,7 +102,6 @@ defmodule Bokken.Documents do
 
   """
   def delete_file(%File{} = file) do
-    Document.delete({file.document, file})
     Repo.delete(file)
   end
 
