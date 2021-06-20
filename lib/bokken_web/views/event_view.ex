@@ -22,6 +22,7 @@ defmodule BokkenWeb.EventView do
     %{
       id: event.id,
       title: event.title,
+      spots_available: event.spots_available,
       start_time: event.start_time,
       end_time: event.end_time,
       online: event.online,

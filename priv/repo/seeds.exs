@@ -240,16 +240,14 @@ defmodule Bokken.DbSeeder do
 
   def create_events(title) do
     for name <- title do
-      random_number = Enum.random(1..100)
-      notes = "Great #{random_number} event"
-
       %{id: location_id} = Enum.random(Bokken.Events.list_locations())
       %{id: team_id} = Enum.random(Bokken.Events.list_teams())
 
       event = %{
         title: name,
         online: false,
-        notes: notes,
+        spots_available: Enum.random(15..30),
+        notes: "Great #{Enum.random(1..100)} event",
         start_time: ~U[2021-08-08 10:00:00.0Z],
         end_time: ~U[2021-08-08 12:30:00.0Z],
         location_id: location_id,
