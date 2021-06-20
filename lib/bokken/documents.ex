@@ -7,7 +7,6 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts
   alias Bokken.Documents.File
   alias Bokken.Repo
-  alias Bokken.Uploaders.Document
 
   @doc """
   Returns the list of files.
@@ -103,7 +102,6 @@ defmodule Bokken.Documents do
 
   """
   def delete_file(%File{} = file) do
-    Document.delete({file.document, file})
     Repo.delete(file)
   end
 
