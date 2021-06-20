@@ -3,7 +3,6 @@ defmodule Bokken.Accounts.Mentor do
   A mentor is a user who helps ninjas to progress in their training.
   """
   use Bokken.Schema
-  use Waffle.Ecto.Schema
 
   alias Bokken.Accounts.{Organizer, Social, User}
   alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
