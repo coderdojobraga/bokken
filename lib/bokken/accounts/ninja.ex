@@ -3,7 +3,6 @@ defmodule Bokken.Accounts.Ninja do
   A ninja is a dojo participant who is doing his training to learn and master programming.
   """
   use Bokken.Schema
-  use Waffle.Ecto.Schema
 
   alias Bokken.Accounts.{Guardian, Social, User}
   alias Bokken.Events.{Lecture, Team, TeamNinja}

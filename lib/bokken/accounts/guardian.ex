@@ -3,7 +3,6 @@ defmodule Bokken.Accounts.Guardian do
   A guardian is the ninja's legal responsible.
   """
   use Bokken.Schema
-  use Waffle.Ecto.Schema
 
   alias Bokken.Accounts.{Ninja, User}
   alias Bokken.Uploaders.Avatar
