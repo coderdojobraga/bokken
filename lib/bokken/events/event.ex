@@ -4,6 +4,7 @@ defmodule Bokken.Events.Event do
   """
   use Bokken.Schema
 
+  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Lecture, Location, Team}
 
   @required_fields [:team_id, :location_id, :spots_available, :online, :start_time, :end_time]
@@ -20,7 +21,8 @@ defmodule Bokken.Events.Event do
     belongs_to :location, Location, foreign_key: :location_id
     belongs_to :team, Team, foreign_key: :team_id
 
-    has_many :lectures, Lecture, on_delete: :nothing
+    many_to_many :ninjas, Ninja, join_through: Lecture
+    many_to_many :mentors, Mentor, join_through: Lecture
 
     timestamps()
   end
@@ -30,6 +32,7 @@ defmodule Bokken.Events.Event do
     event
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> validate_number(:spots_available, greater_than_or_equal_to: 0)
     |> assoc_constraint(:team)
     |> assoc_constraint(:location)
   end

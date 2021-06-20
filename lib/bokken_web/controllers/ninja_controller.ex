@@ -3,6 +3,8 @@ defmodule BokkenWeb.NinjaController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Ninja
+  alias Bokken.Events.Event
+  alias Bokken.Events.Lecture
   alias Bokken.Events.TeamNinja
 
   action_fallback BokkenWeb.FallbackController
@@ -10,6 +12,13 @@ defmodule BokkenWeb.NinjaController do
   def index(conn, params) do
     ninjas = Accounts.list_ninjas(params)
     render(conn, "index.json", ninjas: ninjas)
+  end
+
+  def create(conn, %{"event_id" => event_id, "ninja_id" => ninja_id}) do
+    with {:ok, %Event{} = event, %Lecture{} = _lecture} <-
+           Accounts.register_ninja_in_event(event_id, ninja_id) do
+      render(conn, "index.json", ninjas: event.ninjas)
+    end
   end
 
   def create(conn, %{"team_id" => team_id, "ninja_id" => ninja_id}) do

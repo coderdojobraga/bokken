@@ -7,7 +7,7 @@ defmodule Bokken.Accounts do
   alias Bokken.Repo
 
   alias Bokken.Events
-  alias Bokken.Events.{TeamMentor, TeamNinja}
+  alias Bokken.Events.{Event, Lecture, TeamMentor, TeamNinja}
 
   alias Bokken.Gamification
 
@@ -239,6 +239,12 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:ninjas)
   end
 
+  def list_ninjas(%{"event_id" => event_id}) do
+    event_id
+    |> Events.get_event!([:ninjas])
+    |> Map.fetch!(:ninjas)
+  end
+
   def list_ninjas(_args) do
     Ninja
     |> Repo.all()
@@ -340,6 +346,30 @@ defmodule Bokken.Accounts do
         where: team_ninja.ninja_id == ^ninja_id
 
     Repo.delete_all(query)
+  end
+
+  def register_ninja_in_event(event_id, ninja_id) do
+    event = Events.get_event!(event_id)
+
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(
+        :event,
+        Event.changeset(event, %{spots_available: event.spots_available - 1})
+      )
+      |> Ecto.Multi.insert(
+        :lecture,
+        Lecture.changeset(%Lecture{}, %{event_id: event_id, ninja_id: ninja_id})
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{event: event, lecture: lecture}} ->
+        {:ok, event |> Repo.preload([:ninjas], force: true), lecture}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
   end
 
   alias Bokken.Accounts.Organizer

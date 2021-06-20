@@ -68,7 +68,9 @@ defmodule BokkenWeb.Router do
       get "/events", EventController, :index
     end
 
-    resources "/events", EventController, except: [:new, :edit]
+    resources "/events", EventController, except: [:new, :edit] do
+      resources "/ninjas", NinjaController, only: [:index, :create]
+    end
 
     resources "/lectures", LectureController, except: [:new, :edit]
 

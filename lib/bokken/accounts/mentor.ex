@@ -5,7 +5,7 @@ defmodule Bokken.Accounts.Mentor do
   use Bokken.Schema
 
   alias Bokken.Accounts.{Organizer, Social, User}
-  alias Bokken.Events.{Lecture, LectureMentorAssistant, Team, TeamMentor}
+  alias Bokken.Events.{Event, Lecture, LectureMentorAssistant, Team, TeamMentor}
   alias Bokken.Uploaders.Avatar
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
@@ -29,6 +29,7 @@ defmodule Bokken.Accounts.Mentor do
     belongs_to :user, User, foreign_key: :user_id
 
     many_to_many :teams, Team, join_through: TeamMentor
+    many_to_many :events, Event, join_through: Lecture
 
     many_to_many :lectures, Lecture, join_through: LectureMentorAssistant
 

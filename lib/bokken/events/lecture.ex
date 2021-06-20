@@ -8,8 +8,8 @@ defmodule Bokken.Events.Lecture do
   alias Bokken.Documents.File
   alias Bokken.Events.{Event, LectureMentorAssistant}
 
-  @required_fields [:ninja_id, :mentor_id, :event_id]
-  @optional_fields [:notes, :summary, :attendance]
+  @required_fields [:ninja_id, :event_id]
+  @optional_fields [:mentor_id, :notes, :summary, :attendance]
 
   schema "lectures" do
     field :notes, :string

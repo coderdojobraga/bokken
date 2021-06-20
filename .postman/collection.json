@@ -3012,7 +3012,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"spots_available\": \"{{$randomInt}}\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3551,6 +3551,121 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "List Ninjas from an Event",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_event);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Ninja on Event",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_event);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ninja_id\": \"{{ninja_id}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			],
 			"event": [
@@ -3606,7 +3721,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"ninja_id = pm.response.json().data[49].id",
+											"ninja_id = pm.response.json().data[12].id",
 											"pm.environment.set(\"ninja_id\", ninja_id);",
 											""
 										],
@@ -3654,7 +3769,8 @@
 									"formdata": [
 										{
 											"key": "file[description]",
-											"value": "Game number {{$randomInt}}",
+											"value": "A {{$randomAdjective}} game with {{$randomBs}}",
+											"description": " ",
 											"type": "text"
 										},
 										{
@@ -3665,6 +3781,11 @@
 										{
 											"key": "file[ninja_id]",
 											"value": "{{ninja_id}}",
+											"type": "text"
+										},
+										{
+											"key": "file[title]",
+											"value": "Game about {{$randomAdjective}}",
 											"type": "text"
 										}
 									]
@@ -3738,6 +3859,29 @@
 					"item": [
 						{
 							"name": "List Ninja files",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3904,12 +4048,23 @@
 					"    function get_badge(err, response) {",
 					"        setup_request(err, response, \"badge\");",
 					"    ",
-					"        // Store one team ID",
+					"        // Store one badge ID",
 					"        const { data } = response.json();",
 					"",
 					"        const badge_id = data[get_random_index(data)].id;",
 					"",
 					"        pm.environment.set(\"badge_id\", badge_id);",
+					"    }",
+					"",
+					"    function get_event(err, response) {",
+					"        setup_request(err, response, \"event\");",
+					"    ",
+					"        // Store one event ID",
+					"        const { data } = response.json();",
+					"",
+					"        const event_id = data[get_random_index(data)].id;",
+					"",
+					"        pm.environment.set(\"event_id\", event_id);",
 					"    }",
 					"",
 					"    return { ",
@@ -3919,7 +4074,8 @@
 					"            get_mentor,",
 					"            get_ninja,",
 					"            get_team,",
-					"            get_badge",
+					"            get_badge,",
+					"            get_event",
 					"        } ",
 					"    }",
 					"}`)",
