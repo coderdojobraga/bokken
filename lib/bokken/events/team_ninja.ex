@@ -23,8 +23,8 @@ defmodule Bokken.Events.TeamNinja do
     team_ninja
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> assoc_constraint(:team)
     |> assoc_constraint(:ninja)
-    |> unique_constraint([:team_id, :ninja_id], name: :teams_ninjas_pkey)
+    |> assoc_constraint(:team)
+    |> unique_constraint([:ninja_id, :team_id], name: :teams_ninjas_pkey)
   end
 end

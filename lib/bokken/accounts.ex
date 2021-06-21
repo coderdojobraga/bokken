@@ -32,7 +32,9 @@ defmodule Bokken.Accounts do
       iex> get_guardian!(456)
       ** (Ecto.NoResultsError)
   """
-  def get_guardian!(id), do: Repo.get!(Guardian, id)
+  def get_guardian!(id, preloads \\ []) do
+    Repo.get!(Guardian, id) |> Repo.preload(preloads)
+  end
 
   @doc """
   Creates a guardian.
@@ -333,9 +335,9 @@ defmodule Bokken.Accounts do
     Ninja.changeset(ninja, attrs)
   end
 
-  def add_ninja_to_team(team_id, ninja_id) do
+  def add_ninja_to_team(ninja_id, team_id) do
     %TeamNinja{}
-    |> TeamNinja.changeset(%{team_id: team_id, ninja_id: ninja_id})
+    |> TeamNinja.changeset(%{ninja_id: ninja_id, team_id: team_id})
     |> Repo.insert()
   end
 

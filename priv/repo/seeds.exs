@@ -4,6 +4,8 @@ defmodule Bokken.DbSeeder do
        mix run priv/repo/seeds.exs
   """
 
+  @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
+
   def run do
     # Great Singers
     [
@@ -78,7 +80,6 @@ defmodule Bokken.DbSeeder do
       "White Rabbit"
     ]
     |> create_users(:mentor)
-    |> create_organizers()
 
     # Literature Characters
     [
@@ -165,17 +166,49 @@ defmodule Bokken.DbSeeder do
     |> create_users(:ninja)
 
     [
-      "Conditions Master",
+      "Chandler Bing",
+      "Monica Geller",
+      "Ross Geller",
+      "Joey Tribbiani",
+      "Rachel Green",
+      "Phoebe Buffay"
+    ]
+    |> create_users(:organizer)
+
+    [
+      "My First Project",
       "Finished 5 Projects",
       "Finished 10 Projects",
+      "Finished 20 Projects",
+      "Finished 50 Projects",
+      "Finished 100 Projects",
+      "Conditions Master",
+      "Functions Master",
+      "Modules Master",
+      "Algorithms Master",
       "Loop Master",
       "Scratch",
-      "My First Project"
+      "Ruby",
+      "Python",
+      "Haskell",
+      "Elixir",
+      "JavaScript"
     ]
     |> create_badges()
 
     # Great Teams
     [
+      "Benjamins",
+      "Escolinhas",
+      "Infantis",
+      "Iniciados",
+      "Juvenis",
+      "Juniores",
+      "Seniores",
+      "Máximus A",
+      "Máximus B",
+      "Mínimus A",
+      "Mínimus B",
       "Qi",
       "Yin",
       "Yang"
@@ -183,11 +216,7 @@ defmodule Bokken.DbSeeder do
     |> create_teams()
 
     # Some Locations
-    [
-      "Braga",
-      "Guimarães",
-      "Vieira do Minho"
-    ]
+    @portuguese_cities
     |> create_locations()
 
     [
@@ -212,6 +241,9 @@ defmodule Bokken.DbSeeder do
     # Some Projects
     [
       "My first project",
+      "My first game",
+      "My Web Server",
+      "Notes on Scratch",
       "Learning strategies for organizing code"
     ]
     |> create_files()
@@ -234,7 +266,10 @@ defmodule Bokken.DbSeeder do
 
       team = %{description: description, name: name}
 
-      Bokken.Events.create_team(team)
+      {:ok, team} = Bokken.Events.create_team(team)
+
+      Enum.take_random(Bokken.Accounts.list_ninjas(), 5)
+      |> Enum.map(&Bokken.Accounts.add_ninja_to_team(&1.id, team.id))
     end
   end
 
@@ -285,7 +320,7 @@ defmodule Bokken.DbSeeder do
     end
   end
 
-  def create_users(characters, role) when role in [:guardian, :mentor, :ninja] do
+  def create_users(characters, role) when role in [:guardian, :mentor, :ninja, :organizer] do
     for character <- characters do
       user = gen_user(character, role)
 
@@ -303,6 +338,9 @@ defmodule Bokken.DbSeeder do
 
         {:ok, %{id: user_id}} when role == :ninja ->
           create_ninja(names, user_id)
+
+        {:ok, %{id: user_id}} when role == :organizer ->
+          create_organizer(user_id)
       end
     end
   end
@@ -382,20 +420,13 @@ defmodule Bokken.DbSeeder do
     Bokken.Accounts.create_mentor(mentor)
   end
 
-  def create_organizers(mentors) do
-    mentors = Enum.take(mentors, 2)
+  def create_organizer(user_id) do
+    organizer = %{
+      champion: true,
+      user_id: user_id
+    }
 
-    for m <- mentors do
-      mentor = elem(m, 1)
-
-      organizer = %{
-        champion: true,
-        user_id: mentor.user_id,
-        mentor_id: mentor.id
-      }
-
-      Bokken.Accounts.create_organizer(organizer)
-    end
+    Bokken.Accounts.create_organizer(organizer)
   end
 
   def create_lectures(summaries) do
