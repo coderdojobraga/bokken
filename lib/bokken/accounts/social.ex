@@ -10,8 +10,10 @@ defmodule Bokken.Accounts.Social do
   @optional_fields []
 
   @derive Jason.Encoder
+  @primary_key {:name, Ecto.Enum,
+                values: [:scratch, :codewars, :github, :gitlab], autogenerate: false}
+  @foreign_key_type Ecto.Enum
   embedded_schema do
-    field :name, Ecto.Enum, values: [:scratch, :codewars, :github, :gitlab]
     field :username, :string
   end
 
