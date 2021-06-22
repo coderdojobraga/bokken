@@ -1049,8 +1049,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"mentor_assistant_id = pm.response.json().data.id",
-											"pm.environment.set(\"mentor_assistant_id\", mentor_assistant_id);"
+											"mentor_id = pm.response.json().data.id",
+											"pm.environment.set(\"mentor_id\", mentor_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -1063,7 +1063,7 @@
 											"",
 											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
 											"",
-											"email = `nelson${parseInt((Math.random() * 100), 10)}@mail.com`,",
+											"email = `nelson${parseInt((Math.random() * 1000), 15)}@mail.com`,",
 											"",
 											"pm.sendRequest({",
 											"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_up`,",
@@ -1186,6 +1186,14 @@
 											"pm.visualizer.set(template, {",
 											"    // Pass the response body parsed as JSON as `data`",
 											"    response: pm.response.json().data",
+											"});",
+											"",
+											"pm.test(\"Status is error on user\", function(){",
+											"    pm.response.to.have.status(422);",
+											"})",
+											"",
+											"pm.test(\"User is already registered\", function () {",
+											"    pm.expect(pm.response.json().errors.user_id[0]).to.be.a('string');",
 											"});",
 											""
 										],
@@ -1402,7 +1410,50 @@
 					"name": "Ninjas",
 					"item": [
 						{
-							"name": "List Ninjas",
+							"name": "List all Ninjas from a Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											" pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Ninjas of a Guardian",
 							"event": [
 								{
 									"listen": "test",
@@ -1437,6 +1488,45 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_in`,",
+											"    method: 'POST',",
+											"    body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify({ ",
+											"            email: \"jorgepalma@mail.com\",",
+											"            password: \"password1234\"",
+											"        })",
+											"    },",
+											"    header: {",
+											"        'Content-Type': 'application/json'",
+											"    },",
+											"}, (err, response) => {",
+											"    if (err) {",
+											"        throw err;",
+											"    }",
+											"",
+											"    if (response.code >= 400) {",
+											"        console.log(`PROBLEM :: ${response.code} error while signing in.`);",
+											"        console.log(response.text());",
+											"",
+											"        // Throw",
+											"        throw new Error(`Check console logs.`);",
+											"    }",
+											"",
+											"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+											"",
+											"    pm.environment.set(\"token\", token);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -1462,18 +1552,36 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
 											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/guardians`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_in`,",
+											"    method: 'POST',",
+											"    body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify({ ",
+											"            email: \"jorgepalma@mail.com\",",
+											"            password: \"password1234\"",
+											"        })",
 											"    },",
-											"}, utils.get_guardian);",
+											"    header: {",
+											"        'Content-Type': 'application/json'",
+											"    },",
+											"}, (err, response) => {",
+											"    if (err) {",
+											"        throw err;",
+											"    }",
+											"",
+											"    if (response.code >= 400) {",
+											"        console.log(`PROBLEM :: ${response.code} error while signing in.`);",
+											"        console.log(response.text());",
+											"",
+											"        // Throw",
+											"        throw new Error(`Check console logs.`);",
+											"    }",
+											"",
+											"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+											"",
+											"    pm.environment.set(\"token\", token);",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -1485,7 +1593,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"ninja\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"user_id\": \"{{user_id}}\",\n        \"city\": \"Vieira do Minho\",\n        \"birthday\": \"1996-12-12\",\n        \"belt\": \"white\",\n        \"guardian_id\": \"{{guardian_id}}\"\n    }\n}",
+									"raw": "{\n    \"ninja\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"city\": \"Vieira do Minho\",\n        \"birthday\": \"1996-12-12\",\n        \"belt\": \"white\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1512,6 +1620,36 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
+									"pm.sendRequest({",
+									"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_in`,",
+									"    method: 'POST',",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({ ",
+									"            email: \"jorgepalma@mail.com\",",
+									"            password: \"password1234\"",
+									"        })",
+									"    },",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"}, (err, response) => {",
+									"    if (err) {",
+									"        throw err;",
+									"    }",
+									"",
+									"    if (response.code >= 400) {",
+									"        console.log(`PROBLEM :: ${response.code} error while signing in.`);",
+									"        console.log(response.text());",
+									"",
+									"        // Throw",
+									"        throw new Error(`Check console logs.`);",
+									"    }",
+									"",
+									"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+									"",
+									"    pm.environment.set(\"token\", token);",
+									"});",
 									""
 								]
 							}
@@ -2017,16 +2155,6 @@
 											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
 											"",
 											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_ninja);",
-											"",
-											"",
-											"pm.sendRequest({",
 											"    url: `${pm.environment.replaceIn('{{host}}')}/api/badges`,",
 											"    method: 'GET',",
 											"    header: {",
@@ -2034,6 +2162,24 @@
 											"        'Cookie': `_bokken_key=${token}`",
 											"    },",
 											"}, utils.get_badge);",
+											"",
+											" pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
 											"",
 											"",
 											""
@@ -2089,32 +2235,61 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Ninja's files",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/files",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"files"
-									]
-								},
-								"description": "Get all the files from a ninja"
-							},
-							"response": []
 						}
 					]
 				}
 			],
-			"description": "Requests referring to badges"
+			"description": "Requests referring to badges",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_in`,",
+							"    method: 'POST',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ ",
+							"            email: \"peterpan@mail.com\",",
+							"            password: \"password1234\"",
+							"        })",
+							"    },",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"}, (err, response) => {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"",
+							"    if (response.code >= 400) {",
+							"        console.log(`PROBLEM :: ${response.code} error while signing in.`);",
+							"        console.log(response.text());",
+							"",
+							"        // Throw",
+							"        throw new Error(`Check console logs.`);",
+							"    }",
+							"",
+							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+							"",
+							"    pm.environment.set(\"token\", token);",
+							"});",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Events",
@@ -2243,175 +2418,6 @@
 								"description": "Deletes a team."
 							},
 							"response": []
-						},
-						{
-							"name": "Associate a Ninja to a Team",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_ninja);",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_team);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status is OK\", function(){",
-											"    pm.response.to.have.status(201);",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n   \"ninja_id\": \"{{ninja_id}}\"\n} ",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"ninjas"
-									]
-								},
-								"description": "Associates a certain ninja to a certain team."
-							},
-							"response": []
-						},
-						{
-							"name": "Associate Mentor to Team",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_mentor);",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_team);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status is OK\", function(){",
-											"    pm.response.to.have.status(201);",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n   \"mentor_id\": \"{{mentor_id}}\" \n} ",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors"
-									]
-								},
-								"description": "Associates a mentor to a certain team."
-							},
-							"response": []
-						},
-						{
-							"name": "Remove Mentor from Team",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors",
-										"{{mentor_id}}"
-									]
-								},
-								"description": "Disengages a certain mentor from a certain team."
-							},
-							"response": []
 						}
 					],
 					"event": [
@@ -2420,6 +2426,18 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
+									"const token = pm.environment.get(\"token\");",
+									"",
+									"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+									"",
+									"pm.sendRequest({",
+									"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+									"    method: 'GET',",
+									"    header: {",
+									"        'Content-Type': 'application/json',",
+									"        'Cookie': `_bokken_key=${token}`",
+									"    },",
+									"}, utils.get_team);",
 									""
 								]
 							}
@@ -3229,98 +3247,6 @@
 					"name": "Lectures",
 					"item": [
 						{
-							"name": "Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[30].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Event to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"event_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"event_id\", event_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Mentor to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"mentor_id\", mentor_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "List lectures",
 							"event": [
 								{
@@ -3430,9 +3356,9 @@
 											"    },",
 											"}, utils.get_mentor);",
 											"",
-											"const mentor_id = pm.environment.get(\"mentor_id\");",
+											"const mentor_assistant_id = pm.environment.get(\"mentor_id\");",
 											"",
-											"pm.environment.set(\"mentor_id\", mentor_id);",
+											"pm.environment.set(\"mentor_assistant_id\", mentor_assistant_id);",
 											"",
 											"pm.sendRequest({",
 											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
@@ -3443,9 +3369,23 @@
 											"    },",
 											"}, utils.get_mentor);",
 											"",
-											"const mentor_assistant_id = pm.environment.get(\"mentor_id\");",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
 											"",
-											"pm.environment.set(\"mentor_id\", mentor_assistant_id);",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_event);",
 											""
 										],
 										"type": "text/javascript"
@@ -3625,14 +3565,13 @@
 											"}, utils.get_event);",
 											"",
 											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
 											"    method: 'GET',",
 											"    header: {",
 											"        'Content-Type': 'application/json',",
 											"        'Cookie': `_bokken_key=${token}`",
 											"    },",
-											"}, utils.get_ninja);",
-											""
+											"}, utils.get_ninja);"
 										],
 										"type": "text/javascript"
 									}
@@ -3664,6 +3603,184 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Associate Mentor to Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"mentor_id\": \"{{mentor_id}}\" \n} ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"mentors"
+									]
+								},
+								"description": "Associates a mentor to a certain team."
+							},
+							"response": []
+						},
+						{
+							"name": "Associate a Ninja to a Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"ninja_id\": \"{{ninja_id}}\"\n} ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"ninjas"
+									]
+								},
+								"description": "Associates a certain ninja to a certain team."
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Mentor from Team",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"mentors",
+										"{{mentor_id}}"
+									]
+								},
+								"description": "Disengages a certain mentor from a certain team."
+							},
+							"response": []
 						}
 					]
 				}
@@ -3674,6 +3791,36 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
+							"pm.sendRequest({",
+							"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_in`,",
+							"    method: 'POST',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({ ",
+							"            email: \"peterpan@mail.com\",",
+							"            password: \"password1234\"",
+							"        })",
+							"    },",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"}, (err, response) => {",
+							"    if (err) {",
+							"        throw err;",
+							"    }",
+							"",
+							"    if (response.code >= 400) {",
+							"        console.log(`PROBLEM :: ${response.code} error while signing in.`);",
+							"        console.log(response.text());",
+							"",
+							"        // Throw",
+							"        throw new Error(`Check console logs.`);",
+							"    }",
+							"",
+							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+							"",
+							"    pm.environment.set(\"token\", token);",
+							"});",
 							""
 						]
 					}
@@ -3715,38 +3862,6 @@
 							"response": []
 						},
 						{
-							"name": "Ninja to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"ninja_id = pm.response.json().data[12].id",
-											"pm.environment.set(\"ninja_id\", ninja_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								},
-								"description": "Getting a ninja to associate to a new project."
-							},
-							"response": []
-						},
-						{
 							"name": "Create a file",
 							"event": [
 								{
@@ -3756,6 +3871,27 @@
 											"const { data: { id } } = pm.response.json();",
 											"",
 											"pm.environment.set(\"file_id\", id);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -3868,8 +4004,17 @@
 											"",
 											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
 											"",
+											" pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											"",
 											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/ninjas`,",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
 											"    method: 'GET',",
 											"    header: {",
 											"        'Content-Type': 'application/json',",

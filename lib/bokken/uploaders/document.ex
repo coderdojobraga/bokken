@@ -14,10 +14,10 @@ defmodule Bokken.Uploaders.Document do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, scope}) when is_nil(scope.lecture_id) do
-    "uploads/snippets/#{scope.user_id}"
+    "uploads/projects/#{scope.user_id}"
   end
 
   def storage_dir(_version, {_file, scope}) do
-    "uploads/projects/#{scope.user_id}/#{scope.lecture_id}"
+    "uploads/snippets/#{scope.user_id}/#{scope.lecture_id}"
   end
 end

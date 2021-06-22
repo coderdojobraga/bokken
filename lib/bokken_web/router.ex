@@ -1,6 +1,6 @@
 defmodule BokkenWeb.Router do
   use BokkenWeb, :router
-  use Kaffy.Routes, scope: "/admin", pipe_through: [:authenticated, :protect_from_forgery]
+  use Kaffy.Routes, scope: "/admin", pipe_through: [:authenticated, :admin, :protect_from_forgery]
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -9,6 +9,10 @@ defmodule BokkenWeb.Router do
   pipeline :authenticated do
     plug :fetch_session
     plug BokkenWeb.Auth.Pipeline
+  end
+
+  pipeline :admin do
+    plug BokkenWeb.Auth.AllowedRoles, [:organizer]
   end
 
   scope "/", BokkenWeb do
