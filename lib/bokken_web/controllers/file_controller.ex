@@ -56,11 +56,6 @@ defmodule BokkenWeb.FileController do
     render(conn, "index.json", files: files)
   end
 
-  def index(conn, _params) do
-    files = Documents.list_files()
-    render(conn, "index.json", files: files)
-  end
-
   def create(conn, %{"file" => file_params}) do
     user_id = conn.assigns.current_user.id
 
