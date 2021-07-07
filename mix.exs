@@ -7,7 +7,7 @@ defmodule Bokken.MixProject do
       version: "0.1.0",
       description:
         "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga",
-      elixir: "~> 1.7",
+      elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
