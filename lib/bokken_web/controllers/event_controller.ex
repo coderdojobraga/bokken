@@ -6,6 +6,9 @@ defmodule BokkenWeb.EventController do
 
   action_fallback BokkenWeb.FallbackController
 
+  defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
+  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
+
   def index(conn, params) do
     events = Events.list_events(params)
     render(conn, "index.json", events: events)

@@ -35,4 +35,15 @@ defmodule Bokken.Accounts.MentorAdmin do
       photo: %{value: &Avatar.url({&1.photo, &1}, :thumb)}
     ]
   end
+
+  def form_fields(_) do
+    [
+      first_name: nil,
+      last_name: nil,
+      mobile: nil,
+      birthday: nil,
+      major: nil,
+      trial: nil
+    ]
+  end
 end

@@ -12,14 +12,12 @@ defmodule BokkenWeb.GuardianControllerTest do
     last_name: "Silva Costa"
   }
 
-  def valid_attr do
-    %{
-      city: "Braga",
-      mobile: "915096743",
-      first_name: "Ana Maria",
-      last_name: "Silva Costa"
-    }
-  end
+  @valid_attrs %{
+    city: "Braga",
+    mobile: "915096743",
+    first_name: "Ana Maria",
+    last_name: "Silva Costa"
+  }
 
   def valid_user do
     %{
@@ -30,12 +28,14 @@ defmodule BokkenWeb.GuardianControllerTest do
   end
 
   def attrs do
-    valid_attrs = valid_attr()
     user = valid_user()
-    new_user = Accounts.create_user(user)
-    valid_attrs = Map.put(valid_attrs, :user_id, elem(new_user, 1).id)
-    valid_attrs = Map.put(valid_attrs, :email, elem(new_user, 1).email)
-    Map.put(valid_attrs, :password, elem(new_user, 1).password)
+
+    {:ok, new_user} = Accounts.create_user(user)
+
+    @valid_attrs
+    |> Map.put(:user_id, new_user.id)
+    |> Map.put(:email, new_user.email)
+    |> Map.put(:password, new_user.password)
   end
 
   @update_attrs %{
@@ -52,12 +52,13 @@ defmodule BokkenWeb.GuardianControllerTest do
     {:ok, jwt, _claims} =
       Authorization.encode_and_sign(user, %{role: user.role, active: user.active})
 
-    {:ok,
-     conn:
-       conn
-       |> put_req_header("accept", "application/json")
-       |> put_req_header("authorization", "Bearer #{jwt}")
-       |> put_req_header("user_id", "#{guardian[:user_id]}")}
+    conn =
+      conn
+      |> put_req_header("accept", "application/json")
+      |> put_req_header("authorization", "Bearer #{jwt}")
+      |> put_req_header("user_id", "#{guardian[:user_id]}")
+
+    {:ok, conn: conn}
   end
 
   describe "index" do

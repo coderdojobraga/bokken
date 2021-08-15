@@ -9,7 +9,7 @@ defmodule Bokken.MixProject do
         "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -35,10 +35,10 @@ defmodule Bokken.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.8"},
+      {:phoenix, "~> 1.5.12"},
       {:phoenix_ecto, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.4"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.7"},
       {:ecto_psql_extras, "~> 0.2"},
       {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.4"},
@@ -52,9 +52,9 @@ defmodule Bokken.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
-      {:bamboo, "~> 2.1.0"},
-      {:bamboo_phoenix, "~> 1.0.0"},
-      {:kaffy, github: "aesmail/kaffy", commit: "cf35712714856816aef47a1afe93a466e055f080"},
+      {:swoosh, "~> 1.5"},
+      {:phoenix_swoosh, "~> 0.3"},
+      {:kaffy, "~> 0.9.0", override: true},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
@@ -69,7 +69,8 @@ defmodule Bokken.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.seed": ["run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]

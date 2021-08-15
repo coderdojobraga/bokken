@@ -25,7 +25,7 @@ config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
   secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
 
-config :bokken, Bokken.Mailer, adapter: Bamboo.LocalAdapter
+config :bokken, Bokken.Mailer, adapter: Swoosh.Adapters.Local
 
 config :bokken, BokkenWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 

@@ -11,7 +11,10 @@ defmodule BokkenWeb.NinjaController do
 
   defguard is_guardian(conn) when conn.assigns.current_user.role === :guardian
 
-  def index(conn, params) when is_map_key(params, "team_id") or is_map_key(params, "badge_id") do
+  def index(conn, params)
+      when is_map_key(params, "team_id")
+      when is_map_key(params, "badge_id")
+      when is_map_key(params, "event_id") do
     ninjas = Accounts.list_ninjas(params)
     render(conn, "index.json", ninjas: ninjas)
   end

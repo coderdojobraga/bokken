@@ -106,6 +106,12 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
+  def list_mentors(%{"event_id" => event_id}) do
+    event_id
+    |> Events.get_event!([:mentors])
+    |> Map.fetch!(:mentors)
+  end
+
   def list_mentors(_args) do
     Mentor
     |> Repo.all()

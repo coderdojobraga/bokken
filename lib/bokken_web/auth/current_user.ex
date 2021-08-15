@@ -11,7 +11,8 @@ defmodule BokkenWeb.Auth.CurrentUser do
   end
 
   defp get_current_user(conn) do
-    Authorization.Plug.current_resource(conn)
+    conn
+    |> Authorization.Plug.current_resource()
     |> then(&Repo.preload(&1, [&1.role]))
   end
 end

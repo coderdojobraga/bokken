@@ -3,8 +3,8 @@ defmodule BokkenWeb.AuthController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
-  alias Bokken.Email
   alias Bokken.Mailer
+  alias BokkenWeb.AuthEmails
   alias BokkenWeb.Authorization
 
   action_fallback BokkenWeb.FallbackController
@@ -86,6 +86,6 @@ defmodule BokkenWeb.AuthController do
     {:ok, token, _claims} =
       Authorization.encode_and_sign(user, %{email: user.email}, ttl: {15, :minute})
 
-    Email.verify_user_email(token, to: user.email) |> Mailer.deliver_later!()
+    AuthEmails.verify_user_email(token, to: user.email) |> Mailer.deliver()
   end
 end

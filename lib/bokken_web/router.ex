@@ -74,18 +74,13 @@ defmodule BokkenWeb.Router do
 
     resources "/events", EventController, except: [:new, :edit] do
       resources "/ninjas", NinjaController, only: [:index, :create]
+      resources "/mentors", MentorController, only: [:index, :create]
     end
 
     resources "/lectures", LectureController, except: [:new, :edit]
 
     resources "/files", FileController, except: [:new, :edit]
   end
-
-  # credo:disable-for-next-line
-  # TODO: Check this before production
-  # if Mix.env() in [:dev, :stg] do
-  forward "/sent_emails", Bamboo.SentEmailViewerPlug
-  # end
 
   # Enables LiveDashboard only for development
   #
@@ -100,6 +95,8 @@ defmodule BokkenWeb.Router do
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
       live_dashboard "/sysadmin", metrics: BokkenWeb.Telemetry, ecto_repos: [Bokken.Repo]
+
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end
