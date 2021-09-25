@@ -36,18 +36,19 @@ function deploy() {
 
   env=${1:-stg}
 
-  file="docker-compose.prod.yml"
+  file="docker-compose.${env}.yml"
 
   load_env_file ".env.${env}"
 
   [ -z "${DOCKER_HOST?${RED}Remote server is required${RESET}}" ] && exit 1
 
-  docker-compose -f "$file" pull
-  docker-compose -f "$file" up -d db
-  docker-compose -f "$file" run --rm api eval "Bokken.Release.migrate"
-  docker-compose -f "$file" up -d api
+  docker-compose -f "$file" -p "bokken_${env}" pull
+  docker-compose -f "$file" -p "bokken_${env}" build
+  docker-compose -f "$file" -p "bokken_${env}" up -d db
+  docker-compose -f "$file" -p "bokken_${env}" run --rm api eval "Bokken.Release.migrate"
+  docker-compose -f "$file" -p "bokken_${env}" up -d api
 
-  log_success "Successfully deployed to ${CYAN}${DOCKER_HOST}${RESET}"
+  log_success "Successfully deployed ${env} to ${CYAN}${DOCKER_HOST}${RESET}"
 }
 
 case ${1:-stg} in

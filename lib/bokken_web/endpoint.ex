@@ -14,10 +14,6 @@ defmodule BokkenWeb.Endpoint do
     signing_salt: "82k4BOy+"
   ]
 
-  socket "/socket", BokkenWeb.UserSocket,
-    websocket: true,
-    longpoll: false
-
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   plug Corsica,

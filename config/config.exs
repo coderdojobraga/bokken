@@ -1,11 +1,11 @@
 # This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
+# and its dependencies with the aid of the Config module.
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :bokken,
   ecto_repos: [Bokken.Repo],
@@ -14,18 +14,23 @@ config :bokken,
 # Configures the endpoint
 config :bokken, BokkenWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35/SRqswg",
   render_errors: [view: BokkenWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Bokken.PubSub,
   live_view: [signing_salt: "HwkWYgOC"],
   allowed_origins: ~r{https?://(.)*},
   frontend_url: "http://localhost:3000"
 
-config :bokken, BokkenWeb.Authorization,
-  issuer: "bokken",
-  secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
-
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
 config :bokken, Bokken.Mailer, adapter: Swoosh.Adapters.Local
+
+# Swoosh API client is needed for adapters other than SMTP.
+config :swoosh, :api_client, false
 
 config :bokken, BokkenWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 
