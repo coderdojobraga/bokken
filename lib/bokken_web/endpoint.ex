@@ -38,7 +38,7 @@ defmodule BokkenWeb.Endpoint do
     at: "/",
     from: @app,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico dojo.html robots.txt)
+    only: ~w(images favicon.ico dojo.html robots.txt)
 
   plug Plug.Static,
     at: "/kaffy",
