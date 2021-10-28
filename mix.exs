@@ -1,15 +1,17 @@
 defmodule Bokken.MixProject do
   use Mix.Project
 
+  @version "0.2.0-dev"
+  @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
+
   def project do
     [
       app: :bokken,
-      version: "0.1.0",
-      description:
-        "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga",
+      version: @version,
+      description: @description,
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -35,28 +37,44 @@ defmodule Bokken.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.8"},
-      {:phoenix_ecto, "~> 4.1"},
-      {:phoenix_live_dashboard, "~> 0.4"},
-      {:ecto_sql, "~> 3.4"},
-      {:ecto_psql_extras, "~> 0.2"},
+      {:phoenix, "~> 1.6.0"},
+
+      # database
+      {:phoenix_ecto, "~> 4.4"},
+      {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:plug_cowboy, "~> 2.0"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+
+      # monitoring
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 1.0"},
+      {:phoenix_live_dashboard, "~> 0.5"},
+
+      # utilities
+      {:plug_cowboy, "~> 2.5"},
+      {:gettext, "~> 0.18"},
+      {:jason, "~> 1.2"},
       {:browser, "~> 0.4.4"},
-      {:corsica, "~> 1.0"},
-      {:guardian, "~> 2.0"},
-      {:argon2_elixir, "~> 2.0"},
+      {:corsica, "~> 1.1"},
+
+      # security
+      {:guardian, "~> 2.2"},
+      {:argon2_elixir, "~> 2.4"},
+
+      # uploads
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
-      {:bamboo, "~> 2.1.0"},
-      {:bamboo_phoenix, "~> 1.0.0"},
-      {:kaffy, github: "aesmail/kaffy", commit: "cf35712714856816aef47a1afe93a466e055f080"},
+
+      # mailer
+      {:swoosh, "~> 1.5"},
+      {:phoenix_swoosh, "~> 1.0"},
+
+      # admin panel
+      {:phoenix_html, "~> 2.11", override: true},
+      {:kaffy, "~> 0.9.0", override: true},
+
+      # tools
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -69,7 +87,8 @@ defmodule Bokken.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.seed": ["run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]

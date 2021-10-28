@@ -1,0 +1,39 @@
+# Ecto testing and evaluation
+
+## Aliases and imports
+
+```elixir
+import Ecto.Query
+
+alias Bokken.{
+  Accounts,
+  Accounts.Guardian,
+  Accounts.Mentor,
+  Accounts.Ninja,
+  Accounts.Organizer,
+  Accounts.User,
+  Documents,
+  Documents.File,
+  Events,
+  Events.Event,
+  Events.Events,
+  Events.Lecture,
+  Events.Location,
+  Events.Team,
+  Gamification,
+  Gamification.Badge,
+  Repo
+}
+```
+
+```elixir
+user = Accounts.get_user!("44b56420-ed01-4a1e-a840-a9add2265ae9", [:guardian])
+```
+
+```elixir
+user.guardian |> Repo.preload([:ninjas])
+```
+
+```elixir
+Accounts.list_ninjas(%{"badge_id" => "skldfjasd", "event_id" => "caks", "team_id" => "klsjf"})
+```

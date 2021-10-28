@@ -7,6 +7,8 @@ defmodule Bokken.Accounts.GuardianAdmin do
   alias Bokken.Accounts.Guardian
   alias Bokken.Uploaders.Avatar
 
+  @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
+
   def widgets(_schema, _conn) do
     [
       %{
@@ -31,6 +33,15 @@ defmodule Bokken.Accounts.GuardianAdmin do
         value: &Accounts.get_user!(&1.user_id).email
       },
       photo: %{value: &Avatar.url({&1.photo, &1}, :thumb)}
+    ]
+  end
+
+  def form_fields(_) do
+    [
+      first_name: nil,
+      last_name: nil,
+      mobile: nil,
+      city: %{choices: @portuguese_cities}
     ]
   end
 end

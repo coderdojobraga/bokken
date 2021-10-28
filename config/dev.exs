@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :bokken, Bokken.Repo,
@@ -18,13 +18,19 @@ config :bokken, Bokken.Repo,
 # with webpack to recompile .js and .css sources.
 config :bokken, BokkenWeb.Endpoint,
   http: [
+    ip: {127, 0, 0, 1},
     port: String.to_integer(System.get_env("PORT") || "4000")
   ],
+  check_origin: false,
   debug_errors: true,
   code_reloader: true,
-  check_origin: false,
   watchers: [],
+  secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg",
   frontend_url: System.get_env("FRONTEND_URL", "http://localhost:3000")
+
+config :bokken, BokkenWeb.Authorization,
+  issuer: "bokken",
+  secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
 
 # ## SSL Support
 #

@@ -22,23 +22,29 @@ defmodule Bokken.Accounts.UserAdmin do
     [
       id: nil,
       email: nil,
-      role: nil,
+      role: %{
+        filters: [
+          {"Guardian", :guardian},
+          {"Mentor", :mentor},
+          {"Ninja", :ninja},
+          {"Organizer", :organizer}
+        ]
+      },
       verified: nil,
       active: nil,
-      registered: %{
-        value: fn user ->
-          user = Repo.preload(user, [user.role])
+      registered: nil
+    ]
+  end
 
-          [
-            mentor: user.mentor,
-            guardian: user.guardian,
-            ninja: user.ninja,
-            organizer: user.organizer
-          ]
-          |> Keyword.get(user.role)
-          |> then(&(Ecto.assoc_loaded?(&1) and not is_nil(&1)))
-        end
-      }
+  def form_fields(_) do
+    [
+      email: nil,
+      active: nil,
+      password: nil,
+      password_hash: nil,
+      role: %{choices: [:guardian, :mentor, :ninja, :organizer]},
+      registered: nil,
+      verified: nil
     ]
   end
 end

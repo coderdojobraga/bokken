@@ -26,12 +26,33 @@ defmodule Bokken.Accounts.NinjaAdmin do
       name: %{value: &"#{&1.first_name} #{&1.last_name}"},
       belt: nil,
       birthday: nil,
-      notes: nil,
       user_id: %{
         name: "Email",
         value: &(&1.user_id && Accounts.get_user!(&1.user_id).email)
       },
       photo: %{value: &Avatar.url({&1.photo, &1}, :thumb)}
+    ]
+  end
+
+  def form_fields(_) do
+    [
+      first_name: nil,
+      last_name: nil,
+      belt: %{
+        choices: [
+          {"No belt", nil},
+          :white,
+          :yellow,
+          :blue,
+          :green,
+          :orange,
+          :red,
+          :purple,
+          :black
+        ]
+      },
+      birthday: nil,
+      notes: %{type: :richtext, rows: 4}
     ]
   end
 end

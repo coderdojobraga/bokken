@@ -5,17 +5,17 @@ services:
     extends:
       file: deploy.yml
       service: db
-    container_name: bokken_prod_db
+    container_name: bokken_stg_db
     ports:
       - ${POSTGRES_PORT}:5432
   api:
     extends:
       file: deploy.yml
       service: api
-    image: coderdojobraga/bokken:latest
-    container_name: bokken_prod_api
+    build: .
+    container_name: bokken_stg_api
     ports:
-      - ${PORT:-4001}:4001
+      - ${PORT:-4003}:4003
     depends_on:
       - db
 

@@ -72,23 +72,17 @@ defmodule Bokken.Accounts.User do
     end
   end
 
-  defp encrypt_password(%Ecto.Changeset{} = changeset) do
-    case changeset do
-      %{valid?: true, changes: %{password: password}} ->
-        change(changeset, password_hash: Argon2.hash_pwd_salt(password))
-
-      _ ->
-        changeset
-    end
+  defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
 
-  defp check_if_email_changed(changeset) do
-    case changeset do
-      %{valid?: true, changes: %{email: _email}} ->
-        change(changeset, verified: false)
+  defp encrypt_password(changeset), do: changeset
 
-      _ ->
-        changeset
-    end
+  defp check_if_email_changed(
+         %Ecto.Changeset{valid?: true, changes: %{email: _email}} = changeset
+       ) do
+    change(changeset, verified: false)
   end
+
+  defp check_if_email_changed(changeset), do: changeset
 end
