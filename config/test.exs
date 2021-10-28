@@ -2,11 +2,6 @@ import Config
 
 # Configure your database
 config :bokken, Bokken.Repo,
-  username: System.get_env("DB_USERNAME", "postgres"),
-  password: System.get_env("DB_PASSWORD", "postgres"),
-  database: System.get_env("DB_NAME", "bokken_test"),
-  hostname: System.get_env("DB_HOST", "localhost"),
-  port: System.get_env("DB_PORT", "5432"),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

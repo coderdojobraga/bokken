@@ -36,7 +36,7 @@ The following software is required to be installed on your system:
 - [PostgreSQL 13+](https://www.postgresql.org/download/)
 
 We recommend using [asdf version
-manager](https://asdf-vm.com/#/core-manage-asdf?id=install) to install and
+manager](https://asdf-vm.com/) to install and
 manage all the programming languages' requirements.
 
 ### :gear: Setup
@@ -49,8 +49,9 @@ cd bokken
 bin/setup
 ```
 
-If you want use different ENV variables, you have to export the `.env.dev`. You
-can do that using [direnv](https://direnv.net/).
+Then you should change the `.env.dev` file as needed. The database should be up
+and running before. If you want to read docker, see the [section
+below](#whale-docker).
 
 ### :hammer: Development
 
