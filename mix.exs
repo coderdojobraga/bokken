@@ -55,6 +55,7 @@ defmodule Bokken.MixProject do
       {:jason, "~> 1.2"},
       {:browser, "~> 0.4.4"},
       {:corsica, "~> 1.1"},
+      {:dotenvy, "~> 0.5.0"},
 
       # security
       {:guardian, "~> 2.2"},

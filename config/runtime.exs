@@ -1,12 +1,24 @@
 # In this file, we load production configuration and secrets
 # from environment variables.
 import Config
+import Dotenvy
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
 # and secrets from environment variables or elsewhere. Do not define
 # any compile-time configuration in here, as it won't be applied.
+if config_env() in [:dev, :test] do
+  source([".env", ".env.#{config_env()}", ".env.#{config_env()}.local"])
+
+  config :bokken, Bokken.Repo,
+    username: env!("DB_USERNAME", :string, "postgres"),
+    password: env!("DB_PASSWORD", :string, "postgres"),
+    database: env!("DB_NAME", :string, "bokken_#{config_env()}"),
+    hostname: env!("DB_HOST", :string, "localhost"),
+    port: env!("DB_PORT", :integer, 5432)
+end
+
 # The block below contains prod specific runtime configuration.
 if config_env() in [:prod, :stg] do
   database_url =

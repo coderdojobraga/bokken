@@ -2,11 +2,6 @@ import Config
 
 # Configure your database
 config :bokken, Bokken.Repo,
-  username: System.get_env("DB_USERNAME", "postgres"),
-  password: System.get_env("DB_PASSWORD", "postgres"),
-  database: System.get_env("DB_NAME", "bokken_dev"),
-  hostname: System.get_env("DB_HOST", "localhost"),
-  port: System.get_env("DB_PORT", "5432"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -25,7 +20,7 @@ config :bokken, BokkenWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   watchers: [],
-  secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg",
+  secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6",
   frontend_url: System.get_env("FRONTEND_URL", "http://localhost:3000")
 
 config :bokken, BokkenWeb.Authorization,
