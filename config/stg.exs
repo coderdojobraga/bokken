@@ -13,5 +13,8 @@ config :bokken, BokkenWeb.Endpoint,
   url: [host: "epl.di.uminho.pt", port: 4003],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :cors_plug,
+  origin: [~r/https?.*vercel\.app/]
+
 # Do not print debug messages in production
 config :logger, level: :info

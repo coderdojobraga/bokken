@@ -16,16 +16,6 @@ defmodule BokkenWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
-  plug Corsica,
-    allow_headers: :all,
-    allow_credentials: true,
-    origins: {__MODULE__, :check_corsica_origin}
-
-  def check_corsica_origin(origin) do
-    regex = Application.fetch_env!(@app, BokkenWeb.Endpoint)[:allowed_origins]
-    Regex.match?(regex, origin)
-  end
-
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
@@ -64,5 +54,8 @@ defmodule BokkenWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug CORSPlug
+
   plug BokkenWeb.Router
 end

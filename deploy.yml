@@ -17,7 +17,6 @@ services:
       - DATABASE_URL
       - SECRET_KEY_BASE
       - SECRET_KEY_GUARDIAN
-      - ALLOWED_ORIGINS
       - FRONTEND_URL
       - HOST_URL
       - PORT

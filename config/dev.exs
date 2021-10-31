@@ -23,6 +23,9 @@ config :bokken, BokkenWeb.Endpoint,
   secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6",
   frontend_url: System.get_env("FRONTEND_URL", "http://localhost:3000")
 
+config :cors_plug,
+  origin: ["http://localhost:3000"]
+
 config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
   secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"

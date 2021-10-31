@@ -82,7 +82,7 @@ defmodule BokkenWeb.Router do
     resources "/files", FileController, except: [:new, :edit]
   end
 
-  if Mix.env() in [:dev, :test] do
+  if Mix.env() in [:dev, :prod, :test] do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
