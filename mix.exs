@@ -50,11 +50,11 @@ defmodule Bokken.MixProject do
       {:phoenix_live_dashboard, "~> 0.5"},
 
       # utilities
+      {:cors_plug, "~> 2.0"},
       {:plug_cowboy, "~> 2.5"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:browser, "~> 0.4.4"},
-      {:corsica, "~> 1.1"},
       {:dotenvy, "~> 0.5.0"},
 
       # security

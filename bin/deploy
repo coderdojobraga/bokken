@@ -39,6 +39,7 @@ function deploy() {
   file="docker-compose.${env}.yml"
 
   load_env_file ".env.${env}"
+  export MIX_ENV="${env}"
 
   [ -z "${DOCKER_HOST?${RED}Remote server is required${RESET}}" ] && exit 1
 
