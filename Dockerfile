@@ -1,3 +1,5 @@
+ARG MIX_ENV="prod"
+
 FROM elixir:1.12.3-alpine AS build
 
 # install build dependencies
@@ -11,12 +13,13 @@ RUN mix local.hex --force && \
     mix local.rebar --force
 
 # set build ENV
-ENV MIX_ENV=prod
+ARG MIX_ENV
+ENV MIX_ENV=$MIX_ENV
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
-RUN mix do deps.get, deps.compile
+RUN mix do deps.get --only $MIX_ENV, deps.compile
 
 # compile and build release
 COPY lib lib
@@ -31,6 +34,9 @@ RUN mix do compile, release
 
 # prepare release image
 FROM alpine:3.14 AS app
+
+ARG MIX_ENV
+
 RUN apk add --no-cache openssl ncurses-libs
 
 # add imagemagick support
@@ -46,7 +52,7 @@ RUN mkdir -p /app/uploads
 
 VOLUME ["/app/uploads"]
 
-COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/bokken ./
+COPY --from=build --chown=nobody:nobody /app/_build/$MIX_ENV/rel/bokken ./
 
 ENV HOME=/app
 
