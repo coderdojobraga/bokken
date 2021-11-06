@@ -36,13 +36,18 @@ case ${1:-skip} in
 esac
 
 function build_image() {
-  local current_project_version
+  local version
+  local env
 
-  current_project_version=$(get_elixir_project_version)
+  env=${1:-stg}
+
+  load_env_file ".env.${env}"
+
+  version=$(get_elixir_project_version)
 
   docker build --rm \
     -t coderdojobraga/bokken:latest \
-    -t coderdojobraga/bokken:"$current_project_version" \
+    -t coderdojobraga/bokken:"$version" \
     -f Dockerfile .
   docker image prune --force
 }
@@ -51,7 +56,7 @@ function push_image() {
   docker push coderdojobraga/bokken --all-tags
 }
 
-if [[ "${1:-no-force}" != "--force" ]]; then
+if [[ "${1:-NOFORCE}" != "--force" ]]; then
   if [[ $(git branch --show-current) != 'main' ]]; then
     log_error "You're trying to release from git branch $(git branch --show-current) instead of main." \
       "To prevent releases from unstable branches, releases are only allowed from main."
@@ -64,7 +69,9 @@ if [[ "${1:-no-force}" != "--force" ]]; then
       "Please stash or commit your changes prior to cooking a new release."
     exit 2
   fi
+else
+    shift 1
 fi
 
-build_image
+build_image "${1:-prod}"
 push_image

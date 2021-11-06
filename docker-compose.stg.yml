@@ -12,7 +12,10 @@ services:
     extends:
       file: deploy.yml
       service: api
-    build: .
+    build:
+      context: .
+      args:
+        - MIX_ENV=stg
     container_name: bokken_stg_api
     ports:
       - ${PORT:-4003}:4003

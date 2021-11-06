@@ -1,7 +1,6 @@
 # In this file, we load production configuration and secrets
 # from environment variables.
 import Config
-import Dotenvy
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -9,6 +8,7 @@ import Dotenvy
 # and secrets from environment variables or elsewhere. Do not define
 # any compile-time configuration in here, as it won't be applied.
 if config_env() in [:dev, :test] do
+  import Dotenvy
   source([".env", ".env.#{config_env()}", ".env.#{config_env()}.local"])
 
   config :bokken, Bokken.Repo,
@@ -19,7 +19,7 @@ if config_env() in [:dev, :test] do
     port: env!("DB_PORT", :integer, 5432)
 end
 
-# The block below contains prod specific runtime configuration.
+# The block below contains prod/stg specific runtime configuration.
 if config_env() in [:prod, :stg] do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -53,6 +53,12 @@ if config_env() in [:prod, :stg] do
       Setup the URL where your frontend app will run.
       """
 
+  port =
+    String.to_integer(System.get_env("PORT")) ||
+      raise """
+      environment variable PORT is missing.
+      """
+
   config :bokken, BokkenWeb.Endpoint,
     http: [
       # Enable IPv6 and bind on all interfaces.
@@ -60,7 +66,7 @@ if config_env() in [:prod, :stg] do
       # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
       # for details about using IPv6 vs IPv4 and loopback vs public addresses.
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
-      port: String.to_integer(System.get_env("PORT", "4004"))
+      port: port
     ],
     secret_key_base: secret_key_base,
     frontend_url: frontend_url
@@ -92,8 +98,9 @@ if config_env() in [:prod, :stg] do
   #
   # If you are doing OTP releases, you need to instruct Phoenix
   # to start each relevant endpoint:
-  #
+
+  config :bokken, BokkenWeb.Endpoint, server: true
+
   # Then you can assemble a release by calling `mix release`.
   # See `mix help release` for more information.
-  config :bokken, BokkenWeb.Endpoint, server: true
 end

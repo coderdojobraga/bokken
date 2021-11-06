@@ -1,7 +1,7 @@
 defmodule Bokken.MixProject do
   use Mix.Project
 
-  @version "0.2.0-dev"
+  @version "0.2.0-#{Mix.env()}"
   @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
 
   def project do
@@ -12,7 +12,7 @@ defmodule Bokken.MixProject do
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
-      start_permanent: Mix.env() == :prod,
+      start_permanent: Mix.env() in [:prod, :stg],
       aliases: aliases(),
       deps: deps()
     ]
@@ -49,9 +49,11 @@ defmodule Bokken.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:phoenix_live_dashboard, "~> 0.5"},
 
-      # utilities
-      {:cors_plug, "~> 2.0"},
+      # plugs
       {:plug_cowboy, "~> 2.5"},
+      {:cors_plug, "~> 2.0"},
+
+      # utilities
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:browser, "~> 0.4.4"},
