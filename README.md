@@ -17,7 +17,7 @@
 [![Postman][postman-badge]][postman-documentation]
 [![CI build][ci-build-status]][ci-build-workflow]
 [![CI test][ci-test-status]][ci-test-workflow]
-[![CI style][ci-test-status]][ci-style-workflow]
+[![CI style][ci-style-status]][ci-style-workflow]
 
 Platform support API for managing session registrations and recording ninjas'
 progress.
