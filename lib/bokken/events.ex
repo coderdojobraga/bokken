@@ -19,7 +19,7 @@ defmodule Bokken.Events do
       [%Team{}, ...]
 
   """
-  @spec list_teams(map()) :: list(%Team{})
+  @spec list_teams(map()) :: list(Team.t())
   def list_teams(args \\ %{})
 
   def list_teams(%{"mentor_id" => mentor_id}) do
@@ -233,7 +233,7 @@ defmodule Bokken.Events do
 
   """
 
-  @spec list_events(map()) :: list(%Event{})
+  @spec list_events(map()) :: list(Event.t())
   def list_events(args \\ %{})
 
   def list_events(%{"team_id" => team_id}) do
@@ -399,15 +399,15 @@ defmodule Bokken.Events do
 
     ids =
       attrs
-      |> (fn x ->
-            cond do
-              x["assistant_mentors"] ->
-                Map.get(attrs, "assistant_mentors")
+      |> then(fn x ->
+        cond do
+          x["assistant_mentors"] ->
+            Map.get(attrs, "assistant_mentors")
 
-              x[:assistant_mentors] ->
-                Map.get(attrs, :assistant_mentors)
-            end
-          end).()
+          x[:assistant_mentors] ->
+            Map.get(attrs, :assistant_mentors)
+        end
+      end)
 
     add_mentor_assistants(l.id, ids)
 

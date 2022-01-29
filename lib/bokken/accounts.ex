@@ -97,7 +97,7 @@ defmodule Bokken.Accounts do
       [%Mentor{}, ...]
 
   """
-  @spec list_mentors(map()) :: list(%Mentor{})
+  @spec list_mentors(map()) :: list(Mentor.t())
   def list_mentors(args \\ %{})
 
   def list_mentors(%{"team_id" => team_id}) do
@@ -232,7 +232,7 @@ defmodule Bokken.Accounts do
 
   """
 
-  @spec list_ninjas(map()) :: list(%Ninja{})
+  @spec list_ninjas(map()) :: list(Ninja.t())
   def list_ninjas(args \\ %{})
 
   def list_ninjas(%{"team_id" => team_id}) do

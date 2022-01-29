@@ -24,7 +24,7 @@ defmodule Bokken.Gamification do
       [%Badge{}, ...]
 
   """
-  @spec list_badges(map()) :: list(%Badge{})
+  @spec list_badges(map()) :: list(Badge.t())
   def list_badges(args \\ %{})
 
   def list_badges(%{"ninja_id" => ninja_id}) do

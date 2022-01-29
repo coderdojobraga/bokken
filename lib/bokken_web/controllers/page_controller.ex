@@ -1,13 +1,12 @@
 defmodule BokkenWeb.PageController do
   use BokkenWeb, :controller
 
-  @name Mix.Project.config()[:name]
-  @description Mix.Project.config()[:description]
+  @app Mix.Project.config()[:app]
   @version Mix.Project.config()[:version]
-  @source Mix.Project.config()[:homepage_url]
+  @description Mix.Project.config()[:description]
 
   def index(conn, _params) do
     conn
-    |> json(%{name: @name, description: @description, version: @version, source: @source})
+    |> json(%{app: @app, version: @version, description: @description})
   end
 end

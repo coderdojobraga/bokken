@@ -17,7 +17,7 @@ defmodule Bokken.Documents do
       [%File{}, ...]
 
   """
-  @spec list_files(map()) :: list(%File{})
+  @spec list_files(map()) :: list(File.t())
   def list_files(args \\ %{})
 
   def list_files(%{"ninja_id" => ninja_id}) do
