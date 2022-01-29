@@ -12,7 +12,6 @@ defmodule Bokken.MixProject do
       name: @name,
       version: @version,
       description: @description,
-      homepage_url: "https://github.com/coderdojobraga/bokken",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
@@ -95,6 +94,7 @@ defmodule Bokken.MixProject do
       source_ref: "v#{@version}",
       main: "readme",
       logo: "priv/static/images/logo.svg",
+      source_url: "https://github.com/coderdojobraga/bokken",
       extras: extras()
     ]
   end
