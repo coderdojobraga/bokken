@@ -1,20 +1,25 @@
 defmodule Bokken.MixProject do
   use Mix.Project
 
+  @app :bokken
+  @name "Bokken"
   @version "0.2.0-#{Mix.env()}"
   @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
 
   def project do
     [
-      app: :bokken,
+      app: @app,
+      name: @name,
       version: @version,
       description: @description,
-      elixir: "~> 1.12",
+      homepage_url: "https://github.com/coderdojobraga/bokken",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      docs: docs()
     ]
   end
 
@@ -76,8 +81,28 @@ defmodule Bokken.MixProject do
       {:kaffy, "~> 0.9.0", override: true},
 
       # tools
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.28", only: [:dev], runtime: false}
+    ]
+  end
+
+  # To generate documentation use:
+  #
+  #     $ mix docs
+  defp docs do
+    [
+      source_ref: "v#{@version}",
+      main: "readme",
+      logo: "priv/static/images/logo.svg",
+      extras: extras()
+    ]
+  end
+
+  defp extras do
+    [
+      {:"README.md", [title: "⚔️ Overview"]},
+      {:"CONTRIBUTING.md", [title: "🚀 Getting Started"]}
     ]
   end
 
