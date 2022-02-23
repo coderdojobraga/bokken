@@ -59,7 +59,7 @@ defmodule Bokken.MixProject do
 
       # utilities
       {:gettext, "~> 0.18"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.3"},
       {:browser, "~> 0.4.4"},
       {:dotenvy, "~> 0.5.0"},
 
