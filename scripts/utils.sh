@@ -52,8 +52,4 @@ function ensure_confirmation() {
   fi
 }
 
-function get_elixir_project_version() {
-  mix run --no-start -e "IO.puts Mix.Project.config[:version]"
-}
-
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.4 || true
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.5 || true
