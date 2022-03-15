@@ -55,7 +55,7 @@ defmodule Bokken.MixProject do
 
       # plugs
       {:plug_cowboy, "~> 2.5"},
-      {:cors_plug, "~> 2.0"},
+      {:cors_plug, "~> 3.0"},
 
       # utilities
       {:gettext, "~> 0.18"},
@@ -65,7 +65,7 @@ defmodule Bokken.MixProject do
 
       # security
       {:guardian, "~> 2.2"},
-      {:argon2_elixir, "~> 2.4"},
+      {:argon2_elixir, "~> 3.0"},
 
       # uploads
       {:waffle, "~> 1.1"},
