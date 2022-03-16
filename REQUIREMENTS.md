@@ -39,7 +39,19 @@ A good pairing should obbey the following:
 
 4. Mentors still in recruitment will be paired with another mentor / ninja
 
+5. A mentor could be paired with more than one ninja (however not automatically)
+
 A penalty system should be implemented, such that ninjas who fail to show up will be penalized in a given number of spots in the queue for the next session.
+
+More formally, a pairing would be described by
+
+- Ninja
+- Mentor(s) 
+- Session
+- Timestamp of creation
+- Timestamp of last edition
+
+There would have to be an API endpoint which generates these pairings
 
 ## 3. Session Summaries
 
@@ -47,6 +59,16 @@ After each session, the mentor paired with a ninja should write a brief summary 
 
 This summaries will be public to all mentors and admins, as well as to the ninja's guardian.
 
+More formally, a summary would consist of
+
+- Ninja
+- Mentor (only allow one mentor to make a summary)
+- Session
+- Summary
+- Timestamp of creation
+- Timestamp of last edition
+  
+  
 ## 4. Projects
 
 There should be a way in the platform to see the ninjas' projects. For Scratch, this would be achieved using the [Scratch API](https://en.scratch-wiki.info/wiki/Scratch_API). For Python, right now [Replit](https://replit.com/) does not have such an API, so another solution would have to be created (probably using Github for more advanced ninjas).
