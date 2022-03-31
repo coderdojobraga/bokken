@@ -61,7 +61,7 @@ defmodule Bokken.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.3"},
       {:browser, "~> 0.4.4"},
-      {:dotenvy, "~> 0.5.0"},
+      {:dotenvy, "~> 0.6.0"},
 
       # security
       {:guardian, "~> 2.2"},
