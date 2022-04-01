@@ -74,6 +74,7 @@ More formally, a summary would consist of
 There should be a way in the platform to see the ninjas' projects. For Scratch, this would be achieved using the [Scratch API](https://en.scratch-wiki.info/wiki/Scratch_API). For Python, right now [Replit](https://replit.com/) does not have such an API, so another solution would have to be created (probably using Github for more advanced ninjas).
 
 The projects could have different visibility. If the ninja wants it public (and the guardian has allowed them to do that), everyone within the platform will be able to see it. If it is private, only the ninja, the guardian and the mentors will have access to it.
+
 ## 5. Gamification
 
 Gamification would be similar to that of [SEI](https://seium.org), in which ninjas could gain badges based on the work carried out. The ninjas with most badges could even get a prize.
