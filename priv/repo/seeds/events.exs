@@ -58,6 +58,12 @@ defmodule Bokken.Repo.Seeds.Events do
       _ ->
         Mix.shell().error("Found lectures, aborting seeding lectures.")
     end
+
+    case Bokken.Repo.all(Bokken.Events.Enrollment) do
+      [] -> create_enrollments(7)
+      _ ->
+        Mix.shell().error("Found enrollments, aborting seeding enrollments.")
+    end
   end
 
   def create_locations(names) do
@@ -146,6 +152,22 @@ defmodule Bokken.Repo.Seeds.Events do
 
         Bokken.Documents.create_file(file)
       end
+    end
+  end
+
+  def create_enrollments(count) do
+    ninjas = Bokken.Accounts.list_ninjas()
+    events = Bokken.Events.list_events()
+
+    for i <- 1..count do
+      {id: ninja_id} = Enum.random(ninjas)
+      {id: event_id}  = Enum.random(events);
+      enrollment = %{
+        event_id: event_id,
+        ninja_id: ninja.id,
+        accepted: false,
+        notes: "First session"
+      }
     end
   end
 
