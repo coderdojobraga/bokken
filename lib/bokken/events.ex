@@ -489,10 +489,125 @@ defmodule Bokken.Events do
   ## Examples
 
       iex> change_lecture(lecture)
-      %Ecto.Changeset{data: %Lecture{}}
+      %Ecto.Changeset{data @spec create_enrollment(
+          :invalid
+          | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: any: %Lecture{}}
 
   """
   def change_lecture(%Lecture{} = lecture, attrs \\ %{}) do
     Lecture.changeset(lecture, attrs)
   end
+
+  alias Bokken.Events.Enrollment
+
+  @doc """
+  Returns the list of enrollments.
+
+  ## Examples
+
+    iex> list_enrollments(123)
+      [%Enrollment{}, ...]
+
+    iex> list_enrollments()
+      [%Enrollment{}, ...]
+
+  """
+  def list_enrollments(%{"ninja_id" => ninja_id}) do
+    ninja_id
+    |> Accounts.get_ninja!(ninja_id)
+    |> Map.fetch!(:enrollments)
+  end
+
+  def list_enrollments(__args) do
+    Enrollment
+    |> Repo.all()
+    |> Repo.preload([:ninja, :event])
+  end
+
+  @doc """
+  Gets a single enrollment.
+
+  Raises `Ecto.NoResultsError` if the Lecture does not exist.
+
+  ## Examples
+
+      iex> get_enrollment!(123)
+      %Lecture{}
+
+      iex> get_enrollment!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_enrollment!(id, preloads \\ []) do
+    Enrollment
+    |> Repo.get!(id)
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Creates an enrollment.
+
+  ## Examples
+
+      iex> create_enrollment(%{field: value})
+      {:ok, %Entrollment{}}
+
+      iex> create_enrollment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_enrollment(attrs \\ %{}) do
+    %Enrollment{}
+    |> Enrollment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+    @doc """
+  Updates an enrollment.
+
+  ## Examples
+
+      iex> update_enrollment(enrollment, %{field: new_value})
+      {:ok, %Event{}}
+
+      iex> update_event(enrollment, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_enrollment(%Enrollment{} = enrollment, attrs) do
+    enrollment
+    |> Enrollment.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes an enrollment.
+
+  ## Examples
+
+      iex> delete_enrollment(enrollment)
+      {:ok, %Event{}}
+
+      iex> delete_enrollment(enrollment)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_enrollment(%Enrollment{} = enrollment) do
+    Repo.delete(enrollment)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking enrollment changes.
+
+  ## Examples
+
+      iex> change_enrollment(enrollment)
+      %Ecto.Changeset{data: %Enrollment{}}
+
+  """
+  def change_enrollment(%Enrollment{} = enrollment, attrs \\ %{}) do
+    Event.changeset(enrollment, attrs)
+  end
+
 end
