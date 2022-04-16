@@ -1,17 +1,16 @@
-defmodule Bokken.Events.Event do
+defmodule Bokken.Events.Enrollment do
   @moduledoc """
   An enrollment for an event of Coderdojo
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{Ninja}
-  alias Bokken.Events.{Event}
+  alias Bokken.Accounts.Ninja
+  alias Bokken.Events.Event
 
-  @required_fields [:when, :event, :ninja]
+  @required_fields [:event, :ninja]
   @optional_fields [:accepted, :notes]
 
   schema "enrollments" do
-    field :when, :utc_datetime
     field :accepted, :boolean
     field :notes, :string
 
