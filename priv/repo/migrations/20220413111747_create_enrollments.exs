@@ -14,7 +14,7 @@ defmodule Bokken.Repo.Migrations.CreateEnrollments do
       timestamps()
     end
 
-    create index(:enrollments, [:user_id])
-    create index(:enrollments, [:lecture_id])
+    create index(:enrollments, [:ninja_id])
+    create index(:enrollments, [:event_id])
   end
 end

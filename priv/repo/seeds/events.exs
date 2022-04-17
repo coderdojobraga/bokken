@@ -160,11 +160,11 @@ defmodule Bokken.Repo.Seeds.Events do
     events = Bokken.Events.list_events()
 
     for i <- 1..count do
-      {id: ninja_id} = Enum.random(ninjas)
-      {id: event_id}  = Enum.random(events);
+      %{id: ninja_id} = Enum.random(ninjas)
+      %{id: event_id}  = Enum.random(events);
       enrollment = %{
         event_id: event_id,
-        ninja_id: ninja.id,
+        ninja_id: ninja_id,
         accepted: false,
         notes: "First session"
       }
