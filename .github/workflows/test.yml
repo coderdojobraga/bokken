@@ -1,23 +1,25 @@
-name: CI test
+name: Build and Test
 
 on:
+  push:
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
     types: [opened, synchronize]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
-
+    env:
+      MIX_ENV: test
     strategy:
       matrix:
-        otp: [24.x]
-        elixir: [1.12.x]
-
+        otp: [25.x]
+        elixir: [1.13.x]
     services:
       db:
-        image: postgres:13
+        image: postgres:14.1
         ports:
           - 5432:5432
         env:
@@ -26,37 +28,15 @@ jobs:
           POSTGRES_HOSTNAME: 0.0.0.0
 
     steps:
-      - uses: actions/checkout@v2
+      - name: ☁️ Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup elixir
-        uses: erlef/setup-elixir@v1
+      - name: 💧 Setup Elixir ${{ matrix.elixir }} (OTP ${{matrix.otp}})
+        uses: ./.github/actions/elixir-setup
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+          build-flags: --all-warnings --warnings-as-errors
 
-      - uses: actions/cache@v2
-        with:
-          path: deps
-          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-          restore-keys: |
-            ${{ runner.os }}-mix-
-
-      - name: Install dependencies
-        run: mix deps.get
-
-      - name: Run the tests
-        run: mix test
-
-      - name: Setup nodejs
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - run: npm install -g newman
-
-      - name: Run newman
-        env:
-          MIX_ENV: test
-        run: |
-          mix ecto.seed
-          mix test.run.newman
+      - name: 🔬 Run the tests
+        run: mix test --warnings-as-errors

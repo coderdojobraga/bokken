@@ -1,41 +1,35 @@
-name: CI style
+name: Code Quality
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, master]
     types: [opened, synchronize]
 
 jobs:
-  build:
+  style:
     runs-on: ubuntu-latest
     name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
 
     strategy:
       matrix:
-        otp: [24.x]
-        elixir: [1.12.x]
+        otp: [25.x]
+        elixir: [1.13.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: ☁️ Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup elixir
-        uses: erlef/setup-elixir@v1
+      - name: 💧 Setup Elixir ${{ matrix.elixir }} (OTP ${{matrix.otp}})
+        uses: ./.github/actions/elixir-setup
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+          build-flags: --all-warnings --warnings-as-errors
 
-      - uses: actions/cache@v2
-        with:
-          path: deps
-          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-          restore-keys: |
-            ${{ runner.os }}-mix-
-
-      - name: Install dependencies
-        run: mix deps.get
-
-      - name: Check code formating
+      - name: 📏 Check code formating
         run: mix format --check-formatted
+        if: always()
 
-      - name: Lint the code
-        run: mix credo --strict
+      - name: 🔍 Lint the code
+        run: mix credo --strict --all
+        if: always()
