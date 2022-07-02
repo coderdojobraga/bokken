@@ -519,6 +519,12 @@ defmodule Bokken.Events do
     |> Map.fetch!(:enrollments)
   end
 
+  def list_enrollments(%{"event_id" => event_id}) do
+    Enrollment
+    |> Repo.get_by(event_id: event_id)
+    |> Repo.preload([:ninja, :event])
+  end
+
   def list_enrollments(__args) do
     Enrollment
     |> Repo.all()
@@ -528,12 +534,12 @@ defmodule Bokken.Events do
   @doc """
   Gets a single enrollment.
 
-  Raises `Ecto.NoResultsError` if the Lecture does not exist.
+  Raises `Ecto.NoResultsError` if the Enrollment does not exist.
 
   ## Examples
 
       iex> get_enrollment!(123)
-      %Lecture{}
+      %Enrollment{}
 
       iex> get_enrollment!(456)
       ** (Ecto.NoResultsError)
@@ -587,7 +593,7 @@ defmodule Bokken.Events do
   ## Examples
 
       iex> delete_enrollment(enrollment)
-      {:ok, %Event{}}
+      {:ok, %Enrollment{}}
 
       iex> delete_enrollment(enrollment)
       {:error, %Ecto.Changeset{}}
