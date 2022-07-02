@@ -16,7 +16,6 @@ This feature will allow automating the booking of a session. The process would b
 
 4. When signups close and the pairing are finalized, the guardians whose ninjas have been selected will receive an invitation via email
 
-
 An admin will be the user profile with the most permitions, like:
 
 - Book sessions
@@ -46,7 +45,7 @@ A penalty system should be implemented, such that ninjas who fail to show up wil
 More formally, a pairing would be described by
 
 - Ninja
-- Mentor(s) 
+- Mentor(s)
 - Session
 - Timestamp of creation
 - Timestamp of last edition
@@ -67,8 +66,7 @@ More formally, a summary would consist of
 - Summary
 - Timestamp of creation
 - Timestamp of last edition
-  
-  
+
 ## 4. Projects
 
 There should be a way in the platform to see the ninjas' projects. For Scratch, this would be achieved using the [Scratch API](https://en.scratch-wiki.info/wiki/Scratch_API). For Python, right now [Replit](https://replit.com/) does not have such an API, so another solution would have to be created (probably using Github for more advanced ninjas).

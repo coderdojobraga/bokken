@@ -1,7 +1,5 @@
 [postman-badge]: https://img.shields.io/badge/Postman-ef5b25.svg?logo=postman&colorA=ef5b25&logoColor=white
 [postman-documentation]: https://documenter.getpostman.com/view/14049085/TzCTXj9E
-[ci-build-status]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml/badge.svg
-[ci-build-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/build.yml
 [ci-test-status]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml/badge.svg
 [ci-test-workflow]: https://github.com/coderdojobraga/bokken/actions/workflows/test.yml
 [ci-style-status]: https://github.com/coderdojobraga/bokken/actions/workflows/style.yml/badge.svg
@@ -12,10 +10,9 @@
 
 # bokken
 
-> ⚔️  **bok**ken + shuri**ken**
+> ⚔️ **bok**ken + shuri**ken**
 
 [![Postman][postman-badge]][postman-documentation]
-[![CI build][ci-build-status]][ci-build-workflow]
 [![CI test][ci-test-status]][ci-test-workflow]
 [![CI style][ci-style-status]][ci-style-workflow]
 

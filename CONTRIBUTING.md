@@ -16,7 +16,7 @@ The following software is required to be installed on your system:
 We recommend using [asdf version manager][asdf-vm] to install and manage all
 the programming languages' requirements.
 
-If you prefer to use docker, see the [section below](#whale-docker).
+If you prefer to use docker, see the [section below](#-docker).
 
 ## 🔧 Setup
 
@@ -45,8 +45,7 @@ from your browser.
 bin/server
 ```
 
-Run the tests. You need to have [newman](https://www.npmjs.com/package/newman)
-installed.
+Run the tests.
 
 ```
 bin/test
@@ -67,7 +66,8 @@ bin/format
 ## 🛠️ Tools
 
 As a complementary tool for development and testing, we use
-[Postman](https://www.postman.com/downloads/).
+[Postman](https://www.postman.com/downloads/). We also use
+[newman](https://www.npmjs.com/package/newman) for terminal base workflows.
 
 ## 🐳 Docker
 
