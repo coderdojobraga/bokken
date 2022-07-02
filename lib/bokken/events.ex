@@ -514,18 +514,20 @@ defmodule Bokken.Events do
 
   """
   def list_enrollments(%{"ninja_id" => ninja_id}) do
-    ninja_id
-    |> Accounts.get_ninja!(ninja_id)
-    |> Map.fetch!(:enrollments)
+    Enrollment
+    |> where([e], e.ninja_id == ^ninja_id)
+    |> Repo.all()
+    |> Repo.preload([:ninja, :event])
   end
 
   def list_enrollments(%{"event_id" => event_id}) do
     Enrollment
-    |> Repo.get_by(event_id: event_id)
+    |> where([e], e.event_id == ^event_id)
+    |> Repo.all()
     |> Repo.preload([:ninja, :event])
   end
 
-  def list_enrollments(__args) do
+  def list_enrollments() do
     Enrollment
     |> Repo.all()
     |> Repo.preload([:ninja, :event])
@@ -557,7 +559,7 @@ defmodule Bokken.Events do
   ## Examples
 
       iex> create_enrollment(%{field: value})
-      {:ok, %Entrollment{}}
+      {:ok, %Enrollment{}}
 
       iex> create_enrollment(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
@@ -569,7 +571,7 @@ defmodule Bokken.Events do
     |> Repo.insert()
   end
 
-    @doc """
+  @doc """
   Updates an enrollment.
 
   ## Examples
