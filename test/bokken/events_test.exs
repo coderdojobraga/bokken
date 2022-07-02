@@ -7,7 +7,7 @@ defmodule Bokken.EventsTest do
   import Ecto
 
   describe "enrollments" do
-    alias Bokken.Events.{Event, Enrollment}
+    alias Bokken.Events.{Enrollment, Event}
 
     @update_attrs %{accepted: true}
     @invalid_attrs %{accepted: nil}
@@ -79,15 +79,16 @@ defmodule Bokken.EventsTest do
       {:ok, new_ninja_user} = Accounts.create_user(user_ninja())
       {:ok, new_guardian_user} = Accounts.create_user(user_guardian())
 
-      guardian = valid_guardian()
-      |> Map.put(:user_id, new_guardian_user.id)
+      guardian =
+        valid_guardian()
+        |> Map.put(:user_id, new_guardian_user.id)
 
       {:ok, new_guardian} = Accounts.create_guardian(guardian)
 
-      ninja = valid_ninja()
-      |> Map.put(:guardian_id, new_guardian.id)
-      |> Map.put(:user_id, new_ninja_user.id)
-
+      ninja =
+        valid_ninja()
+        |> Map.put(:guardian_id, new_guardian.id)
+        |> Map.put(:user_id, new_ninja_user.id)
 
       {:ok, new_ninja} = Accounts.create_ninja(ninja)
 
@@ -95,9 +96,10 @@ defmodule Bokken.EventsTest do
 
       {:ok, new_team} = Events.create_team(valid_team())
 
-      event = valid_event()
-      |> Map.put(:location_id, new_location.id)
-      |> Map.put(:team_id, new_team.id)
+      event =
+        valid_event()
+        |> Map.put(:location_id, new_location.id)
+        |> Map.put(:team_id, new_team.id)
 
       {:ok, new_event} = Events.create_event(event)
 
@@ -116,7 +118,7 @@ defmodule Bokken.EventsTest do
       enrollment
     end
 
-    def enrollment() do
+    def enrollment do
       enrollment = enrollment_fixture()
 
       enrollment
@@ -145,23 +147,24 @@ defmodule Bokken.EventsTest do
     end
 
     test "get_enrollment/1 fails if the enrollment does not exist" do
-      assert_raise Ecto.NoResultsError, ~r/.*/,
-        fn ->
-          Events.get_enrollment!(Ecto.UUID.generate(), [:ninja, :event])
-        end
+      assert_raise Ecto.NoResultsError, ~r/.*/, fn ->
+        Events.get_enrollment!(Ecto.UUID.generate(), [:ninja, :event])
+      end
     end
 
     test "update_enrollment/2 updates existing enrollment" do
       enrollment = enrollment()
-      assert Events.update_enrollment(enrollment, %{accepted: true}) == {:ok, Map.put(enrollment, :accepted, true)}
+
+      assert Events.update_enrollment(enrollment, %{accepted: true}) ==
+               {:ok, Map.put(enrollment, :accepted, true)}
     end
 
     test "update_enrollment/2 fails if the enrollment does not exist" do
       enrollment = enrollment()
-      assert_raise Ecto.StaleEntryError, ~r/.*/,
-        fn ->
-          Events.update_enrollment(Map.put(enrollment, :id, Ecto.UUID.generate()), %{accepted: true})
-        end
+
+      assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
+        Events.update_enrollment(Map.put(enrollment, :id, Ecto.UUID.generate()), %{accepted: true})
+      end
     end
 
     test "update_enrollment/2 fails if the new value is not valid" do
@@ -176,10 +179,10 @@ defmodule Bokken.EventsTest do
 
     test "delete_enrollment/1 fails if the enrollment does not exist" do
       enrollment = enrollment()
-      assert_raise Ecto.StaleEntryError, ~r/.*/,
-        fn ->
-          Events.delete_enrollment(Map.put(enrollment, :id, Ecto.UUID.generate()))
-        end
+
+      assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
+        Events.delete_enrollment(Map.put(enrollment, :id, Ecto.UUID.generate()))
+      end
     end
   end
 end

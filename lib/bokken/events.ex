@@ -527,7 +527,7 @@ defmodule Bokken.Events do
     |> Repo.preload([:ninja, :event])
   end
 
-  def list_enrollments() do
+  def list_enrollments do
     Enrollment
     |> Repo.all()
     |> Repo.preload([:ninja, :event])
@@ -617,5 +617,4 @@ defmodule Bokken.Events do
   def change_enrollment(%Enrollment{} = enrollment, attrs \\ %{}) do
     Event.changeset(enrollment, attrs)
   end
-
 end

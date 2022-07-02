@@ -1,7 +1,8 @@
 defmodule BokkenWeb.EnrollmentView do
   use BokkenWeb, :view
-  alias BokkenWeb.EventView
+
   alias BokkenWeb.EnrollmentView
+  alias BokkenWeb.EventView
   alias BokkenWeb.NinjaView
 
   def render("index.json", %{enrollments: enrollments}) do
@@ -25,7 +26,7 @@ defmodule BokkenWeb.EnrollmentView do
   defp base(enrollment) do
     %{
       id: enrollment.id,
-      accepted: enrollment.title,
+      accepted: enrollment.title
     }
   end
 

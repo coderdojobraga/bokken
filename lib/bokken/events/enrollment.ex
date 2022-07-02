@@ -24,8 +24,8 @@ defmodule Bokken.Events.Enrollment do
   def changeset(enrollment, attrs) do
     enrollment
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_assoc(:ninja,  with: &Bokken.Accounts.Ninja.changeset/2)
-    |> cast_assoc(:event,  with: &Bokken.Events.Event.changeset/2)
+    |> cast_assoc(:ninja, with: &Ninja.changeset/2)
+    |> cast_assoc(:event, with: &Event.changeset/2)
     |> validate_required(@required_fields)
     |> assoc_constraint(:event)
     |> assoc_constraint(:ninja)
