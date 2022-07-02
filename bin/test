@@ -21,8 +21,8 @@ function display_help() {
     ${PROGRAM} [options] <command>
 
   $(help_title_section Environments) [default: test]
-    --test            Run all tests in test environment.
-    --dev             Run all tests in dev environment.
+    test              Run all tests in test environment.
+    newman            Run postman collection as tests.
 
   $(help_title_section Options)
     -h --help         Show this screen.
@@ -30,24 +30,17 @@ function display_help() {
 EOF
 }
 
-case ${1:---test} in
+case ${1:-test} in
   -h | --help)
     display_help
     ;;
   -v | --version)
     display_version "${VERSION}" "${PROGRAM}"
     ;;
-  --test)
-    MIX_ENV="test"
-    load_env_file ".env.$MIX_ENV"
-    mix ecto.drop
-    mix ecto.create
-    mix ecto.migrate
+  test)
     mix test
-    mix run priv/repo/seeds.exs
-    mix test.run.newman
     ;;
-  --dev)
+  newman)
     MIX_ENV="dev"
     load_env_file ".env.$MIX_ENV"
     newman run .postman/collection.json --environment .postman/env.$MIX_ENV.json --bail
