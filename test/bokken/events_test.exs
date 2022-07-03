@@ -4,14 +4,7 @@ defmodule Bokken.EventsTest do
   alias Bokken.Accounts
   alias Bokken.Events
 
-  import Ecto
-
   describe "enrollments" do
-    alias Bokken.Events.{Enrollment, Event}
-
-    @update_attrs %{accepted: true}
-    @invalid_attrs %{accepted: nil}
-
     def valid_enrollment do
       %{
         accepted: false
@@ -103,7 +96,7 @@ defmodule Bokken.EventsTest do
 
       {:ok, new_event} = Events.create_event(event)
 
-      Map.put(valid_enrollment, :ninja_id, new_ninja.id)
+      Map.put(valid_enrollment(), :ninja_id, new_ninja.id)
       |> Map.put(:event_id, new_event.id)
     end
 

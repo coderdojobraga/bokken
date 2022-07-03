@@ -26,10 +26,8 @@ defmodule BokkenWeb.EnrollmentController do
   end
 
   def get(conn, %{"ninja_id" => ninja_id} = params) when is_guardian(conn) or is_admin(conn) do
-    if (
-      is_guardian(conn) and
-        ninja_id not in Enum.map(conn.assigns.current_user.ninjas, fn x -> x["id"] end)
-    ) do
+    if is_guardian(conn) and
+         ninja_id not in Enum.map(conn.assigns.current_user.ninjas, fn x -> x["id"] end) do
       conn
       |> put_status(:not_found)
       |> render("error.json", reason: "Not found")
