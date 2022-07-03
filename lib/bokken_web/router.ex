@@ -76,7 +76,7 @@ defmodule BokkenWeb.Router do
     resources "/events", EventController, except: [:new, :edit] do
       resources "/ninjas", NinjaController, only: [:index, :create]
       resources "/mentors", MentorController, only: [:index, :create]
-      #get "/enrollments", EnrollmentController, :index
+      # get "/enrollments", EnrollmentController, :index
 
       resources "/enrollments", EnrollmentController,
         only: [:show, :index, :create, :update, :delete]

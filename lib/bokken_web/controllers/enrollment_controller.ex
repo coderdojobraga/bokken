@@ -42,18 +42,27 @@ defmodule BokkenWeb.EnrollmentController do
     |> render("index.json", enrollments: enrollments)
   end
 
-  def create(conn, %{"enrollment" => %{"ninja_id" => ninja_id} = enrollment_params}) when is_guardian(conn) do
+  def create(conn, %{
+        "enrollment" => %{"ninja_id" => ninja_id, "accepted" => accepted} = enrollment_params
+      })
+      when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
 
     if is_guardian_of_ninja(guardian, ninja_id) do
-      with {:ok, %Enrollment{} = enrollment} <- Events.create_enrollment(enrollment_params) do
+      if accepted do
         conn
-        |> put_status(:created)
-        |> render("show.json", enrollment: enrollment)
+        |> put_status(:forbidden)
+        |> render("error.json", reason: "Guardian can not submit an accepted enrollment")
+      else
+        with {:ok, %Enrollment{} = enrollment} <- Events.create_enrollment(enrollment_params) do
+          conn
+          |> put_status(:created)
+          |> render("show.json", enrollment: enrollment)
+        end
       end
     else
       conn
-      |> put_status(:unauthorized)
+      |> put_status(:forbidden)
       |> render("error.json", reason: "Not the ninja's guardian")
     end
   end
@@ -81,7 +90,7 @@ defmodule BokkenWeb.EnrollmentController do
     end
   end
 
-  def update(conn, %{"enrollment" => enrollment_params})  do
+  def update(conn, %{"enrollment" => enrollment_params}) do
     old_enrollment = Events.get_enrollment(enrollment_params["id"])
 
     with {:ok, %Enrollment{} = new_enrollment} <-
