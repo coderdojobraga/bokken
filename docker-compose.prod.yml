@@ -3,14 +3,14 @@ version: "3"
 services:
   db:
     extends:
-      file: deploy.yml
+      file: .docker/deploy.yml
       service: db
     container_name: bokken_prod_db
     ports:
       - ${POSTGRES_PORT}:5432
   api:
     extends:
-      file: deploy.yml
+      file: .docker/deploy.yml
       service: api
     image: coderdojobraga/bokken:latest
     container_name: bokken_prod_api

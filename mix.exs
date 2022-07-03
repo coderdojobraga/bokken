@@ -12,13 +12,17 @@ defmodule Bokken.MixProject do
       name: @name,
       version: @version,
       description: @description,
+      git_ref: git_revision_hash(),
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
-      aliases: aliases(),
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      aliases: aliases(),
+      preferred_cli_env: [
+        check: :test
+      ]
     ]
   end
 
@@ -28,7 +32,7 @@ defmodule Bokken.MixProject do
   def application do
     [
       mod: {Bokken.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:inets, :logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -118,7 +122,31 @@ defmodule Bokken.MixProject do
       "ecto.seed": ["run priv/repo/seeds.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      check: [
+        "clean",
+        "deps.unlock --check-unused",
+        "compile --warnings-as-errors",
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "test --warnings-as-errors",
+        "credo --strict --all"
+      ]
     ]
+  end
+
+  defp git_revision_hash do
+    case System.cmd("git", ["rev-parse", "HEAD"]) do
+      {ref, 0} ->
+        ref
+
+      {_, _code} ->
+        ["ref:", ref_path] =
+          File.read!(".git/HEAD")
+          |> String.split()
+
+        File.read!(".git/#{ref_path}")
+    end
+    |> String.replace("\n", "")
   end
 end
