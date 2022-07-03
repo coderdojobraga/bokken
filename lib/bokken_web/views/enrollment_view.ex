@@ -10,7 +10,11 @@ defmodule BokkenWeb.EnrollmentView do
   end
 
   def render("show.json", %{enrollment: enrollment}) do
-    %{data: render_one(enrollment, EnrollmentView, "event.json")}
+    %{data: render_one(enrollment, EnrollmentView, "enrollment.json")}
+  end
+
+  def render("success.json", %{message: message}) do
+    %{message: message}
   end
 
   def render("error.json", %{reason: reason}) do
@@ -26,7 +30,7 @@ defmodule BokkenWeb.EnrollmentView do
   defp base(enrollment) do
     %{
       id: enrollment.id,
-      accepted: enrollment.title
+      accepted: enrollment.accepted
     }
   end
 

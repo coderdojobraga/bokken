@@ -56,6 +56,7 @@ defmodule BokkenWeb.Router do
       resources "/badges", BadgeController, only: [:index, :create, :delete]
       get "/teams", TeamController, :index
       get "/files", FileController, :index
+      get "/enrollments", EnrollmentController, :index
     end
 
     resources "/badges", BadgeController, except: [:new, :edit] do
@@ -75,6 +76,10 @@ defmodule BokkenWeb.Router do
     resources "/events", EventController, except: [:new, :edit] do
       resources "/ninjas", NinjaController, only: [:index, :create]
       resources "/mentors", MentorController, only: [:index, :create]
+      #get "/enrollments", EnrollmentController, :index
+
+      resources "/enrollments", EnrollmentController,
+        only: [:show, :index, :create, :update, :delete]
     end
 
     resources "/lectures", LectureController, except: [:new, :edit]

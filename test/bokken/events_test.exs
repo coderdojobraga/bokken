@@ -136,13 +136,11 @@ defmodule Bokken.EventsTest do
 
     test "get_enrollment/1 returns the requested enrollment" do
       enrollment = enrollment()
-      assert Events.get_enrollment!(enrollment.id, [:ninja, :event]) == enrollment
+      assert Events.get_enrollment(enrollment.id, [:ninja, :event]) == enrollment
     end
 
     test "get_enrollment/1 fails if the enrollment does not exist" do
-      assert_raise Ecto.NoResultsError, ~r/.*/, fn ->
-        Events.get_enrollment!(Ecto.UUID.generate(), [:ninja, :event])
-      end
+      assert is_nil(Events.get_enrollment(Ecto.UUID.generate(), [:ninja, :event]))
     end
 
     test "update_enrollment/2 updates existing enrollment" do

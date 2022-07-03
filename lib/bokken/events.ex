@@ -536,20 +536,20 @@ defmodule Bokken.Events do
   @doc """
   Gets a single enrollment.
 
-  Raises `Ecto.NoResultsError` if the Enrollment does not exist.
+  Returns nil if the Enrollment does not exist.
 
   ## Examples
 
-      iex> get_enrollment!(123)
+      iex> get_enrollment(123)
       %Enrollment{}
 
-      iex> get_enrollment!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_enrollment(456)
+      nil
 
   """
-  def get_enrollment!(id, preloads \\ []) do
+  def get_enrollment(id, preloads \\ []) do
     Enrollment
-    |> Repo.get!(id)
+    |> Repo.get(id)
     |> Repo.preload(preloads)
   end
 
