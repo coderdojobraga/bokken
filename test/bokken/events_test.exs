@@ -17,7 +17,7 @@ defmodule Bokken.EventsTest do
         spots_available: 30,
         start_time: ~U[2023-02-14 10:00:00.000Z],
         end_time: ~U[2023-02-14 12:30:00.000Z],
-        enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+        enrollments_open: ~U[2022-07-03 12:30:00.0Z],
         enrollments_close: ~U[2023-02-13 12:30:00.0Z],
         online: false,
         notes: "Valentines"
@@ -102,13 +102,11 @@ defmodule Bokken.EventsTest do
       |> Map.put(:event_id, new_event.id)
     end
 
-    def enrollment_fixture(atributes \\ %{}) do
+    def enrollment_fixture(attributes \\ %{}) do
       valid_attrs = attrs()
 
       {:ok, enrollment} =
-        atributes
-        |> Enum.into(valid_attrs)
-        |> Events.create_enrollment()
+        Events.create_enrollment(valid_attrs.event_id, Enum.into(attributes, valid_attrs))
 
       enrollment
     end
@@ -145,6 +143,20 @@ defmodule Bokken.EventsTest do
       assert is_nil(Events.get_enrollment(Ecto.UUID.generate(), [:ninja, :event]))
     end
 
+    test "create_enrollment/1 returns error if the enrollments are closed" do
+      valid_attrs = attrs()
+      event = Events.get_event!(valid_attrs.event_id)
+
+      Events.update_event(event, %{
+        start_time: ~U[2022-07-03 10:00:00.0Z],
+        end_time: ~U[2022-07-03 12:30:00.0Z],
+        enrollments_open: ~U[2022-07-03 07:00:00.0Z],
+        enrollments_close: ~U[2022-07-03 08:00:00.0Z]
+      })
+
+      assert elem(Events.create_enrollment(event.id, valid_attrs), 0) == :error
+    end
+
     test "update_enrollment/2 updates existing enrollment" do
       enrollment = enrollment()
 
@@ -168,6 +180,20 @@ defmodule Bokken.EventsTest do
     test "delete_enrollment/1 deletes existing enrollment" do
       enrollment = enrollment()
       assert elem(Events.delete_enrollment(enrollment), 0) == :ok
+    end
+
+    test "delete_enrollment/1 returns error if the event has already occurred" do
+      enrollment_attrs = enrollment()
+      enrollment = Events.get_enrollment(enrollment_attrs.id, [:event])
+
+      Events.update_event(enrollment.event, %{
+        start_time: ~U[2022-07-03 10:00:00.0Z],
+        end_time: ~U[2022-07-03 12:30:00.0Z],
+        enrollments_open: ~U[2022-07-03 07:00:00.0Z],
+        enrollments_close: ~U[2022-07-03 08:00:00.0Z]
+      })
+
+      assert elem(Events.delete_enrollment(enrollment), 0) == :error
     end
 
     test "delete_enrollment/1 fails if the enrollment does not exist" do

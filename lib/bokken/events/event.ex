@@ -7,8 +7,16 @@ defmodule Bokken.Events.Event do
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Lecture, Location, Team}
 
-  @required_fields [:team_id, :location_id, :spots_available, :online, :start_time, :end_time,
-    :enrollments_open, :enrollments_close]
+  @required_fields [
+    :team_id,
+    :location_id,
+    :spots_available,
+    :online,
+    :start_time,
+    :end_time,
+    :enrollments_open,
+    :enrollments_close
+  ]
   @optional_fields [:notes, :title]
 
   schema "events" do
@@ -44,7 +52,7 @@ defmodule Bokken.Events.Event do
   defp validate_dates(changeset) do
     starts_on = get_field(changeset, :start_time)
     ends_on = get_field(changeset, :end_time)
-    enrollments_open  = get_field(changeset, :enrollments_open)
+    enrollments_open = get_field(changeset, :enrollments_open)
     enrollments_close = get_field(changeset, :enrollments_close)
 
     if Date.compare(starts_on, ends_on) == :gt do

@@ -43,7 +43,9 @@ defmodule BokkenWeb.EnrollmentController do
   end
 
   def create(conn, %{
-        "enrollment" => %{"ninja_id" => ninja_id, "accepted" => accepted} = enrollment_params
+        "enrollment" =>
+          %{"ninja_id" => ninja_id, "accepted" => accepted, "event_id" => event_id} =
+            enrollment_params
       })
       when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
@@ -54,7 +56,8 @@ defmodule BokkenWeb.EnrollmentController do
         |> put_status(:forbidden)
         |> render("error.json", reason: "Guardian can not submit an accepted enrollment")
       else
-        with {:ok, %Enrollment{} = enrollment} <- Events.create_enrollment(enrollment_params) do
+        with {:ok, %Enrollment{} = enrollment} <-
+               Events.create_enrollment(event_id, enrollment_params) do
           conn
           |> put_status(:created)
           |> render("show.json", enrollment: enrollment)

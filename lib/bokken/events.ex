@@ -565,10 +565,18 @@ defmodule Bokken.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_enrollment(attrs \\ %{}) do
-    %Enrollment{}
-    |> Enrollment.changeset(attrs)
-    |> Repo.insert()
+  def create_enrollment(event_id, attrs \\ %{}) do
+    event = get_event!(event_id)
+    cur_time = DateTime.utc_now()
+
+    if DateTime.compare(event.enrollments_open, cur_time) == :lt and
+         DateTime.compare(event.enrollments_close, cur_time) == :gt do
+      %Enrollment{}
+      |> Enrollment.changeset(attrs)
+      |> Repo.insert()
+    else
+      {:error, "Enrollments are closed"}
+    end
   end
 
   @doc """
@@ -602,7 +610,14 @@ defmodule Bokken.Events do
 
   """
   def delete_enrollment(%Enrollment{} = enrollment) do
-    Repo.delete(enrollment)
+    event = get_event!(enrollment.event_id)
+    cur_time = DateTime.utc_now()
+
+    if DateTime.compare(event.start_time, cur_time) == :gt do
+      Repo.delete(enrollment)
+    else
+      {:error, "Cannot delete enrollment of past session"}
+    end
   end
 
   @doc """
