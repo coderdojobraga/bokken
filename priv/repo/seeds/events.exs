@@ -100,14 +100,34 @@ defmodule Bokken.Repo.Seeds.Events do
         online: false,
         spots_available: Enum.random(15..30),
         notes: "Great #{Enum.random(1..100)} event",
-        start_time: ~U[2021-08-08 10:00:00.0Z],
-        end_time: ~U[2021-08-08 12:30:00.0Z],
+        start_time: ~U[2023-08-08 10:00:00.0Z],
+        end_time: ~U[2023-08-08 12:30:00.0Z],
+        enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+        enrollments_close: ~U[2023-08-07 12:30:00.0Z],
         location_id: location_id,
         team_id: team_id
       }
 
       Bokken.Events.create_event(event)
     end
+
+    %{id: location_id} = Enum.random(Bokken.Events.list_locations())
+    %{id: team_id} = Enum.random(Bokken.Events.list_teams())
+
+    event = %{
+      title: "Closed",
+      online: false,
+      spots_available: Enum.random(15..30),
+      notes: "Great #{Enum.random(1..100)} event",
+      start_time: ~U[2023-08-08 10:00:00.0Z],
+      end_time: ~U[2023-08-08 12:30:00.0Z],
+      enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+      enrollments_close: ~U[2022-07-09 12:30:00.0Z],
+      location_id: location_id,
+      team_id: team_id
+    }
+
+    Bokken.Events.create_event(event)
   end
 
 

@@ -78,6 +78,8 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       spots_available: 30,
       start_time: ~U[2023-02-14 10:00:00.000Z],
       end_time: ~U[2023-02-14 12:30:00.000Z],
+      enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+      enrollments_close: ~U[2023-02-13 12:30:00.0Z],
       online: false,
       notes: "Valentines"
     }
