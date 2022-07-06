@@ -30,9 +30,9 @@ defmodule BokkenWeb.AuthController do
     end
   end
 
-  def sign_out(conn, _) do
+  def ut(conn, _) do
     conn
-    |> Authorization.Plug.sign_out()
+    |> Authorization.Plug.ut()
     |> send_resp(:no_content, "")
   end
 

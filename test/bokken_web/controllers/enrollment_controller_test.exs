@@ -20,8 +20,27 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     }
   end
 
+  def valid_admin do
+    %{
+      email: "admin@gmail.com",
+      password: "administrator123",
+      role: "organizer"
+    }
+  end
+
   def attrs do
     user = valid_user()
+
+    {:ok, new_user} = Accounts.create_user(user)
+
+    @valid_attrs
+    |> Map.put(:user_id, new_user.id)
+    |> Map.put(:email, new_user.email)
+    |> Map.put(:password, new_user.password)
+  end
+
+  def admin_attrs do
+    user = valid_admin()
 
     {:ok, new_user} = Accounts.create_user(user)
 
@@ -138,6 +157,87 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
       assert not is_nil(json_response(conn, 403)["reason"])
     end
+
+    test "fails when user is not the ninja's guardian", %{
+      conn: conn,
+      ninja: _ninja,
+      event: event
+    } do
+      ninja_attrs = %{
+        first_name: "Rafaela",
+        last_name: "Costa",
+        birthday: ~U[2007-03-14 00:00:00.000Z]
+      }
+
+      user_ninja = %{
+        email: "rafaelacosta@gmail.com",
+        password: "ninja123",
+        role: "ninja"
+      }
+
+      user_guardian = %{
+        email: "anamaria5@gmail.com",
+        password: "guardian123",
+        role: "guardian"
+      }
+
+      new_guardian_attrs = %{
+        first_name: "Ana",
+        last_name: "Maria",
+        mobile: "912345678"
+      }
+
+      new_user_ninja = Accounts.create_user(user_ninja)
+      new_user_guardian = Accounts.create_user(user_guardian)
+
+      new_guardian_attrs =
+        new_guardian_attrs
+        |> Map.put(:user_id, elem(new_user_guardian, 1).id)
+
+      {:ok, new_guardian} = Accounts.create_guardian(new_guardian_attrs)
+
+      ninja_fixture =
+        ninja_attrs
+        |> Map.put(:user_id, elem(new_user_ninja, 1).id)
+        |> Map.put(:guardian_id, new_guardian.id)
+
+      {:ok, new_ninja} = Accounts.create_ninja(ninja_fixture)
+
+      enrollment_attrs = %{
+        enrollment: %{event_id: event.id, ninja_id: new_ninja.id, accepted: true}
+      }
+
+      conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
+      assert not is_nil(json_response(conn, 403)["reason"])
+    end
+
+    test "fails when user is not a guardian", %{
+      conn: conn,
+      ninja: ninja,
+      event: event
+    } do
+      admin_attrs = admin_attrs()
+
+      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
+
+      {:ok, jwt, _claims} =
+        Authorization.encode_and_sign(admin_user, %{
+          role: admin_user.role,
+          active: admin_user.active
+        })
+
+      conn =
+        conn
+        |> Authorization.Plug.sign_out()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
+
+      enrollment_attrs = %{enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true}}
+
+      assert_raise Phoenix.ActionClauseError, ~r/(?s).*/, fn ->
+        post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
+      end
+    end
   end
 
   describe "delete enrollment" do
@@ -160,24 +260,65 @@ defmodule BokkenWeb.EnrollmentControllerTest do
   end
 
   describe "update enrollment" do
-    test "updates enrollment when valid data is received", %{
+    test "fails when user is not an organizer", %{
       conn: conn,
       ninja: ninja,
       event: event
     } do
-      enrollment_attrs = %{enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: false}}
+      enrollment_attrs = %{
+        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: false}
+      }
 
       conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
       assert %{"id" => enrollment_id} = json_response(conn, 201)["data"]
 
+      enrollment = Events.get_enrollment(enrollment_id, [:ninja, :event])
+
       new_enrollment_attrs = %{
-        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment_id}
+        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment.id}
+      }
+
+      assert_raise Phoenix.ActionClauseError, ~r/(?s).*/, fn ->
+        patch(
+          conn,
+          Routes.event_enrollment_path(conn, :update, event.id, enrollment.id),
+          new_enrollment_attrs
+        )
+      end
+    end
+
+    test "updates enrollment when valid data is received and user is admin", %{
+      conn: conn,
+      ninja: ninja,
+      event: event
+    } do
+      enrollment_attrs = %{event_id: event.id, ninja_id: ninja.id, accepted: false}
+      {:ok, enrollment} = Events.create_enrollment(event.id, enrollment_attrs)
+
+      admin_attrs = admin_attrs()
+
+      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
+
+      {:ok, jwt, _claims} =
+        Authorization.encode_and_sign(admin_user, %{
+          role: admin_user.role,
+          active: admin_user.active
+        })
+
+      conn =
+        conn
+        |> Authorization.Plug.sign_out()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
+
+      new_enrollment_attrs = %{
+        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment.id}
       }
 
       conn =
         patch(
           conn,
-          Routes.event_enrollment_path(conn, :update, event.id, enrollment_id),
+          Routes.event_enrollment_path(conn, :update, event.id, enrollment.id),
           new_enrollment_attrs
         )
 

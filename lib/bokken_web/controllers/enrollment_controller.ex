@@ -10,7 +10,7 @@ defmodule BokkenWeb.EnrollmentController do
   defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
   defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
   defguard is_guardian(conn) when conn.assigns.current_user.role === :guardian
-  defguard is_admin(conn) when conn.assigns.current_user.role === :admin
+  defguard is_admin(conn) when conn.assigns.current_user.role === :organizer
 
   def show(conn, %{"id" => enrollment_id}) do
     enrollment = Events.get_enrollment(enrollment_id)
@@ -93,7 +93,7 @@ defmodule BokkenWeb.EnrollmentController do
     end
   end
 
-  def update(conn, %{"enrollment" => enrollment_params}) do
+  def update(conn, %{"enrollment" => enrollment_params}) when is_admin(conn) do
     old_enrollment = Events.get_enrollment(enrollment_params["id"])
 
     with {:ok, %Enrollment{} = new_enrollment} <-
