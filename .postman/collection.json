@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "6f410fa7-6468-4358-8372-84752d562888",
+		"_postman_id": "0f28098f-19e5-41e3-ad19-43890a5a083d",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21815073"
 	},
 	"item": [
 		{
@@ -56,17 +57,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_up",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"sign_up"
-									]
-								},
+								"url": "{{host}}/api/auth/sign_up",
 								"description": "The signup sets an auth cookie in all the following requests."
 							},
 							"response": [
@@ -84,17 +75,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/sign_up",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"sign_up"
-											]
-										}
+										"url": "{{host}}/api/auth/sign_up"
 									},
 									"status": "Created",
 									"code": 201,
@@ -192,17 +173,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/me",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"me"
-									]
-								}
+								"url": "{{host}}/api/auth/me"
 							},
 							"response": [
 								{
@@ -245,17 +216,7 @@
 												}
 											]
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/me",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"me"
-											]
-										}
+										"url": "{{host}}/api/auth/me"
 									},
 									"status": "Created",
 									"code": 201,
@@ -316,17 +277,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/auth/sign_out",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"sign_out"
-									]
-								},
+								"url": "{{host}}/api/auth/sign_out",
 								"description": "User signs out from app."
 							},
 							"response": []
@@ -381,17 +332,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_in",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"sign_in"
-									]
-								},
+								"url": "{{host}}/api/auth/sign_in",
 								"description": "The signup sets an auth cookie in all the following requests."
 							},
 							"response": [
@@ -409,17 +350,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/sign_in",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"sign_in"
-											]
-										}
+										"url": "{{host}}/api/auth/sign_in"
 									},
 									"status": "OK",
 									"code": 200,
@@ -489,17 +420,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/verify",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"verify"
-									]
-								},
+								"url": "{{host}}/api/auth/verify",
 								"description": "Verifies if the account is valid and authentic by requesting the token that was previous sent by email to the user upon signup/resend request."
 							},
 							"response": [
@@ -517,17 +438,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
+										"url": "{{host}}/api/auth/verify"
 									},
 									"status": "OK",
 									"code": 200,
@@ -579,17 +490,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
+										"url": "{{host}}/api/auth/verify"
 									},
 									"status": "Unauthorized",
 									"code": 401,
@@ -637,17 +538,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/auth/verify",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"verify"
-											]
-										}
+										"url": "{{host}}/api/auth/verify"
 									},
 									"status": "Not Found",
 									"code": 404,
@@ -688,17 +579,7 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/auth/resend",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"resend"
-									]
-								},
+								"url": "{{host}}/api/auth/resend",
 								"description": "Sends a new verification email."
 							},
 							"response": [
@@ -707,17 +588,7 @@
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/auth/resend",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"resend"
-											]
-										}
+										"url": "{{host}}/api/auth/resend"
 									},
 									"status": "Created",
 									"code": 201,
@@ -745,24 +616,14 @@
 										}
 									],
 									"cookie": [],
-									"body": null
+									"body": ""
 								},
 								{
 									"name": "Verification email not sent because email is already verified",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/auth/resend",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"resend"
-											]
-										}
+										"url": "{{host}}/api/auth/resend"
 									},
 									"status": "No Content",
 									"code": 204,
@@ -786,7 +647,7 @@
 										}
 									],
 									"cookie": [],
-									"body": null
+									"body": ""
 								}
 							]
 						},
@@ -819,17 +680,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/me",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"me"
-									]
-								},
+								"url": "{{host}}/api/auth/me",
 								"description": "Getting the information about current user."
 							},
 							"response": [
@@ -838,26 +689,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/me",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"me"
-											]
-										}
+										"url": "{{host}}/api/auth/me"
 									},
 									"status": "OK",
 									"code": 200,
@@ -896,26 +728,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/me",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"me"
-											]
-										}
+										"url": "{{host}}/api/auth/me"
 									},
 									"status": "OK",
 									"code": 200,
@@ -965,17 +778,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/auth/me",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"me"
-									]
-								}
+								"url": "{{host}}/api/auth/me"
 							},
 							"response": []
 						}
@@ -1028,16 +831,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								},
+								"url": "{{host}}/api/mentors",
 								"description": "Lists all the mentors."
 							},
 							"response": []
@@ -1130,16 +924,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								},
+								"url": "{{host}}/api/mentors",
 								"description": "Creates a new mentor with an avatar."
 							},
 							"response": []
@@ -1213,16 +998,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								},
+								"url": "{{host}}/api/mentors",
 								"description": "Creates a mentor with an user_id already taken by another entity."
 							},
 							"response": []
@@ -1292,16 +1068,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/guardians",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"guardians"
-									]
-								}
+								"url": "{{host}}/api/guardians"
 							},
 							"response": []
 						},
@@ -1319,16 +1086,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/guardians",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"guardians"
-									]
-								}
+								"url": "{{host}}/api/guardians"
 							},
 							"response": []
 						},
@@ -1370,17 +1128,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{host}}/api/guardians/{{guardian_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"guardians",
-										"{{guardian_id}}"
-									]
-								}
+								"url": "{{host}}/api/guardians/{{guardian_id}}"
 							},
 							"response": []
 						}
@@ -1437,18 +1185,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/teams/{{team_id}}/ninjas"
 							},
 							"response": []
 						},
@@ -1532,16 +1269,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/ninjas"
 							},
 							"response": []
 						},
@@ -1600,16 +1328,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/ninjas"
 							},
 							"response": []
 						}
@@ -1673,16 +1392,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/organizers",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"organizers"
-									]
-								},
+								"url": "{{host}}/api/organizers",
 								"description": "Lists all the organizers."
 							},
 							"response": []
@@ -1752,16 +1462,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/organizers",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"organizers"
-									]
-								},
+								"url": "{{host}}/api/organizers",
 								"description": "Creates a new organizer."
 							},
 							"response": []
@@ -1780,17 +1481,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/organizers/{{organizer_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"organizers",
-										"{{organizer_id}}"
-									]
-								},
+								"url": "{{host}}/api/organizers/{{organizer_id}}",
 								"description": "Updates a certain organizer."
 							},
 							"response": []
@@ -1800,17 +1491,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/organizers/{{organizer_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"organizers",
-										"{{organizer_id}}"
-									]
-								},
+								"url": "{{host}}/api/organizers/{{organizer_id}}",
 								"description": "Removes an organizer."
 							},
 							"response": []
@@ -1870,16 +1551,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/badges",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"badges"
-									]
-								},
+								"url": "{{host}}/api/badges",
 								"description": "Lists all existing badges."
 							},
 							"response": []
@@ -1931,16 +1603,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{host}}/api/badges",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"badges"
-									]
-								},
+								"url": "{{host}}/api/badges",
 								"description": "Creates a new badge."
 							},
 							"response": [
@@ -1969,17 +1632,7 @@
 												}
 											]
 										},
-										"url": {
-											"raw": "{{host}}/api/badges/",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"badges",
-												""
-											]
-										}
+										"url": "{{host}}/api/badges/"
 									},
 									"status": "Created",
 									"code": 201,
@@ -2044,17 +1697,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/badges/{{badge_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"badges",
-										"{{badge_id}}"
-									]
-								},
+								"url": "{{host}}/api/badges/{{badge_id}}",
 								"description": "Updates a badge's field."
 							},
 							"response": []
@@ -2064,17 +1707,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/badges/{{badge_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"badges",
-										"{{badge_id}}"
-									]
-								},
+								"url": "{{host}}/api/badges/{{badge_id}}",
 								"description": "Removes a badge from the system."
 							},
 							"response": []
@@ -2096,18 +1729,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{host}}/api/badges/{{badge_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"badges",
-										"{{badge_id}}",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/badges/{{badge_id}}/ninjas"
 							},
 							"response": []
 						},
@@ -2128,18 +1750,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"badges"
-									]
-								}
+								"url": "{{host}}/api/ninjas/{{ninja_id}}/badges"
 							},
 							"response": []
 						},
@@ -2200,18 +1811,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"badges"
-									]
-								}
+								"url": "{{host}}/api/ninjas/{{ninja_id}}/badges"
 							},
 							"response": []
 						},
@@ -2220,19 +1820,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges/1",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"badges",
-										"1"
-									]
-								}
+								"url": "{{host}}/api/ninjas/{{ninja_id}}/badges/1"
 							},
 							"response": []
 						}
@@ -2314,16 +1902,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams"
-									]
-								},
+								"url": "{{host}}/api/teams",
 								"description": "Lists all teams."
 							},
 							"response": []
@@ -2355,17 +1934,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/teams/",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										""
-									]
-								},
+								"url": "{{host}}/api/teams/",
 								"description": "Request that creates a new team."
 							},
 							"response": []
@@ -2384,17 +1953,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}",
 								"description": "Change some element of a team"
 							},
 							"response": []
@@ -2404,17 +1963,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}",
 								"description": "Deletes a team."
 							},
 							"response": []
@@ -2461,16 +2010,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations"
-									]
-								},
+								"url": "{{host}}/api/locations",
 								"description": "Lists all the locations."
 							},
 							"response": [
@@ -2479,16 +2019,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/locations",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"locations"
-											]
-										}
+										"url": "{{host}}/api/locations"
 									},
 									"status": "OK",
 									"code": 200,
@@ -2559,16 +2090,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/locations",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations"
-									]
-								},
+								"url": "{{host}}/api/locations",
 								"description": "Creates a new location."
 							},
 							"response": [
@@ -2586,16 +2108,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/locations",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"locations"
-											]
-										}
+										"url": "{{host}}/api/locations"
 									},
 									"status": "Created",
 									"code": 201,
@@ -2649,17 +2162,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/locations/{{location_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations",
-										"{{location_id}}"
-									]
-								},
+								"url": "{{host}}/api/locations/{{location_id}}",
 								"description": "Updates some field of a certain location."
 							},
 							"response": [
@@ -2677,17 +2180,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/locations/{{location_id}}",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"locations",
-												"{{location_id}}"
-											]
-										}
+										"url": "{{host}}/api/locations/{{location_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -2728,17 +2221,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations/{{location_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations",
-										"{{location_id}}"
-									]
-								},
+								"url": "{{host}}/api/locations/{{location_id}}",
 								"description": "Deletes one location."
 							},
 							"response": [
@@ -2747,17 +2230,7 @@
 									"originalRequest": {
 										"method": "DELETE",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/locations/{{location_id}}",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"locations",
-												"{{location_id}}"
-											]
-										}
+										"url": "{{host}}/api/locations/{{location_id}}"
 									},
 									"status": "No Content",
 									"code": 204,
@@ -2781,7 +2254,7 @@
 										}
 									],
 									"cookie": [],
-									"body": null
+									"body": ""
 								}
 							]
 						}
@@ -2815,16 +2288,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								},
+								"url": "{{host}}/api/events",
 								"description": "Lists all the events."
 							},
 							"response": [
@@ -2833,16 +2297,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/events",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"events"
-											]
-										}
+										"url": "{{host}}/api/events"
 									},
 									"status": "OK",
 									"code": 200,
@@ -2895,16 +2350,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								}
+								"url": "{{host}}/api/events"
 							},
 							"response": []
 						},
@@ -2925,16 +2371,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations"
-									]
-								}
+								"url": "{{host}}/api/locations"
 							},
 							"response": []
 						},
@@ -2955,16 +2392,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams"
-									]
-								}
+								"url": "{{host}}/api/teams"
 							},
 							"response": []
 						},
@@ -2973,18 +2401,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"events"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}/events",
 								"description": "Lists all the events of a certain team."
 							},
 							"response": []
@@ -2994,18 +2411,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations/{{location_id}}/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations",
-										"{{location_id}}",
-										"events"
-									]
-								},
+								"url": "{{host}}/api/locations/{{location_id}}/events",
 								"description": "Lists all the events that took place at the same location."
 							},
 							"response": []
@@ -3037,16 +2443,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								},
+								"url": "{{host}}/api/events",
 								"description": "Creates an event."
 							},
 							"response": [
@@ -3064,16 +2461,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/events",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"events"
-											]
-										}
+										"url": "{{host}}/api/events"
 									},
 									"status": "Created",
 									"code": 201,
@@ -3127,17 +2515,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}"
-									]
-								},
+								"url": "{{host}}/api/events/{{event_id}}",
 								"description": "Updates a field of a specific event."
 							},
 							"response": [
@@ -3155,17 +2533,7 @@
 												}
 											}
 										},
-										"url": {
-											"raw": "{{host}}/api/events/{{event_id}}",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"events",
-												"{{event_id}}"
-											]
-										}
+										"url": "{{host}}/api/events/{{event_id}}"
 									},
 									"status": "OK",
 									"code": 200,
@@ -3206,17 +2574,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}"
-									]
-								},
+								"url": "{{host}}/api/events/{{event_id}}",
 								"description": "Removes an event."
 							},
 							"response": []
@@ -3264,16 +2622,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/lectures",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures"
-									]
-								},
+								"url": "{{host}}/api/lectures",
 								"description": "Lists all lectures."
 							},
 							"response": [
@@ -3282,16 +2631,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/lectures",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"lectures"
-											]
-										}
+										"url": "{{host}}/api/lectures"
 									},
 									"status": "OK",
 									"code": 200,
@@ -3404,16 +2744,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/lectures",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures"
-									]
-								},
+								"url": "{{host}}/api/lectures",
 								"description": "Posts a new lecture."
 							},
 							"response": []
@@ -3432,17 +2763,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/lectures/{{lecture_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures",
-										"{{lecture_id}}"
-									]
-								},
+								"url": "{{host}}/api/lectures/{{lecture_id}}",
 								"description": "Changing one lecture."
 							},
 							"response": []
@@ -3452,17 +2773,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/lectures/{{lecture_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"lectures",
-										"{{lecture_id}}"
-									]
-								},
+								"url": "{{host}}/api/lectures/{{lecture_id}}",
 								"description": "Deletes a lecture."
 							},
 							"response": []
@@ -3529,18 +2840,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/events/{{event_id}}/ninjas"
 							},
 							"response": []
 						},
@@ -3589,18 +2889,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"ninjas"
-									]
-								}
+								"url": "{{host}}/api/events/{{event_id}}/ninjas"
 							},
 							"response": []
 						},
@@ -3662,18 +2951,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}/mentors",
 								"description": "Associates a mentor to a certain team."
 							},
 							"response": []
@@ -3744,18 +3022,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"ninjas"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}/ninjas",
 								"description": "Associates a certain ninja to a certain team."
 							},
 							"response": []
@@ -3765,20 +3032,109 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors",
-										"{{mentor_id}}"
-									]
-								},
+								"url": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
 								"description": "Disengages a certain mentor from a certain team."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Enrollment",
+					"item": [
+						{
+							"name": "List enrollments of ninja",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ninja_id\": {{ninja_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/enrollments"
+							},
+							"response": []
+						},
+						{
+							"name": "List enrollments of event",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event_id\": {{event_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/enrollments"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Enrollment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{host}}/api/events/{{event_id}}/enrollments/{{enrollment_id}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Create an enrollment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"enrollment\" : {\n        \"ninja_id\": {{ninja_id}},\n        \"event_id\": {{event_id}},\n        \"accepted\": false\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/enrollments"
+							},
+							"response": []
+						},
+						{
+							"name": "Update enrollment",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"enrollment\" : {\n        \"id\": {{enrollment_id}},\n        \"ninja_id\": {{ninja_id}},\n        \"event_id\": {{event_id}},\n        \"accepted\": true\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}},enrollments/{{enrollment_id}},"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an enrollment",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{host}}/api/events/{{event_id}}/enrollments/{{enrollment_id}}"
 							},
 							"response": []
 						}
@@ -3847,16 +3203,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/files",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"files"
-									]
-								},
+								"url": "{{host}}/api/files",
 								"description": "List all files"
 							},
 							"response": []
@@ -3926,16 +3273,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{host}}/api/files",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"files"
-									]
-								}
+								"url": "{{host}}/api/files"
 							},
 							"response": []
 						},
@@ -3953,17 +3291,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{host}}/api/files/{{file_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"files",
-										"{{file_id}}"
-									]
-								},
+								"url": "{{host}}/api/files/{{file_id}}",
 								"description": "Changing a file field."
 							},
 							"response": []
@@ -3973,17 +3301,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/files/{{file_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"files",
-										"{{file_id}}"
-									]
-								},
+								"url": "{{host}}/api/files/{{file_id}}",
 								"description": "Removes a file"
 							},
 							"response": []
@@ -4030,18 +3348,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/files",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"ninjas",
-										"{{ninja_id}}",
-										"files"
-									]
-								}
+								"url": "{{host}}/api/ninjas/{{ninja_id}}/files"
 							},
 							"response": []
 						}
@@ -4071,28 +3378,16 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}/",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						""
-					]
-				}
+				"url": "{{host}}/"
 			},
 			"response": []
 		}
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{token}}",
-				"type": "string"
-			}
-		]
+		"bearer": {
+			"token": "{{token}}"
+		}
 	},
 	"event": [
 		{

@@ -143,7 +143,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       conn = get(conn, Routes.event_enrollment_path(conn, :index, event.id))
       assert json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.ninja_enrollment_path(conn, :index, ninja.id))
+      conn = get(conn, Routes.event_enrollment_path(conn, :index, ninja.id))
       assert json_response(conn, 200)["data"]
     end
 
