@@ -488,11 +488,8 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> change_lecture(lecture)
-      %Ecto.Changeset{data @spec create_enrollment(
-          :invalid
-          | %{optional(:__struct__) => none, optional(atom | binary) => any}
-        ) :: any: %Lecture{}}
+    iex> change_lecture(lecture)
+    %Ecto.Changeset{}
 
   """
   def change_lecture(%Lecture{} = lecture, attrs \\ %{}) do
