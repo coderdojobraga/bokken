@@ -9,8 +9,6 @@ services:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
       POSTGRES_HOST: ${DB_HOST:-localhost}
-    ports:
-      - ${DB_PORT:-5432}:5432
     volumes:
       - /var/lib/postgresql/data
 

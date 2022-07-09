@@ -80,25 +80,25 @@ easily do it with [docker-compose](https://docs.docker.com/compose/install/).
 Create and start the database containers.
 
 ```
-docker-compose -f docker-compose.dev.yml up -d db
+docker-compose -f docker-compose.dev.yml -f {linux,darwin}.yml up db
 ```
 
 Start the previously created containers.
 
 ```
-docker-compose -f docker-compose.dev.yml start
+docker-compose -f docker-compose.dev.yml -f {linux,darwin}.yml start
 ```
 
 Stop the containers.
 
 ```
-docker-compose -f docker-compose.dev.yml stop
+docker-compose -f docker-compose.dev.yml -f {linux,darwin}.yml stop
 ```
 
 Destroy the containers and volumes created.
 
 ```
-docker-compose -f docker-compose.dev.yml down -v
+docker-compose -f docker-compose.dev.yml -f {linux,darwin}.yml down -v
 ```
 
 ## 🔗 References
