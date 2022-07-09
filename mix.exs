@@ -141,11 +141,14 @@ defmodule Bokken.MixProject do
         ref
 
       {_, _code} ->
-        ["ref:", ref_path] =
-          File.read!(".git/HEAD")
-          |> String.split()
+        git_ref = File.read!(".git/HEAD")
 
-        File.read!(".git/#{ref_path}")
+        if String.contains?(git_ref, "ref:") do
+          ["ref:", ref_path] = String.split(git_ref)
+          File.read!(".git/#{ref_path}")
+        else
+          git_ref
+        end
     end
     |> String.replace("\n", "")
   end
