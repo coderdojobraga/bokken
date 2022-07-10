@@ -545,7 +545,7 @@ defmodule Bokken.Accounts do
     result =
       Ecto.Multi.new()
       |> Ecto.Multi.update(:user, User.changeset(user, %{registered: true}))
-      |> Ecto.Multi.insert(user.role, &create_role_changeset(&1, attrs))
+      |> Ecto.Multi.insert(user.role, &create_role_changeset(&1, normalize_map_keys(attrs)))
       |> Repo.transaction()
 
     case result do
@@ -566,6 +566,12 @@ defmodule Bokken.Accounts do
 
       :guardian ->
         Guardian.changeset(%Guardian{}, attrs)
+    end
+  end
+
+  defp normalize_map_keys(map) do
+    for {key, val} <- map, into: %{} do
+      {to_string(key), val}
     end
   end
 

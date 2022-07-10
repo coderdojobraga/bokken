@@ -7,6 +7,8 @@ defmodule Bokken.Accounts.User do
   alias Bokken.Accounts.{Guardian, Mentor, Ninja, Organizer}
   alias Bokken.Documents.File
 
+  @roles [:ninja, :guardian, :mentor, :organizer]
+
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified, :registered]
 
@@ -18,7 +20,7 @@ defmodule Bokken.Accounts.User do
     field :active, :boolean, default: false
     field :verified, :boolean, default: false
     field :registered, :boolean, default: false
-    field :role, Ecto.Enum, values: [:ninja, :guardian, :mentor, :organizer]
+    field :role, Ecto.Enum, values: @roles
 
     has_one :guardian, Guardian, on_delete: :delete_all
     has_one :mentor, Mentor, on_delete: :delete_all
