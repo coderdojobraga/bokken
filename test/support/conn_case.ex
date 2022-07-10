@@ -14,10 +14,9 @@ defmodule BokkenWeb.ConnCase do
   by setting `use BokkenWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
-
   use ExUnit.CaseTemplate
 
-  alias Ecto.Adapters.SQL.Sandbox
+  alias BokkenWeb.Authorization
 
   using do
     quote do
@@ -34,12 +33,45 @@ defmodule BokkenWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Sandbox.checkout(Bokken.Repo)
-
-    unless tags[:async] do
-      Sandbox.mode(Bokken.Repo, {:shared, self()})
-    end
-
+    Bokken.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
+  end
+
+  @doc """
+  Setup helper that registers and logs in users.
+
+      setup :register_and_log_in_guardian
+      setup :register_and_log_in_mentor
+      setup :register_and_log_in_ninja
+
+  It stores an updated connection and a registered user in the
+  test context.
+  """
+  def register_and_log_in_guardian(args) do
+    register_and_log_in_user(args, :guardian)
+  end
+
+  def register_and_log_in_mentor(args) do
+    register_and_log_in_user(args, :mentor)
+  end
+
+  def register_and_log_in_ninja(args) do
+    register_and_log_in_user(args, :ninja)
+  end
+
+  defp register_and_log_in_user(%{conn: conn}, role) when role in [:guardian, :mentor, :ninja] do
+    user = Bokken.AccountsFixtures.user_fixture(%{role: role})
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  @doc """
+  Logs the given `user` into the `conn`.
+
+  It returns an updated `conn`.
+  """
+  def log_in_user(conn, user) do
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> Authorization.Plug.sign_in(user, %{role: user.role, active: user.active})
   end
 end

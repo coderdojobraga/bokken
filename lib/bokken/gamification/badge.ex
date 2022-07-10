@@ -11,7 +11,6 @@ defmodule Bokken.Gamification.Badge do
 
   @required_fields [:name]
   @optional_fields [:description]
-  @attachment_fields [:image]
 
   schema "badges" do
     field :name, :string
@@ -26,7 +25,7 @@ defmodule Bokken.Gamification.Badge do
   @doc false
   def image_changeset(badge, attrs) do
     badge
-    |> cast_attachments(attrs, @attachment_fields)
+    |> cast_attachments(attrs, [:image], allow_urls: true)
   end
 
   @doc false

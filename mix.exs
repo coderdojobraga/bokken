@@ -52,21 +52,6 @@ defmodule Bokken.MixProject do
       {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},
 
-      # monitoring
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:phoenix_live_dashboard, "~> 0.5"},
-
-      # plugs
-      {:plug_cowboy, "~> 2.5"},
-      {:cors_plug, "~> 3.0"},
-
-      # utilities
-      {:gettext, "~> 0.18"},
-      {:jason, "~> 1.3"},
-      {:browser, "~> 0.4.4"},
-      {:dotenvy, "~> 0.6.0"},
-
       # security
       {:guardian, "~> 2.2"},
       {:argon2_elixir, "~> 3.0"},
@@ -79,9 +64,29 @@ defmodule Bokken.MixProject do
       {:swoosh, "~> 1.5"},
       {:phoenix_swoosh, "~> 1.0"},
 
+      # plugs
+      {:plug_cowboy, "~> 2.5"},
+      {:cors_plug, "~> 3.0"},
+
+      # utilities
+      {:gettext, "~> 0.18"},
+      {:jason, "~> 1.3"},
+      {:browser, "~> 0.4.4"},
+
+      # monitoring
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 1.0"},
+      {:phoenix_live_dashboard, "~> 0.5"},
+
       # admin panel
       {:phoenix_html, "~> 2.11", override: true},
       {:kaffy, "~> 0.9.0", override: true},
+
+      # development
+      {:dotenvy, "~> 0.6.0"},
+
+      # testing
+      {:faker, "~> 0.17", only: [:dev, :test]},
 
       # tools
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
