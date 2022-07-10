@@ -50,6 +50,8 @@ defmodule BokkenWeb.EnrollmentController do
       when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
 
+    event = Events.get_event!(event_id)
+
     if is_guardian_of_ninja(guardian, ninja_id) do
       if accepted do
         conn
@@ -57,7 +59,7 @@ defmodule BokkenWeb.EnrollmentController do
         |> render("error.json", reason: "Guardian can not submit an accepted enrollment")
       else
         with {:ok, %Enrollment{} = enrollment} <-
-               Events.create_enrollment(event_id, enrollment_params) do
+               Events.create_enrollment(event, enrollment_params) do
           conn
           |> put_status(:created)
           |> render("show.json", enrollment: enrollment)

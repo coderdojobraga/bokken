@@ -106,7 +106,7 @@ defmodule Bokken.EventsTest do
       valid_attrs = attrs()
 
       {:ok, enrollment} =
-        Events.create_enrollment(valid_attrs.event_id, Enum.into(attributes, valid_attrs))
+        Events.create_enrollment(Events.get_event!(valid_attrs.event_id), Enum.into(attributes, valid_attrs))
 
       enrollment
     end
@@ -147,14 +147,14 @@ defmodule Bokken.EventsTest do
       valid_attrs = attrs()
       event = Events.get_event!(valid_attrs.event_id)
 
-      Events.update_event(event, %{
+      {:ok, event} = Events.update_event(event, %{
         start_time: ~U[2022-07-03 10:00:00.0Z],
         end_time: ~U[2022-07-03 12:30:00.0Z],
         enrollments_open: ~U[2022-07-03 07:00:00.0Z],
         enrollments_close: ~U[2022-07-03 08:00:00.0Z]
       })
 
-      assert elem(Events.create_enrollment(event.id, valid_attrs), 0) == :error
+      assert elem(Events.create_enrollment(event, valid_attrs), 0) == :error
     end
 
     test "update_enrollment/2 updates existing enrollment" do

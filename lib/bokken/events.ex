@@ -562,8 +562,7 @@ defmodule Bokken.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_enrollment(event_id, attrs \\ %{}) do
-    event = get_event!(event_id)
+  def create_enrollment(event, attrs \\ %{}) do
     cur_time = DateTime.utc_now()
 
     if DateTime.compare(event.enrollments_open, cur_time) == :lt and

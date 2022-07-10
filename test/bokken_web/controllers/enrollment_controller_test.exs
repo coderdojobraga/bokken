@@ -293,7 +293,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       event: event
     } do
       enrollment_attrs = %{event_id: event.id, ninja_id: ninja.id, accepted: false}
-      {:ok, enrollment} = Events.create_enrollment(event.id, enrollment_attrs)
+      {:ok, enrollment} = Events.create_enrollment(event, enrollment_attrs)
 
       admin_attrs = admin_attrs()
 

@@ -1,6 +1,6 @@
 defmodule Bokken.Events.Enrollment do
   @moduledoc """
-  An enrollment for an event of Coderdojo
+  An enrollment for an event of CoderDojo Braga
   """
   use Bokken.Schema
 
@@ -11,7 +11,7 @@ defmodule Bokken.Events.Enrollment do
   @optional_fields [:notes]
 
   schema "enrollments" do
-    field :accepted, :boolean
+    field :accepted, :boolean, default: false
     field :notes, :string
 
     belongs_to :event, Event
@@ -24,8 +24,6 @@ defmodule Bokken.Events.Enrollment do
   def changeset(enrollment, attrs) do
     enrollment
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_assoc(:ninja, with: &Ninja.changeset/2)
-    |> cast_assoc(:event, with: &Event.changeset/2)
     |> validate_required(@required_fields)
     |> assoc_constraint(:event)
     |> assoc_constraint(:ninja)
