@@ -13,10 +13,9 @@ defmodule Bokken.DataCase do
   by setting `use Bokken.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
-
   use ExUnit.CaseTemplate
 
-  alias Ecto.Adapters.SQL.Sandbox
+  alias Ecto.Adapters.SQL
 
   using do
     quote do
@@ -30,13 +29,16 @@ defmodule Bokken.DataCase do
   end
 
   setup tags do
-    :ok = Sandbox.checkout(Bokken.Repo)
-
-    unless tags[:async] do
-      Sandbox.mode(Bokken.Repo, {:shared, self()})
-    end
-
+    Bokken.DataCase.setup_sandbox(tags)
     :ok
+  end
+
+  @doc """
+  Sets up the sandbox based on the test tags.
+  """
+  def setup_sandbox(tags) do
+    pid = SQL.Sandbox.start_owner!(Bokken.Repo, shared: not tags[:async])
+    on_exit(fn -> SQL.Sandbox.stop_owner(pid) end)
   end
 
   @doc """

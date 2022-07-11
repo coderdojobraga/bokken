@@ -6,34 +6,9 @@ defmodule Bokken.GamificationTest do
   describe "badges" do
     alias Bokken.Gamification.Badge
 
-    @valid_attrs %{
-      description: "some description",
-      name: "some name",
-      image: %Plug.Upload{
-        content_type: "image/png",
-        filename: "avatar.png",
-        path: "./.postman/avatar.png"
-      }
-    }
-    @update_attrs %{
-      description: "some updated description",
-      name: "some updated name",
-      image: %Plug.Upload{
-        content_type: "image/png",
-        filename: "scratch.png",
-        path: "./.postman/scratch.png"
-      }
-    }
-    @invalid_attrs %{description: nil, name: nil, image: nil}
+    import Bokken.GamificationFixtures
 
-    def badge_fixture(attrs \\ %{}) do
-      {:ok, badge} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Gamification.create_badge()
-
-      badge
-    end
+    @invalid_attrs %{description: nil, image: nil, name: nil}
 
     test "list_badges/0 returns all badges" do
       badge = badge_fixture()
@@ -46,10 +21,12 @@ defmodule Bokken.GamificationTest do
     end
 
     test "create_badge/1 with valid data creates a badge" do
-      assert {:ok, %Badge{} = badge} = Gamification.create_badge(@valid_attrs)
+      img_url = Faker.Avatar.image_url("#{System.unique_integer()}.png")
+      valid_attrs = %{description: "some description", image: img_url, name: "some name"}
+
+      assert {:ok, %Badge{} = badge} = Gamification.create_badge(valid_attrs)
       assert badge.description == "some description"
       assert badge.name == "some name"
-      assert badge.image.file_name == "avatar.png"
     end
 
     test "create_badge/1 with invalid data returns error changeset" do
@@ -58,10 +35,15 @@ defmodule Bokken.GamificationTest do
 
     test "update_badge/2 with valid data updates the badge" do
       badge = badge_fixture()
-      assert {:ok, %Badge{} = badge} = Gamification.update_badge(badge, @update_attrs)
+
+      update_attrs = %{
+        description: "some updated description",
+        name: "some updated name"
+      }
+
+      assert {:ok, %Badge{} = badge} = Gamification.update_badge(badge, update_attrs)
       assert badge.description == "some updated description"
       assert badge.name == "some updated name"
-      assert badge.image.file_name == "scratch.png"
     end
 
     test "update_badge/2 with invalid data returns error changeset" do

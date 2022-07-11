@@ -32,7 +32,7 @@ defmodule Bokken.Accounts.Guardian do
   def changeset(guardian, attrs) do
     guardian
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_attachments(attrs, @attachment_fields)
+    |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
     |> validate_inclusion(:city, @portuguese_cities)
     |> assoc_constraint(:user)

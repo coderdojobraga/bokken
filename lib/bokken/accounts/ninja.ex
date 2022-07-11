@@ -42,7 +42,7 @@ defmodule Bokken.Accounts.Ninja do
     ninja
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_embed(:socials, with: &Social.changeset/2)
-    |> cast_attachments(attrs, @attachment_fields)
+    |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)

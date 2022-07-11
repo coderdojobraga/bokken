@@ -10,7 +10,6 @@ defmodule Bokken.Accounts.Mentor do
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
   @optional_fields [:birthday, :major, :trial]
-  @attachment_fields [:photo]
 
   schema "mentors" do
     field :photo, Avatar.Type
@@ -43,7 +42,7 @@ defmodule Bokken.Accounts.Mentor do
     mentor
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_embed(:socials, with: &Social.changeset/2)
-    |> cast_attachments(attrs, @attachment_fields)
+    |> cast_attachments(attrs, [:photo], allow_urls: true)
     |> validate_required(@required_fields)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
