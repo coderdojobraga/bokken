@@ -488,11 +488,144 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> change_lecture(lecture)
-      %Ecto.Changeset{data: %Lecture{}}
+    iex> change_lecture(lecture)
+    %Ecto.Changeset{}
 
   """
   def change_lecture(%Lecture{} = lecture, attrs \\ %{}) do
     Lecture.changeset(lecture, attrs)
+  end
+
+  alias Bokken.Events.Enrollment
+
+  @doc """
+  Returns the list of enrollments.
+
+  ## Examples
+
+    iex> list_enrollments(123)
+      [%Enrollment{}, ...]
+
+    iex> list_enrollments()
+      [%Enrollment{}, ...]
+
+  """
+  def list_enrollments(%{"ninja_id" => ninja_id}) do
+    Enrollment
+    |> where([e], e.ninja_id == ^ninja_id)
+    |> Repo.all()
+    |> Repo.preload([:ninja, :event])
+  end
+
+  def list_enrollments(%{"event_id" => event_id}) do
+    Enrollment
+    |> where([e], e.event_id == ^event_id)
+    |> Repo.all()
+    |> Repo.preload([:ninja, :event])
+  end
+
+  def list_enrollments do
+    Enrollment
+    |> Repo.all()
+    |> Repo.preload([:ninja, :event])
+  end
+
+  @doc """
+  Gets a single enrollment.
+
+  Returns nil if the Enrollment does not exist.
+
+  ## Examples
+
+      iex> get_enrollment(123)
+      %Enrollment{}
+
+      iex> get_enrollment(456)
+      nil
+
+  """
+  def get_enrollment(id, preloads \\ []) do
+    Enrollment
+    |> Repo.get(id)
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Creates an enrollment.
+
+  ## Examples
+
+      iex> create_enrollment(%{field: value})
+      {:ok, %Enrollment{}}
+
+      iex> create_enrollment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_enrollment(event, attrs \\ %{}) do
+    cur_time = DateTime.utc_now()
+
+    if DateTime.compare(event.enrollments_open, cur_time) == :lt and
+         DateTime.compare(event.enrollments_close, cur_time) == :gt do
+      %Enrollment{}
+      |> Enrollment.changeset(attrs)
+      |> Repo.insert()
+    else
+      {:error, "Enrollments are closed"}
+    end
+  end
+
+  @doc """
+  Updates an enrollment.
+
+  ## Examples
+
+      iex> update_enrollment(enrollment, %{field: new_value})
+      {:ok, %Event{}}
+
+      iex> update_event(enrollment, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_enrollment(%Enrollment{} = enrollment, attrs) do
+    enrollment
+    |> Enrollment.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes an enrollment.
+
+  ## Examples
+
+      iex> delete_enrollment(enrollment)
+      {:ok, %Enrollment{}}
+
+      iex> delete_enrollment(enrollment)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_enrollment(%Enrollment{} = enrollment) do
+    event = get_event!(enrollment.event_id)
+    cur_time = DateTime.utc_now()
+
+    if DateTime.compare(event.start_time, cur_time) == :gt do
+      Repo.delete(enrollment)
+    else
+      {:error, "Cannot delete enrollment of past session"}
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking enrollment changes.
+
+  ## Examples
+
+      iex> change_enrollment(enrollment)
+      %Ecto.Changeset{data: %Enrollment{}}
+
+  """
+  def change_enrollment(%Enrollment{} = enrollment, attrs \\ %{}) do
+    Event.changeset(enrollment, attrs)
   end
 end

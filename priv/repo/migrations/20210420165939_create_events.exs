@@ -8,6 +8,8 @@ defmodule Bokken.Repo.Migrations.CreateEvents do
       add :spots_available, :integer, null: false
       add :start_time, :utc_datetime
       add :end_time, :utc_datetime
+      add :enrollments_open, :utc_datetime
+      add :enrollments_close, :utc_datetime
       add :online, :boolean, null: false, default: false
       add :notes, :text
 

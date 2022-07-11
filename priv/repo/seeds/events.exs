@@ -58,6 +58,12 @@ defmodule Bokken.Repo.Seeds.Events do
       _ ->
         Mix.shell().error("Found lectures, aborting seeding lectures.")
     end
+
+    case Bokken.Repo.all(Bokken.Events.Enrollment) do
+      [] -> create_enrollments(7)
+      _ ->
+        Mix.shell().error("Found enrollments, aborting seeding enrollments.")
+    end
   end
 
   def create_locations(names) do
@@ -94,14 +100,34 @@ defmodule Bokken.Repo.Seeds.Events do
         online: false,
         spots_available: Enum.random(15..30),
         notes: "Great #{Enum.random(1..100)} event",
-        start_time: ~U[2021-08-08 10:00:00.0Z],
-        end_time: ~U[2021-08-08 12:30:00.0Z],
+        start_time: ~U[2023-08-08 10:00:00.0Z],
+        end_time: ~U[2023-08-08 12:30:00.0Z],
+        enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+        enrollments_close: ~U[2023-08-07 12:30:00.0Z],
         location_id: location_id,
         team_id: team_id
       }
 
       Bokken.Events.create_event(event)
     end
+
+    %{id: location_id} = Enum.random(Bokken.Events.list_locations())
+    %{id: team_id} = Enum.random(Bokken.Events.list_teams())
+
+    event = %{
+      title: "Closed",
+      online: false,
+      spots_available: Enum.random(15..30),
+      notes: "Great #{Enum.random(1..100)} event",
+      start_time: ~U[2023-08-08 10:00:00.0Z],
+      end_time: ~U[2023-08-08 12:30:00.0Z],
+      enrollments_open: ~U[2022-07-08 12:30:00.0Z],
+      enrollments_close: ~U[2022-07-09 12:30:00.0Z],
+      location_id: location_id,
+      team_id: team_id
+    }
+
+    Bokken.Events.create_event(event)
   end
 
 
@@ -146,6 +172,22 @@ defmodule Bokken.Repo.Seeds.Events do
 
         Bokken.Documents.create_file(file)
       end
+    end
+  end
+
+  def create_enrollments(count) do
+    ninjas = Bokken.Accounts.list_ninjas()
+    events = Bokken.Events.list_events()
+
+    for i <- 1..count do
+      %{id: ninja_id} = Enum.random(ninjas)
+      %{id: event_id}  = Enum.random(events);
+      enrollment = %{
+        event_id: event_id,
+        ninja_id: ninja_id,
+        accepted: false,
+        notes: "First session"
+      }
     end
   end
 
