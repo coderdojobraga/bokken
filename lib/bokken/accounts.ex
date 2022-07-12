@@ -11,7 +11,7 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
-  alias Bokken.Accounts.Guardian
+  alias Bokken.Accounts.{Guardian, UserSkill, Skill}
 
   @doc """
   Returns the list of guardians.
@@ -687,5 +687,41 @@ defmodule Bokken.Accounts do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
+  end
+
+  @doc """
+  Creates a skill.
+
+  ## Examples
+
+      iex> create_skill(%{field: value})
+      {:ok, %Skill{}}
+
+      iex> create_skill(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_skill(attrs \\ %{}) do
+    %Skill{}
+    |> Skill.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a user skill.
+
+  ## Examples
+
+      iex> create_user_skill(%{field: value})
+      {:ok, %UserSkill{}}
+
+      iex> create_user_skill(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_skill(attrs \\ %{}) do
+    %UserSkill{}
+    |> UserSkill.changeset(attrs)
+    |> Repo.insert()
   end
 end
