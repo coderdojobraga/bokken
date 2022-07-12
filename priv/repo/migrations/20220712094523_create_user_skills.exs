@@ -21,9 +21,9 @@ defmodule Bokken.Repo.Migrations.CreateUserSkills do
       constraint(
         :user_skills,
         :ninja_or_mentor,
-        check: "(mentor_id IS NOT NULL AND ninja_id IS NULL) OR (ninja_id IS NOT NULL AND mentor_id IS NULL)"
+        check:
+          "(mentor_id IS NOT NULL AND ninja_id IS NULL) OR (ninja_id IS NOT NULL AND mentor_id IS NULL)"
       )
     )
-
   end
 end

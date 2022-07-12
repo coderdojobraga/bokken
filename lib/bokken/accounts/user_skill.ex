@@ -29,7 +29,7 @@ defmodule Bokken.Accounts.UserSkill do
     |> unique_constraint([:mentor_id, :skill_id], name: :user_skills_mentor_pkey)
     |> check_constraint(
       :user_skills,
-      name: :mentor_or_ninja,
+      name: :ninja_or_mentor,
       message: "Either mentor or ninja can't be blank"
     )
   end

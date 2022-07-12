@@ -11,7 +11,7 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
-  alias Bokken.Accounts.{Guardian, UserSkill, Skill}
+  alias Bokken.Accounts.{Guardian, Skill, UserSkill}
 
   @doc """
   Returns the list of guardians.
