@@ -708,6 +708,52 @@ defmodule Bokken.Accounts do
   end
 
   @doc """
+  Updates a skill.
+
+  ## Examples
+
+      iex> update_skill(%Skill{}, %{field: value})
+      {:ok, %Skill{}}
+
+      iex> update_skill(%Skill{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_skill(%Skill{} = skill, attrs \\ %{}) do
+    skill
+    |> Skill.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a  skill.
+
+  ## Examples
+
+      iex> delete_skill(skill)
+      {:ok, %Skill{}}
+
+      iex> delete_skill(skill)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_skill(%Skill{} = skill) do
+    Repo.delete(skill)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking skill changes.
+
+  ## Examples
+
+      iex> change_skill(skill)
+      %Ecto.Changeset{data: %Skill{}}
+
+  """
+  def change_skill(%Skill{} = skill, attrs \\ %{}) do
+    UserSkill.changeset(skill, attrs)
+  end
+
+  @doc """
   Creates a user skill.
 
   ## Examples
@@ -723,5 +769,51 @@ defmodule Bokken.Accounts do
     %UserSkill{}
     |> UserSkill.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates a user skill.
+
+  ## Examples
+
+      iex> update_user_skill(%UserSkill{}, %{field: value})
+      {:ok, %UserSkill{}}
+
+      iex> update_user_skill(%UserSkill{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_skill(%UserSkill{} = user_skill, attrs \\ %{}) do
+    user_skill
+    |> UserSkill.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a user skill.
+
+  ## Examples
+
+      iex> delete_user_skill(user_skill)
+      {:ok, %UserSkill{}}
+
+      iex> delete_user_skill(user_skill)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_user_skill(%UserSkill{} = user_skill) do
+    Repo.delete(user_skill)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user skill changes.
+
+  ## Examples
+
+      iex> change_user_skill(user_skill)
+      %Ecto.Changeset{data: %UserSkill{}}
+
+  """
+  def change_user_skill(%UserSkill{} = user_skill, attrs \\ %{}) do
+    UserSkill.changeset(user_skill, attrs)
   end
 end
