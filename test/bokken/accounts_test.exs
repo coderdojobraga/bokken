@@ -119,16 +119,67 @@ defmodule Bokken.AccountsTest do
       }
     end
 
-    test "create_skills/1 creates a skill when the data is valid" do
+    test "create_skill/1 creates a skill when the data is valid" do
       skill_fixture = valid_skill()
       assert {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
       assert skill.name == skill_fixture.name
       assert skill.description == skill_fixture.description
     end
 
-    test "create_skills/1 fails when the data is invalid" do
+    test "create_skill/1 fails when the data is invalid" do
       skill_fixture = invalid_skill()
       assert {:error, _changeset} = Accounts.create_skill(skill_fixture)
+    end
+
+    test "update_skill/1 updates a skill when the data is valid" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      skill_fixture = %{
+        name: "Kotlin",
+        description:
+          "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
+      }
+
+      assert {:ok, %Skill{} = skill} = Accounts.update_skill(skill, skill_fixture)
+
+      assert skill.name == skill_fixture.name
+      assert skill.description == skill_fixture.description
+    end
+
+    test "updates_skill/1 fails when the data is invalid" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      skill_fixture = %{
+        name: "Kotlin",
+        description: nil
+      }
+
+      {:error, _changeset} = Accounts.update_skill(skill, skill_fixture)
+    end
+
+    test "updates_skills/1 fails when the data is invalid" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      skill_fixture = %{
+        name: "Kotlin",
+        description: nil
+      }
+
+      {:error, _changeset} = Accounts.update_skill(skill, skill_fixture)
+    end
+
+    test "delete_skill/1 deletes the data when valid" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      skill_fixture = %{
+        name: "Haskell"
+      }
+
+      assert %Ecto.Changeset{} = Accounts.change_skill(skill, skill_fixture)
     end
   end
 
@@ -137,7 +188,7 @@ defmodule Bokken.AccountsTest do
 
     setup [:create_data]
 
-    test "create_user_skills/1 creates a user skill when the data is valid (ninja)", %{
+    test "create_user_skill/1 creates a user skill when the data is valid (ninja)", %{
       ninja: ninja,
       mentor: _mentor,
       skill: skill
@@ -153,7 +204,7 @@ defmodule Bokken.AccountsTest do
       assert is_nil(user_skill.mentor_id)
     end
 
-    test "create_user_skills/1 creates a user skill when the data is valid (mentor)", %{
+    test "create_user_skill/1 creates a user skill when the data is valid (mentor)", %{
       ninja: _ninja,
       mentor: mentor,
       skill: skill
@@ -169,7 +220,7 @@ defmodule Bokken.AccountsTest do
       assert is_nil(user_skill.ninja_id)
     end
 
-    test "create_user_skills/1 fails when the data is invalid (both mentor and ninja)", %{
+    test "create_user_skill/1 fails when the data is invalid (both mentor and ninja)", %{
       ninja: ninja,
       mentor: mentor,
       skill: skill
@@ -183,7 +234,7 @@ defmodule Bokken.AccountsTest do
       assert {:error, _changeset} = Accounts.create_user_skill(user_skill_attrs)
     end
 
-    test "create_user_skills/1 fails when the data is valid (no mentor or ninja)", %{
+    test "create_user_skill/1 fails when the data is valid (no mentor or ninja)", %{
       ninja: _ninja,
       mentor: _mentor,
       skill: skill
@@ -193,6 +244,88 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:error, _changeset} = Accounts.create_user_skill(user_skill_attrs)
+    end
+
+    test "update_user_skill/1 updates a user skill when the data is valid", %{
+      ninja: ninja,
+      mentor: mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+
+      user_skill_attrs = %{
+        mentor_id: mentor.id,
+        ninja_id: nil,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %UserSkill{} = user_skill} =
+               Accounts.update_user_skill(user_skill, user_skill_attrs)
+
+      assert user_skill.mentor_id == mentor.id
+      assert user_skill.skill_id == skill.id
+      assert is_nil(user_skill.ninja_id)
+    end
+
+    test "update_user_skills/1 fails when the data is invalid", %{
+      ninja: ninja,
+      mentor: mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+
+      user_skill_attrs = %{
+        mentor_id: mentor.id,
+        skill_id: skill.id
+      }
+
+      assert {:error, _changeset} = Accounts.update_user_skill(user_skill, user_skill_attrs)
+    end
+
+    test "delete_user_skill/1 deletes a user skill", %{
+      ninja: ninja,
+      mentor: _mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+
+      assert {:ok, %UserSkill{}} = Accounts.delete_user_skill(user_skill)
+    end
+
+    test "change_user_skill/1 returns a changeset", %{
+      ninja: ninja,
+      mentor: mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+
+      user_skill_attrs = %{
+        mentor_id: mentor.id,
+        ninja_id: nil,
+        skill_id: skill.id
+      }
+
+      assert %Ecto.Changeset{} = Accounts.change_user_skill(user_skill, user_skill_attrs)
     end
 
     defp create_data(_x) do

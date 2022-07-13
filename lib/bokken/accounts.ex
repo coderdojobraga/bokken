@@ -750,7 +750,7 @@ defmodule Bokken.Accounts do
 
   """
   def change_skill(%Skill{} = skill, attrs \\ %{}) do
-    UserSkill.changeset(skill, attrs)
+    Skill.changeset(skill, attrs)
   end
 
   @doc """
