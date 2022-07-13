@@ -131,6 +131,20 @@ defmodule Bokken.AccountsTest do
       assert {:error, _changeset} = Accounts.create_skill(skill_fixture)
     end
 
+    test "get_skill!/1 returns the skill" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      assert %Skill{} = Accounts.get_skill!(skill.id)
+    end
+
+    test "list_skills/0 returns all skills" do
+      skill_fixture = valid_skill()
+      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+
+      assert [%Skill{}] = Accounts.list_skills()
+    end
+
     test "update_skill/1 updates a skill when the data is valid" do
       skill_fixture = valid_skill()
       {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
@@ -244,6 +258,50 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:error, _changeset} = Accounts.create_user_skill(user_skill_attrs)
+    end
+
+    test "list_user_skill/1 returns the requested user skills (ninja)", %{
+      ninja: ninja,
+      mentor: _mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+      assert [%UserSkill{}] = Accounts.list_user_skills(%{"ninja_id" => ninja.id})
+      assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
+    end
+
+    test "list_user_skill/1 returns the requested user skills (mentor)", %{
+      ninja: _ninja,
+      mentor: mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        mentor_id: mentor.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+      assert [%UserSkill{}] = Accounts.list_user_skills(%{"mentor_id" => mentor.id})
+      assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
+    end
+
+    test "get_user_skill!/1 returns the requested user skill", %{
+      ninja: _ninja,
+      mentor: mentor,
+      skill: skill
+    } do
+      user_skill_attrs = %{
+        mentor_id: mentor.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+      assert %UserSkill{} = Accounts.get_user_skill!(user_skill.id)
     end
 
     test "update_user_skill/1 updates a user skill when the data is valid", %{

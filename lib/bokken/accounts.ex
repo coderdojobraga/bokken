@@ -690,6 +690,35 @@ defmodule Bokken.Accounts do
   end
 
   @doc """
+  Gets a single skill.
+
+  Raises `Ecto.NoResultsError` if the Skill does not exist.
+
+  ## Examples
+
+      iex> get_skill!(123)
+      %Skill{}
+
+      iex> get_skill!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_skill!(id) do
+    Repo.get!(Skill, id)
+  end
+
+  @doc """
+  Returns the list of skills.
+  ## Examples
+      iex> list_skills()
+      [%Skill{}, ...]
+  """
+  def list_skills do
+    Skill
+    |> Repo.all()
+  end
+
+  @doc """
   Creates a skill.
 
   ## Examples
@@ -751,6 +780,56 @@ defmodule Bokken.Accounts do
   """
   def change_skill(%Skill{} = skill, attrs \\ %{}) do
     Skill.changeset(skill, attrs)
+  end
+
+  @doc """
+  Gets a single UserSkill.
+
+  Raises `Ecto.NoResultsError` if the UserSkill does not exist.
+
+  ## Examples
+
+      iex> get_user_skill!(123)
+      %UserSkill{}
+
+      iex> get_user_skill!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_skill!(id, preloads \\ []) do
+    Repo.get!(UserSkill, id)
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Returns the list of skills.
+  ## Examples
+      iex> list_skills()
+      [%Skill{}, ...]
+  """
+  def list_user_skills(args \\ %{})
+
+  def list_user_skills(%{"ninja_id" => ninja_id}) do
+    UserSkill
+    |> where([us], us.ninja_id == ^ninja_id)
+    |> Repo.all()
+  end
+
+  def list_user_skills(%{"mentor_id" => mentor_id}) do
+    UserSkill
+    |> where([us], us.mentor_id == ^mentor_id)
+    |> Repo.all()
+  end
+
+  def list_user_skills(%{"skill_id" => skill_id}) do
+    UserSkill
+    |> where([us], us.skill_id == ^skill_id)
+    |> Repo.all()
+  end
+
+  def list_user_skills(_args) do
+    UserSkill
+    |> Repo.all()
   end
 
   @doc """
