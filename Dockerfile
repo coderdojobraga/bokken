@@ -16,6 +16,8 @@ RUN mix local.hex --force && \
 ARG MIX_ENV
 ENV MIX_ENV=$MIX_ENV
 
+COPY .git/ ./.git/
+
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
