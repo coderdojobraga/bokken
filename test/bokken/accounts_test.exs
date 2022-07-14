@@ -140,7 +140,7 @@ defmodule Bokken.AccountsTest do
 
     test "list_skills/0 returns all skills" do
       skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Accounts.create_skill(skill_fixture)
+      {:ok, %Skill{}} = Accounts.create_skill(skill_fixture)
 
       assert [%Skill{}] = Accounts.list_skills()
     end
@@ -270,7 +270,7 @@ defmodule Bokken.AccountsTest do
         skill_id: skill.id
       }
 
-      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+      assert {:ok, %UserSkill{}} = Accounts.create_user_skill(user_skill_attrs)
       assert [%UserSkill{}] = Accounts.list_user_skills(%{"ninja_id" => ninja.id})
       assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
     end
@@ -285,7 +285,7 @@ defmodule Bokken.AccountsTest do
         skill_id: skill.id
       }
 
-      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
+      assert {:ok, %UserSkill{}} = Accounts.create_user_skill(user_skill_attrs)
       assert [%UserSkill{}] = Accounts.list_user_skills(%{"mentor_id" => mentor.id})
       assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
     end

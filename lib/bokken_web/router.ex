@@ -50,6 +50,8 @@ defmodule BokkenWeb.Router do
       get "/files", FileController, :index
     end
 
+    resources "/skills", SkillController
+
     resources "/organizers", OrganizerController, except: [:new, :edit]
 
     resources "/ninjas", NinjaController, except: [:new, :edit] do
