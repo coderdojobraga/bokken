@@ -35,6 +35,10 @@ case ${1:-skip} in
     ;;
 esac
 
+function get_elixir_project_version() {
+  mix run --no-start -e "IO.puts Mix.Project.config[:version]"
+}
+
 function build_image() {
   local version
   local env
