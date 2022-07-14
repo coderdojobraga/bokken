@@ -807,29 +807,33 @@ defmodule Bokken.Accounts do
       iex> list_skills()
       [%Skill{}, ...]
   """
-  def list_user_skills(args \\ %{})
+  def list_user_skills(args \\ %{}, preloads \\ [])
 
-  def list_user_skills(%{"ninja_id" => ninja_id}) do
+  def list_user_skills(%{"ninja_id" => ninja_id}, preloads) do
     UserSkill
     |> where([us], us.ninja_id == ^ninja_id)
     |> Repo.all()
+    |> Repo.preload(preloads)
   end
 
-  def list_user_skills(%{"mentor_id" => mentor_id}) do
+  def list_user_skills(%{"mentor_id" => mentor_id}, preloads) do
     UserSkill
     |> where([us], us.mentor_id == ^mentor_id)
     |> Repo.all()
+    |> Repo.preload(preloads)
   end
 
-  def list_user_skills(%{"skill_id" => skill_id}) do
+  def list_user_skills(%{"skill_id" => skill_id}, preloads) do
     UserSkill
     |> where([us], us.skill_id == ^skill_id)
     |> Repo.all()
+    |> Repo.preload(preloads)
   end
 
-  def list_user_skills(_args) do
+  def list_user_skills(_args, preloads) do
     UserSkill
     |> Repo.all()
+    |> Repo.preload(preloads)
   end
 
   @doc """
