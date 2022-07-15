@@ -503,10 +503,10 @@ defmodule Bokken.Events do
 
   ## Examples
 
-    iex> list_enrollments(123)
+      iex> list_enrollments(123)
       [%Enrollment{}, ...]
 
-    iex> list_enrollments()
+      iex> list_enrollments()
       [%Enrollment{}, ...]
 
   """
@@ -627,5 +627,125 @@ defmodule Bokken.Events do
   """
   def change_enrollment(%Enrollment{} = enrollment, attrs \\ %{}) do
     Event.changeset(enrollment, attrs)
+  end
+
+  alias Bokken.Events.Availability
+
+  @doc """
+  Returns the list of availability.
+
+  ## Examples
+
+      iex> list_availability(123)
+      [%Availability{}, ...]
+
+      iex> list_availability()
+      [%Availability{}, ...]
+
+
+  """
+  def list_availability(%{"mentor_id" => mentor_id}) do
+    Availability
+    |> where([a], a.mentor_id == ^mentor_id)
+    |> Repo.all()
+    |> Repo.preload([:mentor, :event])
+  end
+
+  def list_availability(%{"event_id" => event_id}) do
+    Availability
+    |> where([a], a.event_id == ^event_id)
+    |> Repo.all()
+    |> Repo.preload([:mentor, :event])
+  end
+
+  def list_availability do
+    Availability
+    |> Repo.all()
+    |> Repo.preload([:mentor, :event])
+  end
+
+  @doc """
+  Gets a single availability.
+
+  Return nil if the Availability does not exist.
+
+  ## Examples
+
+      iex> get_availability(123)
+      %Availability{}
+
+      iex> get_availability(456)
+      nil
+
+  """
+  def get_availability(id, preloads \\ []) do
+    Availability
+    |> Repo.get(id)
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Creates an availability.
+
+  ## Examples
+
+      iex> create_availability(%{field: value})
+      {:ok, %Availability{}}
+
+      iex> create_availability(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_availability(event, attrs \\ %{}) do
+    current_time = DateTime.utc_now()
+    first_comparison = DateTime.compare(event.enrollments_open, current_time)
+    second_comparison = DateTime.compare(event.enrollments_close, current_time)
+
+    if first_comparison == :lt and second_comparison == :gt do
+      %Availability{}
+      |> Availability.changeset(attrs)
+      |> Repo.insert()
+    else
+      {:error, "You can't create the availability for an event with closed enrollments"}
+    end
+  end
+
+  @doc """
+  Updates an availability.
+
+  ## Examples
+
+      iex> update_availability(availability, %{field: new_value})
+      {:ok, %Availability{}}
+
+      iex> update_availability(availability, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_availability(event, attrs) do
+    current_time = DateTime.utc_now()
+    first_comparison = DateTime.compare(event.enrollments_open, current_time)
+    second_comparison = DateTime.compare(event.enrollments_close, current_time)
+
+    if first_comparison == :lt and second_comparison == :gt do
+      %Availability{}
+      |> Availability.changeset(attrs)
+      |> Repo.update()
+    else
+      {:error, "You can't update the availability for an event with closed enrollments"}
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking availability changes.
+
+  ## Examples
+
+      iex> change_availability(availability)
+      %Ecto.Changeset{data: %Availability{}}
+
+  """
+  def change_availability(%Availability{} = availability, attrs \\ %{}) do
+    Availability.changeset(availability, attrs)
   end
 end
