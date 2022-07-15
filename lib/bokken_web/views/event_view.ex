@@ -1,5 +1,6 @@
 defmodule BokkenWeb.EventView do
   use BokkenWeb, :view
+
   alias BokkenWeb.EventView
   alias BokkenWeb.LocationView
   alias BokkenWeb.TeamView

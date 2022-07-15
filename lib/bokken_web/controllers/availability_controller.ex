@@ -32,7 +32,7 @@ defmodule BokkenWeb.AvailabilityController do
 
   def create(conn, %{
         "availability" =>
-          %{"mentor_id" => _mentor_id, "is_available" => _is_available, "event_id" => event_id} =
+          %{"mentor_id" => _mentor_id, "is_available?" => _is_available?, "event_id" => event_id} =
             availability_params
       })
       when is_mentor(conn) do
