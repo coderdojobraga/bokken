@@ -51,6 +51,7 @@ defmodule BokkenWeb.Router do
     end
 
     resources "/skills", SkillController
+    resources "/user_skills", UserSkillController
 
     resources "/organizers", OrganizerController, except: [:new, :edit]
 

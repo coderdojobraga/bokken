@@ -189,20 +189,20 @@ defmodule BokkenWeb.SkillControllerTest do
     end
 
     defp login_as_mentor(%{conn: conn}) do
-      admin_attrs = mentor_attrs()
-      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
+      mentor_attrs = mentor_attrs()
+      {:ok, mentor_user} = Accounts.authenticate_user(mentor_attrs.email, mentor_attrs.password)
 
       {:ok, jwt, _claims} =
-        Authorization.encode_and_sign(admin_user, %{
-          role: admin_user.role,
-          active: admin_user.active
+        Authorization.encode_and_sign(mentor_user, %{
+          role: mentor_user.role,
+          active: mentor_user.active
         })
 
       conn =
         conn
         |> Authorization.Plug.sign_out()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
+        |> put_req_header("user_id", "#{mentor_attrs[:user_id]}")
 
       {:ok, conn: conn}
     end

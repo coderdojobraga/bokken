@@ -12,18 +12,23 @@ defmodule BokkenWeb.UserSkillController do
   def index(conn, params \\ %{})
 
   def index(conn, %{"ninja_id" => _ninja_id} = params) do
-    user_skills = Accounts.list_user_skills(params, [:skill])
+    user_skills = Accounts.list_user_skills(params, [:skill, :ninja])
     render(conn, "index.json", user_skills: user_skills, render_user: false)
   end
 
   def index(conn, %{"mentor_id" => _mentor_id} = params) do
-    user_skills = Accounts.list_user_skills(params, [:skill])
-    render(conn, "index.json", user_skills: user_skills, render_user: false)
+    user_skills = Accounts.list_user_skills(params, [:skill, :mentor])
+    render(conn, "index.json", user_skills: user_skills)
+  end
+
+  def index(conn, %{"skill_id" => _skill_id} = params) do
+    user_skills = Accounts.list_user_skills(params, [:skill, :ninja, :mentor])
+    render(conn, "index.json", user_skills: user_skills)
   end
 
   def index(conn, _params) do
-    user_skills = Accounts.list_user_skills(%{}, [:mentor, :ninja])
-    render(conn, "index.json", user_skills: user_skills, render_user: false)
+    user_skills = Accounts.list_user_skills(%{}, [:skill, :mentor, :ninja])
+    render(conn, "index.json", user_skills: user_skills)
   end
 
   def create(conn, %{"skill" => skill_id}) when is_ninja(conn) do
@@ -53,7 +58,7 @@ defmodule BokkenWeb.UserSkillController do
   end
 
   def show(conn, %{"id" => id}) do
-    user_skill = Accounts.get_user_skill!(id)
+    user_skill = Accounts.get_user_skill!(id, [:skill, :ninja, :mentor])
     render(conn, "show.json", user_skill: user_skill)
   end
 

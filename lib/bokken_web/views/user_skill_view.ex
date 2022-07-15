@@ -6,20 +6,16 @@ defmodule BokkenWeb.UserSkillView do
   alias BokkenWeb.SkillView
   alias BokkenWeb.UserSkillView
 
-  def render("index.json", %{user_skills: user_skills, render_user: render_user}) do
-    if render_user do
-      %{data: render_many(user_skills, UserSkillView, "user_skill.json")}
-    else
-      %{data: render_many(Enum.map(user_skills, fn us -> us.skill end), SkillView, "skill.json")}
-    end
+  def render("index.json", %{user_skills: user_skills}) do
+    %{data: render_many(user_skills, UserSkillView, "user_skill.json")}
   end
 
-  def render("show.json", %{event: event}) do
-    %{data: render_one(event, EventView, "event.json")}
+  def render("show.json", %{user_skill: user_skill}) do
+    %{data: render_one(user_skill, UserSkillView, "user_skill.json")}
   end
 
   def render("user_skill.json", %{user_skill: user_skill}) do
-    if is_nil(user_skill.ninja) do
+    if is_nil(user_skill.ninja_id) do
       base(user_skill)
       |> Map.merge(skill(user_skill))
       |> Map.merge(mentor(user_skill))
