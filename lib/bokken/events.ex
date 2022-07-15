@@ -642,7 +642,6 @@ defmodule Bokken.Events do
       iex> list_availability()
       [%Availability{}, ...]
 
-
   """
   def list_availability(%{"mentor_id" => mentor_id}) do
     Availability
