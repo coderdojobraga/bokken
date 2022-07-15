@@ -1,4 +1,4 @@
-defmodule BokkenWeb.SkillControllerTest do
+defmodule BokkenWeb.UserSkillControllerTest do
   @moduledoc false
   use BokkenWeb.ConnCase
 
