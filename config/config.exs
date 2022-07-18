@@ -35,6 +35,7 @@ config :bokken, BokkenWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 
 config :waffle,
   storage: Waffle.Storage.Local,
+  storage_dir_prefix: "priv",
   asset_host: {:system, "HOST_URL"}
 
 config :kaffy,

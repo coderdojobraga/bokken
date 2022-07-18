@@ -27,6 +27,11 @@ defmodule BokkenWeb.Endpoint do
     only: ~w(images favicon.ico dojo.html robots.txt)
 
   plug Plug.Static,
+    at: "/uploads",
+    from: Path.expand("./priv/uploads"),
+    gzip: false
+
+  plug Plug.Static,
     at: "/kaffy",
     from: :kaffy,
     gzip: false,
