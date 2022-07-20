@@ -11,11 +11,7 @@ defmodule BokkenWeb.SkillView do
     %{data: render_one(skill, SkillView, "skill.json")}
   end
 
-  def render("skill.json", %{skill: event}) do
-    base(event)
-  end
-
-  defp base(skill) do
+  def render("skill.json", %{skill: skill}) do
     %{
       id: skill.id,
       name: skill.name,

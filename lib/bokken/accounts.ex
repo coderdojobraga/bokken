@@ -11,7 +11,7 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
-  alias Bokken.Accounts.{Guardian, Skill, UserSkill}
+  alias Bokken.Accounts.{Guardian, MentorSkill, NinjaSkill, Skill}
 
   @doc """
   Returns the list of guardians.
@@ -783,21 +783,21 @@ defmodule Bokken.Accounts do
   end
 
   @doc """
-  Gets a single UserSkill.
+  Gets a single NinjaSkill.
 
-  Raises `Ecto.NoResultsError` if the UserSkill does not exist.
+  Raises `Ecto.NoResultsError` if the NinjaSkill does not exist.
 
   ## Examples
 
-      iex> get_user_skill!(123)
-      %UserSkill{}
+      iex> get_ninja_skill!(123)
+      %NinjaSkill{}
 
-      iex> get_user_skill!(456)
+      iex> get_ninja_skill!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_user_skill!(id, preloads \\ []) do
-    Repo.get!(UserSkill, id)
+  def get_ninja_skill!(id, preloads \\ []) do
+    Repo.get!(NinjaSkill, id)
     |> Repo.preload(preloads)
   end
 
@@ -807,96 +807,207 @@ defmodule Bokken.Accounts do
       iex> list_skills()
       [%Skill{}, ...]
   """
-  def list_user_skills(args \\ %{}, preloads \\ [])
+  def list_ninja_skills(args \\ %{}, preloads \\ [])
 
-  def list_user_skills(%{"ninja_id" => ninja_id}, preloads) do
-    UserSkill
+  def list_ninja_skills(%{"ninja_id" => ninja_id}, preloads) do
+    NinjaSkill
     |> where([us], us.ninja_id == ^ninja_id)
     |> Repo.all()
     |> Repo.preload(preloads)
   end
 
-  def list_user_skills(%{"mentor_id" => mentor_id}, preloads) do
-    UserSkill
+  def list_ninja_skills(%{"mentor_id" => mentor_id}, preloads) do
+    NinjaSkill
     |> where([us], us.mentor_id == ^mentor_id)
     |> Repo.all()
     |> Repo.preload(preloads)
   end
 
-  def list_user_skills(%{"skill_id" => skill_id}, preloads) do
-    UserSkill
+  def list_ninja_skills(%{"skill_id" => skill_id}, preloads) do
+    NinjaSkill
     |> where([us], us.skill_id == ^skill_id)
     |> Repo.all()
     |> Repo.preload(preloads)
   end
 
-  def list_user_skills(_args, preloads) do
-    UserSkill
+  def list_ninja_skills(_args, preloads) do
+    NinjaSkill
     |> Repo.all()
     |> Repo.preload(preloads)
   end
 
   @doc """
-  Creates a user skill.
+  Creates a ninja skill.
 
   ## Examples
 
-      iex> create_user_skill(%{field: value})
-      {:ok, %UserSkill{}}
+      iex> create_ninja_skill(%{field: value})
+      {:ok, %NinjaSkill{}}
 
-      iex> create_user_skill(%{field: bad_value})
+      iex> create_ninja_skill(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user_skill(attrs \\ %{}) do
-    %UserSkill{}
-    |> UserSkill.changeset(attrs)
+  def create_ninja_skill(attrs \\ %{}) do
+    %NinjaSkill{}
+    |> NinjaSkill.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a user skill.
+  Updates a ninja skill.
 
   ## Examples
 
-      iex> update_user_skill(%UserSkill{}, %{field: value})
-      {:ok, %UserSkill{}}
+      iex> update_ninja_skill(%NinjaSkill{}, %{field: value})
+      {:ok, %NinjaSkill{}}
 
-      iex> update_user_skill(%UserSkill{}, %{field: bad_value})
+      iex> update_ninja_skill(%NinjaSkill{}, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user_skill(%UserSkill{} = user_skill, attrs \\ %{}) do
-    user_skill
-    |> UserSkill.changeset(attrs)
+  def update_ninja_skill(%NinjaSkill{} = ninja_skill, attrs \\ %{}) do
+    ninja_skill
+    |> NinjaSkill.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a user skill.
+  Deletes a ninja skill.
 
   ## Examples
 
-      iex> delete_user_skill(user_skill)
-      {:ok, %UserSkill{}}
+      iex> delete_ninja_skill(ninja_skill)
+      {:ok, %NinjaSkill{}}
 
-      iex> delete_user_skill(user_skill)
+      iex> delete_ninja_skill(ninja_skill)
       {:error, %Ecto.Changeset{}}
   """
-  def delete_user_skill(%UserSkill{} = user_skill) do
-    Repo.delete(user_skill)
+  def delete_ninja_skill(%NinjaSkill{} = ninja_skill) do
+    Repo.delete(ninja_skill)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user skill changes.
+  Returns an `%Ecto.Changeset{}` for tracking ninja skill changes.
 
   ## Examples
 
-      iex> change_user_skill(user_skill)
-      %Ecto.Changeset{data: %UserSkill{}}
+      iex> change_ninja_skill(ninja_skill)
+      %Ecto.Changeset{data: %NinjaSkill{}}
 
   """
-  def change_user_skill(%UserSkill{} = user_skill, attrs \\ %{}) do
-    UserSkill.changeset(user_skill, attrs)
+  def change_ninja_skill(%NinjaSkill{} = ninja_skill, attrs \\ %{}) do
+    NinjaSkill.changeset(ninja_skill, attrs)
+  end
+
+  @doc """
+  Gets a single MentorSkill.
+
+  Raises `Ecto.NoResultsError` if the MentorSkill does not exist.
+
+  ## Examples
+
+      iex> get_mentor_skill!(123)
+      %MentorSkill{}
+
+      iex> get_mentor_skill!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_mentor_skill!(id, preloads \\ []) do
+    Repo.get!(MentorSkill, id)
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Returns the list of skills.
+  ## Examples
+      iex> list_skills()
+      [%Skill{}, ...]
+  """
+  def list_mentor_skills(args \\ %{}, preloads \\ [])
+
+  def list_mentor_skills(%{"mentor_id" => mentor_id}, preloads) do
+    MentorSkill
+    |> where([us], us.mentor_id == ^mentor_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_mentor_skills(%{"skill_id" => skill_id}, preloads) do
+    MentorSkill
+    |> where([us], us.skill_id == ^skill_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_mentor_skills(_args, preloads) do
+    MentorSkill
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Creates a mentor skill.
+
+  ## Examples
+
+      iex> create_mentor_skill(%{field: value})
+      {:ok, %MentorSkill{}}
+
+      iex> create_mentor_skill(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_mentor_skill(attrs \\ %{}) do
+    %MentorSkill{}
+    |> MentorSkill.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a mentor skill.
+
+  ## Examples
+
+      iex> update_mentor_skill(%MentorSkill{}, %{field: value})
+      {:ok, %MentorSkill{}}
+
+      iex> update_mentor_skill(%MentorSkill{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_mentor_skill(%MentorSkill{} = mentor_skill, attrs \\ %{}) do
+    mentor_skill
+    |> MentorSkill.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a mentor skill.
+
+  ## Examples
+
+      iex> delete_mentor_skill(mentor_skill)
+      {:ok, %MentorSkill{}}
+
+      iex> delete_mentor_skill(mentor_skill)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_mentor_skill(%MentorSkill{} = mentor_skill) do
+    Repo.delete(mentor_skill)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking mentor skill changes.
+
+  ## Examples
+
+      iex> change_mentor_skill(mentor_skill)
+      %Ecto.Changeset{data: %MentorSkill{}}
+
+  """
+  def change_mentor_skill(%MentorSkill{} = mentor_skill, attrs \\ %{}) do
+    MentorSkill.changeset(mentor_skill, attrs)
   end
 end

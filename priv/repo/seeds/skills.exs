@@ -31,13 +31,22 @@ defmodule Bokken.Repo.Seeds.Skills do
         Mix.shell().error("Found skills, aborting seeding skills.")
     end
 
-    case Bokken.Repo.all(Bokken.Accounts.UserSkill) do
+    case Bokken.Repo.all(Bokken.Accounts.NinjaSkill) do
       [] ->
-        create_user_skills(Bokken.Repo.all(Bokken.Accounts.Skill),
-          Bokken.Repo.all(Bokken.Accounts.Mentor), Bokken.Repo.all(Bokken.Accounts.Ninja))
+        create_ninja_skills(Bokken.Repo.all(Bokken.Accounts.Skill),
+          Bokken.Repo.all(Bokken.Accounts.Ninja))
 
       _ ->
-        Mix.shell().error("Found user skills, aborting seeding user skills.")
+        Mix.shell().error("Found ninja skills, aborting seeding ninja skills.")
+    end
+
+    case Bokken.Repo.all(Bokken.Accounts.MentorSkill) do
+      [] ->
+        create_mentor_skills(Bokken.Repo.all(Bokken.Accounts.Skill),
+          Bokken.Repo.all(Bokken.Accounts.Mentor))
+
+      _ ->
+        Mix.shell().error("Found mentor skills, aborting seeding mentor skills.")
     end
   end
 
@@ -53,17 +62,8 @@ defmodule Bokken.Repo.Seeds.Skills do
     end
   end
 
-  def create_user_skills(skills, mentors, ninjas) do
+  defp create_ninja_skills(skills, ninjas) do
     n = 6
-    for mentor <- mentors do
-      for skill <- Enum.take_random(skills , Enum.random(1..n)) do
-        %{
-          skill_id: skill.id,
-          mentor_id: mentor.id
-        }
-        |> Bokken.Accounts.create_user_skill()
-      end
-    end
 
     for ninja <- ninjas do
       for skill <- Enum.take_random(skills , Enum.random(1..n)) do
@@ -71,7 +71,20 @@ defmodule Bokken.Repo.Seeds.Skills do
           skill_id: skill.id,
           ninja_id: ninja.id
         }
-        |> Bokken.Accounts.create_user_skill()
+        |> Bokken.Accounts.create_ninja_skill()
+      end
+    end
+  end
+
+  defp create_mentor_skills(skills, mentors) do
+    n = 6
+    for mentor <- mentors do
+      for skill <- Enum.take_random(skills , Enum.random(1..n)) do
+        %{
+          skill_id: skill.id,
+          mentor_id: mentor.id
+        }
+        |> Bokken.Accounts.create_mentor_skill()
       end
     end
   end

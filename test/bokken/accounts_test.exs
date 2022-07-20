@@ -197,208 +197,83 @@ defmodule Bokken.AccountsTest do
     end
   end
 
-  describe "user_skills" do
-    alias Bokken.Accounts.UserSkill
+  describe "mentor_skills" do
+    alias Bokken.Accounts.MentorSkill
 
-    setup [:create_data]
+    setup [:create_mentor_data]
 
-    test "create_user_skill/1 creates a user skill when the data is valid (ninja)", %{
-      ninja: ninja,
+    test "create_mentor_skill/1 creates a mentor skill when the data is valid", %{
+      mentor: mentor,
+      skill: skill
+    } do
+      mentor_skill_attrs = %{
+        mentor_id: mentor.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %MentorSkill{} = mentor_skill} =
+               Accounts.create_mentor_skill(mentor_skill_attrs)
+
+      assert mentor_skill.mentor_id == mentor.id
+      assert mentor_skill.skill_id == skill.id
+    end
+
+    test "create_mentor_skill/1 fails when the data is invalid", %{
       mentor: _mentor,
       skill: skill
     } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
+      mentor_skill_attrs = %{
+        mentor_id: nil,
         skill_id: skill.id
       }
 
-      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-      assert user_skill.ninja_id == ninja.id
-      assert user_skill.skill_id == skill.id
-      assert is_nil(user_skill.mentor_id)
+      assert {:error, _changeset} = Accounts.create_mentor_skill(mentor_skill_attrs)
     end
 
-    test "create_user_skill/1 creates a user skill when the data is valid (mentor)", %{
-      ninja: _ninja,
+    test "list_mentor_skills/0 returns the requested mentor skills", %{
       mentor: mentor,
       skill: skill
     } do
-      user_skill_attrs = %{
+      mentor_skill_attrs = %{
         mentor_id: mentor.id,
         skill_id: skill.id
       }
 
-      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-      assert user_skill.mentor_id == mentor.id
-      assert user_skill.skill_id == skill.id
-      assert is_nil(user_skill.ninja_id)
+      assert {:ok, %MentorSkill{}} = Accounts.create_mentor_skill(mentor_skill_attrs)
+      assert [%MentorSkill{}] = Accounts.list_mentor_skills(%{"mentor_id" => mentor.id})
+      assert [%MentorSkill{}] = Accounts.list_mentor_skills(%{"skill_id" => skill.id})
     end
 
-    test "create_user_skill/1 fails when the data is invalid (both mentor and ninja)", %{
-      ninja: ninja,
+    test "get_mentor_skill!/1 returns the requested mentor skill", %{
       mentor: mentor,
       skill: skill
     } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
+      mentor_skill_attrs = %{
         mentor_id: mentor.id,
         skill_id: skill.id
       }
 
-      assert {:error, _changeset} = Accounts.create_user_skill(user_skill_attrs)
+      assert {:ok, %MentorSkill{} = mentor_skill} =
+               Accounts.create_mentor_skill(mentor_skill_attrs)
+
+      assert %MentorSkill{} = Accounts.get_mentor_skill!(mentor_skill.id)
     end
 
-    test "create_user_skill/1 fails when the data is valid (no mentor or ninja)", %{
-      ninja: _ninja,
-      mentor: _mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        skill_id: skill.id
-      }
-
-      assert {:error, _changeset} = Accounts.create_user_skill(user_skill_attrs)
-    end
-
-    test "list_user_skill/1 returns the requested user skills (ninja)", %{
-      ninja: ninja,
-      mentor: _mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      assert {:ok, %UserSkill{}} = Accounts.create_user_skill(user_skill_attrs)
-      assert [%UserSkill{}] = Accounts.list_user_skills(%{"ninja_id" => ninja.id})
-      assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
-    end
-
-    test "list_user_skill/1 returns the requested user skills (mentor)", %{
-      ninja: _ninja,
+    test "delete_mentor_skill/1 deletes a mentor skill", %{
       mentor: mentor,
       skill: skill
     } do
-      user_skill_attrs = %{
+      mentor_skill_attrs = %{
         mentor_id: mentor.id,
         skill_id: skill.id
       }
 
-      assert {:ok, %UserSkill{}} = Accounts.create_user_skill(user_skill_attrs)
-      assert [%UserSkill{}] = Accounts.list_user_skills(%{"mentor_id" => mentor.id})
-      assert [%UserSkill{}] = Accounts.list_user_skills(%{"skill_id" => skill.id})
+      {:ok, %MentorSkill{} = mentor_skill} = Accounts.create_mentor_skill(mentor_skill_attrs)
+
+      assert {:ok, %MentorSkill{}} = Accounts.delete_mentor_skill(mentor_skill)
     end
 
-    test "get_user_skill!/1 returns the requested user skill", %{
-      ninja: _ninja,
-      mentor: mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
-      }
-
-      assert {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-      assert %UserSkill{} = Accounts.get_user_skill!(user_skill.id)
-    end
-
-    test "update_user_skill/1 updates a user skill when the data is valid", %{
-      ninja: ninja,
-      mentor: mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-
-      user_skill_attrs = %{
-        mentor_id: mentor.id,
-        ninja_id: nil,
-        skill_id: skill.id
-      }
-
-      assert {:ok, %UserSkill{} = user_skill} =
-               Accounts.update_user_skill(user_skill, user_skill_attrs)
-
-      assert user_skill.mentor_id == mentor.id
-      assert user_skill.skill_id == skill.id
-      assert is_nil(user_skill.ninja_id)
-    end
-
-    test "update_user_skills/1 fails when the data is invalid", %{
-      ninja: ninja,
-      mentor: mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-
-      user_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
-      }
-
-      assert {:error, _changeset} = Accounts.update_user_skill(user_skill, user_skill_attrs)
-    end
-
-    test "delete_user_skill/1 deletes a user skill", %{
-      ninja: ninja,
-      mentor: _mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-
-      assert {:ok, %UserSkill{}} = Accounts.delete_user_skill(user_skill)
-    end
-
-    test "change_user_skill/1 returns a changeset", %{
-      ninja: ninja,
-      mentor: mentor,
-      skill: skill
-    } do
-      user_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      {:ok, %UserSkill{} = user_skill} = Accounts.create_user_skill(user_skill_attrs)
-
-      user_skill_attrs = %{
-        mentor_id: mentor.id,
-        ninja_id: nil,
-        skill_id: skill.id
-      }
-
-      assert %Ecto.Changeset{} = Accounts.change_user_skill(user_skill, user_skill_attrs)
-    end
-
-    defp create_data(_x) do
-      ninja_user_attrs = %{
-        email: "ninja1@gmail.com",
-        password: "ninja123",
-        role: "ninja"
-      }
-
-      ninja_attrs = %{
-        first_name: "Maria",
-        last_name: "Silva",
-        birthday: ~U[2007-03-14 00:00:00.000Z]
-      }
-
+    defp create_mentor_data(_x) do
       mentor_user_attrs = %{
         email: "mentor1@gmail.com",
         password: "mentor123",
@@ -409,6 +284,106 @@ defmodule Bokken.AccountsTest do
         first_name: "Rui",
         last_name: "Lopes",
         mobile: "912345678"
+      }
+
+      skill_attrs = valid_skill()
+
+      {:ok, mentor_user} = Accounts.create_user(mentor_user_attrs)
+
+      {:ok, mentor} = Accounts.create_mentor(Map.put(mentor_attrs, :user_id, mentor_user.id))
+
+      {:ok, skill} = Accounts.create_skill(skill_attrs)
+
+      %{
+        mentor: mentor,
+        skill: skill
+      }
+    end
+  end
+
+  describe "ninja_skills" do
+    alias Bokken.Accounts.NinjaSkill
+
+    setup [:create_ninja_data]
+
+    test "create_ninja_skill/1 creates a ninja skill when the data is valid", %{
+      ninja: ninja,
+      skill: skill
+    } do
+      ninja_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %NinjaSkill{} = ninja_skill} = Accounts.create_ninja_skill(ninja_skill_attrs)
+      assert ninja_skill.ninja_id == ninja.id
+      assert ninja_skill.skill_id == skill.id
+    end
+
+    test "create_ninja_skill/1 fails when the data is invalid", %{
+      ninja: _ninja,
+      skill: skill
+    } do
+      ninja_skill_attrs = %{
+        ninja_id: nil,
+        skill_id: skill.id
+      }
+
+      assert {:error, _changeset} = Accounts.create_ninja_skill(ninja_skill_attrs)
+    end
+
+    test "list_ninja_skills/0 returns the requested ninja skills", %{
+      ninja: ninja,
+      skill: skill
+    } do
+      ninja_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %NinjaSkill{}} = Accounts.create_ninja_skill(ninja_skill_attrs)
+      assert [%NinjaSkill{}] = Accounts.list_ninja_skills(%{"ninja_id" => ninja.id})
+      assert [%NinjaSkill{}] = Accounts.list_ninja_skills(%{"skill_id" => skill.id})
+    end
+
+    test "get_ninja_skill!/1 returns the requested ninja skill", %{
+      ninja: ninja,
+      skill: skill
+    } do
+      ninja_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %NinjaSkill{} = ninja_skill} = Accounts.create_ninja_skill(ninja_skill_attrs)
+      assert %NinjaSkill{} = Accounts.get_ninja_skill!(ninja_skill.id)
+    end
+
+    test "delete_ninja_skill/1 deletes a ninja skill", %{
+      ninja: ninja,
+      skill: skill
+    } do
+      ninja_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      {:ok, %NinjaSkill{} = ninja_skill} = Accounts.create_ninja_skill(ninja_skill_attrs)
+
+      assert {:ok, %NinjaSkill{}} = Accounts.delete_ninja_skill(ninja_skill)
+    end
+
+    defp create_ninja_data(_x) do
+      ninja_user_attrs = %{
+        email: "ninja1@gmail.com",
+        password: "ninja123",
+        role: "ninja"
+      }
+
+      ninja_attrs = %{
+        first_name: "Maria",
+        last_name: "Silva",
+        birthday: ~U[2007-03-14 00:00:00.000Z]
       }
 
       guardian_user_attrs = %{
@@ -426,7 +401,6 @@ defmodule Bokken.AccountsTest do
       skill_attrs = valid_skill()
 
       {:ok, ninja_user} = Accounts.create_user(ninja_user_attrs)
-      {:ok, mentor_user} = Accounts.create_user(mentor_user_attrs)
       {:ok, guardian_user} = Accounts.create_user(guardian_user_attrs)
 
       {:ok, guardian} =
@@ -438,13 +412,11 @@ defmodule Bokken.AccountsTest do
         |> Map.put(:user_id, ninja_user.id)
 
       {:ok, ninja} = Accounts.create_ninja(ninja_attrs)
-      {:ok, mentor} = Accounts.create_mentor(Map.put(mentor_attrs, :user_id, mentor_user.id))
 
       {:ok, skill} = Accounts.create_skill(skill_attrs)
 
       %{
         ninja: ninja,
-        mentor: mentor,
         skill: skill
       }
     end
