@@ -968,6 +968,128 @@
 					"name": "Mentors",
 					"item": [
 						{
+							"name": "Skills",
+							"item": [
+								{
+									"name": "List all mentor skills",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/mentors/{{mentor_id}}/skills",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"mentors",
+												"{{mentor_id}}",
+												"skills"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create mentor skill",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"skill\": {{skill_id}}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/mentors/{{mentor_id}}/skills",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"mentors",
+												"{{mentor_id}}",
+												"skills"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get mentor skill",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ħost}}/api/mentors/{{mentor_id}}/skills/{{mentor_skill_id}}",
+											"host": [
+												"{{ħost}}"
+											],
+											"path": [
+												"api",
+												"mentors",
+												"{{mentor_id}}",
+												"skills",
+												"{{mentor_skill_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete mentor skill",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/mentors/{{mentor_id}}/skills/{{mentor_skill_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"mentors",
+												"{{mentor_id}}",
+												"skills",
+												"{{mentor_skill_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List all mentor skills (paramaterized)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/mentors/{{mentor_id}}/skills?skill_id={{skill_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"mentors",
+												"{{mentor_id}}",
+												"skills"
+											],
+											"query": [
+												{
+													"key": "skill_id",
+													"value": "{{skill_id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "List Mentors",
 							"event": [
 								{
@@ -1392,6 +1514,128 @@
 				{
 					"name": "Ninjas",
 					"item": [
+						{
+							"name": "Skills",
+							"item": [
+								{
+									"name": "List all ninja skills",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ninjas",
+												"{{ninja_id}}",
+												"skills"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create ninja skill",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"skill\": {{skill_id}}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ninjas",
+												"{{ninja_id}}",
+												"skills"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get ninja skill",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{ninja_skill_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ninjas",
+												"{{ninja_id}}",
+												"skills",
+												"{{ninja_skill_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete ninja skill",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{ninja_skill_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ninjas",
+												"{{ninja_id}}",
+												"skills",
+												"{{ninja_skill_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "List all ninja skills (paramaterized)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/ninjas/{{nnja_id}}/skills?skill_id={{skill_id}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"ninjas",
+												"{{nnja_id}}",
+												"skills"
+											],
+											"query": [
+												{
+													"key": "skill_id",
+													"value": "{{skill_id}}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "List all Ninjas from a Team",
 							"event": [
@@ -1827,7 +2071,17 @@
 							"name": "Get all skills",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/skills",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"skills"
+									]
+								}
 							},
 							"response": []
 						},
@@ -1907,91 +2161,6 @@
 						},
 						{
 							"name": "Show skill",
-							"request": {
-								"method": "GET",
-								"header": []
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "User Skills",
-					"item": [
-						{
-							"name": "List all user skills",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/user_skills",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"user_skills"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create user skill",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"skill\": \"54c27373-46da-4e10-ad80-549e483d816c\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/user_skills",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"user_skills"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get user skill",
-							"request": {
-								"method": "GET",
-								"header": []
-							},
-							"response": []
-						},
-						{
-							"name": "Delete user skill",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/user_skills/{{user_skill_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"user_skills",
-										"{{user_skill_id}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "List all user skills (paramaterized)",
 							"request": {
 								"method": "GET",
 								"header": []
