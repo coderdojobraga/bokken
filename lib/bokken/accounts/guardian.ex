@@ -6,6 +6,7 @@ defmodule Bokken.Accounts.Guardian do
 
   alias Bokken.Accounts.{Ninja, User}
   alias Bokken.Uploaders.Avatar
+  alias Bokken.Types.Ecto.PtMobile
 
   @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
 
@@ -18,7 +19,7 @@ defmodule Bokken.Accounts.Guardian do
     field :first_name, :string
     field :last_name, :string
 
-    field :mobile, :string
+    field :mobile, PtMobile
     field :city, :string
 
     belongs_to :user, User, foreign_key: :user_id
