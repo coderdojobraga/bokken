@@ -24,7 +24,7 @@ defmodule Bokken.Types.Ecto.PtMobile do
     {:error, [message: "número PT não válido"]}
   end
 
-  # when putting the phone number into the database this function 
+  # when putting the phone number into the database this function
   # transforms the data into a specific format to be stored
   def dump("+351" <> mobile) do
     {:ok, "+351" <> mobile}
@@ -44,7 +44,7 @@ defmodule Bokken.Types.Ecto.PtMobile do
     :error
   end
 
-  # when recieving a phone number from the front end, the number will process 
+  # when recieving a phone number from the front end, the number will process
   # through this function to transform it into a standard format
   # it returns a list of strings
   defp format([]), do: []
