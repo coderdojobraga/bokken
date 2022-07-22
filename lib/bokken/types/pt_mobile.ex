@@ -19,6 +19,7 @@ defmodule Bokken.Types.Ecto.PtMobile do
       {:ok, "+351" <> mobile}
     end
   end
+
   def cast(_number) do
     {:error, [message: "número PT não válido"]}
   end
