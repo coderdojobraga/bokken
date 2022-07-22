@@ -4,7 +4,7 @@ defmodule Bokken.Accounts.Ninja do
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{Guardian, Social, User}
+  alias Bokken.Accounts.{Guardian, NinjaSkill, Skill, Social, User}
   alias Bokken.Events.{Event, Lecture, Team, TeamNinja}
   alias Bokken.Gamification.{Badge, BadgeNinja}
   alias Bokken.Uploaders.Avatar
@@ -33,6 +33,7 @@ defmodule Bokken.Accounts.Ninja do
     many_to_many :badges, Badge, join_through: BadgeNinja
     many_to_many :teams, Team, join_through: TeamNinja
     many_to_many :events, Event, join_through: Lecture
+    many_to_many :skills, Skill, join_through: NinjaSkill
 
     timestamps()
   end

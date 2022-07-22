@@ -8,7 +8,7 @@ defmodule Bokken.Accounts.NinjaSkill do
 
   @required_fields [:skill_id, :ninja_id]
 
-  schema "ninja_skills" do
+  schema "ninjas_skills" do
     belongs_to :skill, Skill
     belongs_to :ninja, Ninja
 

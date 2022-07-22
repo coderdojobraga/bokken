@@ -8,7 +8,7 @@ defmodule Bokken.Accounts.MentorSkill do
 
   @required_fields [:skill_id, :mentor_id]
 
-  schema "mentor_skills" do
+  schema "mentors_skills" do
     belongs_to :skill, Skill
     belongs_to :mentor, Mentor
 
