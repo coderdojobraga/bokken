@@ -15,7 +15,7 @@ defmodule Bokken.MixProject do
       git_ref: git_revision_hash(),
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
       deps: deps(),
       docs: docs(),
@@ -71,7 +71,7 @@ defmodule Bokken.MixProject do
       # utilities
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.3"},
-      {:browser, "~> 0.4.4"},
+      {:browser, "~> 0.5.1"},
 
       # monitoring
       {:telemetry_metrics, "~> 0.6"},
@@ -128,6 +128,7 @@ defmodule Bokken.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      lint: ["credo --strict --all"],
       check: [
         "clean",
         "deps.unlock --check-unused",
@@ -135,7 +136,7 @@ defmodule Bokken.MixProject do
         "format --check-formatted",
         "deps.unlock --check-unused",
         "test --warnings-as-errors",
-        "credo --strict --all"
+        "lint"
       ]
     ]
   end
