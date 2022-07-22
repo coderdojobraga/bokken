@@ -14,7 +14,7 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   @valid_attrs %{
     city: "Braga",
-    mobile: "915096743",
+    mobile: "+351915096743",
     first_name: "Ana Maria",
     last_name: "Silva Costa"
   }
@@ -40,7 +40,7 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   @update_attrs %{
     city: "Guimarães",
-    mobile: "915096743",
+    mobile: "+351915096743",
     first_name: "Ana Maria",
     last_name: "Silva Costa"
   }
@@ -72,7 +72,7 @@ defmodule BokkenWeb.GuardianControllerTest do
     test "renders guardian when data is valid", %{conn: conn} do
       guardian = %{
         city: "Guimarães",
-        mobile: "915196743",
+        mobile: "+351915196743",
         first_name: "Carla Maria",
         last_name: "Silva Costa"
       }
@@ -95,7 +95,7 @@ defmodule BokkenWeb.GuardianControllerTest do
                "city" => "Guimarães",
                "first_name" => "Carla Maria",
                "last_name" => "Silva Costa",
-               "mobile" => "915196743"
+               "mobile" => "+351915196743"
              } = json_response(conn, 200)["data"]
     end
 
@@ -125,7 +125,7 @@ defmodule BokkenWeb.GuardianControllerTest do
                "city" => "Guimarães",
                "first_name" => "Ana Maria",
                "last_name" => "Silva Costa",
-               "mobile" => "915096743"
+               "mobile" => "+351915096743"
              } = json_response(conn, 200)["data"]
     end
 
@@ -151,7 +151,7 @@ defmodule BokkenWeb.GuardianControllerTest do
   defp new_guardian(_) do
     guardian = %{
       city: "Braga",
-      mobile: "915026743",
+      mobile: "+351915026743",
       first_name: "Ana",
       last_name: "Silva Costa"
     }
@@ -173,7 +173,7 @@ defmodule BokkenWeb.GuardianControllerTest do
   defp new_guardian_update(_) do
     guardian = %{
       city: "Braga",
-      mobile: "915426743",
+      mobile: "+351915426743",
       first_name: "Catarina Anabela",
       last_name: "Silva Costa"
     }
