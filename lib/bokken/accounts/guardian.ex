@@ -4,8 +4,8 @@ defmodule Bokken.Accounts.Guardian do
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{Ninja, User}
   alias Bokken.Uploaders.Avatar
+  alias Bokken.Accounts.{Ninja, User}
   alias Bokken.Types.Ecto.PtMobile
 
   @portuguese_cities Jason.decode!(File.read!("data/pt/cities.json"))
