@@ -34,7 +34,9 @@ defmodule Bokken.Types.Ecto.PtMobile do
 
   # when loading data from the database, this function transforms the data
   # back to a runtime format
-  def load("+351" <> mobile), do: {:ok, "+351" <> mobile}
+  def load("+351" <> mobile) do
+    {:ok, "+351" <> mobile}
+  end
 
   def load(_mobile), do: :error
 
