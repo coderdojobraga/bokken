@@ -198,7 +198,7 @@ defmodule Bokken.AccountsTest do
   end
 
   describe "mentor_skills" do
-    alias Bokken.Accounts.MentorSkill
+    alias Bokken.Accounts.{Mentor, MentorSkill, Skill}
 
     setup [:create_mentor_data]
 
@@ -240,11 +240,11 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:ok, %MentorSkill{}} = Accounts.create_mentor_skill(mentor_skill_attrs)
-      assert [%MentorSkill{}] = Accounts.list_mentor_skills(%{"mentor_id" => mentor.id})
-      assert [%MentorSkill{}] = Accounts.list_mentor_skills(%{"skill_id" => skill.id})
+      assert [%Skill{}] = Accounts.list_mentor_skills(mentor.id)
+      assert [%Mentor{}] = Accounts.list_mentors_with_skill(skill.id)
     end
 
-    test "get_mentor_skill!/1 returns the requested mentor skill", %{
+    test "mentor_has_skill?/1 returns correct value", %{
       mentor: mentor,
       skill: skill
     } do
@@ -253,13 +253,12 @@ defmodule Bokken.AccountsTest do
         skill_id: skill.id
       }
 
-      assert {:ok, %MentorSkill{} = mentor_skill} =
-               Accounts.create_mentor_skill(mentor_skill_attrs)
+      assert {:ok, %MentorSkill{}} = Accounts.create_mentor_skill(mentor_skill_attrs)
 
-      assert %MentorSkill{} = Accounts.get_mentor_skill!(mentor_skill.id)
+      assert Accounts.mentor_has_skill?(mentor.id, skill.id)
     end
 
-    test "delete_mentor_skill/1 deletes a mentor skill", %{
+    test "delete_mentor_skill/2 deletes a mentor skill", %{
       mentor: mentor,
       skill: skill
     } do
@@ -268,9 +267,9 @@ defmodule Bokken.AccountsTest do
         skill_id: skill.id
       }
 
-      {:ok, %MentorSkill{} = mentor_skill} = Accounts.create_mentor_skill(mentor_skill_attrs)
+      {:ok, %MentorSkill{}} = Accounts.create_mentor_skill(mentor_skill_attrs)
 
-      assert {:ok, %MentorSkill{}} = Accounts.delete_mentor_skill(mentor_skill)
+      assert {1, nil} = Accounts.delete_mentor_skill(mentor.id, skill.id)
     end
 
     defp create_mentor_data(_x) do
@@ -302,7 +301,7 @@ defmodule Bokken.AccountsTest do
   end
 
   describe "ninja_skills" do
-    alias Bokken.Accounts.NinjaSkill
+    alias Bokken.Accounts.{Ninja, NinjaSkill, Skill}
 
     setup [:create_ninja_data]
 
@@ -332,7 +331,22 @@ defmodule Bokken.AccountsTest do
       assert {:error, _changeset} = Accounts.create_ninja_skill(ninja_skill_attrs)
     end
 
-    test "list_ninja_skills/0 returns the requested ninja skills", %{
+    test "list_ninja_skills/1 and list_ninjas_with_skill/1 return the requested ninja / skills",
+         %{
+           ninja: ninja,
+           skill: skill
+         } do
+      ninja_skill_attrs = %{
+        ninja_id: ninja.id,
+        skill_id: skill.id
+      }
+
+      assert {:ok, %NinjaSkill{}} = Accounts.create_ninja_skill(ninja_skill_attrs)
+      assert [%Skill{}] = Accounts.list_ninja_skills(ninja.id)
+      assert [%Ninja{}] = Accounts.list_ninjas_with_skill(skill.id)
+    end
+
+    test "ninja_has_skill?/1 returns the correct result", %{
       ninja: ninja,
       skill: skill
     } do
@@ -342,21 +356,7 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:ok, %NinjaSkill{}} = Accounts.create_ninja_skill(ninja_skill_attrs)
-      assert [%NinjaSkill{}] = Accounts.list_ninja_skills(%{"ninja_id" => ninja.id})
-      assert [%NinjaSkill{}] = Accounts.list_ninja_skills(%{"skill_id" => skill.id})
-    end
-
-    test "get_ninja_skill!/1 returns the requested ninja skill", %{
-      ninja: ninja,
-      skill: skill
-    } do
-      ninja_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
-
-      assert {:ok, %NinjaSkill{} = ninja_skill} = Accounts.create_ninja_skill(ninja_skill_attrs)
-      assert %NinjaSkill{} = Accounts.get_ninja_skill!(ninja_skill.id)
+      assert Accounts.ninja_has_skill?(ninja.id, skill.id)
     end
 
     test "delete_ninja_skill/1 deletes a ninja skill", %{
@@ -368,9 +368,9 @@ defmodule Bokken.AccountsTest do
         skill_id: skill.id
       }
 
-      {:ok, %NinjaSkill{} = ninja_skill} = Accounts.create_ninja_skill(ninja_skill_attrs)
+      {:ok, %NinjaSkill{}} = Accounts.create_ninja_skill(ninja_skill_attrs)
 
-      assert {:ok, %NinjaSkill{}} = Accounts.delete_ninja_skill(ninja_skill)
+      assert {1, nil} = Accounts.delete_ninja_skill(ninja.id, skill.id)
     end
 
     defp create_ninja_data(_x) do

@@ -100,7 +100,7 @@ defmodule BokkenWeb.MentorSkillControllerTest do
       skill: skill
     } do
       assert_error_sent 400, fn ->
-        post(conn, Routes.mentor_mentor_skill_path(conn, :create, conn.assigns.mentor), %{
+        post(conn, Routes.mentor_skill_path(conn, :create, conn.assigns.mentor), %{
           "skill" => skill.id
         })
       end
@@ -115,28 +115,20 @@ defmodule BokkenWeb.MentorSkillControllerTest do
       {:ok, %MentorSkill{} = mentor_skill} =
         Accounts.create_mentor_skill(%{"skill_id" => skill.id, "mentor_id" => mentor_id})
 
-      assert_error_sent 400, fn ->
-        delete(conn, Routes.mentor_mentor_skill_path(conn, :delete, mentor_id, mentor_skill.id))
+      assert_error_sent 404, fn ->
+        delete(conn, Routes.mentor_skill_path(conn, :delete, mentor_id, mentor_skill.id))
       end
 
-      conn = get(conn, Routes.mentor_mentor_skill_path(conn, :show, mentor_id, mentor_skill.id))
-
-      assert %{
-               "id" => _id,
-               "mentor" => _mentor,
-               "skill" => _skill
-             } = json_response(conn, 200)["data"]
-
       conn =
-        get(conn, Routes.mentor_mentor_skill_path(conn, :index, mentor_id), %{
+        get(conn, Routes.mentor_skill_path(conn, :index, mentor_id), %{
           "skill_id" => skill.id
         })
 
       assert [
                %{
-                 "id" => _id,
-                 "mentor" => _mentor,
-                 "skill" => _skill
+                 "id" => _skill_id,
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
     end
@@ -172,70 +164,57 @@ defmodule BokkenWeb.MentorSkillControllerTest do
       skill: skill
     } do
       conn =
-        post(conn, Routes.mentor_mentor_skill_path(conn, :create, conn.assigns.mentor), %{
+        post(conn, Routes.mentor_skill_path(conn, :create, conn.assigns.mentor), %{
           "skill" => skill.id
         })
 
       assert %{
-               "id" => id,
-               "mentor_id" => _mentor_id,
-               "skill_id" => skill_id
+               "id" => skill_id,
+               "name" => _name,
+               "description" => _description
              } = json_response(conn, 201)["data"]
 
       conn =
         get(
           conn,
-          Routes.mentor_mentor_skill_path(conn, :show, conn.assigns.current_user.mentor.id, id)
-        )
-
-      assert %{
-               "id" => _id,
-               "mentor" => mentor,
-               "skill" => _skill
-             } = json_response(conn, 200)["data"]
-
-      conn =
-        get(
-          conn,
-          Routes.mentor_mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id),
+          Routes.mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id),
           %{"skill_id" => skill_id}
         )
 
       assert [
                %{
-                 "id" => _id,
-                 "mentor" => _mentor,
-                 "skill" => _skill
+                 "id" => _skill_id,
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
 
       conn =
         get(
           conn,
-          Routes.mentor_mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id),
-          %{"mentor_id" => mentor["id"]}
+          Routes.mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id)
         )
 
       assert [
                %{
-                 "id" => _id,
-                 "mentor" => _mentor,
-                 "skill" => _skill
+                 "id" => _skill_id,
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
 
       conn =
         get(
           conn,
-          Routes.mentor_mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id),
+          Routes.mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id),
           %{}
         )
 
       assert [
                %{
-                 "id" => _id,
-                 "mentor" => _mentor,
-                 "skill" => _skill
+                 "id" => _skill_id,
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
     end
@@ -245,30 +224,31 @@ defmodule BokkenWeb.MentorSkillControllerTest do
       skill: skill
     } do
       conn =
-        post(conn, Routes.mentor_mentor_skill_path(conn, :create, conn.assigns.mentor), %{
+        post(conn, Routes.mentor_skill_path(conn, :create, conn.assigns.mentor), %{
           "skill" => skill.id
         })
 
       assert %{
-               "id" => id,
-               "mentor_id" => _mentor_id,
-               "skill_id" => _skill_id
+               "id" => skill_id,
+               "name" => _name,
+               "description" => _description
              } = json_response(conn, 201)["data"]
 
       conn =
         delete(
           conn,
-          Routes.mentor_mentor_skill_path(conn, :delete, conn.assigns.current_user.mentor.id, id)
+          Routes.mentor_skill_path(conn, :delete, conn.assigns.current_user.mentor.id, skill_id)
         )
 
       assert response(conn, 204)
 
-      assert_error_sent 404, fn ->
+      conn =
         get(
           conn,
-          Routes.mentor_mentor_skill_path(conn, :show, conn.assigns.current_user.mentor.id, id)
+          Routes.mentor_skill_path(conn, :index, conn.assigns.current_user.mentor.id)
         )
-      end
+
+      assert [] = json_response(conn, 200)["data"]
     end
 
     defp login_as_mentor(%{conn: conn}) do

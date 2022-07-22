@@ -147,7 +147,7 @@ defmodule BokkenWeb.SkillControllerTest do
         "skill" => valid_skill()
       }
 
-      assert_error_sent 400, fn ->
+      assert_error_sent 500, fn ->
         post(conn, Routes.skill_path(conn, :create), skill_attrs)
       end
     end
@@ -183,7 +183,7 @@ defmodule BokkenWeb.SkillControllerTest do
     } do
       {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
 
-      assert_error_sent 400, fn ->
+      assert_error_sent 500, fn ->
         delete(conn, Routes.skill_path(conn, :delete, skill.id))
       end
     end

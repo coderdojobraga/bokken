@@ -123,13 +123,13 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       skill: skill
     } do
       assert_error_sent 400, fn ->
-        post(conn, Routes.ninja_ninja_skill_path(conn, :create, conn.assigns.ninja), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
           "skill" => skill.id
         })
       end
     end
 
-    test "delete a ninja skill fails but show/index works", %{
+    test "delete a ninja skill fails but index works", %{
       conn: conn,
       skill: skill
     } do
@@ -138,26 +138,17 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       {:ok, %NinjaSkill{} = ninja_skill} =
         Accounts.create_ninja_skill(%{"skill_id" => skill.id, "ninja_id" => ninja_id})
 
-      assert_error_sent 400, fn ->
-        delete(conn, Routes.ninja_ninja_skill_path(conn, :delete, ninja_id, ninja_skill.id))
+      assert_error_sent 404, fn ->
+        delete(conn, Routes.ninja_skill_path(conn, :delete, ninja_id, ninja_skill.id))
       end
 
-      conn = get(conn, Routes.ninja_ninja_skill_path(conn, :show, ninja_id, ninja_skill.id))
-
-      assert %{
-               "id" => _id,
-               "ninja" => _ninja,
-               "skill" => _skill
-             } = json_response(conn, 200)["data"]
-
-      conn =
-        get(conn, Routes.ninja_ninja_skill_path(conn, :index, ninja_id), %{"skill_id" => skill.id})
+      conn = get(conn, Routes.ninja_skill_path(conn, :index, ninja_id), %{"skill_id" => skill.id})
 
       assert [
                %{
                  "id" => _id,
-                 "ninja" => _ninja,
-                 "skill" => _skill
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
     end
@@ -193,70 +184,57 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       skill: skill
     } do
       conn =
-        post(conn, Routes.ninja_ninja_skill_path(conn, :create, conn.assigns.ninja), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
           "skill" => skill.id
         })
 
       assert %{
-               "id" => id,
-               "ninja_id" => _ninja_id,
-               "skill_id" => skill_id
+               "id" => _id,
+               "name" => _name,
+               "description" => _description
              } = json_response(conn, 201)["data"]
 
       conn =
         get(
           conn,
-          Routes.ninja_ninja_skill_path(conn, :show, conn.assigns.current_user.ninja.id, id)
-        )
-
-      assert %{
-               "id" => _id,
-               "ninja" => ninja,
-               "skill" => _skill
-             } = json_response(conn, 200)["data"]
-
-      conn =
-        get(
-          conn,
-          Routes.ninja_ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id),
-          %{"skill_id" => skill_id}
+          Routes.ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id),
+          %{"skill_id" => skill.id}
         )
 
       assert [
                %{
                  "id" => _id,
-                 "ninja" => _ninja,
-                 "skill" => _skill
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
 
       conn =
         get(
           conn,
-          Routes.ninja_ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id),
-          %{"ninja_id" => ninja["id"]}
+          Routes.ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id)
         )
 
       assert [
                %{
                  "id" => _id,
-                 "ninja" => _ninja,
-                 "skill" => _skill
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
 
       conn =
         get(
           conn,
-          Routes.ninja_ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id),
+          Routes.ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id),
           %{}
         )
 
       assert [
                %{
                  "id" => _id,
-                 "ninja" => _ninja,
-                 "skill" => _skill
+                 "name" => _name,
+                 "description" => _description
                }
              ] = json_response(conn, 200)["data"]
     end
@@ -266,30 +244,29 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       skill: skill
     } do
       conn =
-        post(conn, Routes.ninja_ninja_skill_path(conn, :create, conn.assigns.ninja), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
           "skill" => skill.id
         })
 
       assert %{
-               "id" => id,
-               "ninja_id" => _ninja_id,
-               "skill_id" => _skill_id
+               "id" => skill_id,
+               "name" => _name,
+               "description" => _description
              } = json_response(conn, 201)["data"]
 
       conn =
         delete(
           conn,
-          Routes.ninja_ninja_skill_path(conn, :delete, conn.assigns.current_user.ninja.id, id)
+          Routes.ninja_skill_path(conn, :delete, conn.assigns.current_user.ninja.id, skill_id)
         )
 
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
+      conn =
         get(
           conn,
-          Routes.ninja_ninja_skill_path(conn, :show, conn.assigns.current_user.ninja.id, id)
+          Routes.ninja_skill_path(conn, :index, conn.assigns.current_user.ninja.id)
         )
-      end
+
+      assert [] = json_response(conn, 200)["data"]
     end
 
     defp login_as_ninja(%{conn: conn}) do
