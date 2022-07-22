@@ -1,7 +1,7 @@
 defmodule BokkenWeb.NinjaView do
   use BokkenWeb, :view
   alias Bokken.Uploaders.Avatar
-  alias BokkenWeb.NinjaView
+  alias BokkenWeb.{NinjaView, SkillView}
 
   def render("index.json", %{ninjas: ninjas}) do
     %{data: render_many(ninjas, NinjaView, "ninja.json")}
@@ -23,5 +23,14 @@ defmodule BokkenWeb.NinjaView do
       socials: ninja.socials,
       since: ninja.inserted_at
     }
+    |> Map.merge(skills(ninja))
+  end
+
+  defp skills(ninja) do
+    if Ecto.assoc_loaded?(ninja.skills) do
+      %{skills: render_many(ninja.skills, SkillView, "skill.json")}
+    else
+      %{}
+    end
   end
 end
