@@ -9,8 +9,9 @@ defmodule Bokken.Types.Ecto.PtMobile do
 
   # function to transform external data into a runtime format
   def cast("+351" <> number) do
-    mobile = format(number) 
-             |> List.to_string()
+    mobile =
+      format(number)
+      |> List.to_string()
 
     if is_nil(Regex.run(~r/9[12356]\d{7}/, mobile)) do
       {:error, [message: "número PT não válido"]}
@@ -19,15 +20,15 @@ defmodule Bokken.Types.Ecto.PtMobile do
     end
   end
   def cast(_number) do
-    {:error, [message: "número sem indicativo"]}
+    {:error, [message: "número PT não válido"]}
   end
-
 
   # when putting the phone number into the database this function 
   # transforms the data into a specific format to be stored
   def dump("+351" <> mobile) do
-    {:ok, "+351" <> mobile}  
+    {:ok, "+351" <> mobile}
   end
+
   def dump(_mobile) do
     :error
   end
@@ -35,8 +36,9 @@ defmodule Bokken.Types.Ecto.PtMobile do
   # when loading data from the database, this function transforms the data
   # back to a runtime format
   def load("+351" <> mobile) do
-    {:ok, "+351" <> mobile}  
+    {:ok, "+351" <> mobile}
   end
+
   def load(_mobile) do
     :error
   end
@@ -45,6 +47,7 @@ defmodule Bokken.Types.Ecto.PtMobile do
   # through this function to transform it into a standard format
   # it returns a list of strings
   defp format([]), do: []
+
   defp format(number) when is_list(number) do
     [n | rest] = number
     <<v::utf8>> = n
@@ -55,8 +58,9 @@ defmodule Bokken.Types.Ecto.PtMobile do
       format(rest)
     end
   end
+
   defp format(number) do
-    number 
+    number
     |> String.trim()
     |> String.graphemes()
     |> format()
