@@ -30,19 +30,13 @@ defmodule Bokken.Types.Ecto.PtMobile do
     {:ok, "+351" <> mobile}
   end
 
-  def dump(_mobile) do
-    :error
-  end
+  def dump(_mobile), do: :error
 
   # when loading data from the database, this function transforms the data
   # back to a runtime format
-  def load("+351" <> mobile) do
-    {:ok, "+351" <> mobile}
-  end
+  def load("+351" <> mobile), do: {:ok, "+351" <> mobile}
 
-  def load(_mobile) do
-    :error
-  end
+  def load(_mobile), do: :error
 
   # when recieving a phone number from the front end, the number will process
   # through this function to transform it into a standard format
