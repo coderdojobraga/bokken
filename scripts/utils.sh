@@ -19,8 +19,9 @@ function not_installed() {
 function load_env_file() {
   local file="${1:-.env}"
   if [ -f "$file" ]; then
-    log_info "Environment" "Loading ${BLUE}${file}${RESET}..." $(cat "${file}")
+    log_info "Environment" "Loading ${BLUE}${file}${RESET}..." "$(cat "${file}")"
     set -o allexport
+    # shellcheck source=/dev/null
     source "$file"
     set +o allexport
   else
@@ -52,4 +53,8 @@ function ensure_confirmation() {
   fi
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.5.5 || true
+function get_os_name() {
+  uname | tr '[:upper:]' '[:lower:]'
+}
+
+[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.7.0 || true
