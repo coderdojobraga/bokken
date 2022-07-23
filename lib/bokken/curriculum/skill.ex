@@ -1,4 +1,4 @@
-defmodule Bokken.Accounts.Skill do
+defmodule Bokken.Curriculum.Skill do
   @moduledoc """
   A skill a mentor has / a ninja is learning
   """

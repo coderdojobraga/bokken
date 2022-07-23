@@ -137,7 +137,7 @@ defmodule BokkenWeb.SkillControllerTest do
 
   describe "not logged in as organizer" do
     alias Bokken.Accounts
-    alias Bokken.Accounts.Skill
+    alias Bokken.Curriculum.Skill
     setup [:login_as_mentor]
 
     test "create a skill fails", %{

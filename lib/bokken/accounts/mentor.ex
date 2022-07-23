@@ -4,7 +4,8 @@ defmodule Bokken.Accounts.Mentor do
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{MentorSkill, Organizer, Skill, Social, User}
+  alias Bokken.Accounts.{Organizer, Social, User}
+  alias Bokken.Curriculum.{MentorSkill, Skill}
   alias Bokken.Events.{Event, Lecture, LectureMentorAssistant, Team, TeamMentor}
   alias Bokken.Uploaders.Avatar
 

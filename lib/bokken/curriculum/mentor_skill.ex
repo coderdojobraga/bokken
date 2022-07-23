@@ -1,4 +1,4 @@
-defmodule Bokken.Accounts.MentorSkill do
+defmodule Bokken.Curriculum.MentorSkill do
   @moduledoc """
   User (mentor / mentor) and skill join table
   """

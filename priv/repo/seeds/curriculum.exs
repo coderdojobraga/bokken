@@ -1,7 +1,7 @@
-defmodule Bokken.Repo.Seeds.Skills do
+defmodule Bokken.Repo.Seeds.Curriculum do
   require Logger
   def run do
-    case Bokken.Repo.all(Bokken.Accounts.Skill) do
+    case Bokken.Repo.all(Bokken.Curriculum.Skill) do
       [] ->
         [
           %{
@@ -31,18 +31,18 @@ defmodule Bokken.Repo.Seeds.Skills do
         Mix.shell().error("Found skills, aborting seeding skills.")
     end
 
-    case Bokken.Repo.all(Bokken.Accounts.NinjaSkill) do
+    case Bokken.Repo.all(Bokken.Curriculum.NinjaSkill) do
       [] ->
-        create_ninja_skills(Bokken.Repo.all(Bokken.Accounts.Skill),
+        create_ninja_skills(Bokken.Repo.all(Bokken.Curriculum.Skill),
           Bokken.Repo.all(Bokken.Accounts.Ninja))
 
       _ ->
         Mix.shell().error("Found ninja skills, aborting seeding ninja skills.")
     end
 
-    case Bokken.Repo.all(Bokken.Accounts.MentorSkill) do
+    case Bokken.Repo.all(Bokken.Curriculum.MentorSkill) do
       [] ->
-        create_mentor_skills(Bokken.Repo.all(Bokken.Accounts.Skill),
+        create_mentor_skills(Bokken.Repo.all(Bokken.Curriculum.Skill),
           Bokken.Repo.all(Bokken.Accounts.Mentor))
 
       _ ->
@@ -53,7 +53,7 @@ defmodule Bokken.Repo.Seeds.Skills do
   def create_skills(skills) do
     for skill <- skills do
 
-      case Bokken.Accounts.create_skill(skill) do
+      case Bokken.Curriculum.create_skill(skill) do
         {:error, changeset} ->
           Mix.shell().error(Kernel.inspect(changeset.errors))
 
@@ -71,7 +71,7 @@ defmodule Bokken.Repo.Seeds.Skills do
           skill_id: skill.id,
           ninja_id: ninja.id
         }
-        |> Bokken.Accounts.create_ninja_skill()
+        |> Bokken.Curriculum.create_ninja_skill()
       end
     end
   end
@@ -84,10 +84,10 @@ defmodule Bokken.Repo.Seeds.Skills do
           skill_id: skill.id,
           mentor_id: mentor.id
         }
-        |> Bokken.Accounts.create_mentor_skill()
+        |> Bokken.Curriculum.create_mentor_skill()
       end
     end
   end
 end
 
-Bokken.Repo.Seeds.Skills.run
+Bokken.Repo.Seeds.Curriculum.run

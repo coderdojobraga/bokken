@@ -4,7 +4,8 @@ defmodule Bokken.Accounts.Ninja do
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{Guardian, NinjaSkill, Skill, Social, User}
+  alias Bokken.Accounts.{Guardian, Social, User}
+  alias Bokken.Curriculum.{NinjaSkill, Skill}
   alias Bokken.Events.{Event, Lecture, Team, TeamNinja}
   alias Bokken.Gamification.{Badge, BadgeNinja}
   alias Bokken.Uploaders.Avatar
