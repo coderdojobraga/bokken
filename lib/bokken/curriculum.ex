@@ -106,14 +106,14 @@ defmodule Bokken.Curriculum do
 
   ## Examples
 
-      iex> ninja_has_skill?(123, 123)
+      iex> ninja_has_skill?(%{"ninja_id" => 123, "skill_id" => 123})
       true
 
-      iex> ninja_has_skill?(123, 456)
+      iex> ninja_has_skill?(%{"ninja_id" => 123, "skill_id" => 456})
       false
 
   """
-  def ninja_has_skill?(ninja_id, skill_id) do
+  def ninja_has_skill?(%{"ninja_id" => ninja_id, "skill_id" => skill_id}) do
     NinjaSkill
     |> where([ns], ns.ninja_id == ^ninja_id and ns.skill_id == ^skill_id)
     |> Repo.exists?()
@@ -122,10 +122,10 @@ defmodule Bokken.Curriculum do
   @doc """
   Returns the list of skills of a ninja.
   ## Examples
-      iex> list_ninja_skills(123)
+      iex> list_ninja_skills(%{"ninja_id" => 123})
       [%Skill{}, ...]
   """
-  def list_ninja_skills(ninja_id) do
+  def list_ninja_skills(%{"ninja_id" => ninja_id}) do
     NinjaSkill
     |> where([ns], ns.ninja_id == ^ninja_id)
     |> join(:inner, [ns], s in Skill, on: s.id == ns.skill_id)
@@ -136,10 +136,10 @@ defmodule Bokken.Curriculum do
   @doc """
   Returns the list of ninjas with a skill.
   ## Examples
-      iex> list_ninjas_with_skill(123)
+      iex> list_ninjas_with_skill(%{"skill_id" => 123})
       [%Ninja{}, ...]
   """
-  def list_ninjas_with_skill(skill_id) do
+  def list_ninjas_with_skill(%{"skill_id" => skill_id}) do
     NinjaSkill
     |> where([ns], ns.skill_id == ^skill_id)
     |> join(:inner, [ns], n in Ninja, on: n.id == ns.ninja_id)
@@ -170,10 +170,10 @@ defmodule Bokken.Curriculum do
 
   ## Examples
 
-      iex> delete_ninja_skill(123, 123)
+      iex> delete_ninja_skill(%{"ninja_id" => 123, "skill_id" => 123})
       {1, nil}
   """
-  def delete_ninja_skill(ninja_id, skill_id) do
+  def delete_ninja_skill(%{"ninja_id" => ninja_id, "skill_id" => skill_id}) do
     NinjaSkill
     |> where([ns], ns.ninja_id == ^ninja_id and ns.skill_id == ^skill_id)
     |> Repo.delete_all()
@@ -184,14 +184,14 @@ defmodule Bokken.Curriculum do
 
   ## Examples
 
-      iex> mentor_has_skill?(123, 123)
+      iex> mentor_has_skill?(%{"mentor_id" => 123, "skill_id" => 123})
       true
 
-      iex> mentor_has_skill?(123, 456)
+      iex> mentor_has_skill?(%{"mentor_id" => 123, "skill_id" => 456})
       false
 
   """
-  def mentor_has_skill?(mentor_id, skill_id) do
+  def mentor_has_skill?(%{"mentor_id" => mentor_id, "skill_id" => skill_id}) do
     MentorSkill
     |> where([ns], ns.mentor_id == ^mentor_id and ns.skill_id == ^skill_id)
     |> Repo.exists?()
@@ -200,10 +200,10 @@ defmodule Bokken.Curriculum do
   @doc """
   Returns the list of skills of a mentor.
   ## Examples
-      iex> list_mentor_skills(123)
+      iex> list_mentor_skills(%{"mentor_id" => 123})
       [%Skill{}, ...]
   """
-  def list_mentor_skills(mentor_id) do
+  def list_mentor_skills(%{"mentor_id" => mentor_id}) do
     MentorSkill
     |> where([ms], ms.mentor_id == ^mentor_id)
     |> join(:inner, [ms], s in Skill, on: s.id == ms.skill_id)
@@ -214,10 +214,10 @@ defmodule Bokken.Curriculum do
   @doc """
   Returns the list of mentors with a skill.
   ## Examples
-      iex> list_mentor_with_skill(123)
+      iex> list_mentor_with_skill(%{"skill_id" => 123})
       [%Mentor{}, ...]
   """
-  def list_mentors_with_skill(skill_id) do
+  def list_mentors_with_skill(%{"skill_id" => skill_id}) do
     MentorSkill
     |> where([ms], ms.skill_id == ^skill_id)
     |> join(:inner, [ms], m in Mentor, on: m.id == ms.mentor_id)
@@ -248,10 +248,10 @@ defmodule Bokken.Curriculum do
 
   ## Examples
 
-      iex> delete_mentor_skill(123, 123)
+      iex> delete_mentor_skill(%{"mentor_id" => 123, "skill_id" => 123})
       {1, nil}
   """
-  def delete_mentor_skill(mentor_id, skill_id) do
+  def delete_mentor_skill(%{"mentor_id" => mentor_id, "skill_id" => skill_id}) do
     MentorSkill
     |> where([ms], ms.mentor_id == ^mentor_id and ms.skill_id == ^skill_id)
     |> Repo.delete_all()

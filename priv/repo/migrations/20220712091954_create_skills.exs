@@ -5,7 +5,7 @@ defmodule Bokken.Repo.Migrations.CreateSkills do
     create table(:skills, primary_key: false) do
       add :id, :binary_id, primary_key: true
 
-      add :name, :string, null: false
+      add :name, :citext, null: false
       add :description, :string, null: false, default: ""
 
       timestamps()

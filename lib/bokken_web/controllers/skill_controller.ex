@@ -10,13 +10,13 @@ defmodule BokkenWeb.SkillController do
   defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
   defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
 
-  def index(conn, %{"ninja_id" => ninja_id}) do
-    skills = Curriculum.list_ninja_skills(ninja_id)
+  def index(conn, %{"ninja_id" => _ninja_id} = params) do
+    skills = Curriculum.list_ninja_skills(params)
     render(conn, "index.json", skills: skills)
   end
 
-  def index(conn, %{"mentor_id" => mentor_id}) do
-    skills = Curriculum.list_mentor_skills(mentor_id)
+  def index(conn, %{"mentor_id" => _mentor_id} = params) do
+    skills = Curriculum.list_mentor_skills(params)
     render(conn, "index.json", skills: skills)
   end
 
@@ -84,8 +84,13 @@ defmodule BokkenWeb.SkillController do
   def delete(conn, %{"id" => skill_id}) when is_mentor(conn) do
     mentor_id = conn.assigns.current_user.mentor.id
 
-    if Curriculum.mentor_has_skill?(mentor_id, skill_id) do
-      with {1, nil} <- Curriculum.delete_mentor_skill(mentor_id, skill_id) do
+    params = %{
+      "mentor_id" => mentor_id,
+      "skill_id" => skill_id
+    }
+
+    if Curriculum.mentor_has_skill?(params) do
+      with {1, nil} <- Curriculum.delete_mentor_skill(params) do
         send_resp(conn, :no_content, "")
       end
     else
@@ -98,8 +103,13 @@ defmodule BokkenWeb.SkillController do
   def delete(conn, %{"id" => skill_id}) when is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
 
-    if Curriculum.ninja_has_skill?(ninja_id, skill_id) do
-      with {1, nil} <- Curriculum.delete_ninja_skill(ninja_id, skill_id) do
+    params = %{
+      "ninja_id" => ninja_id,
+      "skill_id" => skill_id
+    }
+
+    if Curriculum.ninja_has_skill?(params) do
+      with {1, nil} <- Curriculum.delete_ninja_skill(params) do
         send_resp(conn, :no_content, "")
       end
     else

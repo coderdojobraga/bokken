@@ -2,6 +2,7 @@ defmodule Bokken.CurriculumTest do
   @moduledoc false
   use Bokken.DataCase
 
+  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Curriculum
 
   describe "skills" do
@@ -149,8 +150,8 @@ defmodule Bokken.CurriculumTest do
       }
 
       assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
-      assert [%Skill{}] = Curriculum.list_mentor_skills(mentor.id)
-      assert [%Mentor{}] = Curriculum.list_mentors_with_skill(skill.id)
+      assert [%Skill{}] = Curriculum.list_mentor_skills(%{"mentor_id" => mentor.id})
+      assert [%Mentor{}] = Curriculum.list_mentors_with_skill(%{"skill_id" => skill.id})
     end
 
     test "mentor_has_skill?/1 returns correct value", %{
@@ -164,7 +165,7 @@ defmodule Bokken.CurriculumTest do
 
       assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
 
-      assert Curriculum.mentor_has_skill?(mentor.id, skill.id)
+      assert Curriculum.mentor_has_skill?(mentor_skill_attrs)
     end
 
     test "delete_mentor_skill/2 deletes a mentor skill", %{
@@ -178,7 +179,7 @@ defmodule Bokken.CurriculumTest do
 
       {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
 
-      assert {1, nil} = Curriculum.delete_mentor_skill(mentor.id, skill.id)
+      assert {1, nil} = Curriculum.delete_mentor_skill(mentor_skill_attrs)
     end
 
     defp create_mentor_data(_x) do
@@ -196,9 +197,9 @@ defmodule Bokken.CurriculumTest do
 
       skill_attrs = valid_skill()
 
-      {:ok, mentor_user} = Curriculum.create_user(mentor_user_attrs)
+      {:ok, mentor_user} = Accounts.create_user(mentor_user_attrs)
 
-      {:ok, mentor} = Curriculum.create_mentor(Map.put(mentor_attrs, :user_id, mentor_user.id))
+      {:ok, mentor} = Accounts.create_mentor(Map.put(mentor_attrs, :user_id, mentor_user.id))
 
       {:ok, skill} = Curriculum.create_skill(skill_attrs)
 
@@ -251,8 +252,8 @@ defmodule Bokken.CurriculumTest do
       }
 
       assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
-      assert [%Skill{}] = Curriculum.list_ninja_skills(ninja.id)
-      assert [%Ninja{}] = Curriculum.list_ninjas_with_skill(skill.id)
+      assert [%Skill{}] = Curriculum.list_ninja_skills(%{"ninja_id" => ninja.id})
+      assert [%Ninja{}] = Curriculum.list_ninjas_with_skill(%{"skill_id" => skill.id})
     end
 
     test "ninja_has_skill?/1 returns the correct result", %{
@@ -265,7 +266,7 @@ defmodule Bokken.CurriculumTest do
       }
 
       assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
-      assert Curriculum.ninja_has_skill?(ninja.id, skill.id)
+      assert Curriculum.ninja_has_skill?(ninja_skill_attrs)
     end
 
     test "delete_ninja_skill/1 deletes a ninja skill", %{
@@ -279,7 +280,7 @@ defmodule Bokken.CurriculumTest do
 
       {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
 
-      assert {1, nil} = Curriculum.delete_ninja_skill(ninja.id, skill.id)
+      assert {1, nil} = Curriculum.delete_ninja_skill(ninja_skill_attrs)
     end
 
     defp create_ninja_data(_x) do
@@ -309,18 +310,18 @@ defmodule Bokken.CurriculumTest do
 
       skill_attrs = valid_skill()
 
-      {:ok, ninja_user} = Curriculum.create_user(ninja_user_attrs)
-      {:ok, guardian_user} = Curriculum.create_user(guardian_user_attrs)
+      {:ok, ninja_user} = Accounts.create_user(ninja_user_attrs)
+      {:ok, guardian_user} = Accounts.create_user(guardian_user_attrs)
 
       {:ok, guardian} =
-        Curriculum.create_guardian(Map.put(guardian_attrs, :user_id, guardian_user.id))
+        Accounts.create_guardian(Map.put(guardian_attrs, :user_id, guardian_user.id))
 
       ninja_attrs =
         ninja_attrs
         |> Map.put(:guardian_id, guardian.id)
         |> Map.put(:user_id, ninja_user.id)
 
-      {:ok, ninja} = Curriculum.create_ninja(ninja_attrs)
+      {:ok, ninja} = Accounts.create_ninja(ninja_attrs)
 
       {:ok, skill} = Curriculum.create_skill(skill_attrs)
 
