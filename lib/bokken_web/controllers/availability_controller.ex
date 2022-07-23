@@ -42,6 +42,10 @@ defmodule BokkenWeb.AvailabilityController do
            Events.create_availability(event, availability_params) do
       conn
       |> put_status(:created)
+      |> put_resp_header(
+        "location",
+        Routes.event_availability_path(conn, :show, event, availability)
+      )
       |> render("show.json", availability: availability)
     end
   end
