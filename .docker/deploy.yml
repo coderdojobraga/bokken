@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
   api:
     volumes:
-      - uploads:/app/uploads
+      - uploads:/app/priv/uploads
     environment:
       - DATABASE_URL
       - SECRET_KEY_BASE

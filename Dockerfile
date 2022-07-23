@@ -50,9 +50,9 @@ RUN chown nobody:nobody /app
 
 USER nobody:nobody
 
-RUN mkdir -p /app/uploads
+RUN mkdir -p /app/priv/uploads
 
-VOLUME ["/app/uploads"]
+VOLUME ["/app/priv/uploads"]
 
 COPY --from=build --chown=nobody:nobody /app/_build/$MIX_ENV/rel/bokken ./
 
