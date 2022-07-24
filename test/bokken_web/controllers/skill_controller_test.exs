@@ -3,6 +3,7 @@ defmodule BokkenWeb.SkillControllerTest do
   use BokkenWeb.ConnCase
 
   alias Bokken.Accounts
+  alias Bokken.Curriculum
   alias BokkenWeb.Authorization
 
   def valid_admin do
@@ -155,7 +156,7 @@ defmodule BokkenWeb.SkillControllerTest do
     test "show skills works", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
 
       conn = get(conn, Routes.skill_path(conn, :show, skill.id))
       assert json_response(conn, 200)["data"]
@@ -167,7 +168,7 @@ defmodule BokkenWeb.SkillControllerTest do
     test "update a skill fails", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
 
       skill_attrs = %{
         "skill" => valid_skill_update()
@@ -181,7 +182,7 @@ defmodule BokkenWeb.SkillControllerTest do
     test "delete a skill fails", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
 
       assert_error_sent 500, fn ->
         delete(conn, Routes.skill_path(conn, :delete, skill.id))

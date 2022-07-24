@@ -3,7 +3,8 @@ defmodule BokkenWeb.MentorSkillControllerTest do
   use BokkenWeb.ConnCase
 
   alias Bokken.Accounts
-  alias Bokken.Accounts.{MentorSkill, Skill}
+  alias Bokken.Curriculum
+  alias Bokken.Curriculum.{MentorSkill, Skill}
   alias BokkenWeb.Authorization
 
   def valid_admin_user do
@@ -88,7 +89,7 @@ defmodule BokkenWeb.MentorSkillControllerTest do
 
   # Create a skill
   setup %{conn: conn} do
-    {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
+    {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
     {:ok, conn: conn, skill: skill}
   end
 
@@ -113,7 +114,7 @@ defmodule BokkenWeb.MentorSkillControllerTest do
       mentor_id = conn.assigns.mentor
 
       {:ok, %MentorSkill{} = mentor_skill} =
-        Accounts.create_mentor_skill(%{"skill_id" => skill.id, "mentor_id" => mentor_id})
+        Curriculum.create_mentor_skill(%{"skill_id" => skill.id, "mentor_id" => mentor_id})
 
       assert_error_sent 404, fn ->
         delete(conn, Routes.mentor_skill_path(conn, :delete, mentor_id, mentor_skill.id))

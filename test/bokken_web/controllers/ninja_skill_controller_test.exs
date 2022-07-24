@@ -3,7 +3,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   use BokkenWeb.ConnCase
 
   alias Bokken.Accounts
-  alias Bokken.Accounts.{NinjaSkill, Skill}
+  alias Bokken.Curriculum
+  alias Bokken.Curriculum.{NinjaSkill, Skill}
   alias BokkenWeb.Authorization
 
   def valid_admin_user do
@@ -111,7 +112,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
   # Create a skill
   setup %{conn: conn} do
-    {:ok, %Skill{} = skill} = Accounts.create_skill(valid_skill())
+    {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
     {:ok, conn: conn, skill: skill}
   end
 
@@ -136,7 +137,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       ninja_id = conn.assigns.ninja
 
       {:ok, %NinjaSkill{} = ninja_skill} =
-        Accounts.create_ninja_skill(%{"skill_id" => skill.id, "ninja_id" => ninja_id})
+        Curriculum.create_ninja_skill(%{"skill_id" => skill.id, "ninja_id" => ninja_id})
 
       assert_error_sent 404, fn ->
         delete(conn, Routes.ninja_skill_path(conn, :delete, ninja_id, ninja_skill.id))
