@@ -3,7 +3,6 @@ defmodule Bokken.CurriculumTest do
   use Bokken.DataCase
 
   alias Bokken.Accounts
-  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Curriculum
 
   describe "skills" do
@@ -109,6 +108,7 @@ defmodule Bokken.CurriculumTest do
   end
 
   describe "mentor_skills" do
+    alias Bokken.Accounts.Mentor
     alias Bokken.Curriculum.{MentorSkill, Skill}
 
     setup [:create_mentor_data]
@@ -212,6 +212,7 @@ defmodule Bokken.CurriculumTest do
   end
 
   describe "ninja_skills" do
+    alias Bokken.Accounts.Ninja
     alias Bokken.Curriculum.{NinjaSkill, Skill}
 
     setup [:create_ninja_data]
