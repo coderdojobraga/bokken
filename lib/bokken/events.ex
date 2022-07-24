@@ -721,18 +721,10 @@ defmodule Bokken.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_availability(event, attrs) do
-    current_time = DateTime.utc_now()
-    first_comparison = DateTime.compare(event.enrollments_open, current_time)
-    second_comparison = DateTime.compare(event.enrollments_close, current_time)
-
-    if first_comparison == :lt and second_comparison == :gt do
-      %Availability{}
-      |> Availability.changeset(attrs)
-      |> Repo.update()
-    else
-      {:error, "You can't update the availability for an event with closed enrollments"}
-    end
+  def update_availability(%Availability{} = availability, attrs) do
+    availability
+    |> Availability.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """
