@@ -563,8 +563,7 @@ defmodule Bokken.Accounts do
     case user.role do
       :mentor ->
         Mentor.changeset(%Mentor{}, attrs)
-      :ninja ->
-        Ninja.changeset(%Ninja{}, attrs)
+
       :guardian ->
         Guardian.changeset(%Guardian{}, attrs)
     end

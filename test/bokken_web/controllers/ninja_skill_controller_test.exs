@@ -178,15 +178,14 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   end
 
   describe "logged in as ninja" do
-    setup [:register_and_log_in_ninja]
+    setup [:login_as_ninja]
 
     test "create a ninja skill succeeds", %{
       conn: conn,
-      skill: skill,
-      user: user
+      skill: skill
     } do
       conn =
-        post(conn, Routes.ninja_skill_path(conn, :create, user.ninja.id), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
           "skill" => skill.id
         })
 
@@ -243,11 +242,10 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
     test "delete a ninja skill succeeds", %{
       conn: conn,
-      skill: skill,
-      user: user
+      skill: skill
     } do
       conn =
-        post(conn, Routes.ninja_skill_path(conn, :create, user.ninja.id), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
           "skill" => skill.id
         })
 
@@ -270,6 +268,26 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
         )
 
       assert [] = json_response(conn, 200)["data"]
+    end
+
+    defp login_as_ninja(%{conn: conn}) do
+      ninja_attrs = ninja_attrs()
+      {:ok, ninja_user} = Accounts.authenticate_user(ninja_attrs.email, ninja_attrs.password)
+
+      {:ok, jwt, _claims} =
+        Authorization.encode_and_sign(ninja_user, %{
+          role: ninja_user.role,
+          active: ninja_user.active
+        })
+
+      conn =
+        conn
+        |> Authorization.Plug.sign_out()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> put_req_header("user_id", "#{ninja_attrs[:user_id]}")
+        |> assign(:ninja, ninja_attrs[:ninja].id)
+
+      {:ok, conn: conn}
     end
   end
 end
