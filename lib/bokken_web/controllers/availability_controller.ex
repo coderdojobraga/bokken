@@ -23,7 +23,7 @@ defmodule BokkenWeb.AvailabilityController do
   end
 
   def index(conn, availability_params) do
-    availability = Events.list_availability(availability_params)
+    availability = Events.list_availabilities(availability_params)
 
     conn
     |> put_status(:ok)
