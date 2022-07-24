@@ -7,7 +7,12 @@ defmodule Bokken.Ecto.PtMobile do
 
   def type, do: :string
 
-  # function to transform external data into a runtime format
+  @doc """
+  Transforms external data into a runtime format
+
+  ## Parameters
+    - number: valid PT phone number with the "+351" indicative in a string format
+  """
   def cast("+351" <> number) do
     mobile =
       format(number)
@@ -24,25 +29,36 @@ defmodule Bokken.Ecto.PtMobile do
     {:error, [message: "número PT não válido"]}
   end
 
-  # when putting the phone number into the database this function
-  # transforms the data into a specific format to be stored
+  @doc """
+  Transforms the data into a specific format to be stored
+  
+  ## Parameters
+    - number: valid PT phone number with the "+351" indicative in a string format
+  """
   def dump("+351" <> mobile) do
     {:ok, "+351" <> mobile}
   end
 
   def dump(_mobile), do: :error
 
-  # when loading data from the database, this function transforms the data
-  # back to a runtime format
+  @doc """
+  Transforms the data back to a runtime format
+
+  ## Parameters
+    - number: valid PT phone number with the "+351" indicative in a string format
+  """
   def load("+351" <> mobile) do
     {:ok, "+351" <> mobile}
   end
 
   def load(_mobile), do: :error
 
-  # when recieving a phone number from the front end, the number will process
-  # through this function to transform it into a standard format
-  # it returns a list of strings
+  @doc """
+  Transforms a number into the standard format
+  
+  ## Parameters
+    - number: valis PT phone number in a list of strings (ex: ["9", "1", "6", "0", "6", "5", "5", "0", "0"])
+  """
   defp format([]), do: []
 
   defp format(number) when is_list(number) do
