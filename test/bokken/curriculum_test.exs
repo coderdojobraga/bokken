@@ -153,8 +153,7 @@ defmodule Bokken.CurriculumTest do
       assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
       assert [%Skill{}] = Curriculum.list_mentor_skills(%{"mentor_id" => mentor.id})
 
-      assert [%Bokken.Accounts.Mentor{}] =
-               Curriculum.list_mentors_with_skill(%{"skill_id" => skill.id})
+      assert [%Mentor{}] = Curriculum.list_mentors_with_skill(%{"skill_id" => skill.id})
     end
 
     test "mentor_has_skill?/1 returns correct value", %{
@@ -257,8 +256,7 @@ defmodule Bokken.CurriculumTest do
       assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
       assert [%Skill{}] = Curriculum.list_ninja_skills(%{"ninja_id" => ninja.id})
 
-      assert [%Bokken.Accounts.Ninja{}] =
-               Curriculum.list_ninjas_with_skill(%{"skill_id" => skill.id})
+      assert [%Ninja{}] = Curriculum.list_ninjas_with_skill(%{"skill_id" => skill.id})
     end
 
     test "ninja_has_skill?/1 returns the correct result", %{

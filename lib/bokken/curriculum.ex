@@ -6,6 +6,7 @@ defmodule Bokken.Curriculum do
   import Ecto.Query, warn: false
   alias Bokken.Repo
 
+  alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Curriculum.{MentorSkill, NinjaSkill, Skill}
 
   @doc """
