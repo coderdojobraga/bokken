@@ -158,7 +158,7 @@ defmodule BokkenWeb.MentorSkillControllerTest do
   end
 
   describe "logged in as mentor" do
-    setup [:login_as_mentor]
+    setup [:register_and_log_in_mentor]
 
     test "create a mentor skill succeeds", %{
       conn: conn,
@@ -250,26 +250,6 @@ defmodule BokkenWeb.MentorSkillControllerTest do
         )
 
       assert [] = json_response(conn, 200)["data"]
-    end
-
-    defp login_as_mentor(%{conn: conn}) do
-      mentor_attrs = mentor_attrs()
-      {:ok, mentor_user} = Accounts.authenticate_user(mentor_attrs.email, mentor_attrs.password)
-
-      {:ok, jwt, _claims} =
-        Authorization.encode_and_sign(mentor_user, %{
-          role: mentor_user.role,
-          active: mentor_user.active
-        })
-
-      conn =
-        conn
-        |> Authorization.Plug.sign_out()
-        |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{mentor_attrs[:user_id]}")
-        |> assign(:mentor, mentor_attrs[:mentor].id)
-
-      {:ok, conn: conn}
     end
   end
 end
