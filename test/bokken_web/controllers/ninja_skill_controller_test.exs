@@ -182,10 +182,11 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
     test "create a ninja skill succeeds", %{
       conn: conn,
-      skill: skill
+      skill: skill,
+      user: user
     } do
       conn =
-        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, user.ninja.id), %{
           "skill" => skill.id
         })
 
@@ -242,10 +243,11 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
     test "delete a ninja skill succeeds", %{
       conn: conn,
-      skill: skill
+      skill: skill,
+      user: user
     } do
       conn =
-        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja), %{
+        post(conn, Routes.ninja_skill_path(conn, :create, user.ninja.id), %{
           "skill" => skill.id
         })
 

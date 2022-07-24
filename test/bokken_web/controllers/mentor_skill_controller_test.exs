@@ -98,10 +98,11 @@ defmodule BokkenWeb.MentorSkillControllerTest do
 
     test "create a mentor skill fails", %{
       conn: conn,
-      skill: skill
+      skill: skill,
+      user: user
     } do
       assert_error_sent 400, fn ->
-        post(conn, Routes.mentor_skill_path(conn, :create, conn.assigns.mentor), %{
+        post(conn, Routes.mentor_skill_path(conn, :create, user.mentor.id), %{
           "skill" => skill.id
         })
       end
@@ -162,10 +163,11 @@ defmodule BokkenWeb.MentorSkillControllerTest do
 
     test "create a mentor skill succeeds", %{
       conn: conn,
-      skill: skill
+      skill: skill,
+      user: user
     } do
       conn =
-        post(conn, Routes.mentor_skill_path(conn, :create, conn.assigns.mentor), %{
+        post(conn, Routes.mentor_skill_path(conn, :create, user.mentor.id), %{
           "skill" => skill.id
         })
 
