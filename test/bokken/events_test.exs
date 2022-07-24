@@ -208,4 +208,138 @@ defmodule Bokken.EventsTest do
       end
     end
   end
+
+  describe "availabilities" do
+    def availability_attrs do
+      {:ok, new_mentor_user} =
+        %{
+          email: "pedrocosta@gmail.com",
+          password: "mentor123",
+          role: "mentor"
+        }
+        |> Accounts.create_user()
+
+      mentor =
+        %{
+          first_name: "Pedro",
+          last_name: "Costa",
+          birthday: ~U[1992-03-14 00:00:00.000Z],
+          mobile: "+351 911654321"
+        }
+        |> Map.put(:user_id, new_mentor_user.id)
+
+      {:ok, new_mentor} = Accounts.create_mentor(mentor)
+
+      {:ok, new_location} =
+        %{
+          address: "Test address",
+          name: "Departamento de Informática"
+        }
+        |> Events.create_location()
+
+      {:ok, new_team} =
+        %{
+          name: "Turma Yin",
+          description: "Uma turma"
+        }
+        |> Events.create_team()
+
+      event =
+        %{
+          title: "Test event",
+          spots_available: 30,
+          start_time: ~U[2023-02-14 10:00:00.000Z],
+          end_time: ~U[2023-02-14 12:30:00.000Z],
+          enrollments_open: ~U[2022-07-03 12:30:00.0Z],
+          enrollments_close: ~U[2023-02-13 12:30:00.0Z],
+          online: false,
+          notes: "Valentines"
+        }
+        |> Map.put(:location_id, new_location.id)
+        |> Map.put(:team_id, new_team.id)
+
+      {:ok, new_event} = Events.create_event(event)
+
+      %{
+        is_available?: true
+      }
+      |> Map.put(:mentor_id, new_mentor.id)
+      |> Map.put(:event_id, new_event.id)
+    end
+
+    def availability_fixture(attrs \\ %{}) do
+      valid_attrs = availability_attrs()
+
+      {:ok, availability} =
+        Events.create_availability(
+          Events.get_event!(valid_attrs.event_id),
+          Enum.into(attrs, valid_attrs)
+        )
+
+      availability
+    end
+
+    defp availability do
+      availability = availability_fixture()
+
+      availability
+      |> Map.put(:event, Events.get_event!(availability.event_id))
+      |> Map.put(:mentor, Accounts.get_mentor!(availability.mentor_id))
+    end
+
+    test "list_availabilities/0 returns all availabilities" do
+      availability = availability()
+      assert Events.list_availabilities() == [availability]
+    end
+
+    test "list_availabilities/1 returns all availabilities of the event" do
+      availability = availability()
+      assert Events.list_availabilities(%{"event_id" => availability.event_id}) == [availability]
+    end
+
+    test "list_availabilities/1 returns all availabilities of the mentor" do
+      availability = availability()
+
+      assert Events.list_availabilities(%{"mentor_id" => availability.mentor_id}) == [
+               availability
+             ]
+    end
+
+    test "get_availability/1 returns the requested availability" do
+      availability = availability()
+      assert Events.get_availability(availability.id, [:mentor, :event]) == availability
+    end
+
+    test "get_availability/1 fails if the availability does not exist" do
+      assert is_nil(Events.get_enrollment(Ecto.UUID.generate(), [:mentor, :event]))
+    end
+
+    test "create_availability/1 returns error if the enrollments are closed" do
+      valid_attrs = availability_attrs()
+      event = Events.get_event!(valid_attrs.event_id)
+
+      {:ok, event} =
+        Events.update_event(event, %{
+          start_time: ~U[2022-07-03 10:00:00.0Z],
+          end_time: ~U[2022-07-03 12:30:00.0Z],
+          enrollments_open: ~U[2022-07-03 07:00:00.0Z],
+          enrollments_close: ~U[2022-07-03 08:00:00.0Z]
+        })
+
+      assert elem(Events.create_availability(event, valid_attrs), 0) == :error
+    end
+
+    test "update_availability/2 updates existing availability" do
+      availability = availability()
+
+      assert Events.update_availability(availability, %{is_available?: true}) ==
+               {:ok, Map.put(availability, :is_available?, true)}
+    end
+
+    test "update_availability/2 fails if the new value is not valid" do
+      availability = availability()
+
+      assert elem(Events.update_availability(availability, %{is_available?: nil}), 0) == :error
+    end
+  end
 end
