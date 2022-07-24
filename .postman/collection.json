@@ -3156,7 +3156,7 @@
 					"name": "Availability",
 					"item": [
 						{
-							"name": "List the availabilities of an event",
+							"name": "List the availabilities for an event",
 							"event": [
 								{
 									"listen": "prerequest",
