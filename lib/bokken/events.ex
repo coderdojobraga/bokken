@@ -632,32 +632,32 @@ defmodule Bokken.Events do
   alias Bokken.Events.Availability
 
   @doc """
-  Returns the list of availability.
+  Returns the list of the availabilities.
 
   ## Examples
 
-      iex> list_availability(123)
+      iex> list_availabilities(123)
       [%Availability{}, ...]
 
-      iex> list_availability()
+      iex> list_availabilities()
       [%Availability{}, ...]
 
   """
-  def list_availability(%{"mentor_id" => mentor_id}) do
+  def list_availabilities(%{"mentor_id" => mentor_id}) do
     Availability
     |> where([a], a.mentor_id == ^mentor_id)
     |> Repo.all()
     |> Repo.preload([:mentor, :event])
   end
 
-  def list_availability(%{"event_id" => event_id}) do
+  def list_availabilities(%{"event_id" => event_id}) do
     Availability
     |> where([a], a.event_id == ^event_id)
     |> Repo.all()
     |> Repo.preload([:mentor, :event])
   end
 
-  def list_availability do
+  def list_availabilities do
     Availability
     |> Repo.all()
     |> Repo.preload([:mentor, :event])
