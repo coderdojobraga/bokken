@@ -279,7 +279,7 @@ defmodule Bokken.EventsTest do
       availability
     end
 
-    defp availability do
+    def availability do
       availability = availability_fixture()
 
       availability
@@ -340,6 +340,16 @@ defmodule Bokken.EventsTest do
       availability = availability()
 
       assert elem(Events.update_availability(availability, %{is_available?: nil}), 0) == :error
+    end
+
+    test "update_availability/1 fails if the availability does not exist" do
+      availability = availability()
+
+      assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
+        Events.update_availability(Map.put(availability, :id, Ecto.UUID.generate()), %{
+          is_available?: false
+        })
+      end
     end
   end
 end
