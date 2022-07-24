@@ -4,17 +4,6 @@ defmodule Bokken.TypesTests do
   describe "PT Phone number testing" do
     alias Bokken.Ecto.PtMobile
 
-    @valid_number1 "+351 919 066 855"
-    @valid_number2 "+351929066855"
-    @valid_number3 "+351 939-066-855"
-
-    @invalid_number1 "351 929 066 855"
-    @invalid_number2 "929066855"
-    @invalid_number3 "+351 979-066-855"
-    @invalid_number4 "+351 989 066 855"
-    @invalid_number5 "+351 999-066-855"
-    @invalid_number6 "+351 909 066 855"
-
     @invalid_number_error [message: "número PT não válido"]
 
     def format([]), do: []
@@ -38,48 +27,48 @@ defmodule Bokken.TypesTests do
     end
 
     test "cast\1 valid PT phone number 1" do
-      "+351" <> number = @valid_number1
+      "+351" <> number = "+351 919 066 855"
       mobile = format(number) |> List.to_string()
 
-      assert PtMobile.cast(@valid_number1) == {:ok, "+351" <> mobile}
+      assert PtMobile.cast("+351 919 066 855") == {:ok, "+351" <> mobile}
     end
 
     test "cast\1 valid PT phone number 2" do
-      "+351" <> number = @valid_number2
+      "+351" <> number = "+351929066855"
       mobile = format(number) |> List.to_string()
 
-      assert PtMobile.cast(@valid_number2) == {:ok, "+351" <> mobile}
+      assert PtMobile.cast("+351929066855") == {:ok, "+351" <> mobile}
     end
 
     test "cast\1 valid PT phone number 3" do
-      "+351" <> number = @valid_number3
+      "+351" <> number = "+351 939-066-855"
       mobile = format(number) |> List.to_string()
 
-      assert PtMobile.cast(@valid_number3) == {:ok, "+351" <> mobile}
+      assert PtMobile.cast("+351 939-066-855") == {:ok, "+351" <> mobile}
     end
 
     test "cast\1 invalid PT phone number 1 - indicative number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number1)
+      assert {:error, @invalid_number_error} = PtMobile.cast("351 929 066 855")
     end
 
     test "cast\1 invalid PT phone number 2 - indicative number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number2)
+      assert {:error, @invalid_number_error} = PtMobile.cast("929 066 855")
     end
 
     test "cast\1 invalid PT phone number 3 - wrong number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number3)
+      assert {:error, @invalid_number_error} = PtMobile.cast("+351 979 066 855")
     end
 
     test "cast\1 invalid PT phone number 4 - wrong number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number4)
+      assert {:error, @invalid_number_error} = PtMobile.cast("+351 989 066 855")
     end
 
     test "cast\1 invalid PT phone number 5 - wrong number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number5)
+      assert {:error, @invalid_number_error} = PtMobile.cast("+351 999 066 855")
     end
 
     test "cast\1 invalid PT phone number 6 - wrong number error" do
-      assert {:error, @invalid_number_error} = PtMobile.cast(@invalid_number6)
+      assert {:error, @invalid_number_error} = PtMobile.cast("+351 909 066 855")
     end
   end
 end
