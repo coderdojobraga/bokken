@@ -2,7 +2,7 @@ defmodule Bokken.TypesTests do
   use ExUnit.Case
 
   describe "PT Phone number testing" do
-    alias Bokken.Types.Ecto.PtMobile
+    alias Bokken.Ecto.PtMobile
 
     @valid_number1 "+351 919 066 855"
     @valid_number2 "+351929066855"
