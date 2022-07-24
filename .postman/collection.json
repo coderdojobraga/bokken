@@ -3100,7 +3100,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"enrollment_id = pm.response.json().data.id",
+											"enrollment_id = pm.response.json().data.id;",
 											"pm.environment.set(\"enrollment_id\", enrollment_id);"
 										],
 										"type": "text/javascript"
@@ -3250,7 +3250,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"availability_id = pm.response.json().data.id",
+											"availability_id = pm.response.json().data.id;",
 											"pm.environment.set(\"availability_id\", availability_id);"
 										],
 										"type": "text/javascript"
