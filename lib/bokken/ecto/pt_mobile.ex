@@ -1,4 +1,4 @@
-defmodule Bokken.Types.Ecto.PtMobile do
+defmodule Bokken.Types.PtMobile do
   @moduledoc """
   PT Phone number type with validation and formatting for Ecto.
   """
