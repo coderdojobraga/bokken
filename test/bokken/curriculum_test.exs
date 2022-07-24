@@ -146,8 +146,8 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       mentor_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
+        "mentor_id" => mentor.id,
+        "skill_id" => skill.id
       }
 
       assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
@@ -160,8 +160,8 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       mentor_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
+        "mentor_id" => mentor.id,
+        "skill_id" => skill.id
       }
 
       assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
@@ -174,8 +174,8 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       mentor_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
+        "mentor_id" => mentor.id,
+        "skill_id" => skill.id
       }
 
       {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
@@ -262,8 +262,8 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       ninja_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
+        "ninja_id" => ninja.id,
+        "skill_id" => skill.id
       }
 
       assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
@@ -275,8 +275,8 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       ninja_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
+        "ninja_id" => ninja.id,
+        "skill_id" => skill.id
       }
 
       {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
