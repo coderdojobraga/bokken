@@ -5,8 +5,8 @@ defmodule BokkenWeb.AvailabilityView do
   alias BokkenWeb.EventView
   alias BokkenWeb.MentorView
 
-  def render("index.json", %{availability: availability}) do
-    %{data: render_many(availability, AvailabilityView, "availability.json")}
+  def render("index.json", %{availabilities: availabilities}) do
+    %{data: render_many(availabilities, AvailabilityView, "availability.json")}
   end
 
   def render("show.json", %{availability: availability}) do
@@ -29,7 +29,7 @@ defmodule BokkenWeb.AvailabilityView do
 
   defp event(availability) do
     if Ecto.assoc_loaded?(availability.event) do
-      %{event: render_one(availability.event, EventView, "event.json")}
+      render_one(availability.event, EventView, "event.json")
     else
       %{event_id: availability.event_id}
     end
@@ -37,7 +37,7 @@ defmodule BokkenWeb.AvailabilityView do
 
   defp mentor(availability) do
     if Ecto.assoc_loaded?(availability.mentor) do
-      %{mentor: render_one(availability.mentor, MentorView, "mentor.json")}
+      render_one(availability.mentor, MentorView, "mentor.json")
     else
       %{mentor_id: availability.mentor_id}
     end

@@ -643,43 +643,36 @@ defmodule Bokken.Events do
       [%Availability{}, ...]
 
   """
-  def list_availabilities(%{"mentor_id" => mentor_id}) do
+  def list_availabilities(preloads) when is_list(preloads) do
     Availability
-    |> where([a], a.mentor_id == ^mentor_id)
     |> Repo.all()
-    |> Repo.preload([:mentor, :event])
+    |> Repo.preload(preloads)
   end
 
-  def list_availabilities(%{"event_id" => event_id}) do
+  def list_availabilities(%{"event_id" => event_id}, preloads \\ []) do
     Availability
     |> where([a], a.event_id == ^event_id)
     |> Repo.all()
-    |> Repo.preload([:mentor, :event])
-  end
-
-  def list_availabilities do
-    Availability
-    |> Repo.all()
-    |> Repo.preload([:mentor, :event])
+    |> Repo.preload(preloads)
   end
 
   @doc """
   Gets a single availability.
 
-  Return nil if the Availability does not exist.
+  Raises `Ecto.NoResultsError` if the Badge does not exist.
 
   ## Examples
 
-      iex> get_availability(123)
+      iex> get_availability!(123)
       %Availability{}
 
-      iex> get_availability(456)
-      nil
+      iex> get_availability!(456)
+      ** (Ecto.NoResultsError)
 
   """
-  def get_availability(id, preloads \\ []) do
+  def get_availability!(id, preloads \\ []) do
     Availability
-    |> Repo.get(id)
+    |> Repo.get!(id)
     |> Repo.preload(preloads)
   end
 

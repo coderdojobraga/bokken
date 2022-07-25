@@ -3,6 +3,7 @@ defmodule Bokken.EventsTest do
 
   alias Bokken.Accounts
   alias Bokken.Events
+  alias Bokken.Repo
 
   describe "enrollments" do
     def valid_enrollment do
@@ -279,39 +280,33 @@ defmodule Bokken.EventsTest do
       availability
     end
 
-    def availability do
-      availability = availability_fixture()
-
-      availability
-      |> Map.put(:event, Events.get_event!(availability.event_id))
-      |> Map.put(:mentor, Accounts.get_mentor!(availability.mentor_id))
+    def availability(preloads \\ []) do
+      availability_fixture()
+      |> Repo.preload(preloads)
     end
 
     test "list_availabilities/0 returns all availabilities" do
       availability = availability()
-      assert Events.list_availabilities() == [availability]
+      assert Events.list_availabilities([]) == [availability]
     end
 
     test "list_availabilities/1 returns all availabilities of the event" do
-      availability = availability()
-      assert Events.list_availabilities(%{"event_id" => availability.event_id}) == [availability]
-    end
+      availability = availability([:mentor])
 
-    test "list_availabilities/1 returns all availabilities of the mentor" do
-      availability = availability()
-
-      assert Events.list_availabilities(%{"mentor_id" => availability.mentor_id}) == [
+      assert Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor]) == [
                availability
              ]
     end
 
-    test "get_availability/1 returns the requested availability" do
-      availability = availability()
-      assert Events.get_availability(availability.id, [:mentor, :event]) == availability
+    test "get_availability!/1 returns the requested availability" do
+      availability = availability([:mentor, :event])
+      assert Events.get_availability!(availability.id, [:mentor, :event]) == availability
     end
 
-    test "get_availability/1 fails if the availability does not exist" do
-      assert is_nil(Events.get_enrollment(Ecto.UUID.generate(), [:mentor, :event]))
+    test "get_availability!/1 fails if the availability does not exist" do
+      assert_raise Ecto.NoResultsError, fn ->
+        Events.get_availability!(Ecto.UUID.generate(), [:mentor, :event])
+      end
     end
 
     test "create_availability/1 returns error if the enrollments are closed" do

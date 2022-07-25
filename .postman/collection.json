@@ -3126,7 +3126,7 @@
 						{
 							"name": "Update enrollment",
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -3200,50 +3200,6 @@
 							"response": []
 						},
 						{
-							"name": "List the availabilities of a mentor",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_event);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"mentor_id\": \"{{mentor_id}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{host}}/api/events/{{event_id}}/availabilities",
-								"description":"Lists all the availabilities of a given mentor."
-							},
-							"response": []
-						},
-						{
 							"name": "Create an availability",
 							"event": [
 								{
@@ -3277,7 +3233,7 @@
 						{
 							"name": "Update availability",
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",

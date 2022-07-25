@@ -9,25 +9,19 @@ defmodule BokkenWeb.AvailabilityController do
   defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
 
   def show(conn, %{"id" => availability_id}) do
-    availability = Events.get_availability(availability_id)
-
-    if is_nil(availability) do
-      conn
-      |> put_status(:not_found)
-      |> render("error.json", reason: "No such availability")
-    else
-      conn
-      |> put_status(:ok)
-      |> render("show.json", availability: availability)
-    end
-  end
-
-  def index(conn, availability_params) do
-    availability = Events.list_availabilities(availability_params)
+    availability = Events.get_availability!(availability_id)
 
     conn
     |> put_status(:ok)
-    |> render("index.json", availability: availability)
+    |> render("show.json", availability: availability)
+  end
+
+  def index(conn, availability_params) do
+    availabilities = Events.list_availabilities(availability_params, [:mentor])
+
+    conn
+    |> put_status(:ok)
+    |> render("index.json", availabilities: availabilities)
   end
 
   def create(conn, %{
@@ -51,7 +45,7 @@ defmodule BokkenWeb.AvailabilityController do
   end
 
   def update(conn, %{"availability" => availability_params}) when is_mentor(conn) do
-    old_availability = Events.get_availability(availability_params["id"])
+    old_availability = Events.get_availability!(availability_params["id"])
 
     with {:ok, %Availability{} = new_availability} <-
            Events.update_availability(old_availability, availability_params) do
