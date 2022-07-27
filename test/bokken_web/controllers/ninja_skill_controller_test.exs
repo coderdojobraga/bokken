@@ -34,7 +34,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   def valid_guardian do
     %{
       city: "Guimarães",
-      mobile: "915096743",
+      mobile: "+351915096743",
       first_name: "Ana Maria",
       last_name: "Silva Costa"
     }

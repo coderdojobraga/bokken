@@ -308,7 +308,7 @@ defmodule Bokken.CurriculumTest do
       guardian_attrs = %{
         first_name: "João",
         last_name: "Silva",
-        mobile: "912345678"
+        mobile: "+351912345678"
       }
 
       skill_attrs = valid_skill()
