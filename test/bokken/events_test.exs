@@ -52,7 +52,7 @@ defmodule Bokken.EventsTest do
       %{
         first_name: "Ana",
         last_name: "Costa",
-        mobile: "912345678"
+        mobile: "+351912345678"
       }
     end
 

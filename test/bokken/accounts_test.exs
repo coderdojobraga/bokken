@@ -6,13 +6,13 @@ defmodule Bokken.AccountsTest do
   describe "guardians" do
     alias Bokken.Accounts.Guardian
 
-    @update_attrs %{city: "Vizela", mobile: "934568701"}
+    @update_attrs %{city: "Vizela", mobile: "+351934568701"}
     @invalid_attrs %{city: "Guimarães", mobile: nil}
 
     def valid_attr do
       %{
         city: "Braga",
-        mobile: "915096743",
+        mobile: "+351915096743",
         first_name: "Ana Maria",
         last_name: "Silva Costa"
       }
@@ -59,7 +59,7 @@ defmodule Bokken.AccountsTest do
       attrs = attrs()
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
       assert guardian.city == "Braga"
-      assert guardian.mobile == "915096743"
+      assert guardian.mobile == "+351915096743"
     end
 
     test "create_guardian/1 with invalid data returns error changeset" do
@@ -70,7 +70,7 @@ defmodule Bokken.AccountsTest do
       guardian = guardian_fixture()
       assert {:ok, %Guardian{} = guardian} = Accounts.update_guardian(guardian, @update_attrs)
       assert guardian.city == "Vizela"
-      assert guardian.mobile == "934568701"
+      assert guardian.mobile == "+351934568701"
     end
 
     test "update_guardian/2 with invalid data returns error changeset" do

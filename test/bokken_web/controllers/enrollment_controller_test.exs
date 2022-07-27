@@ -7,7 +7,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
 
   @valid_attrs %{
     city: "Braga",
-    mobile: "915096743",
+    mobile: "+351915096743",
     first_name: "Ana Maria",
     last_name: "Silva Costa"
   }
@@ -184,7 +184,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       new_guardian_attrs = %{
         first_name: "Ana",
         last_name: "Maria",
-        mobile: "912345678"
+        mobile: "+351912345678"
       }
 
       new_user_ninja = Accounts.create_user(user_ninja)
