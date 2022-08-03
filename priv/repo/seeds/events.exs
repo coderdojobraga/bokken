@@ -64,6 +64,12 @@ defmodule Bokken.Repo.Seeds.Events do
       _ ->
         Mix.shell().error("Found enrollments, aborting seeding enrollments.")
     end
+
+    case Bokken.Repo.all(Bokken.Events.Availability) do
+      [] -> create_availabilities(7)
+      _ ->
+        Mix.shell().error("Found availabilities, aborting seeding availabilities.")
+    end
   end
 
   def create_locations(names) do
@@ -187,6 +193,24 @@ defmodule Bokken.Repo.Seeds.Events do
         ninja_id: ninja_id,
         accepted: false,
         notes: "First session"
+      }
+    end
+  end
+
+  def create_availabilities(count) do
+    mentors = Bokken.Accounts.list_mentors()
+    events = Bokken.Events.list_events()
+
+    for i <- 1..count do
+      %{id: mentor_id} = Enum.random(mentors)
+      %{id: event_id} = Enum.random(events)
+      is_available? = Enum.random([true, false])
+
+      availability = %{
+        event_id: event_id,
+        mentor_id: mentor_id,
+        is_available?: is_available?,
+        notes: "I'm available, but..."
       }
     end
   end

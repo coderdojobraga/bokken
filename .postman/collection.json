@@ -3095,12 +3095,24 @@
 						},
 						{
 							"name": "Create an enrollment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"enrollment_id = pm.response.json().data.id;",
+											"pm.environment.set(\"enrollment_id\", enrollment_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"enrollment\" : {\n        \"ninja_id\": {{ninja_id}},\n        \"event_id\": {{event_id}},\n        \"accepted\": false\n    }\n}",
+									"raw": "{\n    \"enrollment\" : {\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"accepted\": false\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3114,18 +3126,18 @@
 						{
 							"name": "Update enrollment",
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"enrollment\" : {\n        \"id\": {{enrollment_id}},\n        \"ninja_id\": {{ninja_id}},\n        \"event_id\": {{event_id}},\n        \"accepted\": true\n    }\n}",
+									"raw": "{\n    \"enrollment\" : {\n        \"id\": \"{{enrollment_id}}\",\n        \"ninja_id\": \"{{ninja_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"accepted\": true\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{host}}/api/events/{{event_id}},enrollments/{{enrollment_id}},"
+								"url": "{{host}}/api/events/{{event_id}}enrollments/{{enrollment_id}}"
 							},
 							"response": []
 						},
@@ -3137,6 +3149,105 @@
 								"url": "{{host}}/api/events/{{event_id}}/enrollments/{{enrollment_id}}"
 							},
 							"response": []
+						}
+					]
+				},
+				{
+					"name": "Availability",
+					"item": [
+						{
+							"name": "List the availabilities for an event",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_event);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event_id\": \"{{event_id}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/availabilities",
+								"description":"Lists all the availabilities for a given event."
+							},
+							"response": []
+						},
+						{
+							"name": "Create an availability",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"availability_id = pm.response.json().data.id;",
+											"pm.environment.set(\"availability_id\", availability_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"availability\" : {\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/availabilities",
+								"description": "Sets the availability of a mentor regarding an event."
+							},
+							"response": []
+						},
+						{
+							"name": "Update availability",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"availability\" : {\n        \"id\": \"{{availability_id}}\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{host}}/api/events/{{event_id}}/availabilities/{{availability_id}}",
+								"description": "Updates the availability of a mentor regarding an event."
+							}
+
 						}
 					]
 				}
