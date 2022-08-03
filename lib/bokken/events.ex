@@ -636,10 +636,13 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> list_availabilities(123)
+      iex> list_availabilities([:mentor])
       [%Availability{}, ...]
 
-      iex> list_availabilities()
+      iex> list_availabilities(123, [:mentor, :event])
+      [%Availability{}, ...]
+
+      iex> list_availabilities(123)
       [%Availability{}, ...]
 
   """
