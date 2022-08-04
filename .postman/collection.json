@@ -2087,6 +2087,18 @@
 						},
 						{
 							"name": "Create skill",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"skill_id = pm.response.json().data.id;",
+											"pm.environment.set(\"skill_id\", skill_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2163,7 +2175,18 @@
 							"name": "Show skill",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/skills/{{skill_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"skills",
+										"{{skill_id}}"
+									]
+								}
 							},
 							"response": []
 						}
