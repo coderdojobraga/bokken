@@ -57,7 +57,7 @@ defmodule BokkenWeb.NinjaController do
   end
 
   def show(conn, %{"id" => id}) do
-    ninja = Accounts.get_ninja!(id)
+    ninja = Accounts.get_ninja!(id, [:skills])
     render(conn, "show.json", ninja: ninja)
   end
 

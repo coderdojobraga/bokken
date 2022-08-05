@@ -5,6 +5,7 @@ defmodule Bokken.Accounts.Mentor do
   use Bokken.Schema
 
   alias Bokken.Accounts.{Organizer, Social, User}
+  alias Bokken.Curriculum.{MentorSkill, Skill}
   alias Bokken.Events.{Event, Lecture, LectureMentorAssistant, Team, TeamMentor}
   alias Bokken.Uploaders.Avatar
 
@@ -29,7 +30,7 @@ defmodule Bokken.Accounts.Mentor do
 
     many_to_many :teams, Team, join_through: TeamMentor
     many_to_many :events, Event, join_through: Lecture
-
+    many_to_many :skills, Skill, join_through: MentorSkill
     many_to_many :lectures, Lecture, join_through: LectureMentorAssistant
 
     has_one :organizer, Organizer, on_delete: :delete_all

@@ -1,4 +1,5 @@
 defmodule Bokken.AccountsTest do
+  @moduledoc false
   use Bokken.DataCase
 
   alias Bokken.Accounts

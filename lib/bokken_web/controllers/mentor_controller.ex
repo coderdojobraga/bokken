@@ -35,7 +35,7 @@ defmodule BokkenWeb.MentorController do
   end
 
   def show(conn, %{"id" => id}) do
-    mentor = Accounts.get_mentor!(id)
+    mentor = Accounts.get_mentor!(id, [:skills])
     render(conn, "show.json", mentor: mentor)
   end
 
