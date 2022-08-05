@@ -7,7 +7,7 @@ defmodule Bokken.Curriculum.Skill do
   @required_fields [:name, :description]
 
   schema "skills" do
-    field :name, :citext
+    field :name, :string
     field :description, :string
 
     timestamps()
