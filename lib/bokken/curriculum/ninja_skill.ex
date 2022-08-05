@@ -1,10 +1,11 @@
 defmodule Bokken.Curriculum.NinjaSkill do
   @moduledoc """
-  User (ninja / mentor) and skill join table
+  Ninja and Skill join table
   """
   use Bokken.Schema
 
-  alias Bokken.Accounts.{Ninja, Skill}
+  alias Bokken.Accounts.Ninja
+  alias Bokken.Curriculum.Skill
 
   @required_fields [:skill_id, :ninja_id]
 

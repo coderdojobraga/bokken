@@ -969,6 +969,18 @@
 					"item": [
 						{
 							"name": "Skills",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"mentor_skill_id = pm.response.json().data.id;",
+											"pm.environment.set(\"mentor_skill_id\", mentor_skill_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"item": [
 								{
 									"name": "List all mentor skills",
@@ -997,7 +1009,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"skill\": {{skill_id}}\n}",
+											"raw": "{\n    \"skill\": \"{{skill_id}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1539,12 +1551,19 @@
 								},
 								{
 									"name": "Create ninja skill",
+									"script": {
+										"exec": [
+											"ninja_skill_id = pm.response.json().data.id;",
+											"pm.environment.set(\"ninja_skill_id\", ninja_skill_id);"
+										],
+										"type": "text/javascript"
+									},
 									"request": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"skill\": {{skill_id}}\n}",
+											"raw": "{\n    \"skill\": \"{{skill_id}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
