@@ -40,7 +40,7 @@ defmodule Bokken.Repo.Seeds.Curriculum do
         Mix.shell().error("Found ninja skills, aborting seeding ninja skills.")
     end
 
-    case Bokken.Repo.all(Bokken.Accounts.MentorSkill) do
+    case Bokken.Repo.all(Bokken.Curriculum.MentorSkill) do
       [] ->
         create_mentor_skills(Bokken.Repo.all(Bokken.Curriculum.Skill),
           Bokken.Repo.all(Bokken.Accounts.Mentor))
