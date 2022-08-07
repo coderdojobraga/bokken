@@ -37,6 +37,7 @@ case ${1:-start} in
     display_version "${VERSION}" "${PROGRAM}"
     ;;
   start)
+    load_env_file .env.dev
     mix phx.server
     ;;
   *)
