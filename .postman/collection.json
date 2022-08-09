@@ -969,18 +969,6 @@
 					"item": [
 						{
 							"name": "Skills",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_skill_id = pm.response.json().data.id;",
-											"pm.environment.set(\"mentor_skill_id\", mentor_skill_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
 							"item": [
 								{
 									"name": "List all mentor skills",
@@ -1004,6 +992,18 @@
 								},
 								{
 									"name": "Create mentor skill",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"mentor_skill_id = pm.response.json().data.id;",
+													"pm.environment.set(\"mentor_skill_id\", mentor_skill_id);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "POST",
 										"header": [],
@@ -1424,6 +1424,18 @@
 						},
 						{
 							"name": "Create a valid Guardian",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"guardian_id = pm.response.json().data.id;",
+											"pm.environment.set(\"guardian_id\", guardian_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -1832,6 +1844,16 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"ninja_id = pm.response.json().data.id;",
+											"pm.environment.set(\"ninja_id\", ninja_id);"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -1940,7 +1962,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"organizer_id = pm.response.json().data.id;",
+											"pm.environment.set(\"organizer_id\", organizer_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2274,9 +2297,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
-											"",
-											"pm.environment.set(\"badge_id\", id);"
+											"event_id = pm.response.json().data.id;",
+											"pm.environment.set(\"event_id\", event_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -2709,9 +2731,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
-											"",
-											"pm.environment.set(\"team_id\", id);"
+											"team_id = pm.response.json().id;",
+											"pm.environment.set(\"team_id\", team_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -3392,7 +3413,6 @@
 									"script": {
 										"exec": [
 											"event_id = pm.response.json().data.id",
-											"",
 											"pm.environment.set(\"event_id\", event_id);"
 										],
 										"type": "text/javascript"
@@ -3404,7 +3424,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"spots_available\": \"{{$randomInt}}\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"spots_available\": \"{{$randomInt}}\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\",\n        \"enrollments_open\":\"{{$isoTimestamp}}\",\n        \"enrollments_close\": \"{{$isoTimestamp}}\"\n    }         \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3622,19 +3642,6 @@
 					"item": [
 						{
 							"name": "List lectures",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"lecture_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"lecture_id\", lecture_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3708,7 +3715,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"lecture_id = pm.response.json().data.id",
+											"pm.environment.set(\"lecture_id\", lecture_id);"
 										],
 										"type": "text/javascript"
 									}
@@ -4522,9 +4530,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
-											"",
-											"pm.environment.set(\"file_id\", id);"
+											"file_id = pm.response.json().data.id",
+											"pm.environment.set(\"file_id\", file_id);"
 										],
 										"type": "text/javascript"
 									}
