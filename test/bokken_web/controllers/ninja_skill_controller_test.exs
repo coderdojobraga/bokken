@@ -106,8 +106,33 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       |> Map.put(:user_id, new_user.id)
 
     {:ok, new_guardian} = Accounts.create_guardian(guardian)
-
     new_guardian
+  end
+
+  def ninja_guardian_attrs do
+    ninja_user = valid_ninja_user()
+    {:ok, new_ninja_user} = Accounts.create_user(ninja_user)
+    guardian_user = valid_guardian_user()
+    {:ok, new_guardian_user} = Accounts.create_user(guardian_user)
+
+    guardian =
+      valid_guardian()
+      |> Map.put(:user_id, new_guardian_user.id)
+
+    {:ok, new_guardian} = Accounts.create_guardian(guardian)
+
+    ninja =
+      valid_ninja()
+      |> Map.put(:user_id, new_ninja_user.id)
+      |> Map.put(:guardian_id, new_guardian.id)
+
+    {:ok, new_ninja} = Accounts.create_ninja(ninja)
+
+    guardian
+    |> Map.put(:user_id, new_guardian_user.id)
+    |> Map.put(:email, new_guardian_user.email)
+    |> Map.put(:password, new_guardian_user.password)
+    |> Map.put(:ninja, new_ninja)
   end
 
   # Create a skill
@@ -286,6 +311,154 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
         |> put_req_header("authorization", "Bearer #{jwt}")
         |> put_req_header("user_id", "#{ninja_attrs[:user_id]}")
         |> assign(:ninja, ninja_attrs[:ninja].id)
+
+      {:ok, conn: conn}
+    end
+  end
+
+  describe "logged in as ninja's guardian" do
+    setup [:login_as_ninja_guardian]
+
+    test "create a ninja skill succeeds", %{
+      conn: conn,
+      skill: skill
+    } do
+      ninja_id = conn.assigns.ninja_id
+
+      conn =
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja_id), %{
+          "skill" => skill.id,
+          "ninja_id" => ninja_id
+        })
+
+      assert %{
+               "id" => _id,
+               "name" => _name,
+               "description" => _description
+             } = json_response(conn, 201)["data"]
+    end
+
+    test "delete a ninja skill succeeds", %{
+      conn: conn,
+      skill: skill
+    } do
+      ninja_id = conn.assigns.ninja_id
+
+      conn =
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja_id), %{
+          "skill" => skill.id,
+          "ninja_id" => ninja_id
+        })
+
+      assert %{
+               "id" => skill_id,
+               "name" => _name,
+               "description" => _description
+             } = json_response(conn, 201)["data"]
+
+      conn =
+        delete(
+          conn,
+          Routes.ninja_skill_path(conn, :delete, ninja_id, skill_id)
+        )
+
+      conn =
+        get(
+          conn,
+          Routes.ninja_skill_path(conn, :index, ninja_id)
+        )
+
+      assert [] = json_response(conn, 200)["data"]
+    end
+
+    defp login_as_ninja_guardian(%{conn: conn}) do
+      guardian_attrs = ninja_guardian_attrs()
+
+      {:ok, guardian_user} =
+        Accounts.authenticate_user(guardian_attrs.email, guardian_attrs.password)
+
+      {:ok, jwt, _claims} =
+        Authorization.encode_and_sign(guardian_user, %{
+          role: guardian_user.role,
+          active: guardian_user.active
+        })
+
+      conn =
+        conn
+        |> Authorization.Plug.sign_out()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> put_req_header("user_id", "#{guardian_attrs[:user_id]}")
+        |> assign(:ninja_id, guardian_attrs[:ninja].id)
+
+      {:ok, conn: conn}
+    end
+  end
+
+  describe "logged in as another guardian" do
+    setup [:login_as_another_guardian]
+
+    test "create a ninja skill succeeds", %{
+      conn: conn,
+      skill: skill
+    } do
+      ninja_id = conn.assigns.ninja_id
+
+      conn =
+        post(conn, Routes.ninja_skill_path(conn, :create, conn.assigns.ninja_id), %{
+          "skill" => skill.id,
+          "ninja_id" => ninja_id
+        })
+
+      assert conn.status == 401
+    end
+
+    test "delete a ninja skill succeeds", %{
+      conn: conn,
+      skill: skill
+    } do
+      ninja_id = conn.assigns.ninja_id
+
+      conn =
+        delete(
+          conn,
+          Routes.ninja_skill_path(conn, :delete, ninja_id, skill.id)
+        )
+
+      assert conn.status == 401
+    end
+
+    defp login_as_another_guardian(%{conn: conn}) do
+      ninja_attrs = ninja_attrs()
+
+      guardian_user = %{
+        email: "guardian2@mail.com",
+        password: "password1234",
+        role: "guardian"
+      }
+
+      {:ok, new_user} = Accounts.create_user(guardian_user)
+
+      guardian =
+        valid_guardian()
+        |> Map.put(:user_id, new_user.id)
+
+      {:ok, _new_guardian} = Accounts.create_guardian(guardian)
+
+      {:ok, guardian_user} =
+        Accounts.authenticate_user(guardian_user.email, guardian_user.password)
+
+      {:ok, jwt, _claims} =
+        Authorization.encode_and_sign(guardian_user, %{
+          role: guardian_user.role,
+          active: guardian_user.active
+        })
+
+      conn =
+        conn
+        |> Authorization.Plug.sign_out()
+        |> put_req_header("authorization", "Bearer #{jwt}")
+        |> put_req_header("user_id", "#{guardian[:user_id]}")
+        |> assign(:ninja_id, ninja_attrs[:ninja].id)
 
       {:ok, conn: conn}
     end
