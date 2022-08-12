@@ -185,15 +185,18 @@ defmodule Bokken.Repo.Seeds.Events do
     ninjas = Bokken.Accounts.list_ninjas()
     events = Bokken.Events.list_events()
 
-    for i <- 1..count do
+    for _ <- 1..count do
       %{id: ninja_id} = Enum.random(ninjas)
-      %{id: event_id}  = Enum.random(events);
-      enrollment = %{
+      event = %{id: event_id} = Enum.random(events)
+
+      enrollment_attrs = %{
         event_id: event_id,
         ninja_id: ninja_id,
         accepted: false,
         notes: "First session"
       }
+
+      Bokken.Events.create_enrollment(event, enrollment_attrs)
     end
   end
 
@@ -201,17 +204,19 @@ defmodule Bokken.Repo.Seeds.Events do
     mentors = Bokken.Accounts.list_mentors()
     events = Bokken.Events.list_events()
 
-    for i <- 1..count do
+    for _ <- 1..count do
       %{id: mentor_id} = Enum.random(mentors)
-      %{id: event_id} = Enum.random(events)
+      event = %{id: event_id} = Enum.random(events)
       is_available? = Enum.random([true, false])
 
-      availability = %{
+      availability_attrs = %{
         event_id: event_id,
         mentor_id: mentor_id,
         is_available?: is_available?,
         notes: "I'm available, but..."
       }
+
+      Bokken.Events.create_availability(event, availability_attrs)
     end
   end
 
