@@ -1,11 +1,13 @@
 defmodule BokkenWeb.SkillController do
   use BokkenWeb, :controller
 
+  alias Bokken.Accounts
   alias Bokken.Curriculum
   alias Bokken.Curriculum.{MentorSkill, NinjaSkill, Skill}
 
   action_fallback BokkenWeb.FallbackController
 
+  defguard is_guardian(conn) when conn.assigns.current_user.role === :guardian
   defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
   defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
   defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
@@ -43,6 +45,25 @@ defmodule BokkenWeb.SkillController do
       conn
       |> put_status(:created)
       |> render("show.json", skill: skill(ninja_skill))
+    end
+  end
+
+  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id}) when is_guardian(conn) do
+    if is_guardian_of_ninja?(conn.assigns.current_user.guardian, ninja_id) do
+      ninja_skill_attrs = %{
+        skill_id: skill_id,
+        ninja_id: ninja_id
+      }
+
+      with {:ok, %NinjaSkill{} = ninja_skill} <- Curriculum.create_ninja_skill(ninja_skill_attrs) do
+        conn
+        |> put_status(:created)
+        |> render("show.json", skill: skill(ninja_skill))
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> render("error.json", reason: "You're not the ninja's guardian")
     end
   end
 
@@ -119,7 +140,35 @@ defmodule BokkenWeb.SkillController do
     end
   end
 
+  def delete(conn, %{"id" => skill_id, "ninja_id" => ninja_id}) when is_guardian(conn) do
+    params = %{
+      "ninja_id" => ninja_id,
+      "skill_id" => skill_id
+    }
+
+    if is_guardian_of_ninja?(conn.assigns.current_user.guardian, ninja_id) do
+      if Curriculum.ninja_has_skill?(params) do
+        with {1, nil} <- Curriculum.delete_ninja_skill(params) do
+          send_resp(conn, :no_content, "")
+        end
+      else
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", reason: "Ninja doesn't have that skill")
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> render("error.json", reason: "You're not the ninja's guardian")
+    end
+  end
+
   defp skill(user_skill) do
     Curriculum.get_skill!(user_skill.skill_id)
+  end
+
+  defp is_guardian_of_ninja?(guardian, ninja_id) do
+    ninja = Accounts.get_ninja!(ninja_id)
+    ninja.guardian_id == guardian.id
   end
 end

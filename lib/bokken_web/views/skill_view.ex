@@ -11,6 +11,10 @@ defmodule BokkenWeb.SkillView do
     %{data: render_one(skill, SkillView, "skill.json")}
   end
 
+  def render("error.json", %{reason: reason}) do
+    %{error: reason}
+  end
+
   def render("skill.json", %{skill: skill}) do
     %{
       id: skill.id,
