@@ -5087,7 +5087,7 @@
 							"        throw new Error(`Check console logs.`);",
 							"    }",
 							"",
-							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1].split(\";\")[0];",
 							"",
 							"    pm.environment.set(\"token\", token);",
 							"});",
