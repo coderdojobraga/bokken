@@ -7,11 +7,11 @@ defmodule Bokken.Events.Availability do
   alias Bokken.Accounts.Mentor
   alias Bokken.Events.Event
 
-  @required_fields [:is_available?, :mentor_id, :event_id]
+  @required_fields [:is_available, :mentor_id, :event_id]
   @optional_fields [:notes]
 
   schema "availability" do
-    field :is_available?, :boolean, default: false
+    field :is_available, :boolean, default: false
     field :notes, :string
 
     belongs_to :event, Event
