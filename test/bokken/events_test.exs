@@ -262,7 +262,7 @@ defmodule Bokken.EventsTest do
       {:ok, new_event} = Events.create_event(event)
 
       %{
-        is_available?: true
+        is_available: true
       }
       |> Map.put(:mentor_id, new_mentor.id)
       |> Map.put(:event_id, new_event.id)
@@ -327,14 +327,14 @@ defmodule Bokken.EventsTest do
     test "update_availability/2 updates existing availability" do
       availability = availability()
 
-      assert Events.update_availability(availability, %{is_available?: true}) ==
-               {:ok, Map.put(availability, :is_available?, true)}
+      assert Events.update_availability(availability, %{is_available: true}) ==
+               {:ok, Map.put(availability, :is_available, true)}
     end
 
     test "update_availability/2 fails if the new value is not valid" do
       availability = availability()
 
-      assert elem(Events.update_availability(availability, %{is_available?: nil}), 0) == :error
+      assert elem(Events.update_availability(availability, %{is_available: nil}), 0) == :error
     end
 
     test "update_availability/1 fails if the availability does not exist" do
@@ -342,7 +342,7 @@ defmodule Bokken.EventsTest do
 
       assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
         Events.update_availability(Map.put(availability, :id, Ecto.UUID.generate()), %{
-          is_available?: false
+          is_available: false
         })
       end
     end
