@@ -667,7 +667,9 @@ defmodule Bokken.Accounts do
 
   """
   def verify_user_email(email) do
-    user = get_user(email: email)
+    user =
+      get_user(email: email)
+      |> Repo.preload([:guardian, :organizer, :mentor, :ninja])
 
     if is_nil(user) do
       {:error, :not_found}

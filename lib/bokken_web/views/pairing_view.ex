@@ -5,11 +5,16 @@ defmodule BokkenWeb.PairingView do
   alias BokkenWeb.PairingView
   
   def render("index.json", %{lectures: lectures}) do
-    IO.inspect lectures
     %{data: render_many(lectures, PairingView, "pairing.json")}
   end
 
-  def render("pairing.json", %{lecture: lecture}) do
-    %{event_id: lecture.event_id}
+  def render("pairing.json", %{pairing: lecture}) do
+    %{
+      event_id: lecture.event_id,
+      mentor_id: lecture.mentor_id,
+      ninja_id: lecture.ninja_id,
+      notes: lecture.notes,
+      attendance: lecture.attendance
+    }
   end
 end

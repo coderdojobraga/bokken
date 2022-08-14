@@ -11,19 +11,6 @@ defmodule BokkenWeb.PairingController do
     |> render("index.json", lectures: lectures)
   end
 
-  # def show(conn, %{"id" => availability_id}) do
-  #   availability = Events.get_availability!(availability_id)
-
-  #   conn
-  #   |> put_status(:ok)
-  #   |> render("show.json", availability: availability)
-  # end
-  #
-  # def show(conn, %{"id" => availability_id}) do
-  # availability = Events.get_availability!(availability_id)
-
-  # conn
-  # |> put_status(:ok)
-  # |> render("show.json", availability: availability)
+  # def create(conn, %{"event_id" => event_id}) do
   # end
 end
