@@ -207,12 +207,12 @@ defmodule Bokken.Repo.Seeds.Events do
     for _ <- 1..count do
       %{id: mentor_id} = Enum.random(mentors)
       event = %{id: event_id} = Enum.random(events)
-      is_available? = Enum.random([true, false])
+      is_available = Enum.random([true, false])
 
       availability_attrs = %{
         event_id: event_id,
         mentor_id: mentor_id,
-        is_available?: is_available?,
+        is_available: is_available,
         notes: "I'm available, but..."
       }
 
