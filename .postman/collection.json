@@ -4405,7 +4405,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"availability\" : {\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available\": \"{{$randomBoolean}}\"\n    }\n}",
+									"raw": "{\n    \"availability\" : {\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4424,7 +4424,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"availability\" : {\n        \"id\": \"{{availability_id}}\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available\": \"{{$randomBoolean}}\"\n    }\n}",
+									"raw": "{\n    \"availability\" : {\n        \"id\": \"{{availability_id}}\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
