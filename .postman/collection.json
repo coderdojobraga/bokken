@@ -1727,7 +1727,7 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/9a5ec45b-a6fe-49fa-842e-49254aa5536f",
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{skill_id}}",
 											"host": [
 												"{{host}}"
 											],
@@ -1736,7 +1736,7 @@
 												"ninjas",
 												"{{ninja_id}}",
 												"skills",
-												"9a5ec45b-a6fe-49fa-842e-49254aa5536f"
+												"{{skill_id}}"
 											]
 										}
 									},
@@ -3092,14 +3092,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/teams/",
+									"raw": "{{host}}/api/teams",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"teams",
-										""
+										"teams"
 									]
 								},
 								"description": "Request that creates a new team."
@@ -4440,14 +4439,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/lectures/6fae868f-c214-440d-a03a-a20d1881f3be",
+									"raw": "{{host}}/api/lectures/{{lecture_id}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"lectures",
-										"6fae868f-c214-440d-a03a-a20d1881f3be"
+										"{{lecture_id}}"
 									]
 								},
 								"description": "Changing one lecture."
