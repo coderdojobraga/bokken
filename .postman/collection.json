@@ -15,66 +15,41 @@
 					"item": [
 						{
 							"name": "Sign up",
-							"event": [
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Sign up status is Created\", function(){",
-											"    pm.response.to.have.status(201);",
-											"});",
-											"",
-											"pm.test(\"Token with set-cookie is present\", function () {",
-											"    pm.response.to.have.header(\"set-cookie\");",
-											"});",
-											"",
-											"pm.test(\"User is not registered\", function () {",
-											"    pm.expect(pm.response.json().registered).to.eql(false);",
-											"});",
-											"",
-											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
-											"pm.environment.set(\"token\", token);",
-											"",
-											"user_id = pm.response.json().id;",
-											"pm.environment.set(\"user_id\", user_id);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"name": "Sign up as a Mentor",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_up",
-									"host": [
-										"{{host}}"
 									],
-									"path": [
-										"api",
-										"auth",
-										"sign_up"
-									]
-								},
-								"description": "The signup sets an auth cookie in all the following requests."
-							},
-							"response": [
-								{
-									"name": "Sign up",
-									"originalRequest": {
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -96,48 +71,516 @@
 												"auth",
 												"sign_up"
 											]
-										}
+										},
+										"description": "The signup sets an auth cookie in all the following requests."
 									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
+									"response": [
 										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
+											"name": "Sign up as a Mentor",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "cache-control",
+													"value": "max-age=0, private, must-revalidate"
+												},
+												{
+													"key": "content-length",
+													"value": "151"
+												},
+												{
+													"key": "content-type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "date",
+													"value": "Wed, 26 May 2021 15:24:06 GMT"
+												},
+												{
+													"key": "server",
+													"value": "Cowboy"
+												},
+												{
+													"key": "x-request-id",
+													"value": "FoKnMUCp4EEukywAAAAk"
+												},
+												{
+													"key": "set-cookie",
+													"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUTBOakU0TkRjc0ltbGhkQ0k2TVRZeU1qQTBNalkwTnl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2lZelppWlRVd1kyRXROVEkyTlMwME9EWTVMV0V3TnpJdFlXVm1aR1ZpTlRJM1lqUTFJaXdpYm1KbUlqb3hOakl5TURReU5qUTJMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVpHTmhOalV4TWpRdE0yVTBPQzAwT0RFM0xUazFNbUl0TVRSak1EUXpZamMzT0dWaUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLmZNZW1neFBEdGdHR1ZjMnhBbXA0R2xKbnV2b01zNkRUcThjZkJMLTlCeDNuWUprRzh6SEIyWFZKYktTUzBfamhmMzNsNWlrREdQWFNkQ1FIMGc2d0pB.qzMEtQ9ilri4BvJ_MIXhHNMlOTyIo4OhSyb6Wwnbr80; path=/; secure; HttpOnly; SameSite=None"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Maximillia.Bartell@yahoo.com\",\n    \"id\": \"dca65124-3e48-4817-952b-14c043b778eb\",\n    \"registered\": false,\n    \"role\": \"mentor\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Ninja",
+									"event": [
 										{
-											"key": "content-length",
-											"value": "151"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Wed, 26 May 2021 15:24:06 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoKnMUCp4EEukywAAAAk"
-										},
-										{
-											"key": "set-cookie",
-											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUTBOakU0TkRjc0ltbGhkQ0k2TVRZeU1qQTBNalkwTnl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2lZelppWlRVd1kyRXROVEkyTlMwME9EWTVMV0V3TnpJdFlXVm1aR1ZpTlRJM1lqUTFJaXdpYm1KbUlqb3hOakl5TURReU5qUTJMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVpHTmhOalV4TWpRdE0yVTBPQzAwT0RFM0xUazFNbUl0TVRSak1EUXpZamMzT0dWaUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLmZNZW1neFBEdGdHR1ZjMnhBbXA0R2xKbnV2b01zNkRUcThjZkJMLTlCeDNuWUprRzh6SEIyWFZKYktTUzBfamhmMzNsNWlrREdQWFNkQ1FIMGc2d0pB.qzMEtQ9ilri4BvJ_MIXhHNMlOTyIo4OhSyb6Wwnbr80; path=/; secure; HttpOnly; SameSite=None"
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"cookie": [],
-									"body": "{\n    \"active\": false,\n    \"email\": \"Maximillia.Bartell@yahoo.com\",\n    \"id\": \"dca65124-3e48-4817-952b-14c043b778eb\",\n    \"registered\": false,\n    \"role\": \"mentor\",\n    \"verified\": false\n}"
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"ninja\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Ninja",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"ninja\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": null,
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jaunita86@yahoo.com\",\n    \"id\": \"fcd9060b-a7d3-41d3-8369-7a682a337d4a\",\n    \"registered\": false,\n    \"role\": \"ninja\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Guardian",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"guardian\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Guardian",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"guardian\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": null,
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jerrold46@yahoo.com\",\n    \"id\": \"34de2974-40a3-4b35-9b50-2567c4af303a\",\n    \"registered\": false,\n    \"role\": \"guardian\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Organizer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Organizer",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": null,
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jacinthe94@hotmail.com\",\n    \"id\": \"a567a769-0f93-4066-8bf9-c542c816b2f6\",\n    \"registered\": false,\n    \"role\": \"organizer\",\n    \"verified\": false\n}"
+										}
+									]
 								}
 							]
 						},
 						{
-							"name": "Register Mentor",
+							"name": "Sign in",
+							"item": [
+								{
+									"name": "Sign in as a Mentor",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign in status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"user is registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(true);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										},
+										"description": "The signup sets an auth cookie in all the following requests."
+									},
+									"response": [
+										{
+											"name": "Sign in as Mentor (Registered)",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_in",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_in"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "cache-control",
+													"value": "max-age=0, private, must-revalidate"
+												},
+												{
+													"key": "content-length",
+													"value": "358"
+												},
+												{
+													"key": "content-type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "date",
+													"value": "Wed, 26 May 2021 15:24:10 GMT"
+												},
+												{
+													"key": "server",
+													"value": "Cowboy"
+												},
+												{
+													"key": "x-request-id",
+													"value": "FoKnMmCVXZma0mAAAAAi"
+												},
+												{
+													"key": "set-cookie",
+													"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ5leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT25SeWRXVXNJbUYxWkNJNkltSnZhMnRsYmlJc0ltVjRjQ0k2TVRZeU5EUTJNVGcxTVN3aWFXRjBJam94TmpJeU1EUXlOalV4TENKcGMzTWlPaUppYjJ0clpXNGlMQ0pxZEdraU9pSmtaV1JsWkdSak15MWxabVUxTFRRNVlXSXRZVEU1WmkwMU1qRm1NMkZqWWpOalpXSWlMQ0p1WW1ZaU9qRTJNakl3TkRJMk5UQXNJbkp2YkdVaU9pSnRaVzUwYjNJaUxDSnpkV0lpT2lKa1kyRmtZelV6Tnkwek9XVTNMVFF4TURZdFlURXhNUzFqWXpoa056SmlaalJsTWpFaUxDSjBlWEFpT2lKaFkyTmxjM01pZlEuaGFlczlqbDZHMU9ZdzJuTW1ZUnpsTF9GUEFPVWp3SkRmaXFpbExteWEwTGp4LWZQSXVjNG9jbnMteWM3b1dIVV8xUHNRTlJrWTkwSWRHR3p4R3RNRGc.m-I1FfS-vygNBFh_uEWbxGeJhiNG7EzQ7yZY_F7lHUU; path=/; secure; HttpOnly; SameSite=None"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"active\": true,\n    \"birthday\": \"2008-01-24\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"dcadc537-39e7-4106-a111-cc8d72bf4e21\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"ae8a5c03-8462-4380-b226-b83d9cf7c9c9\",\n    \"mobile\": \"+351 911646914\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
+										}
+									]
+								},
+								{
+									"name": "SIgn in as a Guardian",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "SIgn in as a Guardian (Registered)",
+											"originalRequest": {
+												"method": "GET",
+												"header": []
+											},
+											"_postman_previewlanguage": "json",
+											"header": null,
+											"cookie": [],
+											"body": "{\n    \"active\": true,\n    \"city\": \"Santarém\",\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"first_name\": \"Simone\",\n    \"guardian_id\": \"42560d82-1340-46e3-9c64-68abdf81e1f9\",\n    \"id\": \"92c80a6e-a170-4451-b6bc-fe461e77088a\",\n    \"last_name\": \"de Oliveira\",\n    \"mobile\": \"+351912027905\",\n    \"photo\": \"https://robohash.org/Simone-de Oliveira\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-15T19:16:21\",\n    \"verified\": false\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Register current User (Mentor and Guardian only)",
 							"event": [
 								{
 									"listen": "test",
@@ -151,8 +594,15 @@
 											"    pm.expect(pm.response.json().registered).to.eql(true);",
 											"});",
 											"",
-											"mentor_id = pm.response.json().mentor_id;",
-											"pm.environment.set(\"mentor_id\", mentor_id);",
+											"response = pm.response.json();",
+											"",
+											"if (response.hasOwnProperty(\"mentor_id\")) {",
+											"    pm.environment.set(\"mentor_id\", response.mentor_id);",
+											"}",
+											"",
+											"if (response.hasOwnProperty(\"guardian_id\")) {",
+											"    pm.environment.set(\"guardian_id\", response.guardian_id);",
+											"}",
 											""
 										],
 										"type": "text/javascript"
@@ -292,7 +742,91 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"active\": false,\n    \"birthday\": \"1999-12-19\",\n    \"email\": \"Garrett85@yahoo.com\",\n    \"first_name\": \"Carlos\",\n    \"id\": \"0ee9f8c0-c619-471f-84fe-3cfe209a85ee\",\n    \"last_name\": \"Ribeiro\",\n    \"major\": \"Engenharia Informática\",\n    \"mentor_id\": \"48af0d9e-82f0-451d-93b9-0cf338cc6c8e\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://bokken.di.uminho.pt/uploads/avatars/0ee9f8c0-c619-471f-84fe-3cfe209a85ee/thumb.png?v=63790732356\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": true,\n    \"verified\": false\n}"
+									"body": "{\n    \"active\": false,\n    \"birthday\": \"1999-12-19\",\n    \"email\": \"Sanford63@gmail.com\",\n    \"first_name\": \"Carlos\",\n    \"id\": \"2828fa1e-6fb2-4d85-9980-fe72499febaf\",\n    \"last_name\": \"Ribeiro\",\n    \"major\": \"Engenharia Informática\",\n    \"mentor_id\": \"fbba188a-27d6-4fd7-b1b7-cd67da6c735c\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://robohash.org/Carlos-Ribeiro\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"since\": \"2022-08-16T19:24:37\",\n    \"socials\": [],\n    \"trial\": true,\n    \"verified\": false\n}"
+								},
+								{
+									"name": "Register Guardian",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "user[first_name]",
+													"value": "Carlos",
+													"type": "text"
+												},
+												{
+													"key": "user[last_name]",
+													"value": "Ribeiro",
+													"type": "text"
+												},
+												{
+													"key": "user[photo]",
+													"type": "file",
+													"src": "./.postman/avatar.png"
+												},
+												{
+													"key": "user[mobile]",
+													"value": "+351912345678",
+													"type": "text"
+												},
+												{
+													"key": "user[birthday]",
+													"value": "1999-12-19",
+													"type": "text"
+												},
+												{
+													"key": "user[major]",
+													"value": "Engenharia Informática",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/me",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "454"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Sat, 12 Jun 2021 15:52:35 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FofgnRNUSVQSPmoAAAGE"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"city\": null,\n    \"email\": \"Garfield.Kihn1@hotmail.com\",\n    \"first_name\": \"Carlos\",\n    \"guardian_id\": \"0a7e0a00-75db-49c6-9295-1b54c7c84840\",\n    \"id\": \"9dcea58c-28da-4421-bfcb-d6eb3ebc9bcf\",\n    \"last_name\": \"Ribeiro\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://robohash.org/Carlos-Ribeiro\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-16T19:24:12\",\n    \"verified\": false\n}"
 								}
 							]
 						},
@@ -341,135 +875,6 @@
 								"description": "User signs out from app."
 							},
 							"response": []
-						},
-						{
-							"name": "Sign in",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Sign in status is OK\", function(){",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"pm.test(\"set-cookie is present\", function () {",
-											"    pm.response.to.have.header(\"set-cookie\");",
-											"});",
-											"",
-											"pm.test(\"user is registered\", function () {",
-											"    pm.expect(pm.response.json().registered).to.eql(true);",
-											"});",
-											"",
-											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
-											"pm.environment.set(\"token\", token);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_in",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"sign_in"
-									]
-								},
-								"description": "The signup sets an auth cookie in all the following requests."
-							},
-							"response": [
-								{
-									"name": "Sign in as Registered Mentor",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/sign_in",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"sign_in"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "358"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Wed, 26 May 2021 15:24:10 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoKnMmCVXZma0mAAAAAi"
-										},
-										{
-											"key": "set-cookie",
-											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ5leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT25SeWRXVXNJbUYxWkNJNkltSnZhMnRsYmlJc0ltVjRjQ0k2TVRZeU5EUTJNVGcxTVN3aWFXRjBJam94TmpJeU1EUXlOalV4TENKcGMzTWlPaUppYjJ0clpXNGlMQ0pxZEdraU9pSmtaV1JsWkdSak15MWxabVUxTFRRNVlXSXRZVEU1WmkwMU1qRm1NMkZqWWpOalpXSWlMQ0p1WW1ZaU9qRTJNakl3TkRJMk5UQXNJbkp2YkdVaU9pSnRaVzUwYjNJaUxDSnpkV0lpT2lKa1kyRmtZelV6Tnkwek9XVTNMVFF4TURZdFlURXhNUzFqWXpoa056SmlaalJsTWpFaUxDSjBlWEFpT2lKaFkyTmxjM01pZlEuaGFlczlqbDZHMU9ZdzJuTW1ZUnpsTF9GUEFPVWp3SkRmaXFpbExteWEwTGp4LWZQSXVjNG9jbnMteWM3b1dIVV8xUHNRTlJrWTkwSWRHR3p4R3RNRGc.m-I1FfS-vygNBFh_uEWbxGeJhiNG7EzQ7yZY_F7lHUU; path=/; secure; HttpOnly; SameSite=None"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"active\": true,\n    \"birthday\": \"2008-01-24\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"dcadc537-39e7-4106-a111-cc8d72bf4e21\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"ae8a5c03-8462-4380-b226-b83d9cf7c9c9\",\n    \"mobile\": \"+351 911646914\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
-								}
-							]
 						},
 						{
 							"name": "Verify Account",
@@ -1727,7 +2132,7 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{skill_id}}",
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/9a5ec45b-a6fe-49fa-842e-49254aa5536f",
 											"host": [
 												"{{host}}"
 											],
@@ -1736,7 +2141,7 @@
 												"ninjas",
 												"{{ninja_id}}",
 												"skills",
-												"{{skill_id}}"
+												"9a5ec45b-a6fe-49fa-842e-49254aa5536f"
 											]
 										}
 									},
@@ -3092,13 +3497,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/teams",
+									"raw": "{{host}}/api/teams/",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"teams"
+										"teams",
+										""
 									]
 								},
 								"description": "Request that creates a new team."
@@ -4439,14 +4845,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/lectures/{{lecture_id}}",
+									"raw": "{{host}}/api/lectures/6fae868f-c214-440d-a03a-a20d1881f3be",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"lectures",
-										"{{lecture_id}}"
+										"6fae868f-c214-440d-a03a-a20d1881f3be"
 									]
 								},
 								"description": "Changing one lecture."
