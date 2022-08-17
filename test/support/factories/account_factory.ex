@@ -1,5 +1,7 @@
 defmodule Bokken.Factories.AccountFactory do
-  @moduledoc false
+  @moduledoc """
+  A factory to generate account related structs
+  """
   defmacro __using__(_opts) do
     quote do
       alias Bokken.Accounts.{Guardian, Mentor, Ninja, Organizer, User}
@@ -29,32 +31,27 @@ defmodule Bokken.Factories.AccountFactory do
       end
 
       def mentor_factory do
-        user = build(:user, role: "mentor")
-
         %Mentor{
-          photo: Avatar.image_url(sequence(:photo, &"#{&1}.png")),
+          # photo: Avatar.image_url(sequence(:photo, &"#{&1}.png")),
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           mobile: add_mobile_prefix(Phone.PtPt.cell_number()),
           major: Enum.random(["Software Engineering", "Computer Science"]),
           trial: Enum.random([true, false]),
           birthday: Date.date_of_birth(18..27),
-          user_id: user.id
+          user: build(:user, role: "mentor")
         }
       end
 
       def ninja_factory do
-        guardian = guardian_factory()
-        user = build(:user, role: "ninja")
-
         %Ninja{
-          photo: Avatar.image_url("#{System.unique_integer()}.png"),
+          # photo: Avatar.image_url("#{System.unique_integer()}.png"),
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           birthday: Date.date_of_birth(7..17),
-          belt: Enum.random(Ecto.Enum.values(Accounts.Ninja, :belt)),
-          guardian_id: guardian.id,
-          user_id: user.id
+          belt: Enum.random(Ecto.Enum.values(Ninja, :belt)),
+          guardian: build(:guardian),
+          user: build(:user)
         }
       end
 
