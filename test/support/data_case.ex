@@ -17,6 +17,8 @@ defmodule Bokken.DataCase do
 
   alias Ecto.Adapters.SQL
 
+  import Bokken.Factory
+
   using do
     quote do
       alias Bokken.Repo

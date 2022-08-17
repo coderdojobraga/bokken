@@ -1,37 +1,11 @@
 defmodule Bokken.AccountsTest do
   @moduledoc false
   use Bokken.DataCase
-  import Bokken.Factory
 
   alias Bokken.Accounts
 
   describe "guardians" do
     alias Bokken.Accounts.Guardian
-
-    def valid_attr do
-      %{
-        city: "Braga",
-        mobile: "+351915096743",
-        first_name: "Ana Maria",
-        last_name: "Silva Costa"
-      }
-    end
-
-    def valid_user do
-      %{
-        email: "anacosta@gmail.com",
-        password: "guardian123",
-        role: "guardian"
-      }
-    end
-
-    def attrs do
-      valid_attrs = valid_attr()
-      user = valid_user()
-      new_user = Accounts.create_user(user)
-      user_id = elem(new_user, 1).id
-      Map.put(valid_attrs, :user_id, user_id)
-    end
 
     test "list_guardians/0 returns all guardians" do
       guardian = insert(:guardian)
