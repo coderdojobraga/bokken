@@ -1,14 +1,12 @@
 defmodule Bokken.AccountsTest do
   @moduledoc false
   use Bokken.DataCase
+  import Bokken.Factory
 
   alias Bokken.Accounts
 
   describe "guardians" do
     alias Bokken.Accounts.Guardian
-
-    @update_attrs %{city: "Vizela", mobile: "+351934568701"}
-    @invalid_attrs %{city: "Guimarães", mobile: nil}
 
     def valid_attr do
       %{
@@ -35,62 +33,56 @@ defmodule Bokken.AccountsTest do
       Map.put(valid_attrs, :user_id, user_id)
     end
 
-    def guardian_fixture(atributes \\ %{}) do
-      valid_attrs = attrs()
-
-      {:ok, guardian} =
-        atributes
-        |> Enum.into(valid_attrs)
-        |> Accounts.create_guardian()
-
-      guardian
-    end
-
     test "list_guardians/0 returns all guardians" do
-      guardian = guardian_fixture()
-      assert Accounts.list_guardians() == [guardian]
+      guardian = insert(:guardian)
+
+      assert Accounts.list_guardians()
+             |> Repo.preload(:user) == [guardian]
     end
 
     test "get_guardian!/1 returns the guardian with given id" do
-      guardian = guardian_fixture()
-      assert Accounts.get_guardian!(guardian.id) == guardian
+      guardian = insert(:guardian)
+      assert Accounts.get_guardian!(guardian.id, [:user]) == guardian
     end
 
     test "create_guardian/1 with valid data creates a guardian" do
-      attrs = attrs()
+      attrs = params_with_assocs(:guardian)
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
-      assert guardian.city == "Braga"
-      assert guardian.mobile == "+351915096743"
+      assert guardian.user_id == attrs.user_id
     end
 
     test "create_guardian/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_guardian(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.create_guardian(params_for(:guardian, mobile: nil))
     end
 
     test "update_guardian/2 with valid data updates the guardian" do
-      guardian = guardian_fixture()
-      assert {:ok, %Guardian{} = guardian} = Accounts.update_guardian(guardian, @update_attrs)
-      assert guardian.city == "Vizela"
-      assert guardian.mobile == "+351934568701"
+      guardian = insert(:guardian)
+      new_attrs = params_for(:guardian)
+
+      assert {:ok, %Guardian{} = guardian} = Accounts.update_guardian(guardian, new_attrs)
+
+      assert guardian.city == new_attrs[:city]
+      assert guardian.mobile == new_attrs[:mobile]
     end
 
     test "update_guardian/2 with invalid data returns error changeset" do
-      guardian = guardian_fixture()
+      guardian = insert(:guardian)
 
-      assert {:error, %Ecto.Changeset{} = _error} =
-               Accounts.update_guardian(guardian, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_guardian(guardian, params_for(:guardian, city: "invalid"))
 
-      assert guardian == Accounts.get_guardian!(guardian.id)
+      assert guardian == Accounts.get_guardian!(guardian.id, [:user])
     end
 
     test "delete_guardian/1 deletes the guardian" do
-      guardian = guardian_fixture()
+      guardian = insert(:guardian)
       assert {:ok, %Guardian{}} = Accounts.delete_guardian(guardian)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_guardian!(guardian.id) end
     end
 
     test "change_guardian/1 returns a guardian changeset" do
-      guardian = guardian_fixture()
+      guardian = build(:guardian)
       assert %Ecto.Changeset{} = Accounts.change_guardian(guardian)
     end
   end
