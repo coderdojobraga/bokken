@@ -40,14 +40,9 @@ defmodule Bokken.Factories.EventFactory do
         enrollments_open = DateTime.backward(10)
         enrollments_close = DateTime.forward(10)
 
-        start_time =
-          enrollments_close
-          |> DateTime.add(5 * 24 * 60 * 60, :second)
-          |> Map.put(hour: 9, minute: 30, second: 0)
+        start_time = %{enrollments_close | hour: 9, minute: 30}
 
-        end_time =
-          start_time
-          |> Map.put(hour: 12, minute: 30, second: 0)
+        end_time = %{start_time | hour: 12, minute: 30}
 
         %Event{
           title: Lorem.Shakespeare.hamlet(),
