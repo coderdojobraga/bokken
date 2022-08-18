@@ -23,6 +23,8 @@ defmodule Bokken.AccountsTest do
       attrs = params_with_assocs(:guardian)
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
       assert guardian.user_id == attrs.user_id
+      assert guardian.mobile == attrs.mobile
+      assert guardian.user_id == attrs.user_id
     end
 
     test "create_guardian/1 with invalid data returns error changeset" do
