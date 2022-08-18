@@ -9,12 +9,12 @@ defmodule Bokken.GamificationTest do
     @invalid_attrs %{description: nil, image: nil, name: nil}
 
     test "list_badges/0 returns all badges" do
-      badge = FileUploadStrategy.insert_with_file_upload(%Badge{})
+      badge = insert_with_file_upload(:badge)
       assert Gamification.list_badges() == [badge]
     end
 
     test "get_badge!/1 returns the badge with given id" do
-      badge = FileUploadStrategy.insert_with_file_upload(%Badge{})
+      badge = insert_with_file_upload(:badge)
       assert Gamification.get_badge!(badge.id) == badge
     end
 
@@ -31,7 +31,7 @@ defmodule Bokken.GamificationTest do
     end
 
     test "update_badge/2 with valid data updates the badge" do
-      badge = FileUploadStrategy.insert_with_file_upload(%Badge{})
+      badge = insert_with_file_upload(:badge)
 
       update_attrs = params_for(:badge)
 
@@ -41,13 +41,13 @@ defmodule Bokken.GamificationTest do
     end
 
     test "update_badge/2 with invalid data returns error changeset" do
-      badge = FileUploadStrategy.insert_with_file_upload(%Badge{})
+      badge = insert_with_file_upload(:badge)
       assert {:error, %Ecto.Changeset{}} = Gamification.update_badge(badge, @invalid_attrs)
       assert badge == Gamification.get_badge!(badge.id)
     end
 
     test "delete_badge/1 deletes the badge" do
-      badge = FileUploadStrategy.insert_with_file_upload(%Badge{})
+      badge = insert_with_file_upload(:badge)
       assert {:ok, %Badge{}} = Gamification.delete_badge(badge)
       assert_raise Ecto.NoResultsError, fn -> Gamification.get_badge!(badge.id) end
     end

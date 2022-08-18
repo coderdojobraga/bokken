@@ -2,6 +2,7 @@ defmodule Bokken.Factory do
   @moduledoc false
   use ExMachina.Ecto, repo: Bokken.Repo
 
+  use Bokken.FileUploadStrategy
   use Bokken.Factories.AccountFactory
   use Bokken.Factories.CurriculumFactory
   use Bokken.Factories.GamificationFactory

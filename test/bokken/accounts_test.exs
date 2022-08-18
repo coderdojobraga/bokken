@@ -8,14 +8,14 @@ defmodule Bokken.AccountsTest do
     alias Bokken.Accounts.Guardian
 
     test "list_guardians/0 returns all guardians" do
-      guardian = insert(:guardian)
+      guardian = insert_with_file_upload(:guardian)
 
       assert Accounts.list_guardians()
              |> Repo.preload(:user) == [guardian]
     end
 
     test "get_guardian!/1 returns the guardian with given id" do
-      guardian = insert(:guardian)
+      guardian = insert_with_file_upload(:guardian)
       assert Accounts.get_guardian!(guardian.id, [:user]) == guardian
     end
 
@@ -31,7 +31,7 @@ defmodule Bokken.AccountsTest do
     end
 
     test "update_guardian/2 with valid data updates the guardian" do
-      guardian = insert(:guardian)
+      guardian = insert_with_file_upload(:guardian)
       new_attrs = params_for(:guardian)
 
       assert {:ok, %Guardian{} = guardian} = Accounts.update_guardian(guardian, new_attrs)
@@ -41,7 +41,7 @@ defmodule Bokken.AccountsTest do
     end
 
     test "update_guardian/2 with invalid data returns error changeset" do
-      guardian = insert(:guardian)
+      guardian = insert_with_file_upload(:guardian)
 
       assert {:error, %Ecto.Changeset{}} =
                Accounts.update_guardian(guardian, params_for(:guardian, city: "invalid"))
@@ -50,7 +50,7 @@ defmodule Bokken.AccountsTest do
     end
 
     test "delete_guardian/1 deletes the guardian" do
-      guardian = insert(:guardian)
+      guardian = insert_with_file_upload(:guardian)
       assert {:ok, %Guardian{}} = Accounts.delete_guardian(guardian)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_guardian!(guardian.id) end
     end

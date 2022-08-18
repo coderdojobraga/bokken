@@ -4,9 +4,9 @@ defmodule Bokken.Factories.GamificationFactory do
   """
   defmacro __using__(_opts) do
     quote do
-      alias Bokken.Gamification.{Badge, BadgeNinja}
       alias Bokken.Factories.AccountFactory
-      alias Faker.{Avatar, Lorem, Company.En}
+      alias Faker.{Avatar, Company.En, Lorem}
+      alias Bokken.Gamification.{Badge, BadgeNinja}
 
       def badge_factory do
         %Badge{

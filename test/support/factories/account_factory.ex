@@ -18,40 +18,50 @@ defmodule Bokken.Factories.AccountFactory do
       end
 
       def guardian_factory do
-        user = build(:user, role: "guardian")
-
         %Guardian{
-          # photo: Avatar.image_url(sequence(:photo, &"#{&1}.png")),
+          photo: %Plug.Upload{
+            content_type: "image/png",
+            filename: "badge.png",
+            path: "./priv/faker/images/badge.png"
+          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           mobile: add_mobile_prefix(Phone.PtPt.cell_number()),
           city: Enum.random(Jason.decode!(File.read!("data/pt/cities.json"))),
-          user: user
+          user: build(:user, role: :guardian)
         }
       end
 
       def mentor_factory do
         %Mentor{
-          # photo: Avatar.image_url(sequence(:photo, &"#{&1}.png")),
+          photo: %Plug.Upload{
+            content_type: "image/png",
+            filename: "badge.png",
+            path: "./priv/faker/images/badge.png"
+          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           mobile: add_mobile_prefix(Phone.PtPt.cell_number()),
           major: Enum.random(["Software Engineering", "Computer Science"]),
           trial: Enum.random([true, false]),
           birthday: Date.date_of_birth(18..27),
-          user: build(:user, role: "mentor")
+          user: build(:user, role: :mentor)
         }
       end
 
       def ninja_factory do
         %Ninja{
-          # photo: Avatar.image_url("#{System.unique_integer()}.png"),
+          photo: %Plug.Upload{
+            content_type: "image/png",
+            filename: "badge.png",
+            path: "./priv/faker/images/badge.png"
+          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           birthday: Date.date_of_birth(7..17),
           belt: Enum.random(Ecto.Enum.values(Ninja, :belt)),
           guardian: build(:guardian),
-          user: build(:user)
+          user: build(:user, role: :ninja)
         }
       end
 
@@ -60,8 +70,8 @@ defmodule Bokken.Factories.AccountFactory do
 
         %Organizer{
           champion: Enum.random([true, false]),
-          mentor_id: mentor.id,
-          user_id: mentor.user_id
+          mentor: mentor,
+          user: mentor.user
         }
       end
     end
