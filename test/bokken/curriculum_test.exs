@@ -97,7 +97,7 @@ defmodule Bokken.CurriculumTest do
     end
 
     test "mentor_has_skill?/1 returns correct value" do
-      mentor_skill = insert(:mentor_skill)
+      mentor_skill = insert_with_file_upload(:mentor_skill)
 
       assert Curriculum.mentor_has_skill?(%{
                "mentor_id" => mentor_skill.mentor_id,

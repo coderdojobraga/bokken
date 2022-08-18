@@ -19,11 +19,6 @@ defmodule Bokken.Factories.AccountFactory do
 
       def guardian_factory do
         %Guardian{
-          photo: %Plug.Upload{
-            content_type: "image/png",
-            filename: "badge.png",
-            path: "./priv/faker/images/badge.png"
-          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           mobile: add_mobile_prefix(Phone.PtPt.cell_number()),
@@ -34,11 +29,6 @@ defmodule Bokken.Factories.AccountFactory do
 
       def mentor_factory do
         %Mentor{
-          photo: %Plug.Upload{
-            content_type: "image/png",
-            filename: "badge.png",
-            path: "./priv/faker/images/badge.png"
-          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           mobile: add_mobile_prefix(Phone.PtPt.cell_number()),
@@ -51,11 +41,6 @@ defmodule Bokken.Factories.AccountFactory do
 
       def ninja_factory do
         %Ninja{
-          photo: %Plug.Upload{
-            content_type: "image/png",
-            filename: "badge.png",
-            path: "./priv/faker/images/badge.png"
-          },
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
           birthday: Date.date_of_birth(7..17),
