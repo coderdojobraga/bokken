@@ -221,7 +221,7 @@
 												}
 											},
 											"_postman_previewlanguage": "json",
-											"header": null,
+											"header": [],
 											"cookie": [],
 											"body": "{\n    \"active\": false,\n    \"email\": \"Jaunita86@yahoo.com\",\n    \"id\": \"fcd9060b-a7d3-41d3-8369-7a682a337d4a\",\n    \"registered\": false,\n    \"role\": \"ninja\",\n    \"verified\": false\n}"
 										}
@@ -309,7 +309,7 @@
 												}
 											},
 											"_postman_previewlanguage": "json",
-											"header": null,
+											"header": [],
 											"cookie": [],
 											"body": "{\n    \"active\": false,\n    \"email\": \"Jerrold46@yahoo.com\",\n    \"id\": \"34de2974-40a3-4b35-9b50-2567c4af303a\",\n    \"registered\": false,\n    \"role\": \"guardian\",\n    \"verified\": false\n}"
 										}
@@ -397,7 +397,7 @@
 												}
 											},
 											"_postman_previewlanguage": "json",
-											"header": null,
+											"header": [],
 											"cookie": [],
 											"body": "{\n    \"active\": false,\n    \"email\": \"Jacinthe94@hotmail.com\",\n    \"id\": \"a567a769-0f93-4066-8bf9-c542c816b2f6\",\n    \"registered\": false,\n    \"role\": \"organizer\",\n    \"verified\": false\n}"
 										}
@@ -568,10 +568,13 @@
 											"name": "SIgn in as a Guardian (Registered)",
 											"originalRequest": {
 												"method": "GET",
-												"header": []
+												"header": [],
+												"url": {
+													"raw": ""
+												}
 											},
 											"_postman_previewlanguage": "json",
-											"header": null,
+											"header": [],
 											"cookie": [],
 											"body": "{\n    \"active\": true,\n    \"city\": \"Santarém\",\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"first_name\": \"Simone\",\n    \"guardian_id\": \"42560d82-1340-46e3-9c64-68abdf81e1f9\",\n    \"id\": \"92c80a6e-a170-4451-b6bc-fe461e77088a\",\n    \"last_name\": \"de Oliveira\",\n    \"mobile\": \"+351912027905\",\n    \"photo\": \"https://robohash.org/Simone-de Oliveira\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-15T19:16:21\",\n    \"verified\": false\n}"
 										}
@@ -5093,14 +5096,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/enrollments",
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/enrollments",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"events",
-										"{{event_id}}",
+										"ninjas",
+										"{{ninja_id}}",
 										"enrollments"
 									]
 								}
