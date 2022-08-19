@@ -6,8 +6,8 @@ defmodule BokkenWeb.LectureController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, _params) do
-    lectures = Events.list_lectures()
+  def index(conn, params) do
+    lectures = Events.list_lectures(params, [:ninja, :event, :mentor, :assistant_mentors, :files])
     render(conn, "index.json", lectures: lectures)
   end
 
@@ -30,7 +30,7 @@ defmodule BokkenWeb.LectureController do
   end
 
   def show(conn, %{"id" => id}) do
-    lecture = Events.get_lecture!(id)
+    lecture = Events.get_lecture!(id, [:event, :mentor, :ninja])
     render(conn, "show.json", lecture: lecture)
   end
 
