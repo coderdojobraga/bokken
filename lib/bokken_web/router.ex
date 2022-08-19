@@ -60,6 +60,7 @@ defmodule BokkenWeb.Router do
       get "/teams", TeamController, :index
       get "/files", FileController, :index
       resources "/skills", SkillController, only: [:index, :create, :delete]
+      resources "/enrollments", EnrollmentController, only: [:index]
     end
 
     resources "/badges", BadgeController, except: [:new, :edit] do
