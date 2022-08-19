@@ -345,15 +345,30 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> list_lectures()
+      iex> list_lectures(%{"ninja_id" => 123})
       [%Lecture{}, ...]
 
   """
+  def list_lectures(params, preloads \\ [])
 
-  def list_lectures do
+  def list_lectures(%{"mentor_id" => mentor_id}, preloads) do
+    Lecture
+    |> where([l], l.mentor_id == ^mentor_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_lectures(%{"ninja_id" => ninja_id}, preloads) do
+    Lecture
+    |> where([l], l.ninja_id == ^ninja_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_lectures(_params, preloads) do
     Lecture
     |> Repo.all()
-    |> Repo.preload([:ninja, :event, :mentor, :assistant_mentors, :files])
+    |> Repo.preload(preloads)
   end
 
   @doc """
