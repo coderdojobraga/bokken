@@ -54,18 +54,7 @@ defmodule BokkenWeb.EventController do
     res =
       Accounts.list_users()
       |> Enum.filter(fn u -> u.active and u.verified and u.role in [:guardian, :mentor] end)
-      |> List.foldl(
-        %{success: [], fail: []},
-        fn user, accumulator ->
-          case Mailer.deliver(EventsEmails.event_reminder_email(user, event)) do
-            {:ok, _} ->
-              %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
-
-            {:error, _} ->
-              %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
-          end
-        end
-      )
+      |> send_email(fn user -> EventsEmails.event_reminder_email(user, event) end)
 
     conn
     |> put_status(:ok)
@@ -74,49 +63,47 @@ defmodule BokkenWeb.EventController do
 
   def notify_selected(conn, _params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
-    lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja])
+    lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
 
-    mentor_emails =
+    mentor_res =
       lectures
-      |> List.foldl(
-        %{success: [], fail: []},
-        fn lecture, accumulator ->
-          user = Accounts.get_user!(lecture.mentor.user_id)
+      |> send_email(fn lecture ->
+        EventsEmails.event_selected_mentor_email(lecture.event, lecture,
+          to: Accounts.get_user!(lecture.mentor.user_id).email
+        )
+      end)
 
-          case Mailer.deliver(
-                 EventsEmails.event_selected_mentor_email(event, lecture, to: user.email)
-               ) do
-            {:ok, _} ->
-              %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
-
-            {:error, _} ->
-              %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
-          end
-        end
-      )
-
-    res =
+    ninja_res =
       lectures
-      |> List.foldl(
-        mentor_emails,
-        fn lecture, accumulator ->
-          guardian = Accounts.get_guardian!(lecture.ninja.guardian_id)
-          user = Accounts.get_user!(guardian.user_id)
+      |> send_email(fn lecture ->
+        EventsEmails.event_selected_ninja_email(lecture.event, lecture,
+          to: Accounts.get_user!(Accounts.get_guardian!(lecture.ninja.guardian_id)).email
+        )
+      end)
 
-          case Mailer.deliver(
-                 EventsEmails.event_selected_ninja_email(event, lecture, to: user.email)
-               ) do
-            {:ok, _} ->
-              %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
-
-            {:error, _} ->
-              %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
-          end
-        end
-      )
+    res = %{
+      success: mentor_res[:success] ++ ninja_res[:success],
+      fail: mentor_res[:fail] ++ ninja_res[:fail]
+    }
 
     conn
     |> put_status(:ok)
     |> render("emails.json", res)
+  end
+
+  defp send_email(users, email) do
+    users
+    |> List.foldl(
+      %{success: [], fail: []},
+      fn user, accumulator ->
+        case Mailer.deliver(email.(user)) do
+          {:ok, _} ->
+            %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
+
+          {:error, _} ->
+            %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
+        end
+      end
+    )
   end
 end
