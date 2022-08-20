@@ -49,7 +49,7 @@ defmodule BokkenWeb.EventController do
   end
 
   def notify_signup(conn, _params) when is_organizer(conn) do
-    event = Events.get_next_event!()
+    event = Events.get_next_event!([:location])
 
     res =
       Accounts.list_users()
@@ -73,7 +73,7 @@ defmodule BokkenWeb.EventController do
   end
 
   def notify_selected(conn, _params) when is_organizer(conn) do
-    event = Events.get_next_event!()
+    event = Events.get_next_event!([:location])
     lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja])
 
     mentor_emails =

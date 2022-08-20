@@ -1,3 +1,136 @@
-<div>
-    <h1>Batata</h1>
-</div>
+  <table class="wrapper" style="border-collapse: collapse;table-layout: fixed;min-width: 320px;width: 100%;background-color: #fff;" role="presentation" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td>
+          <div>
+            <div class="layout one-col fixed-width stack" style="Margin: 0 auto;max-width: 600px;min-width: 320px; width: 320px;width: calc(28000% - 167400px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;">
+              <div class="layout__inner" style="border-collapse: collapse;display: table;width: 100%;background-color: #ffffff;">
+                <!--[if (mso)|(IE)]><table align="center" cellpadding="0" cellspacing="0" role="presentation"><tr class="layout-fixed-width" style="background-color: #ffffff;"><td style="width: 600px" class="w560"><![endif]-->
+                <div class="column" style="text-align: left;color: #000;font-size: 16px;line-height: 24px;font-family: Avenir,sans-serif;">
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;line-height: 23px;font-size: 1px;">&nbsp;</div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                      <!-- <h2 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #000;font-size: 26px;line-height: 34px;"><strong>CHECK-IN</strong></h2> -->
+                      <h1 style="Margin-top: 16px;Margin-bottom: 20px; text-align:center">
+                        <%= @event.title %>
+                      </h1>
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                      <!-- <h2 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #000;font-size: 26px;line-height: 34px;"><strong>CHECK-IN</strong></h2> -->
+                      <p style="Margin-top: 16px;Margin-bottom: 20px; text-align:center">
+                        Nesta próxima sessão, o(a) <%= "#{@ninja.first_name} #{@ninja.last_name}" %> vai ser mentorado(a)
+                        pelo(a) <%= "#{@mentor.first_name} #{@mentor.last_name}" %>. Pode ver o seu perfil
+                        carregando no botão abaixo.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                      <!-- <h2 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #000;font-size: 26px;line-height: 34px;"><strong>CHECK-IN</strong></h2> -->
+                      <ul style="Margin-top: 16px;Margin-bottom: 20px; text-align:center; list-style: none; padding: 0;">
+                        <li>📅 <%= "#{@event.start_time.day}/#{@event.start_time.month}/#{@event.start_time.year}"%> </li>
+                        <li>⏱ <%="#{@event.start_time.hour}:#{@event.start_time.minute}" %> - <%="#{@event.end_time.hour}:#{@event.end_time.minute}" %>  </li>
+                        <li>⌖ <%= @event.location.address %><li>
+                      </h1>
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div class="btn btn--flat btn--large" style="Margin-bottom: 20px;text-align: center;">
+                      <!--[if !mso]-->
+                      <a style="border-radius: 4px;display: inline-block;font-size: 14px;font-weight: bold;line-height: 24px;padding: 12px 24px;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #ffffff !important;background-color: #642580ff; font-family: Avenir, sans-serif;"
+                         href=<%= @link %>>
+                        Ver o perfil do mentor
+                      </a>
+                      <!--[endif]-->
+                      <!--[if mso]><p style="line-height:0;margin:0;">&nbsp;</p><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://discord.gg/6djqZbB" style="width:186px" arcsize="9%" fillcolor="#225053" stroke="f"><v:textbox style="mso-fit-shape-to-text:t" inset="0px,11px,0px,11px"><center style="font-size:14px;line-height:24px;color:#FFFFFF;font-family:Avenir,sans-serif;font-weight:bold;mso-line-height-rule:exactly;mso-text-raise:4px">Entrar no Discord</center></v:textbox></v:roundrect><![endif]-->
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                  <!--     <p style="Margin-top: 0;Margin-bottom: 0;">O teu código pessoal, que vais necessitar para fazer o check-in, é:</p> -->
+                  <!--     <p class="size-20" style="Margin-top: 20px;Margin-bottom: 0;font-size: 17px;line-height: 26px;text-align: center;" lang="x-size-20"><strong>wcm51G3Twyod8m9jIJka</strong></p> -->
+                  <!--     <p style="Margin-top: 20px;Margin-bottom: 20px;">Deixamos -->
+                  <!--       a ressalva de que as equipas podem vir a sofrer ligeiros ajustes até ao -->
+                  <!--       momento do início da atividade, em virtude de eventuais desistências. -->
+                  <!--       As equipas que se inscreveram já completas&nbsp; excetuam-se à ressalva -->
+                  <!--       anterior!<br> -->
+                  <!--       <br> -->
+                  <!--       Estamos à tua espera no Discord! Junta-te a nós!!<br> -->
+                  <!--       <br> -->
+                  <!--       Até já,<br> -->
+                  <!--       A equipa organizadora da Hackathon HeartBits 2020</p> -->
+                      <p style="Margin-top: 16px;Margin-bottom: 20px;">
+                        Obrigado pelo teu interesse no CoderDojo Braga. Esperamos que a sessão seja divertida e produtiva
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                      <p class="size-10" style="Margin-top: 0;Margin-bottom: 20px;font-size: 10px;line-height: 18px;" lang="x-size-10">
+                        <span style="color:#707070">
+                          Se o botão não funcionar, copia o seguinte link e cola num browser.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;line-height: 9px;font-size: 1px;">
+                      <p class="size-8" style="Margin-top: 0;Margin-bottom: 20px;font-size: 7px;line-height: 12px;" lang="x-size-10">
+                        <span style="color:#707070">
+                          <%= @link %>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+              </div>
+            </div>
+
+            <div style="mso-line-height-rule: exactly;line-height: 20px;font-size: 20px;">&nbsp;</div>
+
+            <div style="background-color: #ebebeb;">
+              <div class="layout one-col stack" style="Margin: 0 auto;max-width: 600px;min-width: 320px; width: 320px;width: calc(28000% - 167400px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;">
+                <div class="layout__inner" style="border-collapse: collapse;display: table;width: 100%;">
+                  <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" role="presentation"><tr class="layout-full-width" style="background-color: #ebebeb;"><td class="layout__edges">&nbsp;</td><td style="width: 600px" class="w560"><![endif]-->
+                  <div class="column" style="text-align: left;color: #000;font-size: 16px;line-height: 24px;font-family: Avenir,sans-serif;">
+
+                    <div style="Margin-left: 20px;Margin-right: 20px;">
+                      <div style="mso-line-height-rule: exactly;line-height: 20px;font-size: 1px;">&nbsp;</div>
+                    </div>
+
+                    <div style="Margin-left: 20px;Margin-right: 20px;">
+                      <div style="mso-line-height-rule: exactly;line-height: 3px;font-size: 1px;">&nbsp;</div>
+                    </div>
+
+                    <div style="font-size: 12px;font-style: normal;font-weight: normal;line-height: 19px;" align="center">
+                      <a style="text-decoration: underline;transition: opacity 0.1s ease-in;color: #222d8f;" href="https://coderdojobraga.org/"><img style="border: 0;display: block;height: auto;width: 100%;max-width: 134px;" alt="CoderDojo Braga" src="https://coderdojo-braga.vercel.app/img/logo.svg" width="134"></a>
+                    </div>
+
+                    <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;">
+                      <div style="mso-line-height-rule: exactly;line-height: 1px;font-size: 1px;">&nbsp;</div>
+                    </div>
+
+                  </div>
+                  <!--[if (mso)|(IE)]></td><td class="layout__edges">&nbsp;</td></tr></table><![endif]-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

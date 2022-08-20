@@ -1,10 +1,7 @@
 Olá 👋
 
-A nossa próxima sessão já está à porta! Não te esqueças de confirmar a tua
-disponibilidade!
-Quantos mais mentores forem à sessão, mais ninjas podemos receber e maior o
-impacto do CoderDojo Braga!
+Informamos que o(a) seu ninja <%= "#{@ninja.first_name} #{@ninja.last_name}" %> foi selecionado(a) para a próxima sessão,
+e será mentorado pelo(a) <%= "#{@mentor.first_name} #{@mentor.last_name}" %>
 
-Copia este link para o teu browser para mostrares a tua disponibilidade:
-
-<%= @link %>
+Recordamos que a sessão irá decorrer no dia <%= "#{@event.start_time.day}/#{@event.start_time.month}/#{@event.start_time.year}"%>, entre as <%="#{@event.start_time.hour}/#{@event.start_time.minute}" %> e <%="#{@event.end_time.hour}/#{@event.end_time.minute}" %> 
+no <%= @event.location.name %>.

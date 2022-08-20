@@ -19,20 +19,24 @@ defmodule BokkenWeb.EventsEmails do
     |> to(email)
     |> subject("[CoderDojo Braga] Ninja da próxima sessão")
     |> reply_to("noreply@coderdojobraga.org")
-    |> assign(:link, frontend_url <> "/event/" <> event.id)
+    |> assign(:link, frontend_url <> "/profile/ninja/" <> lecture.ninja.id)
     |> assign(:event, event)
-    |> assign(:lecture, lecture)
+    |> assign(:ninja, lecture.ninja)
     |> render_body(:mentor_event_selected)
   end
 
   def event_selected_ninja_email(event, lecture, to: email) do
+    frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
+
     new()
     |> from({"CoderDojo Braga", "noreply@coderdojobraga.org"})
     |> to(email)
     |> subject("[CoderDojo Braga] Inscrição aceite para a próxima sessão")
     |> reply_to("noreply@coderdojobraga.org")
     |> assign(:event, event)
-    |> assign(:lecture, lecture)
+    |> assign(:link, frontend_url <> "/profile/mentor/" <> lecture.mentor.id)
+    |> assign(:ninja, lecture.ninja)
+    |> assign(:mentor, lecture.mentor)
     |> render_body(:ninja_event_selected)
   end
 
