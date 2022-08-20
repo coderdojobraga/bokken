@@ -1,0 +1,10 @@
+Olá 👋
+
+A nossa próxima sessão já está à porta! Não te esqueças de confirmar a tua
+disponibilidade!
+Quantos mais mentores forem à sessão, mais ninjas podemos receber e maior o
+impacto do CoderDojo Braga!
+
+Copia este link para o teu browser para mostrares a tua disponibilidade:
+
+<%= @link %>
