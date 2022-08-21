@@ -67,18 +67,22 @@ defmodule BokkenWeb.EventController do
 
     mentor_res =
       lectures
-      |> send_email(fn lecture ->
-        EventsEmails.event_selected_mentor_email(lecture.event, lecture,
-          to: Accounts.get_user!(lecture.mentor.user_id).email
-        )
+      |> Enum.map(fn lecture ->
+        Accounts.get_user!(lecture.mentor.user_id)
+        |> Map.put(:lecture, lecture)
+      end)
+      |> send_email(fn user ->
+        EventsEmails.event_selected_mentor_email(event, user.lecture, to: user.email)
       end)
 
     ninja_res =
       lectures
-      |> send_email(fn lecture ->
-        EventsEmails.event_selected_ninja_email(lecture.event, lecture,
-          to: Accounts.get_user!(Accounts.get_guardian!(lecture.ninja.guardian_id)).email
-        )
+      |> Enum.map(fn lecture ->
+        Accounts.get_user!(Accounts.get_guardian!(lecture.ninja.guardian_id).user_id)
+        |> Map.put(:lecture, lecture)
+      end)
+      |> send_email(fn user ->
+        EventsEmails.event_selected_ninja_email(event, user.lecture, to: user.email)
       end)
 
     res = %{
