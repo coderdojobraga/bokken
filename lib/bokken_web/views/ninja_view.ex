@@ -21,7 +21,8 @@ defmodule BokkenWeb.NinjaView do
       belt: ninja.belt,
       notes: ninja.notes,
       socials: ninja.socials,
-      since: ninja.inserted_at
+      since: ninja.inserted_at,
+      guardian_id: ninja.guardian_id
     }
     |> Map.merge(skills(ninja))
   end
