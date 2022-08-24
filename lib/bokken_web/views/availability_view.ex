@@ -19,7 +19,7 @@ defmodule BokkenWeb.AvailabilityView do
 
   def render("availability.json", %{availability: availability}) do
     %{
-      id: availability.id,
+      availability_id: availability.id,
       is_available: availability.is_available,
       notes: availability.notes
     }

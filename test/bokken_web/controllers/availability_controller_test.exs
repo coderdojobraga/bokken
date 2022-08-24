@@ -61,7 +61,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
           valid_availability_attrs
         )
 
-      assert %{"id" => availability_id} = json_response(conn, 201)["data"]
+      assert %{"availability_id" => availability_id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.event_availability_path(conn, :show, event.id, availability_id))
       assert json_response(conn, 200)["data"]
