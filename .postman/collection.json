@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0f28098f-19e5-41e3-ad19-43890a5a083d",
+		"_postman_id": "428dae20-ab16-4849-8d2e-42602475d28a",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21815073"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -5785,6 +5784,47 @@
 				}
 			],
 			"description": "Files or Documents that a ninja has done during a lecture or as homework.\nThese files can be uploaded by the ninja or his mentors."
+		},
+		{
+			"name": "Emails",
+			"item": [
+				{
+					"name": "Notify signups are open",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notify_signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notify_signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notify selected ninjas and mentors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notify_selected",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notify_selected"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Hello, Bokken 👋",
