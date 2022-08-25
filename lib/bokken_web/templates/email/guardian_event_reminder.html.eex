@@ -22,8 +22,8 @@
                   <div style="Margin-left: 20px;Margin-right: 20px;">
                     <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                       <ul style="Margin-top: 16px;Margin-bottom: 20px; text-align:center; list-style: none; padding: 0;">
-                        <li>📅 <%= "#{@event.start_time.day}/#{@event.start_time.month}/#{@event.start_time.year}"%> </li>
-                        <li>⏱ <%="#{@event.start_time.hour}:#{@event.start_time.minute}" %> - <%="#{@event.end_time.hour}:#{@event.end_time.minute}" %>  </li>
+                        <li>📅 <%= display_date(@event.start_time) %> </li>
+                        <li>⏱ <%= display_time(@event.start_time) %> - <%= display_time(@event.end_time) %></li>
                         <li>⌖ <%= @event.location.address %><li>
                       </h1>
                     </div>
@@ -42,7 +42,7 @@
                     <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                       <p style="Margin-top: 16px;Margin-bottom: 20px;">
                         Obrigado pelo seu interesse no CoderDojo Braga. Esperamos ver os seus ninjas
-                        na próxima sessão
+                        na próxima sessão.
                       </p>
                     </div>
                   </div>

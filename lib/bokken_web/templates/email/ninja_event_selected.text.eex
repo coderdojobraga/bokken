@@ -1,7 +1,7 @@
 Olá 👋
 
-Informamos que o(a) seu ninja <%= "#{@ninja.first_name} #{@ninja.last_name}" %> foi selecionado(a) para a próxima sessão,
-e será mentorado pelo(a) <%= "#{@mentor.first_name} #{@mentor.last_name}" %>
+Informamos que o(a) seu ninja <%= display_name(@ninja) %> foi selecionado(a) para a próxima sessão,
+e será mentorado pelo(a) <%= display_name(@mentor) %>
 
-Recordamos que a sessão irá decorrer no dia <%= "#{@event.start_time.day}/#{@event.start_time.month}/#{@event.start_time.year}"%>, entre as <%="#{@event.start_time.hour}/#{@event.start_time.minute}" %> e <%="#{@event.end_time.hour}/#{@event.end_time.minute}" %> 
+Recordamos que a sessão irá decorrer no dia <%= display_date(@event.start_time) %>, entre as <%= display_time(@event.start_time) %> e <%= display_time(@event.end_time) %> 
 no <%= @event.location.name %>.

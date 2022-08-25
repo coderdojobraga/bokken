@@ -2,7 +2,7 @@ Olá 👋
 
 Informamos que na próxima sessão serás mentor(a) do(a) ninja <%= "#{@ninja.first_name} #{@ninja.last_name}" %>.
 
-A sessão irá decorrer no dia <%= "#{@event.start_time.day}/#{@event.start_time.month}/#{@event.start_time.year}"%>, entre as <%="#{@event.start_time.hour}/#{@event.start_time.minute}" %> e <%="#{@event.end_time.hour}/#{@event.end_time.minute}" %> 
+A sessão irá decorrer no dia <%= display_date(@event.start_time) %>, entre as <%= display_time(@event.start_time) %> e <%= display_time(@event.end_time) %> 
 no <%= @event.location.name %>.
 
 Podes ver o perfil do ninja no seguinte link: <%= @link %>
