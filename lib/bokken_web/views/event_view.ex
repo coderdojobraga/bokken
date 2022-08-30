@@ -29,6 +29,13 @@ defmodule BokkenWeb.EventView do
     |> Map.merge(team(event))
   end
 
+  def render("emails.json", %{success: success_emails, fail: failed_emails}) do
+    %{
+      success: success_emails,
+      fail: failed_emails
+    }
+  end
+
   defp location(event) do
     if Ecto.assoc_loaded?(event.location) do
       %{location: render_one(event.location, LocationView, "location.json")}

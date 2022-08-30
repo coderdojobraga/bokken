@@ -88,6 +88,9 @@ defmodule BokkenWeb.Router do
     resources "/lectures", LectureController, except: [:new, :edit]
 
     resources "/files", FileController, except: [:new, :edit]
+
+    post "/notify_signup", EventController, :notify_signup
+    post "/notify_selected", EventController, :notify_selected
   end
 
   if Mix.env() in [:dev, :prod, :test] do
