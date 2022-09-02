@@ -7,6 +7,7 @@ defmodule BokkenWeb.FallbackController do
   use BokkenWeb, :controller
   defguard is_404(reason) when reason in [:not_found, :not_registered, :invalid_credentials]
   defguard is_401(reason) when reason in [:token_expired]
+  defguard is_403(reason) when reason in [:not_active]
 
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
@@ -28,5 +29,12 @@ defmodule BokkenWeb.FallbackController do
     |> put_status(:unauthorized)
     |> put_view(BokkenWeb.ErrorView)
     |> render(:"401")
+  end
+
+  def call(conn, {:error, reason}) when is_403(reason) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"403")
   end
 end
