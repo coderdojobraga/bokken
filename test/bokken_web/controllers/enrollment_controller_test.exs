@@ -16,7 +16,8 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     %{
       email: "anamaria@gmail.com",
       password: "guardian123",
-      role: "guardian"
+      role: "guardian",
+      active: true
     }
   end
 
@@ -24,7 +25,8 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     %{
       email: "admin@gmail.com",
       password: "administrator123",
-      role: "organizer"
+      role: "organizer",
+      active: true
     }
   end
 
@@ -172,13 +174,15 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       user_ninja = %{
         email: "rafaelacosta@gmail.com",
         password: "ninja123",
-        role: "ninja"
+        role: "ninja",
+        active: true
       }
 
       user_guardian = %{
         email: "anamaria5@gmail.com",
         password: "guardian123",
-        role: "guardian"
+        role: "guardian",
+        active: true
       }
 
       new_guardian_attrs = %{
