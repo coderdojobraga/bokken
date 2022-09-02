@@ -1,0 +1,7 @@
+Olá 👋
+
+Informamos que o(a) seu ninja <%= display_name(@ninja) %> foi selecionado(a) para a próxima sessão,
+e será mentorado pelo(a) <%= display_name(@mentor) %>
+
+Recordamos que a sessão irá decorrer no dia <%= display_date(@event.start_time) %>, entre as <%= display_time(@event.start_time) %> e <%= display_time(@event.end_time) %> 
+no <%= @event.location.name %>.

@@ -1,13 +1,17 @@
 defmodule BokkenWeb.EventController do
   use BokkenWeb, :controller
 
+  alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Event
+  alias Bokken.Mailer
+  alias BokkenWeb.EventsEmails
 
   action_fallback BokkenWeb.FallbackController
 
   defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
   defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
+  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
 
   def index(conn, params) do
     events = Events.list_events(params)
@@ -42,5 +46,68 @@ defmodule BokkenWeb.EventController do
     with {:ok, %Event{}} <- Events.delete_event(event) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def notify_signup(conn, _params) when is_organizer(conn) do
+    event = Events.get_next_event!([:location])
+
+    res =
+      Accounts.list_users()
+      |> Enum.filter(fn u -> u.active and u.verified and u.role in [:guardian, :mentor] end)
+      |> send_email(fn user -> EventsEmails.event_reminder_email(user, event) end)
+
+    conn
+    |> put_status(:ok)
+    |> render("emails.json", res)
+  end
+
+  def notify_selected(conn, _params) when is_organizer(conn) do
+    event = Events.get_next_event!([:location])
+    lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
+
+    mentor_res =
+      lectures
+      |> Enum.map(fn lecture ->
+        Accounts.get_user!(lecture.mentor.user_id)
+        |> Map.put(:lecture, lecture)
+      end)
+      |> send_email(fn user ->
+        EventsEmails.event_selected_mentor_email(event, user.lecture, to: user.email)
+      end)
+
+    ninja_res =
+      lectures
+      |> Enum.map(fn lecture ->
+        Accounts.get_user!(Accounts.get_guardian!(lecture.ninja.guardian_id).user_id)
+        |> Map.put(:lecture, lecture)
+      end)
+      |> send_email(fn user ->
+        EventsEmails.event_selected_ninja_email(event, user.lecture, to: user.email)
+      end)
+
+    res = %{
+      success: mentor_res[:success] ++ ninja_res[:success],
+      fail: mentor_res[:fail] ++ ninja_res[:fail]
+    }
+
+    conn
+    |> put_status(:ok)
+    |> render("emails.json", res)
+  end
+
+  defp send_email(users, email) do
+    users
+    |> List.foldl(
+      %{success: [], fail: []},
+      fn user, accumulator ->
+        case Mailer.deliver(email.(user)) do
+          {:ok, _} ->
+            %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
+
+          {:error, _} ->
+            %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
+        end
+      end
+    )
   end
 end

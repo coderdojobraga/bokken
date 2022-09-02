@@ -1,0 +1,13 @@
+Olá 👋
+
+A nossa próxima sessão já está à porta! Não se esqueça de inscrever os seus
+ninjas!
+
+A sessão irá decorrer no dia <%= display_date(@event.start_time) %>, entre as <%= display_time(@event.start_time) %> e <%= display_time(@event.end_time) %> no <%= @event.location.name %>.
+
+Relembramos que as vagas são limitadas, e que quanto mais cedo os ninjas
+forem inscritos, maior é a probabilidade de serem selecionados para a sessão.
+
+Copie este link para o seu browser para inscrever os ninjas:
+
+<%= @link %>
