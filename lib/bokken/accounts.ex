@@ -651,11 +651,7 @@ defmodule Bokken.Accounts do
 
   defp authenticate_resource(user, password) do
     if Argon2.verify_pass(password, user.password_hash) do
-      if user.active do
-        {:ok, user |> then(&Repo.preload(&1, [&1.role]))}
-      else
-        {:error, :not_active}
-      end
+      {:ok, user |> then(&Repo.preload(&1, [&1.role]))}
     else
       {:error, :invalid_credentials}
     end
