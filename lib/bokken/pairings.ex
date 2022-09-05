@@ -1,13 +1,18 @@
 defmodule Bokken.Pairings do
   import Ecto.Query, warn: false
   
-  alias Bokken.Curriculum
+  alias Bokken.{Curriculum, Repo, HungarianAlgorithm, Events}
 
   def create_pairings(event_id) do
     available_mentors = get_available_mentors(event_id)
     available_ninjas = get_available_ninjas(event_id)
+    
+    pairings_table = pairings_table(available_ninjas, available_mentors)
 
-    match_making(available_mentors, available_ninjas, event_id)
+    matches = create_matrix(pairings_table)
+               |> HungarianAlgorithm.compute()
+    
+    create_lectures(pairings_table, matches, event_id)
   end
   
   def get_available_mentors(event_id) do
@@ -25,50 +30,26 @@ defmodule Bokken.Pairings do
     Repo.all(from q in query, order_by: q.inserted_at)
   end
 
-  defp match_making(_available_mentors, [], _event_id), do: []
-  defp match_making(available_mentors, available_ninjas, event_id) do
-    [ninja | rest] = available_ninjas
-    ninja_skills = Curriculum.list_ninja_skills(%{"ninja_id" => ninja.id})
+  defp pairings_table([], _rest_mentors), do: []
+  defp pairings_table([ninja | rest_ninjas], mentors) do
+    row = Enum.map(mentors, fn(mentor) -> 
+      %{ninja: ninja, mentor: mentor, score: 100 - score(ninja.skills, mentor.skills)} 
+    end)
 
-    available_mentors = match_mentor(ninja, ninja_skills, available_mentors, event_id)
-
-    lecture = match_mentor(ninja, ninja_skills, available_mentors, event_id)
-
-    [lecture | match_making(available_mentors, rest, event_id)]  
+    [row | pairings_table(rest_ninjas, mentors)]
   end
 
-  defp match_mentor(ninja, _ninja_skills, [], event_id, selected_mentor) do
-    attrs = %{
-      ninja_id: ninja.user_id,
-      mentor_id: selected_mentor.mentor_id,
-      event_id: event_id
-    }
-    Events.create_lecture(attrs)
-  end
-  defp match_mentor(ninja, ninja_skills, available_mentors, event_id, selected_mentor \\ nil) do
-    [mentor | rest] = available_mentors
-    mentor_skills = Curriculum.list_mentor_skills(%{"mentor_id" => mentor.id})
+  defp score(ninja_skills, mentor_skills) do
     matching_skills = matching_skills(ninja_skills, mentor_skills)
     
-    if selected_mentor == nil do
-      selected_mentor = %{
-        mentor_id: mentor.user_id,
-        skills: matching_skills
-      }
+    total_skills = Enum.concat(ninja_skills, mentor_skills)
+                   |> Enum.frequencies
+                   |> Enum.count
 
-      match_mentor(ninja, rest, event_id, selected_mentor)
+    if matching_skills == 0 do
+      0
     else
-      if matching_skills > selected_mentor.skills do
-        selected_mentor = %{
-          mentor_id: mentor.user_id,
-          skills: matching_skills
-        }
-
-        match_mentor(ninja, rest, event_id, selected_mentor)
-
-      else
-        match_mentor(ninja, rest, event_id, selected_mentor)
-      end
+      (matching_skills / total_skills) * 100
     end
   end
 
@@ -81,5 +62,25 @@ defmodule Bokken.Pairings do
     else
       matching_skills(rest, mentor_skills)
     end
+  end
+
+
+  defp create_matrix([]), do: []
+  defp create_matrix([row | _rest]) do
+    Enum.map(row, fn pair -> pair.score end)
+  end
+
+  defp create_lectures(_pairings_table, [], _event_id), do: []
+  defp create_lectures(pairings_table, [{c, r} | rest], event_id) do
+    pairing = Enum.at(pairings_table, c)
+              |> Enum.at(r)
+    
+    attrs = %{
+      ninja_id: pairing.ninja.id,
+      mentor_id: pairing.mentor.id,
+      event_id: event_id
+    }
+
+    [Events.create_lecture(attrs) | create_lectures(pairings_table, rest, event_id)]
   end
 end

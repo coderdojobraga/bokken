@@ -8,6 +8,10 @@ defmodule BokkenWeb.PairingView do
     %{data: render_many(lectures, PairingView, "pairing.json")}
   end
 
+  def render("create.json", %{lectures: lectures}) do
+    %{data: render_many(lectures, PairingView, "pairing.json")}
+  end
+
   def render("pairing.json", %{pairing: lecture}) do
     %{
       event_id: lecture.event_id,
