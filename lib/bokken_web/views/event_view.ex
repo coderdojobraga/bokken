@@ -14,12 +14,6 @@ defmodule BokkenWeb.EventView do
   end
 
   def render("event.json", %{event: event}) do
-    base(event)
-    |> Map.merge(location(event))
-    |> Map.merge(team(event))
-  end
-
-  defp base(event) do
     %{
       id: event.id,
       title: event.title,
@@ -27,7 +21,18 @@ defmodule BokkenWeb.EventView do
       start_time: event.start_time,
       end_time: event.end_time,
       online: event.online,
-      notes: event.notes
+      notes: event.notes,
+      enrollments_open: event.enrollments_open,
+      enrollments_close: event.enrollments_close
+    }
+    |> Map.merge(location(event))
+    |> Map.merge(team(event))
+  end
+
+  def render("emails.json", %{success: success_emails, fail: failed_emails}) do
+    %{
+      success: success_emails,
+      fail: failed_emails
     }
   end
 

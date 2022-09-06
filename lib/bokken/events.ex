@@ -274,6 +274,31 @@ defmodule Bokken.Events do
   end
 
   @doc """
+  Gets the next event i.e., the event which has the closest date in the future to today.
+
+  Raises `Ecto.NoResultsError` if the Event does not exist.
+
+  ## Examples
+
+      iex> get_next_event!()
+      %Event{}
+
+      iex> get_next_event!()
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_next_event!(preloads \\ []) do
+    now = DateTime.utc_now()
+
+    Event
+    |> where([e], e.start_time >= ^now)
+    |> order_by([e], asc: e.start_time)
+    |> limit(1)
+    |> Repo.one!()
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
   Creates a event.
 
   ## Examples
@@ -345,15 +370,37 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> list_lectures()
+      iex> list_lectures(%{"ninja_id" => 123})
       [%Lecture{}, ...]
 
   """
+  def list_lectures(params, preloads \\ [])
 
-  def list_lectures do
+  def list_lectures(%{"event_id" => event_id}, preloads) do
+    Lecture
+    |> where([l], l.event_id == ^event_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_lectures(%{"mentor_id" => mentor_id}, preloads) do
+    Lecture
+    |> where([l], l.mentor_id == ^mentor_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_lectures(%{"ninja_id" => ninja_id}, preloads) do
+    Lecture
+    |> where([l], l.ninja_id == ^ninja_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_lectures(_params, preloads) do
     Lecture
     |> Repo.all()
-    |> Repo.preload([:ninja, :event, :mentor, :assistant_mentors, :files])
+    |> Repo.preload(preloads)
   end
 
   @doc """

@@ -51,7 +51,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
 
     test "render availability when data is valid", %{conn: conn, event: event, user: user} do
       valid_availability_attrs = %{
-        availability: %{event_id: event.id, mentor_id: user.mentor.id, is_available?: true}
+        availability: %{event_id: event.id, mentor_id: user.mentor.id, is_available: true}
       }
 
       conn =
@@ -61,7 +61,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
           valid_availability_attrs
         )
 
-      assert %{"id" => availability_id} = json_response(conn, 201)["data"]
+      assert %{"availability_id" => availability_id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.event_availability_path(conn, :show, event.id, availability_id))
       assert json_response(conn, 200)["data"]
@@ -75,7 +75,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, event: event, user: user} do
       invalid_availability_attrs = %{
-        availability: %{event_id: event.id, mentor_id: user.mentor.id, is_available?: nil}
+        availability: %{event_id: event.id, mentor_id: user.mentor.id, is_available: nil}
       }
 
       conn =
@@ -93,14 +93,14 @@ defmodule BokkenWeb.AvailabilityControllerTest do
     setup [:register_and_log_in_mentor]
 
     test "renders availability when data is valid", %{conn: conn, event: event, user: user} do
-      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available?: false}
+      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available: false}
       {:ok, availability} = Events.create_availability(event, availability_attrs)
 
       new_availability_attrs = %{
         availability: %{
           event_id: event.id,
           mentor_id: user.mentor.id,
-          is_available?: true,
+          is_available: true,
           id: availability.id
         }
       }
@@ -116,14 +116,14 @@ defmodule BokkenWeb.AvailabilityControllerTest do
     end
 
     test "render errors when data is invalid", %{conn: conn, event: event, user: user} do
-      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available?: false}
+      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available: false}
       {:ok, availability} = Events.create_availability(event, availability_attrs)
 
       invalid_availability_attrs = %{
         availability: %{
           event_id: event.id,
           mentor_id: user.mentor.id,
-          is_available?: nil,
+          is_available: nil,
           id: availability.id
         }
       }

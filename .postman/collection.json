@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0f28098f-19e5-41e3-ad19-43890a5a083d",
+		"_postman_id": "428dae20-ab16-4849-8d2e-42602475d28a",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21815073"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -15,65 +14,41 @@
 					"item": [
 						{
 							"name": "Sign up",
-							"event": [
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Sign up status is OK\", function(){",
-											"    pm.response.to.have.status(201);",
-											"})",
-											"",
-											"pm.test(\"Token with set-cookie is present\", function () {",
-											"    pm.response.to.have.header(\"set-cookie\");",
-											"});",
-											"",
-											"pm.test(\"User is not registered\", function () {",
-											"    pm.expect(pm.response.json().registered).to.eql(false);",
-											"});",
-											"",
-											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
-											"pm.environment.set(\"token\", token);",
-											"",
-											"user_id = pm.response.json().id",
-											"pm.environment.set(\"user_id\", user_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"name": "Sign up as a Mentor",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_up",
-									"host": [
-										"{{host}}"
 									],
-									"path": [
-										"api",
-										"auth",
-										"sign_up"
-									]
-								},
-								"description": "The signup sets an auth cookie in all the following requests."
-							},
-							"response": [
-								{
-									"name": "Sign up",
-									"originalRequest": {
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -95,60 +70,541 @@
 												"auth",
 												"sign_up"
 											]
-										}
+										},
+										"description": "The signup sets an auth cookie in all the following requests."
 									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
+									"response": [
 										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
+											"name": "Sign up as a Mentor",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"mentor\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "cache-control",
+													"value": "max-age=0, private, must-revalidate"
+												},
+												{
+													"key": "content-length",
+													"value": "151"
+												},
+												{
+													"key": "content-type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "date",
+													"value": "Wed, 26 May 2021 15:24:06 GMT"
+												},
+												{
+													"key": "server",
+													"value": "Cowboy"
+												},
+												{
+													"key": "x-request-id",
+													"value": "FoKnMUCp4EEukywAAAAk"
+												},
+												{
+													"key": "set-cookie",
+													"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUTBOakU0TkRjc0ltbGhkQ0k2TVRZeU1qQTBNalkwTnl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2lZelppWlRVd1kyRXROVEkyTlMwME9EWTVMV0V3TnpJdFlXVm1aR1ZpTlRJM1lqUTFJaXdpYm1KbUlqb3hOakl5TURReU5qUTJMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVpHTmhOalV4TWpRdE0yVTBPQzAwT0RFM0xUazFNbUl0TVRSak1EUXpZamMzT0dWaUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLmZNZW1neFBEdGdHR1ZjMnhBbXA0R2xKbnV2b01zNkRUcThjZkJMLTlCeDNuWUprRzh6SEIyWFZKYktTUzBfamhmMzNsNWlrREdQWFNkQ1FIMGc2d0pB.qzMEtQ9ilri4BvJ_MIXhHNMlOTyIo4OhSyb6Wwnbr80; path=/; secure; HttpOnly; SameSite=None"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Maximillia.Bartell@yahoo.com\",\n    \"id\": \"dca65124-3e48-4817-952b-14c043b778eb\",\n    \"registered\": false,\n    \"role\": \"mentor\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Ninja",
+									"event": [
 										{
-											"key": "content-length",
-											"value": "151"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Wed, 26 May 2021 15:24:06 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoKnMUCp4EEukywAAAAk"
-										},
-										{
-											"key": "set-cookie",
-											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ9leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT21aaGJITmxMQ0poZFdRaU9pSmliMnRyWlc0aUxDSmxlSEFpT2pFMk1qUTBOakU0TkRjc0ltbGhkQ0k2TVRZeU1qQTBNalkwTnl3aWFYTnpJam9pWW05cmEyVnVJaXdpYW5ScElqb2lZelppWlRVd1kyRXROVEkyTlMwME9EWTVMV0V3TnpJdFlXVm1aR1ZpTlRJM1lqUTFJaXdpYm1KbUlqb3hOakl5TURReU5qUTJMQ0p5YjJ4bElqb2liV1Z1ZEc5eUlpd2ljM1ZpSWpvaVpHTmhOalV4TWpRdE0yVTBPQzAwT0RFM0xUazFNbUl0TVRSak1EUXpZamMzT0dWaUlpd2lkSGx3SWpvaVlXTmpaWE56SW4wLmZNZW1neFBEdGdHR1ZjMnhBbXA0R2xKbnV2b01zNkRUcThjZkJMLTlCeDNuWUprRzh6SEIyWFZKYktTUzBfamhmMzNsNWlrREdQWFNkQ1FIMGc2d0pB.qzMEtQ9ilri4BvJ_MIXhHNMlOTyIo4OhSyb6Wwnbr80; path=/; secure; HttpOnly; SameSite=None"
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"cookie": [],
-									"body": "{\n    \"active\": false,\n    \"email\": \"Maximillia.Bartell@yahoo.com\",\n    \"id\": \"dca65124-3e48-4817-952b-14c043b778eb\",\n    \"registered\": false,\n    \"role\": \"mentor\",\n    \"verified\": false\n}"
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"ninja\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Ninja",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"ninja\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jaunita86@yahoo.com\",\n    \"id\": \"fcd9060b-a7d3-41d3-8369-7a682a337d4a\",\n    \"registered\": false,\n    \"role\": \"ninja\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Guardian",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"guardian\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Guardian",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"guardian\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jerrold46@yahoo.com\",\n    \"id\": \"34de2974-40a3-4b35-9b50-2567c4af303a\",\n    \"registered\": false,\n    \"role\": \"guardian\",\n    \"verified\": false\n}"
+										}
+									]
+								},
+								{
+									"name": "Sign up as a Organizer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign up status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Token with set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"User is not registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(false);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													"",
+													"user_id = pm.response.json().id;",
+													"pm.environment.set(\"user_id\", user_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_up",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_up"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Sign up as a Organizer",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_up",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_up"
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"body": "{\n    \"active\": false,\n    \"email\": \"Jacinthe94@hotmail.com\",\n    \"id\": \"a567a769-0f93-4066-8bf9-c542c816b2f6\",\n    \"registered\": false,\n    \"role\": \"organizer\",\n    \"verified\": false\n}"
+										}
+									]
 								}
 							]
 						},
 						{
-							"name": "Register Mentor",
+							"name": "Sign in",
+							"item": [
+								{
+									"name": "Sign in as a Mentor",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign in status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"user is registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(true);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										},
+										"description": "The signup sets an auth cookie in all the following requests."
+									},
+									"response": [
+										{
+											"name": "Sign in as Mentor (Registered)",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/api/auth/sign_in",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"sign_in"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "cache-control",
+													"value": "max-age=0, private, must-revalidate"
+												},
+												{
+													"key": "content-length",
+													"value": "358"
+												},
+												{
+													"key": "content-type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "date",
+													"value": "Wed, 26 May 2021 15:24:10 GMT"
+												},
+												{
+													"key": "server",
+													"value": "Cowboy"
+												},
+												{
+													"key": "x-request-id",
+													"value": "FoKnMmCVXZma0mAAAAAi"
+												},
+												{
+													"key": "set-cookie",
+													"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ5leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT25SeWRXVXNJbUYxWkNJNkltSnZhMnRsYmlJc0ltVjRjQ0k2TVRZeU5EUTJNVGcxTVN3aWFXRjBJam94TmpJeU1EUXlOalV4TENKcGMzTWlPaUppYjJ0clpXNGlMQ0pxZEdraU9pSmtaV1JsWkdSak15MWxabVUxTFRRNVlXSXRZVEU1WmkwMU1qRm1NMkZqWWpOalpXSWlMQ0p1WW1ZaU9qRTJNakl3TkRJMk5UQXNJbkp2YkdVaU9pSnRaVzUwYjNJaUxDSnpkV0lpT2lKa1kyRmtZelV6Tnkwek9XVTNMVFF4TURZdFlURXhNUzFqWXpoa056SmlaalJsTWpFaUxDSjBlWEFpT2lKaFkyTmxjM01pZlEuaGFlczlqbDZHMU9ZdzJuTW1ZUnpsTF9GUEFPVWp3SkRmaXFpbExteWEwTGp4LWZQSXVjNG9jbnMteWM3b1dIVV8xUHNRTlJrWTkwSWRHR3p4R3RNRGc.m-I1FfS-vygNBFh_uEWbxGeJhiNG7EzQ7yZY_F7lHUU; path=/; secure; HttpOnly; SameSite=None"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"active\": true,\n    \"birthday\": \"2008-01-24\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"dcadc537-39e7-4106-a111-cc8d72bf4e21\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"ae8a5c03-8462-4380-b226-b83d9cf7c9c9\",\n    \"mobile\": \"+351 911646914\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
+										}
+									]
+								},
+								{
+									"name": "SIgn in as a Guardian",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "SIgn in as a Guardian (Registered)",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": ""
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [],
+											"cookie": [],
+											"body": "{\n    \"active\": true,\n    \"city\": \"Santarém\",\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"first_name\": \"Simone\",\n    \"guardian_id\": \"42560d82-1340-46e3-9c64-68abdf81e1f9\",\n    \"id\": \"92c80a6e-a170-4451-b6bc-fe461e77088a\",\n    \"last_name\": \"de Oliveira\",\n    \"mobile\": \"+351912027905\",\n    \"photo\": \"https://robohash.org/Simone-de Oliveira\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-15T19:16:21\",\n    \"verified\": false\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Register current User (Mentor and Guardian only)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Register status is OK\", function(){",
+											"pm.test(\"Register status is Created\", function(){",
 											"    pm.response.to.have.status(201);",
-											"})",
+											"});",
 											"",
 											"pm.test(\"User is registered\", function () {",
 											"    pm.expect(pm.response.json().registered).to.eql(true);",
 											"});",
+											"",
+											"response = pm.response.json();",
+											"",
+											"if (response.hasOwnProperty(\"mentor_id\")) {",
+											"    pm.environment.set(\"mentor_id\", response.mentor_id);",
+											"}",
+											"",
+											"if (response.hasOwnProperty(\"guardian_id\")) {",
+											"    pm.environment.set(\"guardian_id\", response.guardian_id);",
+											"}",
 											""
 										],
 										"type": "text/javascript"
@@ -288,7 +744,91 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"active\": false,\n    \"birthday\": \"1999-12-19\",\n    \"email\": \"Garrett85@yahoo.com\",\n    \"first_name\": \"Carlos\",\n    \"id\": \"0ee9f8c0-c619-471f-84fe-3cfe209a85ee\",\n    \"last_name\": \"Ribeiro\",\n    \"major\": \"Engenharia Informática\",\n    \"mentor_id\": \"48af0d9e-82f0-451d-93b9-0cf338cc6c8e\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://bokken.di.uminho.pt/uploads/avatars/0ee9f8c0-c619-471f-84fe-3cfe209a85ee/thumb.png?v=63790732356\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": true,\n    \"verified\": false\n}"
+									"body": "{\n    \"active\": false,\n    \"birthday\": \"1999-12-19\",\n    \"email\": \"Sanford63@gmail.com\",\n    \"first_name\": \"Carlos\",\n    \"id\": \"2828fa1e-6fb2-4d85-9980-fe72499febaf\",\n    \"last_name\": \"Ribeiro\",\n    \"major\": \"Engenharia Informática\",\n    \"mentor_id\": \"fbba188a-27d6-4fd7-b1b7-cd67da6c735c\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://robohash.org/Carlos-Ribeiro\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"since\": \"2022-08-16T19:24:37\",\n    \"socials\": [],\n    \"trial\": true,\n    \"verified\": false\n}"
+								},
+								{
+									"name": "Register Guardian",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "user[first_name]",
+													"value": "Carlos",
+													"type": "text"
+												},
+												{
+													"key": "user[last_name]",
+													"value": "Ribeiro",
+													"type": "text"
+												},
+												{
+													"key": "user[photo]",
+													"type": "file",
+													"src": "./.postman/avatar.png"
+												},
+												{
+													"key": "user[mobile]",
+													"value": "+351912345678",
+													"type": "text"
+												},
+												{
+													"key": "user[birthday]",
+													"value": "1999-12-19",
+													"type": "text"
+												},
+												{
+													"key": "user[major]",
+													"value": "Engenharia Informática",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/me",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "cache-control",
+											"value": "max-age=0, private, must-revalidate"
+										},
+										{
+											"key": "content-length",
+											"value": "454"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "date",
+											"value": "Sat, 12 Jun 2021 15:52:35 GMT"
+										},
+										{
+											"key": "server",
+											"value": "Cowboy"
+										},
+										{
+											"key": "x-request-id",
+											"value": "FofgnRNUSVQSPmoAAAGE"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"active\": false,\n    \"city\": null,\n    \"email\": \"Garfield.Kihn1@hotmail.com\",\n    \"first_name\": \"Carlos\",\n    \"guardian_id\": \"0a7e0a00-75db-49c6-9295-1b54c7c84840\",\n    \"id\": \"9dcea58c-28da-4421-bfcb-d6eb3ebc9bcf\",\n    \"last_name\": \"Ribeiro\",\n    \"mobile\": \"+351912345678\",\n    \"photo\": \"https://robohash.org/Carlos-Ribeiro\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-16T19:24:12\",\n    \"verified\": false\n}"
 								}
 							]
 						},
@@ -308,7 +848,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.environment.unset(\"token\");"
+											"pm.test(\"Sign out status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"user_id\");",
+											"pm.environment.unset(\"token\");",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -333,143 +879,13 @@
 							"response": []
 						},
 						{
-							"name": "Sign in",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Test Sign in\", function(){",
-											"    pm.response.to.have.status(200);",
-											"})",
-											"",
-											"pm.test(\"set-cookie is present\", function () {",
-											"    pm.response.to.have.header(\"set-cookie\");",
-											"});",
-											"",
-											"pm.test(\"user is registered\", function () {",
-											"    pm.expect(pm.response.json().registered).to.eql(true);",
-											"});",
-											"",
-											"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1]",
-											"pm.environment.set(\"token\", token);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/auth/sign_in",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"sign_in"
-									]
-								},
-								"description": "The signup sets an auth cookie in all the following requests."
-							},
-							"response": [
-								{
-									"name": "Sign in as Registered Mentor",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"peterpan@mail.com\",\n    \"password\": \"password1234\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/sign_in",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"sign_in"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "cache-control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "content-length",
-											"value": "358"
-										},
-										{
-											"key": "content-type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "date",
-											"value": "Wed, 26 May 2021 15:24:10 GMT"
-										},
-										{
-											"key": "server",
-											"value": "Cowboy"
-										},
-										{
-											"key": "x-request-id",
-											"value": "FoKnMmCVXZma0mAAAAAi"
-										},
-										{
-											"key": "set-cookie",
-											"value": "_bokken_key=SFMyNTY.g3QAAAABbQAAABZndWFyZGlhbl9kZWZhdWx0X3Rva2VubQAAAZ5leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkzUnBkbVVpT25SeWRXVXNJbUYxWkNJNkltSnZhMnRsYmlJc0ltVjRjQ0k2TVRZeU5EUTJNVGcxTVN3aWFXRjBJam94TmpJeU1EUXlOalV4TENKcGMzTWlPaUppYjJ0clpXNGlMQ0pxZEdraU9pSmtaV1JsWkdSak15MWxabVUxTFRRNVlXSXRZVEU1WmkwMU1qRm1NMkZqWWpOalpXSWlMQ0p1WW1ZaU9qRTJNakl3TkRJMk5UQXNJbkp2YkdVaU9pSnRaVzUwYjNJaUxDSnpkV0lpT2lKa1kyRmtZelV6Tnkwek9XVTNMVFF4TURZdFlURXhNUzFqWXpoa056SmlaalJsTWpFaUxDSjBlWEFpT2lKaFkyTmxjM01pZlEuaGFlczlqbDZHMU9ZdzJuTW1ZUnpsTF9GUEFPVWp3SkRmaXFpbExteWEwTGp4LWZQSXVjNG9jbnMteWM3b1dIVV8xUHNRTlJrWTkwSWRHR3p4R3RNRGc.m-I1FfS-vygNBFh_uEWbxGeJhiNG7EzQ7yZY_F7lHUU; path=/; secure; HttpOnly; SameSite=None"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"active\": true,\n    \"birthday\": \"2008-01-24\",\n    \"email\": \"peterpan@mail.com\",\n    \"first_name\": \"Peter\",\n    \"id\": \"dcadc537-39e7-4106-a111-cc8d72bf4e21\",\n    \"last_name\": \"Pan\",\n    \"major\": null,\n    \"mentor_id\": \"ae8a5c03-8462-4380-b226-b83d9cf7c9c9\",\n    \"mobile\": \"+351 911646914\",\n    \"photo\": \"https://robohash.org/Peter-Pan\",\n    \"registered\": true,\n    \"role\": \"mentor\",\n    \"socials\": [],\n    \"trial\": false,\n    \"verified\": true\n}"
-								}
-							]
-						},
-						{
 							"name": "Verify Account",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Sign up status is OK\", function(){",
-											"    pm.response.to.have.status(401);",
-											"})"
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -483,7 +899,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+									"raw": "{\n    \"token\": \"{{token}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -511,7 +927,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"raw": "{\n    \"token\": \"{{token}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -573,7 +989,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"raw": "{\n    \"token\": \"{{token}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -631,7 +1047,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"token\": \"{{confirmation_token}}\"\n}",
+											"raw": "{\n    \"token\": \"{{token}}\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -798,8 +1214,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"mentor_id = pm.response.json().id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
+											"pm.test(\"Get current User status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"user_id = pm.response.json().id;",
+											"pm.environment.set(\"user_id\", user_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -936,6 +1357,20 @@
 						},
 						{
 							"name": "Update current User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update current User status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -969,21 +1404,23 @@
 					"item": [
 						{
 							"name": "Skills",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"mentor_skill_id = pm.response.json().data.id;",
-											"pm.environment.set(\"mentor_skill_id\", mentor_skill_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
 							"item": [
 								{
-									"name": "List all mentor skills",
+									"name": "List all Mentor Skills",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"List all Mentor Skills status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -1003,7 +1440,24 @@
 									"response": []
 								},
 								{
-									"name": "Create mentor skill",
+									"name": "Create Mentor Skill",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Create Mentor Skill status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"mentor_skill_id = pm.response.json().data.id;",
+													"pm.environment.set(\"mentor_skill_id\", mentor_skill_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "POST",
 										"header": [],
@@ -1032,28 +1486,23 @@
 									"response": []
 								},
 								{
-									"name": "Get mentor skill",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{ħost}}/api/mentors/{{mentor_id}}/skills/{{mentor_skill_id}}",
-											"host": [
-												"{{ħost}}"
-											],
-											"path": [
-												"api",
-												"mentors",
-												"{{mentor_id}}",
-												"skills",
-												"{{mentor_skill_id}}"
-											]
+									"name": "Delete Mentor Skill",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete Mentor Skill status is No Content\", function(){",
+													"    pm.response.to.have.status(204);",
+													"});",
+													"",
+													"pm.environment.unset(\"mentor_skill_id\");",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									},
-									"response": []
-								},
-								{
-									"name": "Delete mentor skill",
+									],
 									"request": {
 										"method": "DELETE",
 										"header": [],
@@ -1074,7 +1523,21 @@
 									"response": []
 								},
 								{
-									"name": "List all mentor skills (paramaterized)",
+									"name": "List all Mentor Skills (parameterized)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"List all Mentor Skills (parameterized) status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -1102,72 +1565,19 @@
 							]
 						},
 						{
-							"name": "List Mentors",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"var template = `",
-											"    <table bgcolor=\"#FFFFFF\">",
-											"        <tr>",
-											"            <th>Photo</th>",
-											"            <th>Name</th>",
-											"            <th>Mobile</th>",
-											"            <th>Birthday</th>",
-											"            <th>Major</th>",
-											"            <th>Trial</th>",
-											"        </tr>",
-											"",
-											"        {{#each response}}",
-											"            <tr>",
-											"                <td><img height=100 src=\"{{photo}}\" /></td>",
-											"                <td>{{first_name}} {{last_name}}</td>",
-											"                <td>{{mobile}}</td>",
-											"                <td>{{birthday}}</td>",
-											"                <td>{{major}}</td>",
-											"                <td>{{trial}}</td>",
-											"            </tr>",
-											"        {{/each}}",
-											"    </table>",
-											"`;",
-											"",
-											"// Set visualizer",
-											"pm.visualizer.set(template, {",
-											"    // Pass the response body parsed as JSON as `data`",
-											"    response: pm.response.json().data",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"mentors"
-									]
-								},
-								"description": "Lists all the mentors."
-							},
-							"response": []
-						},
-						{
 							"name": "Create a Mentor with avatar",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create a Mentor with avatar status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
 											"mentor_id = pm.response.json().data.id",
-											"pm.environment.set(\"mentor_id\", mentor_id);"
+											"pm.environment.set(\"mentor_id\", mentor_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -1213,7 +1623,7 @@
 										{
 											"key": "mentor[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/rui/Code/CeSIUM/bokken/.postman/avatar.png"
 										},
 										{
 											"key": "mentor[first_name]",
@@ -1343,6 +1753,64 @@
 								"description": "Creates a mentor with an user_id already taken by another entity."
 							},
 							"response": []
+						},
+						{
+							"name": "List Mentors",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var template = `",
+											"    <table bgcolor=\"#FFFFFF\">",
+											"        <tr>",
+											"            <th>Photo</th>",
+											"            <th>Name</th>",
+											"            <th>Mobile</th>",
+											"            <th>Birthday</th>",
+											"            <th>Major</th>",
+											"            <th>Trial</th>",
+											"        </tr>",
+											"",
+											"        {{#each response}}",
+											"            <tr>",
+											"                <td><img height=100 src=\"{{photo}}\" /></td>",
+											"                <td>{{first_name}} {{last_name}}</td>",
+											"                <td>{{mobile}}</td>",
+											"                <td>{{birthday}}</td>",
+											"                <td>{{major}}</td>",
+											"                <td>{{trial}}</td>",
+											"            </tr>",
+											"        {{/each}}",
+											"    </table>",
+											"`;",
+											"",
+											"// Set visualizer",
+											"pm.visualizer.set(template, {",
+											"    // Pass the response body parsed as JSON as `data`",
+											"    response: pm.response.json().data",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"mentors"
+									]
+								},
+								"description": "Lists all the mentors."
+							},
+							"response": []
 						}
 					],
 					"event": [
@@ -1400,7 +1868,12 @@
 											"pm.visualizer.set(template, {",
 											"    // Pass the response body parsed as JSON as `data`",
 											"    response: pm.response.json().data",
-											"});"
+											"});",
+											"",
+											"pm.test(\"List Guardians status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -1424,6 +1897,24 @@
 						},
 						{
 							"name": "Create a valid Guardian",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create a valid Guardian status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"guardian_id = pm.response.json().data.id;",
+											"pm.environment.set(\"guardian_id\", guardian_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -1472,6 +1963,18 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"IUpdate Guardian's photo is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -1483,7 +1986,7 @@
 										{
 											"key": "guardian[photo]",
 											"type": "file",
-											"src": "./.postman/avatar.png"
+											"src": "/home/rui/Code/CeSIUM/bokken/.postman/avatar.png"
 										}
 									]
 								},
@@ -1530,7 +2033,21 @@
 							"name": "Skills",
 							"item": [
 								{
-									"name": "List all ninja skills",
+									"name": "List all Ninja Skills",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"List all Ninja Skills status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -1550,14 +2067,24 @@
 									"response": []
 								},
 								{
-									"name": "Create ninja skill",
-									"script": {
-										"exec": [
-											"ninja_skill_id = pm.response.json().data.id;",
-											"pm.environment.set(\"ninja_skill_id\", ninja_skill_id);"
-										],
-										"type": "text/javascript"
-									},
+									"name": "Create Ninja Skill",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Create Ninja Skill status is Created\", function(){",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"ninja_skill_id = pm.response.json().data.id;",
+													"pm.environment.set(\"ninja_skill_id\", ninja_skill_id);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "POST",
 										"header": [],
@@ -1586,33 +2113,28 @@
 									"response": []
 								},
 								{
-									"name": "Get ninja skill",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{ninja_skill_id}}",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"ninjas",
-												"{{ninja_id}}",
-												"skills",
-												"{{ninja_skill_id}}"
-											]
+									"name": "Delete Ninja Skill",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete Ninja Skill status is No Content\", function(){",
+													"    pm.response.to.have.status(204);",
+													"});",
+													"",
+													"pm.environment.unset(\"ninja_skill_id\");",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									},
-									"response": []
-								},
-								{
-									"name": "Delete ninja skill",
+									],
 									"request": {
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/{{ninja_skill_id}}",
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills/9a5ec45b-a6fe-49fa-842e-49254aa5536f",
 											"host": [
 												"{{host}}"
 											],
@@ -1621,26 +2143,40 @@
 												"ninjas",
 												"{{ninja_id}}",
 												"skills",
-												"{{ninja_skill_id}}"
+												"9a5ec45b-a6fe-49fa-842e-49254aa5536f"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "List all ninja skills (paramaterized)",
+									"name": "List all Ninja Skills (parameterized)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"List all Ninja Skills (parameterized) status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/ninjas/{{nnja_id}}/skills?skill_id={{skill_id}}",
+											"raw": "{{host}}/api/ninjas/{{ninja_id}}/skills?skill_id={{skill_id}}",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"ninjas",
-												"{{nnja_id}}",
+												"{{ninja_id}}",
 												"skills"
 											],
 											"query": [
@@ -1674,6 +2210,18 @@
 											"        'Cookie': `_bokken_key=${token}`",
 											"    },",
 											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List all Ninjas from a Team status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -1730,7 +2278,12 @@
 											"pm.visualizer.set(template, {",
 											"    // Pass the response body parsed as JSON as `data`",
 											"    response: pm.response.json().data",
-											"});"
+											"});",
+											"",
+											"pm.test(\"List Ninjas of a Guardian status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -1832,6 +2385,21 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create a valid Ninja status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"ninja_id = pm.response.json().data.id;",
+											"pm.environment.set(\"ninja_id\", ninja_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -1916,6 +2484,20 @@
 					"item": [
 						{
 							"name": "List Organizers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Organizers status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -1940,6 +2522,12 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create Organizer status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"organizer_id = pm.response.json().data.id;",
+											"pm.environment.set(\"organizer_id\", organizer_id);",
 											""
 										],
 										"type": "text/javascript"
@@ -1970,16 +2558,6 @@
 											"        })",
 											"    }",
 											"}, utils.create_user)",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_mentor);",
-											"",
 											""
 										],
 										"type": "text/javascript"
@@ -2013,7 +2591,21 @@
 							"response": []
 						},
 						{
-							"name": "Update organizer",
+							"name": "Update Organizer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Organizer status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -2043,6 +2635,20 @@
 						},
 						{
 							"name": "Delete organizer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Organizer status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -2087,7 +2693,21 @@
 					"name": "Skills",
 					"item": [
 						{
-							"name": "Get all skills",
+							"name": "Get all Skills",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get all Skills status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2105,14 +2725,19 @@
 							"response": []
 						},
 						{
-							"name": "Create skill",
+							"name": "Create Skill",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create Skill status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
 											"skill_id = pm.response.json().data.id;",
-											"pm.environment.set(\"skill_id\", skill_id);"
+											"pm.environment.set(\"skill_id\", skill_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -2145,8 +2770,22 @@
 						},
 						{
 							"name": "Update skill",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Skill status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
-								"method": "PATCH",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2172,7 +2811,21 @@
 							"response": []
 						},
 						{
-							"name": "Delete skill",
+							"name": "Delete Skill",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Skill status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -2191,7 +2844,21 @@
 							"response": []
 						},
 						{
-							"name": "Show skill",
+							"name": "Show Skill",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Show Skill status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2241,6 +2908,20 @@
 					"item": [
 						{
 							"name": "List Badges",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Badges status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2274,9 +2955,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
+											"pm.test(\"Create a Badge status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
 											"",
-											"pm.environment.set(\"badge_id\", id);"
+											"badge_id = pm.response.json().data.id;",
+											"pm.environment.set(\"badge_id\", badge_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -2400,6 +3085,9 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Update a Badge status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -2435,6 +3123,22 @@
 						},
 						{
 							"name": "Delete a Badge",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete a Badge status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"badge_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -2460,6 +3164,20 @@
 					"item": [
 						{
 							"name": "List Ninjas with Badge",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Ninjas with Badge status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -2487,6 +3205,20 @@
 						},
 						{
 							"name": "Get Badges given to a Ninja",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get Badges given to a Ninja status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -2518,7 +3250,7 @@
 							"response": []
 						},
 						{
-							"name": "Give a badge to a Ninja",
+							"name": "Give a Badge to a Ninja",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2560,6 +3292,21 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Give a Badge to a Ninja status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"badge_id = pm.response.json().data.id;",
+											"pm.environment.set(\"badge_id\", badge_id);",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -2591,11 +3338,27 @@
 						},
 						{
 							"name": "Remove a Badge from a Ninja",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Remove a Badge from a Ninja status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"badge_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges/1",
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/badges/{{badge_id}}",
 									"host": [
 										"{{host}}"
 									],
@@ -2604,7 +3367,7 @@
 										"ninjas",
 										"{{ninja_id}}",
 										"badges",
-										"1"
+										"{{badge_id}}"
 									]
 								}
 							},
@@ -2672,14 +3435,16 @@
 					"name": "Teams",
 					"item": [
 						{
-							"name": "List teams",
+							"name": "List Teams",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"team_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"team_id\", team_id);"
+											"pm.test(\"List Teams status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -2709,9 +3474,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
+											"pm.test(\"Create a Team status status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
 											"",
-											"pm.environment.set(\"team_id\", id);"
+											"team_id = pm.response.json().data.id;",
+											"pm.environment.set(\"team_id\", team_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -2722,7 +3491,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"team\": {\n        \"name\": \"Yang {{$randomInt}}\",\n        \"description\": \"The best team is {{$name}}\"\n    }\n}",
+									"raw": "{\n    \"team\": {\n        \"name\": \"Yang {{$randomInt}}\",\n        \"description\": \"The best team is {{$randomFirstName}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2746,6 +3515,20 @@
 						},
 						{
 							"name": "Update a Team",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update a Team status status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -2775,6 +3558,22 @@
 						},
 						{
 							"name": "Delete a Team",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete a Team status status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"team_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -2790,6 +3589,191 @@
 									]
 								},
 								"description": "Deletes a team."
+							},
+							"response": []
+						},
+						{
+							"name": "Associate Mentor to Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_mentor);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Associate Mentor to Team status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"mentor_id\": \"{{mentor_id}}\" \n} ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"mentors"
+									]
+								},
+								"description": "Associates a mentor to a certain team."
+							},
+							"response": []
+						},
+						{
+							"name": "Associate a Ninja to a Team",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const token = pm.environment.get(\"token\");",
+											"",
+											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_team);",
+											"",
+											"pm.sendRequest({",
+											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
+											"    method: 'GET',",
+											"    header: {",
+											"        'Content-Type': 'application/json',",
+											"        'Cookie': `_bokken_key=${token}`",
+											"    },",
+											"}, utils.get_ninja);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Associate a Ninja to a Team status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"ninja_id\": \"{{ninja_id}}\"\n} ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"ninjas"
+									]
+								},
+								"description": "Associates a certain ninja to a certain team."
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Mentor from Team",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Remove Mentor from Team status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"{{team_id}}",
+										"mentors",
+										"{{mentor_id}}"
+									]
+								},
+								"description": "Disengages a certain mentor from a certain team."
 							},
 							"response": []
 						}
@@ -2831,7 +3815,21 @@
 					"name": "Locations",
 					"item": [
 						{
-							"name": "List locations",
+							"name": "List Locations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Locations status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2899,7 +3897,7 @@
 							]
 						},
 						{
-							"name": "Create location",
+							"name": "Create Location",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2914,8 +3912,13 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create Location status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
 											"location_id = pm.response.json().data.id",
-											"pm.environment.set(\"location_id\", location_id);"
+											"pm.environment.set(\"location_id\", location_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -3010,7 +4013,21 @@
 							]
 						},
 						{
-							"name": "Update location",
+							"name": "Update Location",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Location status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3099,6 +4116,22 @@
 						},
 						{
 							"name": "Delete location",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Location status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"location_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -3185,7 +4218,21 @@
 					"name": "Event",
 					"item": [
 						{
-							"name": "List events",
+							"name": "List Events",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Events status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3253,97 +4300,21 @@
 							]
 						},
 						{
-							"name": "Event to work with",
+							"name": "List Events by Team",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"event_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"event_id\", event_id);"
+											"pm.test(\"List Events by Team status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Location to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"location_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"location_id\", location_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/locations",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"locations"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Team to work with",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"team_id = pm.response.json().data[1].id",
-											"pm.environment.set(\"team_id\", team_id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Events by team",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3364,7 +4335,21 @@
 							"response": []
 						},
 						{
-							"name": "Events by Location",
+							"name": "List Events by Location",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Events by Location status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -3385,15 +4370,19 @@
 							"response": []
 						},
 						{
-							"name": "Create an event",
+							"name": "Create an Event",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"event_id = pm.response.json().data.id",
+											"pm.test(\"Create an Event status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
 											"",
-											"pm.environment.set(\"event_id\", event_id);"
+											"event_id = pm.response.json().data.id",
+											"pm.environment.set(\"event_id\", event_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -3404,7 +4393,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"spots_available\": \"{{$randomInt}}\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\"\n    }\n}",
+									"raw": "{\n    \"event\": {\n        \"title\": \"Special {{$randomInt}}\",\n        \"online\": \"{{$randomBoolean}}\",\n        \"location_id\": \"{{location_id}}\",\n        \"notes\": \"Great 73 event\",\n        \"spots_available\": \"{{$randomInt}}\",\n        \"start_time\": \"{{$isoTimestamp}}\",\n        \"end_time\": \"{{$isoTimestamp}}\",\n        \"team_id\": \"{{team_id}}\",\n        \"enrollments_open\":\"{{$isoTimestamp}}\",\n        \"enrollments_close\": \"{{$isoTimestamp}}\"\n    }         \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3489,6 +4478,20 @@
 						},
 						{
 							"name": "Update Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Event status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3577,6 +4580,22 @@
 						},
 						{
 							"name": "Delete event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Event status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"event_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -3621,14 +4640,15 @@
 					"name": "Lectures",
 					"item": [
 						{
-							"name": "List lectures",
+							"name": "List Lectures",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"lecture_id = pm.response.json().data[0].id",
-											"pm.environment.set(\"lecture_id\", lecture_id);",
+											"pm.test(\"List Lectures status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -3702,12 +4722,18 @@
 							]
 						},
 						{
-							"name": "Create lecture",
+							"name": "Create Lecture",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create Lecture status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"lecture_id = pm.response.json().data.id",
+											"pm.environment.set(\"lecture_id\", lecture_id);",
 											""
 										],
 										"type": "text/javascript"
@@ -3793,7 +4819,21 @@
 							"response": []
 						},
 						{
-							"name": "Update lecture",
+							"name": "Update Lecture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Lecture status is OK\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -3807,14 +4847,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/lectures/{{lecture_id}}",
+									"raw": "{{host}}/api/lectures/6fae868f-c214-440d-a03a-a20d1881f3be",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"lectures",
-										"{{lecture_id}}"
+										"6fae868f-c214-440d-a03a-a20d1881f3be"
 									]
 								},
 								"description": "Changing one lecture."
@@ -3822,7 +4862,23 @@
 							"response": []
 						},
 						{
-							"name": "Remove Lecture",
+							"name": "Delete Lecture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Lecture status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"lecture_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -3891,6 +4947,18 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Ninjas from an Event status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"protocolProfileBehavior": {
@@ -3949,6 +5017,18 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Register Ninja on Event is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -3977,184 +5057,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Associate Mentor to Team",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/mentors`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_mentor);",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_team);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status is OK\", function(){",
-											"    pm.response.to.have.status(201);",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n   \"mentor_id\": \"{{mentor_id}}\" \n} ",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors"
-									]
-								},
-								"description": "Associates a mentor to a certain team."
-							},
-							"response": []
-						},
-						{
-							"name": "Associate a Ninja to a Team",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_team);",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams/${pm.environment.replaceIn('{{team_id}}')}/ninjas`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_ninja);",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/teams`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_team);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Status is OK\", function(){",
-											"    pm.response.to.have.status(201);",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n   \"ninja_id\": \"{{ninja_id}}\"\n} ",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/ninjas",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"ninjas"
-									]
-								},
-								"description": "Associates a certain ninja to a certain team."
-							},
-							"response": []
-						},
-						{
-							"name": "Remove Mentor from Team",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/teams/{{team_id}}/mentors/{{mentor_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"teams",
-										"{{team_id}}",
-										"mentors",
-										"{{mentor_id}}"
-									]
-								},
-								"description": "Disengages a certain mentor from a certain team."
-							},
-							"response": []
 						}
 					]
 				},
@@ -4162,7 +5064,21 @@
 					"name": "Enrollment",
 					"item": [
 						{
-							"name": "List enrollments of ninja",
+							"name": "List Enrollments of Ninja",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Enrollments of Ninja status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4179,14 +5095,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/enrollments",
+									"raw": "{{host}}/api/ninjas/{{ninja_id}}/enrollments",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"events",
-										"{{event_id}}",
+										"ninjas",
+										"{{ninja_id}}",
 										"enrollments"
 									]
 								}
@@ -4194,7 +5110,21 @@
 							"response": []
 						},
 						{
-							"name": "List enrollments of event",
+							"name": "List Enrollments of Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Enrollments of Event status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4227,6 +5157,20 @@
 						},
 						{
 							"name": "Get Enrollment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get Enrollment status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4247,14 +5191,19 @@
 							"response": []
 						},
 						{
-							"name": "Create an enrollment",
+							"name": "Create an Enrollment",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create an Enrollment status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
 											"enrollment_id = pm.response.json().data.id;",
-											"pm.environment.set(\"enrollment_id\", enrollment_id);"
+											"pm.environment.set(\"enrollment_id\", enrollment_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -4288,7 +5237,21 @@
 							"response": []
 						},
 						{
-							"name": "Update enrollment",
+							"name": "Update Enrollment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Enrollment status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4302,15 +5265,16 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/events/{{event_id}},enrollments/{{enrollment_id}},",
+									"raw": "{{host}}/api/events/{{event_id}}/enrollments/{{enrollment_id}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"events",
-										"{{event_id}},enrollments",
-										"{{enrollment_id}},"
+										"{{event_id}}",
+										"enrollments",
+										"{{enrollment_id}}"
 									]
 								}
 							},
@@ -4318,6 +5282,20 @@
 						},
 						{
 							"name": "Delete an enrollment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Enrollment status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -4343,24 +5321,16 @@
 					"name": "Availability",
 					"item": [
 						{
-							"name": "List the availabilities for an event",
+							"name": "List the Availabilities for an Event",
 							"event": [
 								{
-									"listen": "prerequest",
+									"listen": "test",
 									"script": {
 										"exec": [
-											"const token = pm.environment.get(\"token\");",
-											"",
-											"let utils = eval(pm.environment.get(\"utils\"))().requests;",
-											"",
-											"pm.sendRequest({",
-											"    url: `${pm.environment.replaceIn('{{host}}')}/api/events`,",
-											"    method: 'GET',",
-											"    header: {",
-											"        'Content-Type': 'application/json',",
-											"        'Cookie': `_bokken_key=${token}`",
-											"    },",
-											"}, utils.get_event);"
+											"pm.test(\"List the Availabilities for an Event status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -4381,20 +5351,36 @@
 										}
 									}
 								},
-								"url": "{{host}}/api/events/{{event_id}}/availabilities",
-								"description":"Lists all the availabilities for a given event."
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/availabilities",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"availabilities"
+									]
+								},
+								"description": "Lists all the availabilities for a given event."
 							},
 							"response": []
 						},
 						{
-							"name": "Create an availability",
+							"name": "Create an Availability",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
+											"pm.test(\"Create an Availability status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
 											"availability_id = pm.response.json().data.id;",
-											"pm.environment.set(\"availability_id\", availability_id);"
+											"pm.environment.set(\"availability_id\", availability_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -4405,36 +5391,73 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"availability\" : {\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
+									"raw": "{\n    \"availability\" : {\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available\": \"{{$randomBoolean}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{host}}/api/events/{{event_id}}/availabilities",
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/availabilities",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"availabilities"
+									]
+								},
 								"description": "Sets the availability of a mentor regarding an event."
 							},
 							"response": []
 						},
 						{
-							"name": "Update availability",
+							"name": "Update Availability",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update Availability status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"availability\" : {\n        \"id\": \"{{availability_id}}\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available?\": \"{{$randomBoolean}}\"\n    }\n}",
+									"raw": "{\n    \"availability\" : {\n        \"id\": \"{{availability_id}}\",\n        \"mentor_id\": \"{{mentor_id}}\",\n        \"event_id\": \"{{event_id}}\",\n        \"is_available\": \"{{$randomBoolean}}\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{host}}/api/events/{{event_id}}/availabilities/{{availability_id}}",
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/availabilities/{{availability_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"availabilities",
+										"{{availability_id}}"
+									]
+								},
 								"description": "Updates the availability of a mentor regarding an event."
-							}
-
+							},
+							"response": []
 						}
 					]
 				}
@@ -4471,7 +5494,7 @@
 							"        throw new Error(`Check console logs.`);",
 							"    }",
 							"",
-							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1];",
+							"    const token = response.headers.toObject()['set-cookie'].split(\"=\")[1].split(\";\")[0];",
 							"",
 							"    pm.environment.set(\"token\", token);",
 							"});",
@@ -4498,6 +5521,20 @@
 					"item": [
 						{
 							"name": "List Files",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Files status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -4516,15 +5553,19 @@
 							"response": []
 						},
 						{
-							"name": "Create a file",
+							"name": "Create a File",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const { data: { id } } = pm.response.json();",
+											"pm.test(\"Create a File status is Created\", function(){",
+											"    pm.response.to.have.status(201);",
+											"});",
 											"",
-											"pm.environment.set(\"file_id\", id);"
+											"file_id = pm.response.json().data.id",
+											"pm.environment.set(\"file_id\", file_id);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -4595,6 +5636,20 @@
 						},
 						{
 							"name": "Update File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update File status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -4624,6 +5679,20 @@
 						},
 						{
 							"name": "Delete File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete File status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -4648,7 +5717,7 @@
 					"name": "Ninjas",
 					"item": [
 						{
-							"name": "List Ninja files",
+							"name": "List Ninja Files",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4679,6 +5748,18 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"List Ninja Files status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
@@ -4703,6 +5784,47 @@
 				}
 			],
 			"description": "Files or Documents that a ninja has done during a lecture or as homework.\nThese files can be uploaded by the ninja or his mentors."
+		},
+		{
+			"name": "Emails",
+			"item": [
+				{
+					"name": "Notify signups are open",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notify_signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notify_signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notify selected ninjas and mentors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notify_selected",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notify_selected"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Hello, Bokken 👋",
