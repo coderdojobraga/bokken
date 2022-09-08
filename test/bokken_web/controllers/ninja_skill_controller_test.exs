@@ -11,7 +11,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     %{
       email: "admin@gmail.com",
       password: "administrator123",
-      role: "organizer"
+      role: "organizer",
+      active: true
     }
   end
 
@@ -19,7 +20,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     %{
       email: "ninja@gmail.com",
       password: "ninja123",
-      role: "ninja"
+      role: "ninja",
+      active: true
     }
   end
 
@@ -27,7 +29,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     %{
       email: "guardian@gmail.com",
       password: "guardian123",
-      role: "guardian"
+      role: "guardian",
+      active: true
     }
   end
 
@@ -433,7 +436,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       guardian_user = %{
         email: "guardian2@mail.com",
         password: "password1234",
-        role: "guardian"
+        role: "guardian",
+        active: true
       }
 
       {:ok, new_user} = Accounts.create_user(guardian_user)

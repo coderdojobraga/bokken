@@ -59,6 +59,8 @@ defmodule Bokken.AccountsFixtures do
       |> valid_user_attributes()
       |> Accounts.sign_up_user()
 
+    {:ok, user} = Accounts.update_user(user, %{active: true})
+
     attrs =
       case user.role do
         :guardian -> valid_guardian_attributes()

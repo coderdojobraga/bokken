@@ -23,7 +23,8 @@ defmodule BokkenWeb.GuardianControllerTest do
     %{
       email: "anamaria@gmail.com",
       password: "guardian123",
-      role: "guardian"
+      role: "guardian",
+      active: true
     }
   end
 
@@ -80,7 +81,8 @@ defmodule BokkenWeb.GuardianControllerTest do
       user = %{
         email: "carlacosta@gmail.com",
         password: "guardian123",
-        role: "guardian"
+        role: "guardian",
+        active: true
       }
 
       new_user = Accounts.create_user(user)
@@ -159,7 +161,8 @@ defmodule BokkenWeb.GuardianControllerTest do
     user = %{
       email: "ana@gmail.com",
       password: "guardian123",
-      role: "guardian"
+      role: "guardian",
+      active: true
     }
 
     new_user = Accounts.create_user(user)
@@ -181,7 +184,8 @@ defmodule BokkenWeb.GuardianControllerTest do
     user = %{
       email: "catarinasilvacosta@gmail.com",
       password: "guardian123",
-      role: "guardian"
+      role: "guardian",
+      active: true
     }
 
     new_user = Accounts.create_user(user)
