@@ -93,10 +93,10 @@ defmodule BokkenWeb.Router do
     post "/notify_selected", EventController, :notify_selected
   end
 
-  if Mix.env() in [:dev, :prod, :test] do
+  if Mix.env() in [:dev, :stg, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
       # Enables LiveDashboard only for development
