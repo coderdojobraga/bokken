@@ -8,8 +8,16 @@ defmodule BokkenWeb.Auth.ActiveUser do
     if conn.assigns.current_user.active do
       conn
     else
+      body =
+        Jason.encode!(%{
+          errors: %{
+            user: "user is not active"
+          }
+        })
+
       conn
-      |> send_resp(:forbidden, "")
+      |> put_resp_content_type("application/json")
+      |> send_resp(403, body)
       |> halt()
     end
   end
