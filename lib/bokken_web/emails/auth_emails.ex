@@ -12,7 +12,7 @@ defmodule BokkenWeb.AuthEmails do
     |> to(email)
     |> subject("[CoderDojo Braga] Verifica a tua conta")
     |> reply_to("noreply@coderdojobraga.org")
-    |> assign(:link, frontend_url <> "/confirm?token=" <> token)
+    |> assign(:link, frontend_url <> "dashboard/confirm?token=" <> token)
     |> render_body(:verify)
   end
 end
