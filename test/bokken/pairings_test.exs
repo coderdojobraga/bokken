@@ -3,30 +3,30 @@ defmodule Bokken.PairingsTest do
   use Bokken.DataCase
 
   import Bokken.Factory
-  
+
   describe "pairings" do
     alias Bokken.Pairings
 
     defp forget(struct, field, cardinality \\ :one) do
-      %{struct | 
-        field => %Ecto.Association.NotLoaded{
-          __field__: field,
-          __owner__: struct.__struct__,
-          __cardinality__: cardinality
-        }
+      %{
+        struct
+        | field => %Ecto.Association.NotLoaded{
+            __field__: field,
+            __owner__: struct.__struct__,
+            __cardinality__: cardinality
+          }
       }
     end
 
     test "get_available_mentors/1 returns all available mentors for an event" do
       event = insert(:event)
       skill = insert(:skill)
-      mentor = insert(:mentor, %{skills: [skill]})
-               |> forget(:user)
 
-      attrs = %{event: event, 
-        is_available: true, 
-        mentor: mentor
-      }
+      mentor =
+        insert(:mentor, %{skills: [skill]})
+        |> forget(:user)
+
+      attrs = %{event: event, is_available: true, mentor: mentor}
 
       insert(:availability, attrs)
 
@@ -38,14 +38,13 @@ defmodule Bokken.PairingsTest do
     test "get_available_ninjas/1 returns all available ninjas for an event" do
       event = insert(:event)
       skill = insert(:skill)
-      ninja = insert(:ninja, %{skills: [skill]})
-               |> forget(:guardian)
-               |> forget(:user)
 
-      attrs = %{event: event, 
-        accepted: true, 
-        ninja: ninja
-      }
+      ninja =
+        insert(:ninja, %{skills: [skill]})
+        |> forget(:guardian)
+        |> forget(:user)
+
+      attrs = %{event: event, accepted: true, ninja: ninja}
 
       insert(:enrollment, attrs)
 

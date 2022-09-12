@@ -64,7 +64,8 @@ defmodule BokkenWeb.ConnCase do
     register_and_log_in_user(args, :organizer)
   end
 
-  defp register_and_log_in_user(%{conn: conn}, role) when role in [:guardian, :mentor, :ninja, :organizer] do
+  defp register_and_log_in_user(%{conn: conn}, role)
+       when role in [:guardian, :mentor, :ninja, :organizer] do
     user = Bokken.AccountsFixtures.user_fixture(%{role: role})
     %{conn: log_in_user(conn, user), user: user}
   end

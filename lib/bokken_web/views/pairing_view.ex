@@ -1,9 +1,9 @@
 defmodule BokkenWeb.PairingView do
   use BokkenWeb, :view
-  
+
   alias Bokken.Events
   alias BokkenWeb.PairingView
-  
+
   def render("index.json", %{lectures: lectures}) do
     %{data: render_many(lectures, PairingView, "pairing.json")}
   end

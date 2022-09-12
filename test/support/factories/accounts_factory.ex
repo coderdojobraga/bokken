@@ -61,4 +61,4 @@ defmodule Bokken.Factories.AccountFactory do
       end
     end
   end
- end
+end

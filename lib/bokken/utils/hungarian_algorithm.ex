@@ -1,5 +1,4 @@
 defmodule Bokken.HungarianAlgorithm do
-
   # takes an nxn matrix of costs and returns a list of {row, column}
   # tuples of assigments that minimizes total cost
   def compute([row1 | _] = matrix) do
@@ -15,7 +14,8 @@ defmodule Bokken.HungarianAlgorithm do
   defp step(matrix, step \\ 1, assignments \\ nil, count \\ 0)
 
   # match on done
-  defp step(matrix, _step, assignments, _count) when length(assignments) == length(matrix), do: assignments
+  defp step(matrix, _step, assignments, _count) when length(assignments) == length(matrix),
+    do: assignments
 
   # For each row of the matrix, find the smallest element and
   # subtract it from every element in its row. If no assignments, go step 2
@@ -65,8 +65,8 @@ defmodule Bokken.HungarianAlgorithm do
         end
       end)
 
-
     assigned = assignments(transformed)
+
     if count < 50 do
       step(transformed, 3, assigned, count + 1)
     else
@@ -88,6 +88,7 @@ defmodule Bokken.HungarianAlgorithm do
     |> Enum.sort_by(fn {_, zero_count} -> zero_count end)
     |> Enum.reduce([], fn {{r, c} = coord, _}, acc ->
       {assigned_rows, assigned_cols} = Enum.unzip(acc)
+
       if r not in assigned_rows && c not in assigned_cols do
         [coord | acc]
       else

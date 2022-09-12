@@ -1,6 +1,6 @@
 defmodule BokkenWeb.PairingControllerTest do
   use BokkenWeb.ConnCase
-  
+
   import Bokken.Factory
 
   setup %{conn: conn} do
@@ -31,7 +31,7 @@ defmodule BokkenWeb.PairingControllerTest do
 
   describe "index" do
     setup [:register_and_log_in_organizer]
-    
+
     test "list all pairings for an event", %{conn: conn, event: event} do
       conn = get(conn, Routes.event_pairing_path(conn, :index, event.id))
       assert json_response(conn, 200)["data"]
@@ -40,7 +40,7 @@ defmodule BokkenWeb.PairingControllerTest do
 
   describe "create" do
     setup [:register_and_log_in_organizer]
-    
+
     test "create pairings for an event", %{conn: conn, event: event} do
       conn = post(conn, Routes.event_pairing_path(conn, :create, event.id))
       assert json_response(conn, 201)["data"]
