@@ -7,6 +7,8 @@ defmodule Bokken.AccountsFixtures do
   alias Bokken.Accounts
   alias Faker.{Avatar, Date, Person, Phone}
 
+  import Bokken.Factory
+
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
@@ -53,6 +55,12 @@ defmodule Bokken.AccountsFixtures do
     })
   end
 
+  def valid_organizer_attributes(attrs \\ %{}) do
+    Enum.into(attrs, %{
+      champion: true
+    })
+  end
+
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
@@ -64,6 +72,7 @@ defmodule Bokken.AccountsFixtures do
         :guardian -> valid_guardian_attributes()
         :mentor -> valid_mentor_attributes()
         :ninja -> valid_ninja_attributes()
+        :organizer -> valid_organizer_attributes()
       end
 
     {:ok, user} = Accounts.register_user(user, attrs)

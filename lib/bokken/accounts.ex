@@ -566,6 +566,9 @@ defmodule Bokken.Accounts do
 
       :guardian ->
         Guardian.changeset(%Guardian{}, attrs)
+
+      :organizer ->
+        Organizer.changeset(%Organizer{}, attrs)
     end
   end
 

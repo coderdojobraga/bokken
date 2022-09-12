@@ -64,7 +64,6 @@ defmodule Bokken.HungarianAlgorithm do
           _ -> val
         end
       end)
-      |> print_matrix()
 
 
     assigned = assignments(transformed)
@@ -160,19 +159,6 @@ defmodule Bokken.HungarianAlgorithm do
     end)
   end
 
-  defp print_matrix(matrix, opts \\ []) do
-    IO.puts("#{opts[:label]}------------")
-
-    for row <- matrix do
-      row
-      |> Enum.map(fn v -> truncate(v) end)
-      |> Enum.join("\t")
-      |> IO.puts()
-    end
-
-    matrix
-  end
-
   defp row(matrix, index), do: Enum.at(matrix, index)
   defp column(matrix, index), do: Enum.map(matrix, &Enum.at(&1, index))
 
@@ -195,8 +181,4 @@ defmodule Bokken.HungarianAlgorithm do
   end
 
   defp pad(matrix), do: matrix
-
-  defp truncate(float) do
-    trunc(float * 1000) / 1000
-  end
 end

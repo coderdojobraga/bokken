@@ -4,7 +4,9 @@ defmodule BokkenWeb.PairingController do
   alias Bokken.Events
   alias Bokken.Pairings
 
-  def index(conn, %{"event_id" => event_id}) do
+  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
+
+  def index(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Events.get_lectures_from_event(event_id)  
 
     conn
@@ -12,13 +14,11 @@ defmodule BokkenWeb.PairingController do
     |> render("index.json", lectures: lectures)
   end
 
-  def create(conn, %{"event_id" => event_id}) do
+  def create(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Pairings.create_pairings(event_id)
-    # IO.inspect(Events.get_lectures_from_event(event_id))
-    # IO.inspect(lectures)
 
     conn
-    |> put_status(:ok)
+    |> put_status(:created)
     |> render("create.json", lectures: lectures)
   end
 end
