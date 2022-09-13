@@ -51,7 +51,7 @@ defmodule Bokken.Factories.AccountFactory do
       end
 
       def organizer_factory do
-        mentor = mentor_factory()
+        mentor = build(:mentor)
 
         %Organizer{
           champion: true,
