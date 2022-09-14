@@ -37,7 +37,7 @@ defmodule Bokken.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid = SQL.Sandbox.start_owner!(Bokken.Repo, shared: not tags[:async])
+    pid = SQL.Sandbox.start_owner!(Bokken.Repo, shared: tags[:async])
     on_exit(fn -> SQL.Sandbox.stop_owner(pid) end)
   end
 
