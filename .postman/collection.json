@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "428dae20-ab16-4849-8d2e-42602475d28a",
+		"_postman_id": "d053c1af-9749-4752-806f-e042bf11e0cd",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21780706"
 	},
 	"item": [
 		{
@@ -4611,6 +4612,46 @@
 									]
 								},
 								"description": "Removes an event."
+							},
+							"response": []
+						},
+						{
+							"name": "List pairings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create pairings",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
 							},
 							"response": []
 						}
