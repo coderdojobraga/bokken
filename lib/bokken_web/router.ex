@@ -11,6 +11,10 @@ defmodule BokkenWeb.Router do
     plug BokkenWeb.Auth.Pipeline
   end
 
+  pipeline :active do
+    plug BokkenWeb.Auth.ActiveUser
+  end
+
   pipeline :admin do
     plug BokkenWeb.Auth.AllowedRoles, [:organizer]
   end
@@ -41,7 +45,7 @@ defmodule BokkenWeb.Router do
       delete "/sign_out", AuthController, :sign_out
     end
 
-    pipe_through :authenticated
+    pipe_through [:authenticated, :active]
 
     resources "/guardians", GuardianController, except: [:new, :edit]
 
@@ -95,10 +99,10 @@ defmodule BokkenWeb.Router do
     post "/notify_selected", EventController, :notify_selected
   end
 
-  if Mix.env() in [:dev, :prod, :test] do
+  if Mix.env() in [:dev, :stg, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
       # Enables LiveDashboard only for development

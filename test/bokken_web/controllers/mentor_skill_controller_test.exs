@@ -11,7 +11,8 @@ defmodule BokkenWeb.MentorSkillControllerTest do
     %{
       email: "admin@gmail.com",
       password: "administrator123",
-      role: "organizer"
+      role: "organizer",
+      active: true
     }
   end
 
@@ -19,7 +20,8 @@ defmodule BokkenWeb.MentorSkillControllerTest do
     %{
       email: "mentor@gmail.com",
       password: "mentor123",
-      role: "mentor"
+      role: "mentor",
+      active: true
     }
   end
 

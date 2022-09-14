@@ -16,7 +16,7 @@ defmodule BokkenWeb.EventsEmails do
 
     base_email(to: email)
     |> subject("[CoderDojo Braga] Ninja da próxima sessão")
-    |> assign(:link, frontend_url <> "/profile/ninja/" <> lecture.ninja.id)
+    |> assign(:link, frontend_url <> "/dashboard/profile/ninja/" <> lecture.ninja.id)
     |> assign(:event, event)
     |> assign(:ninja, lecture.ninja)
     |> render_body(:mentor_event_selected)
@@ -28,7 +28,7 @@ defmodule BokkenWeb.EventsEmails do
     base_email(to: email)
     |> subject("[CoderDojo Braga] Inscrição aceite para a próxima sessão")
     |> assign(:event, event)
-    |> assign(:link, frontend_url <> "/profile/mentor/" <> lecture.mentor.id)
+    |> assign(:link, frontend_url <> "/dashboard/profile/mentor/" <> lecture.mentor.id)
     |> assign(:ninja, lecture.ninja)
     |> assign(:mentor, lecture.mentor)
     |> render_body(:ninja_event_selected)
@@ -39,7 +39,7 @@ defmodule BokkenWeb.EventsEmails do
 
     base_email(to: email)
     |> subject("[CoderDojo Braga] Inscreva os seus ninjas na próxima sessão")
-    |> assign(:link, frontend_url <> "/event/" <> event.id)
+    |> assign(:link, frontend_url <> "/dashboard/event/" <> event.id)
     |> assign(:event, event)
     |> render_body(:guardian_event_reminder)
   end
@@ -49,7 +49,7 @@ defmodule BokkenWeb.EventsEmails do
 
     base_email(to: email)
     |> subject("[CoderDojo Braga] Inscreve-te na próxima sessão")
-    |> assign(:link, frontend_url <> "/event/" <> event.id)
+    |> assign(:link, frontend_url <> "/dashboard/event/" <> event.id)
     |> assign(:event, event)
     |> render_body(:mentor_event_reminder)
   end
