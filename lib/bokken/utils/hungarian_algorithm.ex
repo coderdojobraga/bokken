@@ -175,12 +175,16 @@ defmodule Bokken.HungarianAlgorithm do
 
       # more rows than columns, add zero columns to each row
       diff when diff > 0 ->
-        Enum.map(matrix, fn row -> row ++ Enum.map(1..abs(diff), fn _ -> 0 end) end)
+        Enum.map(matrix, fn row -> add_zero_columns(row, diff) end)
 
       # more columns than rows, add a row of zeros
       diff when diff < 0 ->
         matrix ++ [Enum.map(1..length(matrix), fn _ -> 0 end)]
     end
+  end
+
+  defp add_zero_columns(row, diff) do
+    row ++ Enum.map(1..abs(diff), fn _ -> 0 end)
   end
 
   defp pad(matrix), do: matrix
