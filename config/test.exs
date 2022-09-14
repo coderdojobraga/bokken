@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :bokken, Bokken.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: 10
+  pool_size: 1
 
 # We run a server during test. If one is not required,
 # you can disable the server option below.
