@@ -423,6 +423,13 @@ defmodule Bokken.Events do
     |> Repo.preload(preloads)
   end
 
+  def get_lectures_from_event(event_id, preloads \\ []) do
+    Lecture
+    |> where([l], l.event_id == ^event_id)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
   @doc """
   Creates a lecture.
 

@@ -11,4 +11,3 @@ services:
       POSTGRES_HOST: ${DB_HOST:-localhost}
     volumes:
       - /var/lib/postgresql/data
-

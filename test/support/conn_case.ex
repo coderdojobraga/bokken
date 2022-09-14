@@ -43,6 +43,7 @@ defmodule BokkenWeb.ConnCase do
       setup :register_and_log_in_guardian
       setup :register_and_log_in_mentor
       setup :register_and_log_in_ninja
+      setup :register_and_log_in_organizer
 
   It stores an updated connection and a registered user in the
   test context.
@@ -59,7 +60,12 @@ defmodule BokkenWeb.ConnCase do
     register_and_log_in_user(args, :ninja)
   end
 
-  defp register_and_log_in_user(%{conn: conn}, role) when role in [:guardian, :mentor, :ninja] do
+  def register_and_log_in_organizer(args) do
+    register_and_log_in_user(args, :organizer)
+  end
+
+  defp register_and_log_in_user(%{conn: conn}, role)
+       when role in [:guardian, :mentor, :ninja, :organizer] do
     user = Bokken.AccountsFixtures.user_fixture(%{role: role})
     %{conn: log_in_user(conn, user), user: user}
   end

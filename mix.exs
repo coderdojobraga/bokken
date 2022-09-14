@@ -87,6 +87,7 @@ defmodule Bokken.MixProject do
 
       # testing
       {:faker, "~> 0.17", only: [:dev, :test]},
+      {:ex_machina, "~> 2.7.0"},
 
       # tools
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},

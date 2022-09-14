@@ -87,6 +87,8 @@ defmodule BokkenWeb.Router do
 
       resources "/enrollments", EnrollmentController, except: [:new, :edit]
       resources "/availabilities", AvailabilityController, except: [:new, :edit, :delete]
+
+      resources "/pairings", PairingController, only: [:index, :create]
     end
 
     resources "/lectures", LectureController, except: [:new, :edit]
