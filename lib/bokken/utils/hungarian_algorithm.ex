@@ -1,4 +1,8 @@
 defmodule Bokken.HungarianAlgorithm do
+  @moduledoc """
+  The Hungarian Algorithm module.
+  """
+
   # takes an nxn matrix of costs and returns a list of {row, column}
   # tuples of assigments that minimizes total cost
   def compute([row1 | _] = matrix) do
@@ -57,9 +61,9 @@ defmodule Bokken.HungarianAlgorithm do
       |> transform(fn {r, c}, val ->
         case {r in covered_rows, c in covered_cols} do
           # if uncovered, subtract the min
-          {false, false} -> Float.round(val - min_uncovered, 3)
+          {false, false} -> val - min_uncovered
           # if covered by a vertical and horizontal line, add min_uncovered
-          {true, true} -> Float.round(val + min_uncovered, 3)
+          {true, true} -> val + min_uncovered
           # otherwise, leave it alone
           _ -> val
         end
@@ -127,7 +131,7 @@ defmodule Bokken.HungarianAlgorithm do
       min = Enum.min(row)
 
       Enum.map(row, fn column ->
-        Float.round(column - min, 3)
+        column - min
       end)
     end)
   end
@@ -171,9 +175,7 @@ defmodule Bokken.HungarianAlgorithm do
 
       # more rows than columns, add zero columns to each row
       diff when diff > 0 ->
-        Enum.map(matrix, fn row ->
-          row ++ Enum.map(1..abs(diff), fn _ -> 0 end)
-        end)
+        Enum.map(matrix, fn row -> row ++ Enum.map(1..abs(diff), fn _ -> 0 end) end)
 
       # more columns than rows, add a row of zeros
       diff when diff < 0 ->

@@ -1,7 +1,11 @@
 defmodule Bokken.Pairings do
+  @moduledoc """
+  The Pairings context.
+  """
+
   import Ecto.Query, warn: false
 
-  alias Bokken.{Repo, HungarianAlgorithm, Events}
+  alias Bokken.{Events, HungarianAlgorithm, Repo}
 
   @doc """
   Creates lectures for an event.
@@ -72,6 +76,9 @@ defmodule Bokken.Pairings do
   # Returns a score of comapatibility between a ninja and a mentor bases on the
   # percentage of skills matching.
   # If the ninja and the mentor have the exact same skills then the score is 100.
+  defp score(_ninja_skills, []), do: 0
+  defp score([], _mentor_skills), do: 0
+
   defp score(ninja_skills, mentor_skills) do
     matching_skills = matching_skills(ninja_skills, mentor_skills)
 
@@ -83,22 +90,16 @@ defmodule Bokken.Pairings do
     if matching_skills == 0 do
       0
     else
-      matching_skills / total_skills * 100
+      round(matching_skills / total_skills * 100)
     end
   end
 
-  # This function helps the score() function to determin the skills tha match
+  # This function helps the score() function to determin the skills that match
   # between the ninja and the mentor.
-  defp matching_skills([], _mentor_skills), do: 0
-
   defp matching_skills(ninja_skills, mentor_skills) do
-    [skill | rest] = ninja_skills
-
-    if Enum.member?(mentor_skills, skill) == true do
-      1 + matching_skills(rest, mentor_skills)
-    else
-      matching_skills(rest, mentor_skills)
-    end
+    ninja_skills
+    |> Enum.filter(fn ns -> Enum.member?(mentor_skills, ns) end)
+    |> length()
   end
 
   # In order to simplify the format of the matrix that will run in the
@@ -114,7 +115,7 @@ defmodule Bokken.Pairings do
     Enum.map(row, fn pair -> pair.score end)
   end
 
-  # When the Hungarian algorirthm finishes, this fucntion creates all the lectures
+  # When the Hungarian algorirthm finishes, this function creates all the lectures
   # for the resulted matches.
   defp create_lectures(_pairings_table, [], _event_id), do: []
 
@@ -129,6 +130,7 @@ defmodule Bokken.Pairings do
       event_id: event_id
     }
 
-    [Events.create_lecture(attrs) | create_lectures(pairings_table, rest, event_id)]
+    {:ok, lecture} = Events.create_lecture(attrs)
+    [lecture | create_lectures(pairings_table, rest, event_id)]
   end
 end
