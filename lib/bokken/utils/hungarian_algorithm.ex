@@ -183,9 +183,10 @@ defmodule Bokken.HungarianAlgorithm do
     end
   end
 
+  defp pad(matrix), do: matrix
+
   defp add_zero_columns(row, diff) do
     row ++ Enum.map(1..abs(diff), fn _ -> 0 end)
   end
 
-  defp pad(matrix), do: matrix
 end
