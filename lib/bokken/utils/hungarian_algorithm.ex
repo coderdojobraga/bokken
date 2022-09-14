@@ -74,7 +74,7 @@ defmodule Bokken.HungarianAlgorithm do
     if count < 50 do
       step(transformed, 3, assigned, count + 1)
     else
-      raise "There must be a bug in this code that can't handle the input matrix."
+      raise "Could not handle the input matrix."
     end
   end
 
