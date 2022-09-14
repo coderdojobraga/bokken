@@ -94,7 +94,7 @@ defmodule Bokken.Pairings do
     end
   end
 
-  # This function helps the score() function to determin the skills that match
+  # This function helps the score() function to determine the skills that match
   # between the ninja and the mentor.
   defp matching_skills(ninja_skills, mentor_skills) do
     ninja_skills
