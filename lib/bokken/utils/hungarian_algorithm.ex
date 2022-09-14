@@ -188,5 +188,4 @@ defmodule Bokken.HungarianAlgorithm do
   defp add_zero_columns(row, diff) do
     row ++ Enum.map(1..abs(diff), fn _ -> 0 end)
   end
-
 end
