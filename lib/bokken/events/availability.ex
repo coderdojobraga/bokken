@@ -10,7 +10,7 @@ defmodule Bokken.Events.Availability do
   @required_fields [:is_available, :mentor_id, :event_id]
   @optional_fields [:notes]
 
-  schema "availability" do
+  schema "availabilities" do
     field :is_available, :boolean, default: false
     field :notes, :string
 
