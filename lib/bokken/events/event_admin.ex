@@ -32,7 +32,7 @@ defmodule Bokken.Events.EventAdmin do
     end
   end
 
-  defp create_pairings() do
+  defp create_pairings do
     Pairings.create_pairings(Events.get_next_event!().id)
     :ok
   end
