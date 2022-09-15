@@ -3,16 +3,18 @@ defmodule Bokken.Events.EventAdmin do
   The admin view config of events
   """
   alias Bokken.{Events, Pairings}
+
   def list_actions(_conn) do
     [
       notify_signups: %{name: "Notify signups", action: fn c, _e -> notify_signups(c) end},
       notify_selected: %{name: "Notify selected", action: fn c, _e -> notify_selected(c) end},
-      create_pairings: %{name: "Create pairings", action: fn c, _e -> create_pairings() end}
+      create_pairings: %{name: "Create pairings", action: fn _c, _e -> create_pairings() end}
     ]
   end
 
   defp notify_signups(conn) do
-    conn = BokkenWeb.EventController.notify_signup(conn, %{})
+    conn = BokkenWeb.EventController.notify_signup(conn, %{"no_print" => true})
+
     if conn.status == 200 do
       :ok
     else
@@ -21,7 +23,8 @@ defmodule Bokken.Events.EventAdmin do
   end
 
   defp notify_selected(conn) do
-    conn = BokkenWeb.EventController.notify_signup(conn, %{})
+    conn = BokkenWeb.EventController.notify_selected(conn, %{"no_print" => true})
+
     if conn.status == 200 do
       :ok
     else

@@ -48,7 +48,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def notify_signup(conn, _params) when is_organizer(conn) do
+  def notify_signup(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
 
     res =
@@ -56,18 +56,26 @@ defmodule BokkenWeb.EventController do
       |> Enum.filter(fn u -> u.active and u.verified and u.role in [:guardian, :mentor] end)
       |> send_email(fn user -> EventsEmails.event_reminder_email(user, event) end)
 
-    if length(res[:fail]) == 0 do
-        conn
-        |> put_status(:ok)
-        |> assign(:result, res)
+    status =
+      if Enum.empty?(res[:fail]) do
+        :ok
+      else
+        :internal_server_error
+      end
+
+    if Map.has_key?(params, "no_print") do
+      conn
+      |> put_status(status)
+      |> assign(:result, res)
     else
-        conn
-        |> put_status(:internal_server_error)
-        |> assign(:result, res)
+      conn
+      |> put_status(status)
+      |> assign(:result, res)
+      |> render("emails.json", res)
     end
   end
 
-  def notify_selected(conn, _params) when is_organizer(conn) do
+  def notify_selected(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
     lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
 
@@ -96,9 +104,23 @@ defmodule BokkenWeb.EventController do
       fail: mentor_res[:fail] ++ ninja_res[:fail]
     }
 
-    conn
-    |> put_status(:ok)
-    |> render("emails.json", res)
+    status =
+      if Enum.empty?(res[:fail]) do
+        :ok
+      else
+        :internal_server_error
+      end
+
+    if Map.has_key?(params, "no_print") do
+      conn
+      |> put_status(status)
+      |> assign(:result, res)
+    else
+      conn
+      |> put_status(status)
+      |> assign(:result, res)
+      |> render("emails.json", res)
+    end
   end
 
   defp send_email(users, email) do
