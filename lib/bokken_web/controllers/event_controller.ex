@@ -56,9 +56,15 @@ defmodule BokkenWeb.EventController do
       |> Enum.filter(fn u -> u.active and u.verified and u.role in [:guardian, :mentor] end)
       |> send_email(fn user -> EventsEmails.event_reminder_email(user, event) end)
 
-    conn
-    |> put_status(:ok)
-    |> render("emails.json", res)
+    if length(res[:fail]) == 0 do
+        conn
+        |> put_status(:ok)
+        |> assign(:result, res)
+    else
+        conn
+        |> put_status(:internal_server_error)
+        |> assign(:result, res)
+    end
   end
 
   def notify_selected(conn, _params) when is_organizer(conn) do
