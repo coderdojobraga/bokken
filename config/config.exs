@@ -17,7 +17,7 @@ config :bokken, BokkenWeb.Endpoint,
   render_errors: [view: BokkenWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Bokken.PubSub,
   live_view: [signing_salt: "HwkWYgOC"],
-  frontend_url: System.get_env("FRONTEND_URL")
+  frontend_url: "http://localhost:3000"
 
 # Configures the mailer
 #

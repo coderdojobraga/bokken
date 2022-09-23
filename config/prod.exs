@@ -13,7 +13,8 @@ config :bokken, BokkenWeb.Endpoint,
     host: "bokken.di.uminho.pt",
     port: 80
   ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  frontend_url: "https://coderdojobraga.org"
 
 config :bokken, Bokken.Mailer,
   adapter: Swoosh.Adapters.Sendinblue,
