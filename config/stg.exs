@@ -13,18 +13,22 @@ config :bokken, BokkenWeb.Endpoint,
     host: "stg.bokken.di.uminho.pt",
     port: 80
   ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  frontend_url: "https://coderdojobraga.org"
 
 config :bokken, Bokken.Mailer,
   adapter: Swoosh.Adapters.Sendinblue,
-  api_key: System.get_env("MAILER_API_KEY")
+  api_key: {:system, "MAILER_API_KEY"}
 
 # :cors_plug must be configured only in compilation time
 # See https://github.com/mschae/cors_plug/issues/49 for alternative solutions
 # with functions
 config :cors_plug,
   origin: [
-    "https://coderdojo-braga.vercel.app",
+    "https://app.coderdojobraga.org",
+    "https://blog.coderdojobraga.org",
     "https://coderdojobraga.org",
-    ~r/https?(.)*-cesiuminho\.vercel\.app/
+    "https://coderdojobraga-app.netlify.app",
+    "https://coderdojobraga-blog.netlify.app",
+    "https://coderdojobraga-web.netlify.app"
   ]
