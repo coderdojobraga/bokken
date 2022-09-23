@@ -20,7 +20,8 @@ config :bokken, BokkenWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   watchers: [],
-  secret_key_base: "EbeRKthW2o1nNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6"
+  secret_key_base: "EbeRKthW2o1nNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6",
+  frontend_url: "http://localhost:3000"
 
 config :cors_plug,
   origin: [
