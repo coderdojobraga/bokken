@@ -103,4 +103,7 @@ if config_env() in [:prod, :stg] do
 
   # Then you can assemble a release by calling `mix release`.
   # See `mix help release` for more information.
+  config :bokken, Bokken.Mailer,
+    adapter: Swoosh.Adapters.Sendinblue,
+    api_key: {:system, "MAILER_API_KEY"}
 end

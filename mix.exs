@@ -63,6 +63,7 @@ defmodule Bokken.MixProject do
       # mailer
       {:swoosh, "~> 1.5"},
       {:phoenix_swoosh, "~> 1.0"},
+      {:hackney, "~> 1.18"},
 
       # plugs
       {:plug_cowboy, "~> 2.5"},

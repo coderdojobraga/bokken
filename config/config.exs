@@ -17,7 +17,7 @@ config :bokken, BokkenWeb.Endpoint,
   render_errors: [view: BokkenWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Bokken.PubSub,
   live_view: [signing_salt: "HwkWYgOC"],
-  frontend_url: "http://localhost:3000"
+  frontend_url: System.get_env("FRONTEND_URL")
 
 # Configures the mailer
 #
@@ -29,7 +29,7 @@ config :bokken, BokkenWeb.Endpoint,
 config :bokken, Bokken.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
+config :swoosh, :api_client, Swoosh.ApiClient.Hackney
 
 config :bokken, BokkenWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 

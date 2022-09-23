@@ -20,11 +20,14 @@ config :bokken, BokkenWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   watchers: [],
-  secret_key_base: "EbeRKthW2onNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6",
-  frontend_url: System.get_env("FRONTEND_URL", "http://localhost:3000")
+  secret_key_base: "EbeRKthW2o1nNBQR46yhrX1D7G4IOQwUZbtrXMwxyrZLkarZm273SX9f35SRqswg6"
 
 config :cors_plug,
-  origin: ["http://localhost:3000"]
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002"
+  ]
 
 config :bokken, BokkenWeb.Authorization,
   issuer: "bokken",
