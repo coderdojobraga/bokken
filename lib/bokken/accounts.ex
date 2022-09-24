@@ -693,4 +693,36 @@ defmodule Bokken.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_user_by_email(email) do
+    User
+    |> Repo.get_by(email: email)
+  end
+
+  def get_user_by_token(token) do
+    User
+    |> Repo.get_by(reset_password_token: token)
+  end
+
+  def reset_password_token(user) do
+    token = random_string(48)
+    sent_at = DateTime.utc_now()
+
+    user
+    |> User.password_token_changeset(%{reset_password_token: token, reset_token_sent_at: sent_at})
+    |> Repo.update!()
+  end
+
+  defp random_string(len) do
+    :crypto.strong_rand_bytes(len)
+    |> Base.url_encode64()
+    |> binary_part(0, len)
+  end
+
+  def token_expired?(sent_at) do
+    diff = DateTime.diff(DateTime.utc_now(), sent_at)
+
+    # Checks if one day passed since the token was sent
+    diff / 60 / 60 / 24 > 1
+  end
 end

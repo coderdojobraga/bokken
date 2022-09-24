@@ -578,6 +578,107 @@
 											"body": "{\n    \"active\": true,\n    \"city\": \"Santarém\",\n    \"email\": \"simonedeoliveira@mail.com\",\n    \"first_name\": \"Simone\",\n    \"guardian_id\": \"42560d82-1340-46e3-9c64-68abdf81e1f9\",\n    \"id\": \"92c80a6e-a170-4451-b6bc-fe461e77088a\",\n    \"last_name\": \"de Oliveira\",\n    \"mobile\": \"+351912027905\",\n    \"photo\": \"https://robohash.org/Simone-de Oliveira\",\n    \"registered\": true,\n    \"role\": \"guardian\",\n    \"since\": \"2022-08-15T19:16:21\",\n    \"verified\": false\n}"
 										}
 									]
+								},
+								{
+									"name": "Sign in as an Organizer",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"Bernie.Bailey85@hotmail.com\",\n    \"password\": \"password1234\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/sign_in",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"sign_in"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reset password",
+							"item": [
+								{
+									"name": "Request reset",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"user\": {\n        \"email\": \"calvinandhobbes@mail.com\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/reset_password",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"reset_password"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update password",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"user\": {\n        \"password\": \"test1234\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/auth/reset_password/{{reset_password_token}}",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"reset_password",
+												"{{reset_password_token}}"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -3432,51 +3533,6 @@
 			"name": "Events",
 			"item": [
 				{
-					"name": "Pairings",
-					"item": [
-						{
-							"name": "List pairings",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/pairings",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"pairings"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create pairings",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/pairings",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"pairings"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "Teams",
 					"item": [
 						{
@@ -4263,42 +4319,6 @@
 					"name": "Event",
 					"item": [
 						{
-							"name": "Delete event",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Delete Event status is No Content\", function(){",
-											"    pm.response.to.have.status(204);",
-											"});",
-											"",
-											"pm.environment.unset(\"event_id\");",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}"
-									]
-								},
-								"description": "Removes an event."
-							},
-							"response": []
-						},
-						{
 							"name": "List Events",
 							"event": [
 								{
@@ -4658,6 +4678,82 @@
 									"body": "{\n    \"data\": {\n        \"end_time\": \"2021-08-06T12:30:00Z\",\n        \"id\": \"21d7c385-67c6-46ca-9593-9f7cecb71f3a\",\n        \"location_id\": \"cfe2f882-526c-4851-9f14-29d75bf54474\",\n        \"notes\": \"Changing event's notes on 2021-06-08T22:58:40.279Z\",\n        \"online\": true,\n        \"start_time\": \"2021-08-06T10:00:00Z\",\n        \"team_id\": \"767234f0-1331-477f-8ca5-abf564d8551d\",\n        \"title\": \"Special 980\"\n    }\n}"
 								}
 							]
+						},
+						{
+							"name": "Delete event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Delete Event status is No Content\", function(){",
+											"    pm.response.to.have.status(204);",
+											"});",
+											"",
+											"pm.environment.unset(\"event_id\");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}"
+									]
+								},
+								"description": "Removes an event."
+							},
+							"response": []
+						},
+						{
+							"name": "List pairings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create pairings",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"event": [
