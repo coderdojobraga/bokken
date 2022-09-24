@@ -313,94 +313,6 @@
 											"body": "{\n    \"active\": false,\n    \"email\": \"Jerrold46@yahoo.com\",\n    \"id\": \"34de2974-40a3-4b35-9b50-2567c4af303a\",\n    \"registered\": false,\n    \"role\": \"guardian\",\n    \"verified\": false\n}"
 										}
 									]
-								},
-								{
-									"name": "Sign up as a Organizer",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Sign up status is Created\", function(){",
-													"    pm.response.to.have.status(201);",
-													"});",
-													"",
-													"pm.test(\"Token with set-cookie is present\", function () {",
-													"    pm.response.to.have.header(\"set-cookie\");",
-													"});",
-													"",
-													"pm.test(\"User is not registered\", function () {",
-													"    pm.expect(pm.response.json().registered).to.eql(false);",
-													"});",
-													"",
-													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
-													"pm.environment.set(\"token\", token);",
-													"",
-													"user_id = pm.response.json().id;",
-													"pm.environment.set(\"user_id\", user_id);",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/auth/sign_up",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"auth",
-												"sign_up"
-											]
-										}
-									},
-									"response": [
-										{
-											"name": "Sign up as a Organizer",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"password1234\",\n    \"role\": \"organizer\"\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{host}}/api/auth/sign_up",
-													"host": [
-														"{{host}}"
-													],
-													"path": [
-														"api",
-														"auth",
-														"sign_up"
-													]
-												}
-											},
-											"_postman_previewlanguage": "json",
-											"header": [],
-											"cookie": [],
-											"body": "{\n    \"active\": false,\n    \"email\": \"Jacinthe94@hotmail.com\",\n    \"id\": \"a567a769-0f93-4066-8bf9-c542c816b2f6\",\n    \"registered\": false,\n    \"role\": \"organizer\",\n    \"verified\": false\n}"
-										}
-									]
 								}
 							]
 						},
@@ -4714,46 +4626,6 @@
 								"description": "Removes an event."
 							},
 							"response": []
-						},
-						{
-							"name": "List pairings",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/pairings",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"pairings"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create pairings",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/events/{{event_id}}/pairings",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"events",
-										"{{event_id}}",
-										"pairings"
-									]
-								}
-							},
-							"response": []
 						}
 					],
 					"event": [
@@ -5597,6 +5469,51 @@
 									]
 								},
 								"description": "Updates the availability of a mentor regarding an event."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pairing",
+					"item": [
+						{
+							"name": "List pairings",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create pairings",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/events/{{event_id}}/pairings",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"events",
+										"{{event_id}}",
+										"pairings"
+									]
+								}
 							},
 							"response": []
 						}
