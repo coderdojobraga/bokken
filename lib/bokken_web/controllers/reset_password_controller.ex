@@ -3,8 +3,8 @@ defmodule BokkenWeb.ResetPasswordController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
-  alias Bokken.Repo
   alias Bokken.Mailer
+  alias Bokken.Repo
   alias BokkenWeb.AuthEmails
 
   def create(conn, %{"user" => %{"email" => email}}) do
