@@ -11,6 +11,9 @@ defmodule Bokken.Repo.Migrations.CreateUsers do
       add :password_hash, :string, null: false
       add :role, :string, null: false
 
+      add :reset_password_token, :string
+      add :reset_token_sent_at, :utc_datetime
+
       add :verified, :boolean, default: false, null: false
       add :active, :boolean, default: false, null: false
       add :registered, :boolean, default: false, null: false

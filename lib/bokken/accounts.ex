@@ -693,4 +693,50 @@ defmodule Bokken.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def create_reset_password_token(user) do
+    token = random_string(48)
+    sent_at = DateTime.utc_now()
+
+    user
+    |> User.password_token_changeset(%{reset_password_token: token, reset_token_sent_at: sent_at})
+    |> Repo.update!()
+  end
+
+  def get_user_by_email(email) do
+    User
+    |> Repo.get_by(email: email)
+  end
+
+  def get_user_by_token(token) do
+    User
+    |> Repo.get_by(reset_password_token: token)
+  end
+
+  defp random_string(len) do
+    :crypto.strong_rand_bytes(len)
+    |> Base.url_encode64()
+    |> binary_part(0, len)
+  end
+
+  def update_reset_password_token(%User{} = user, attrs \\ %{}) do
+    User.password_token_changeset(user, attrs)
+    |> Repo.update!()
+  end
+
+  def token_expired?(sent_at) do
+    diff = DateTime.diff(DateTime.utc_now(), sent_at)
+
+    # Checks if one day passed since the token was sent
+    diff / 60 / 60 / 24 > 1
+  end
+
+  alias Ecto.Multi
+
+  def reset_user_password(user, params, attrs \\ %{}) do
+    Multi.new()
+    |> Multi.update(:user, User.update_password_changeset(user, params))
+    |> Multi.update(:after_password, User.password_token_changeset(user, attrs))
+    |> Repo.transaction()
+  end
 end

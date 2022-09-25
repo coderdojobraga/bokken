@@ -38,6 +38,8 @@ defmodule BokkenWeb.Router do
       post "/sign_in", AuthController, :sign_in
       post "/verify", AuthController, :verify
 
+      resources "/reset_password", ResetPasswordController, only: [:create, :update]
+
       pipe_through :authenticated
 
       resources "/me", AuthController, only: [:show, :create, :update], singleton: true

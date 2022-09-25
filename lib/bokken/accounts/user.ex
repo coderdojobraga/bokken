@@ -27,6 +27,9 @@ defmodule Bokken.Accounts.User do
     has_one :ninja, Ninja, on_delete: :delete_all
     has_one :organizer, Organizer, on_delete: :delete_all
 
+    field :reset_password_token, :string
+    field :reset_token_sent_at, :utc_datetime
+
     has_many :files, File, on_delete: :delete_all
 
     timestamps()
@@ -51,6 +54,19 @@ defmodule Bokken.Accounts.User do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> check_required(user.password_hash)
     |> user_validations()
+  end
+
+  def password_token_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:reset_password_token, :reset_token_sent_at])
+  end
+
+  def update_password_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:password])
+    |> validate_required([:password])
+    |> validate_length(:password, min: 8)
+    |> encrypt_password()
   end
 
   defp user_validations(changeset) do
