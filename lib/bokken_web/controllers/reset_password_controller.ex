@@ -2,10 +2,13 @@ defmodule BokkenWeb.ResetPasswordController do
   use BokkenWeb, :controller
 
   alias Bokken.Accounts
-  alias Bokken.Accounts.User
   alias Bokken.Mailer
-  alias Bokken.Repo
   alias BokkenWeb.AuthEmails
+
+  @nil_attrs %{
+    reset_password_token: nil,
+    reset_token_sent_at: nil
+  }
 
   def create(conn, %{"user" => %{"email" => email}}) do
     case Accounts.get_user_by_email(email) do
@@ -15,7 +18,7 @@ defmodule BokkenWeb.ResetPasswordController do
         |> render("error.json", error: "There is no such user with that email.")
 
       user ->
-        user = Accounts.reset_password_token(user)
+        user = Accounts.create_reset_password_token(user)
 
         AuthEmails.reset_password_email(user.reset_password_token, to: user.email)
         |> Mailer.deliver()
@@ -30,31 +33,19 @@ defmodule BokkenWeb.ResetPasswordController do
     case Accounts.get_user_by_token(token) do
       nil ->
         conn
-        |> put_status(:bad_request)
-        |> render("error.json", error: "Password reset token nonexistent.")
+        |> put_status(:not_found)
+        |> render("error.json", error: "Token does not exist.")
 
       user ->
         if Accounts.token_expired?(user.reset_token_sent_at) do
-          User.password_token_changeset(user, %{
-            reset_password_token: nil,
-            reset_token_sent_at: nil
-          })
-          |> Repo.update!()
+          Accounts.update_reset_password_token(user, @nil_attrs)
 
           conn
-          |> put_status(:bad_request)
-          |> render("error.json", error: "Password reset token expired.")
+          |> put_status(:not_found)
+          |> render("error.json", error: "Token does not exist.")
         else
-          changeset = User.update_password_changeset(user, params)
-
-          case Repo.update(changeset) do
+          case Accounts.reset_user_password(user, params, @nil_attrs) do
             {:ok, _user} ->
-              User.password_token_changeset(user, %{
-                reset_password_token: nil,
-                reset_token_sent_at: nil
-              })
-              |> Repo.update!()
-
               conn
               |> put_status(:ok)
               |> render("ok.json", %{})

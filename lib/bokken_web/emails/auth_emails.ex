@@ -20,9 +20,9 @@ defmodule BokkenWeb.AuthEmails do
     frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
 
     new()
-    |> from({"CoderDojo Braga", "reset@coderdojo.braga.org"})
+    |> from({"CoderDojo Braga", "noreply@coderdojo.braga.org"})
     |> to(email)
-    |> subject("[CoderDojo Braga] Instruções para resetar a password")
+    |> subject("[CoderDojo Braga] Instruções para repor a password")
     |> reply_to("noreply@coderdojobraga.org")
     |> assign(:link, frontend_url <> "/dashboard/reset?token=" <> token)
     |> render_body(:reset_password)
