@@ -14,8 +14,8 @@ defmodule BokkenWeb.ResetPasswordController do
     case Accounts.get_user_by_email(email) do
       nil ->
         conn
-        |> put_status(:not_found)
-        |> render("error.json", error: "There is no such user with that email.")
+        |> put_status(:ok)
+        |> render("show.json", %{})
 
       user ->
         user = Accounts.create_reset_password_token(user)
@@ -24,7 +24,7 @@ defmodule BokkenWeb.ResetPasswordController do
         |> Mailer.deliver()
 
         conn
-        |> put_status(:created)
+        |> put_status(:ok)
         |> render("show.json", %{})
     end
   end
