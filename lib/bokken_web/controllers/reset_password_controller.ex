@@ -14,7 +14,7 @@ defmodule BokkenWeb.ResetPasswordController do
     case Accounts.get_user_by_email(email) do
       nil ->
         conn
-        |> put_status(:ok)
+        |> put_status(:created)
         |> render("show.json", %{})
 
       user ->
@@ -24,7 +24,7 @@ defmodule BokkenWeb.ResetPasswordController do
         |> Mailer.deliver()
 
         conn
-        |> put_status(:ok)
+        |> put_status(:created)
         |> render("show.json", %{})
     end
   end
