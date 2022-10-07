@@ -58,11 +58,16 @@ defmodule BokkenWeb.EnrollmentController do
         |> put_status(:forbidden)
         |> render("error.json", reason: "Guardian can not submit an accepted enrollment")
       else
-        with {:ok, %Enrollment{} = enrollment} <-
-               Events.create_enrollment(event, enrollment_params) do
-          conn
-          |> put_status(:created)
-          |> render("show.json", enrollment: enrollment)
+        case Events.create_enrollment(event, enrollment_params) do
+          {:ok, %Enrollment{} = enrollment} ->
+            conn
+            |> put_status(:created)
+            |> render("show.json", enrollment: enrollment)
+
+          {:error, reason} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render("error.json", reason: reason)
         end
       end
     else
