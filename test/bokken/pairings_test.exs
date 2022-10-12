@@ -192,5 +192,41 @@ defmodule Bokken.PairingsTest do
       assert lecture_1.ninja_id == ninja1.id
       assert lecture_2.ninja_id == ninja2.id
     end
+
+    test "create_pairings/1 when an event doesn't have ninjas" do
+      event = insert(:event)
+
+      skill1 = insert(:skill)
+      skill2 = insert(:skill)
+      skill3 = insert(:skill)
+
+      mentor1 = insert(:mentor, %{skills: [skill1, skill2]})
+      mentor2 = insert(:mentor, %{skills: [skill2, skill3]})
+      mentor3 = insert(:mentor, %{skills: [skill1, skill3]})
+
+      insert(:availability, %{mentor: mentor1, event: event, is_available: true})
+      insert(:availability, %{mentor: mentor2, event: event, is_available: true})
+      insert(:availability, %{mentor: mentor3, event: event, is_available: true})
+
+      assert Pairings.create_pairings(event.id) == []
+    end
+
+    test "create_pairings/1 when an event doesn't have mentors" do
+      event = insert(:event)
+
+      skill1 = insert(:skill)
+      skill2 = insert(:skill)
+      skill3 = insert(:skill)
+
+      ninja1 = insert(:ninja, %{skills: [skill1, skill2]})
+      ninja2 = insert(:ninja, %{skills: [skill2, skill3]})
+      ninja3 = insert(:ninja, %{skills: [skill1, skill3]})
+
+      insert(:enrollment, %{ninja: ninja1, event: event, accepted: true})
+      insert(:enrollment, %{ninja: ninja2, event: event, accepted: true})
+      insert(:enrollment, %{ninja: ninja3, event: event, accepted: true})
+
+      assert Pairings.create_pairings(event.id) == []
+    end
   end
 end

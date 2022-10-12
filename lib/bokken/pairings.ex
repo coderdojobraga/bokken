@@ -17,13 +17,17 @@ defmodule Bokken.Pairings do
     available_mentors = get_available_mentors(event_id)
     available_ninjas = get_available_ninjas(event_id)
 
-    pairings_table = pairings_table(available_ninjas, available_mentors)
+    if (available_mentors == []) or (available_ninjas == []) do
+      []
+    else
+      pairings_table = pairings_table(available_ninjas, available_mentors)
 
-    matches =
-      create_matrix(pairings_table)
-      |> HungarianAlgorithm.compute()
+      matches =
+        create_matrix(pairings_table)
+        |> HungarianAlgorithm.compute()
 
-    create_lectures(pairings_table, matches, event_id)
+      create_lectures(pairings_table, matches, event_id)
+    end
   end
 
   @doc """
