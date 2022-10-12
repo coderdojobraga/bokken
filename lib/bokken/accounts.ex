@@ -739,4 +739,37 @@ defmodule Bokken.Accounts do
     |> Multi.update(:after_password, User.password_token_changeset(user, attrs))
     |> Repo.transaction()
   end
+
+  alias Bokken.Accounts.Bot
+
+  @doc """
+  Returns the list of bots.
+
+  ## Examples
+
+      iex> list_bots()
+      [%Bot{}, ...]
+
+  """
+  def list_bots() do
+    Repo.all(Bot)
+  end
+
+  @doc """
+  Creates a Bot.
+
+  ## Examples
+
+      iex> create_bot(%{field: value})
+      {:ok, %Bot{}}
+
+      iex> create_bot(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bot(attrs \\ %{}) do
+    %Bot{}
+    |> User.changeset(attrs)
+    |> Repo.insert()
+  end
 end
