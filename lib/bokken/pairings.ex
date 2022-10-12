@@ -17,7 +17,7 @@ defmodule Bokken.Pairings do
     available_mentors = get_available_mentors(event_id)
     available_ninjas = get_available_ninjas(event_id)
 
-    if (available_mentors == []) or (available_ninjas == []) do
+    if available_mentors == [] or available_ninjas == [] do
       []
     else
       pairings_table = pairings_table(available_ninjas, available_mentors)
