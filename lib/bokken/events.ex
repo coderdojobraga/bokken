@@ -618,10 +618,11 @@ defmodule Bokken.Events do
   """
   def create_enrollment(event, attrs \\ %{}) do
     cur_time = DateTime.utc_now()
+    ninja_id = Map.get(attrs, :ninja_id) || Map.get(attrs, "ninja_id")
 
     has_enrolled =
       Enrollment
-      |> where([e], e.event_id == ^event.id and e.ninja_id == ^attrs["ninja_id"])
+      |> where([e], e.event_id == ^event.id and e.ninja_id == ^ninja_id)
       |> Repo.exists?()
 
     if DateTime.compare(event.enrollments_open, cur_time) == :lt and
@@ -629,9 +630,12 @@ defmodule Bokken.Events do
       if has_enrolled do
         {:error, "Already enrolled"}
       else
-        %Enrollment{}
-        |> Enrollment.changeset(attrs)
-        |> Repo.insert()
+        case %Enrollment{}
+             |> Enrollment.changeset(attrs)
+             |> Repo.insert() do
+          {:ok, enrollment} -> {:ok, enrollment}
+          {:error, _changeset} -> {:error, "Invalid data"}
+        end
       end
     else
       {:error, "Enrollments are closed"}
@@ -759,18 +763,23 @@ defmodule Bokken.Events do
     first_comparison = DateTime.compare(event.enrollments_open, current_time)
     second_comparison = DateTime.compare(event.enrollments_close, current_time)
 
+    mentor_id = Map.get(attrs, :mentor_id) || Map.get(attrs, "mentor_id")
+
     has_answered =
       Availability
-      |> where([a], a.mentor_id == ^attrs["mentor_id"] and a.event_id == ^event.id)
+      |> where([a], a.mentor_id == ^mentor_id and a.event_id == ^event.id)
       |> Repo.exists?()
 
     if first_comparison == :lt and second_comparison == :gt do
       if has_answered do
         {:error, "Already stated your availability"}
       else
-        %Availability{}
-        |> Availability.changeset(attrs)
-        |> Repo.insert()
+        case %Availability{}
+             |> Availability.changeset(attrs)
+             |> Repo.insert() do
+          {:ok, availability} -> {:ok, availability}
+          {:error, _changeset} -> {:error, "Invalid data"}
+        end
       end
     else
       {:error, "You can't create the availability for an event with closed enrollments"}
