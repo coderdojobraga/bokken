@@ -1,26 +1,28 @@
 defmodule BokkenWeb.BotView do 
   use BokkenWeb, :view
   
-  def render("show.json", %{user: user}) do
-    render_one(user, BotView, "user.json")
+  def render("index.json", %{bots: bots}) do
+    %{data: render_many(bots, BotView, "bot.json")}
   end
 
-  def update("update.json", %{ninja: ninja}) do
-    render_one(ninja, BotView, "ninja.json")
+  def render("show.json", %{bot: bot}) do
+    render_one(bot, BotView, "bot.json")
   end
   
-  def render("user.json", %{user: user}) do
+  def render("create.json", %{api_key: api_key}) do
     %{
-      id: user.id,
-      discord_id: user.discord_id,
-      role: user.role
+      api_key: api_key
     }
   end
 
-  def render("ninja.json", %{ninja: ninja}) do
+  def update("update.json", %{bot: bot}) do
+    render_one(bot, BotView, "bot.json")
+  end
+  
+  def render("bot.json", %{bot: bot}) do
     %{
-      ninja_id: ninja.id,
-      belt: ninja.belt 
+      id: bot.id,
+      name: bot.name 
     }
   end
 end

@@ -2,28 +2,49 @@ defmodule BokkenWeb.BotController do
   use BokkenWeb, :controller
 
   alias Bokken.Accounts
+  alias Bokken.Accounts.Bot
 
-  def create(conn, params) do
+  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
 
+  def index(conn, _params) when is_organizer(conn) do
+    with {:ok, bots} <- Accounts.list_bots() do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", bots: bots)
+    end
   end
 
-  # def show(conn, %{"id" => discord_id}) do
-  #   user = Accounts.get_user(discord_id)
-  #          |> Repo.preload([:ninja])
-    
-  #   conn
-  #   |> put_status(:ok)
-  #   |> render("show.json", user: user)
-  # end
+  def show(conn, %{id: id}) do
+    bot = Accounts.get_bot!(id)
 
-  # def update(conn, %{"discord_id" => discord_id, "belt" => belt}) do
-  #   user = Accounts.get_user(discord_id)
-  #          |> Repo.preload([:ninja])
+    conn
+    |> put_status(:ok)
+    |> render("show.json", bot: bot)
+  end
 
-  #   ninja = Accounts.update_ninja(user.ninja, %{belt: String.to_atom(belt)})
+  def create(conn, %{name: name}) when is_organizer(conn) do
+    api_key = Faker.String.base64(32)
 
-  #   conn
-  #   |> put_status(:ok) 
-  #   |> render("update.json", %{ninja: discord_id})
-  # end
+    with {:ok, bot} <- Accounts.create_bot(%{name: name, api_key: api_key}) do
+      conn
+      |> put_status(:created)
+      |> render("create.json", api_key: api_key)
+    end
+  end
+
+  def update(conn, %{id: id, bot: bot_params}) when is_organizer(conn) do
+    bot = Accounts.get_bot!(id) 
+    with {:ok, bot} <- Accounts.update_bot(bot, bot_params) do
+      conn
+      |> put_status(:ok)
+      |> render("update.json", bot: bot)
+    end
+  end
+
+  def delete(conn, %{id: id}) do
+    bot = Accounts.get_bot!(id) 
+    with {:ok, bot} <- Accounts.delete_bot(bot) do
+      send_resp(conn, :no_content, "")
+    end
+  end
 end

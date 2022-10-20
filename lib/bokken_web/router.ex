@@ -103,7 +103,11 @@ defmodule BokkenWeb.Router do
     scope "/bot" do
       post "/discord/:id", DiscordController, :add_user
 
+      get "/index", BotController, :index
+      get "/show/:id", BotController, :show
       post "/create", BotController, :create
+      patch "/update/:id", BotController, :update
+      delete "/delete/:id", BotController, :delete
       # patch "/update/:discord_id", BotController, :update
       # get "/show/:discord_id", BotController, :show
     end

@@ -5,6 +5,7 @@ defmodule Bokken.Factory do
   use Bokken.Factories.{
     AccountFactory,
     CurriculumFactory,
-    EventFactory
+    EventFactory,
+    BotsFactory
   }
 end

@@ -9,6 +9,8 @@ defmodule Bokken.Accounts.Bot do
   schema "bots" do
     field :name, :string
     field :api_key, :string 
+
+    timestamps()
   end
 
   @doc false
@@ -16,5 +18,12 @@ defmodule Bokken.Accounts.Bot do
     bot 
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> encrypt_password()
   end
+
+  defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{api_key: api_key}} = changeset) do
+    change(changeset, api_key: Argon2.hash_pwd_salt(api_key))
+  end
+
+  defp encrypt_password(changeset), do: changeset
 end

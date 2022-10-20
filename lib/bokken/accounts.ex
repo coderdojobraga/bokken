@@ -769,7 +769,55 @@ defmodule Bokken.Accounts do
   """
   def create_bot(attrs \\ %{}) do
     %Bot{}
-    |> User.changeset(attrs)
+    |> Bot.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates a Bot.
+
+  ## Examples
+
+      iex> update_bot(%Bot{}, %{field: value})
+      {:ok, %Bot{}}
+
+      iex> update_bot(%Bot{}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_bot(%Bot{} = bot, attrs) do
+    bot
+    |> Bot.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Gets a single Bot.
+
+  Raises `Ecto.NoResultsError` if the Bot does not exist.
+
+  ## Examples
+
+      iex> get_bot!(123)
+      %Bot{}
+
+      iex> get_bot!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bot!(id, preloads \\ []) do
+    Repo.get!(Bot, id) |> Repo.preload(preloads)
+  end
+  
+  @doc """
+  Deletes a bot.
+  ## Examples
+      iex> delete_bot(bot)
+      {:ok, %Bot{}}
+      iex> delete_bot(bot)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_bot(%Bot{} = bot) do
+    Repo.delete(bot)
   end
 end
