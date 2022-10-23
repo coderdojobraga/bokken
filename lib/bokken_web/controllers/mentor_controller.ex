@@ -7,9 +7,7 @@ defmodule BokkenWeb.MentorController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, params)
-      when is_map_key(params, "team_id")
-      when is_map_key(params, "event_id") do
+  def index(conn, params) do
     mentors = Accounts.list_mentors(params)
     render(conn, "index.json", mentors: mentors)
   end
