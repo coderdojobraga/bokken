@@ -60,10 +60,6 @@ defmodule BokkenWeb.BotControllerTest do
     test "delete bot", %{conn: conn} do
       bot = insert(:bot)
 
-      # assert response(conn, 204)
-      # assert_error_sent 404, fn ->
-      #   delete(conn, Routes.bot_path(conn, :delete, bot.id))
-      # end
       conn = delete(conn, Routes.bot_path(conn, :delete, bot.id))
       assert response(conn, 204)
     end

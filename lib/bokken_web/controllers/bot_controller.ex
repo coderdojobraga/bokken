@@ -1,7 +1,7 @@
 defmodule BokkenWeb.BotController do
   use BokkenWeb, :controller
 
-  alias Bokken.Accounts
+  alias Bokken.Accounts.Bot
 
   defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
 
@@ -24,7 +24,7 @@ defmodule BokkenWeb.BotController do
   def create(conn, %{"name" => name}) when is_organizer(conn) do
     api_key = Faker.String.base64(32)
 
-    with {:ok, bot} <- Accounts.create_bot(%{name: name, api_key: api_key}) do
+    with {:ok, %Bot{}} <- Accounts.create_bot(%{name: name, api_key: api_key}) do
       conn
       |> put_status(:created)
       |> render("create.json", api_key: api_key)
@@ -44,7 +44,7 @@ defmodule BokkenWeb.BotController do
   def delete(conn, %{"id" => id}) when is_organizer(conn) do
     bot = Accounts.get_bot!(id)
 
-    with {:ok, %Bokken.Accounts.Bot{}} <- Accounts.delete_bot(bot) do
+    with {:ok, %Bot{}} <- Accounts.delete_bot(bot) do
       send_resp(conn, :no_content, "")
     end
   end
