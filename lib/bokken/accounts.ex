@@ -808,7 +808,7 @@ defmodule Bokken.Accounts do
   def get_bot!(id, preloads \\ []) do
     Repo.get!(Bot, id) |> Repo.preload(preloads)
   end
-  
+
   @doc """
   Deletes a bot.
   ## Examples

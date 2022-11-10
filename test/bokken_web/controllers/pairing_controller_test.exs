@@ -6,7 +6,7 @@ defmodule BokkenWeb.PairingControllerTest do
   setup %{conn: conn} do
     event = insert(:event)
 
-    {:ok, conn: put_resp_header(conn, "accept", "application/json"), event: event}
+    {:ok, conn}
   end
 
   describe "create" do

@@ -8,16 +8,17 @@ defmodule Bokken.Accounts.Bot do
 
   schema "bots" do
     field :name, :string
-    field :api_key, :string 
+    field :api_key, :string
 
     timestamps()
   end
 
   @doc false
   def changeset(bot, attrs) do
-    bot 
+    bot
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint(:name)
     |> encrypt_password()
   end
 

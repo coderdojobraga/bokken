@@ -100,17 +100,16 @@ defmodule BokkenWeb.Router do
     post "/notify_signup", EventController, :notify_signup
     post "/notify_selected", EventController, :notify_selected
 
-    scope "/bot" do
-      post "/discord/:id", DiscordController, :add_user
+    resources "/bot", BotController, except: [:new, :edit]
+    # scope "/bot" do
+    #   post "/discord/:id", DiscordController, :add_user
 
-      get "/index", BotController, :index
-      get "/show/:id", BotController, :show
-      post "/create", BotController, :create
-      patch "/update/:id", BotController, :update
-      delete "/delete/:id", BotController, :delete
-      # patch "/update/:discord_id", BotController, :update
-      # get "/show/:discord_id", BotController, :show
-    end
+    #   get "/index", BotController, :index
+    #   get "/show/:id", BotController, :show
+    #   post "/create", BotController, :create
+    #   patch "/update/:id", BotController, :update
+    #   delete "/delete/:id", BotController, :delete
+    # end
   end
 
   if Mix.env() in [:dev, :stg, :test] do

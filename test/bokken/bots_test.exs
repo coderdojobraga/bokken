@@ -4,11 +4,10 @@ defmodule Bokken.BotsTest do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Bot
-  
+
   import Bokken.Factory
 
   describe "Bots" do
-    
     test "list_bots/0 returns all bots" do
       bot = insert(:bot)
 
@@ -18,14 +17,14 @@ defmodule Bokken.BotsTest do
     test "create_bot/1 creates a new bot" do
       attrs = %{
         name: Faker.Pokemon.name(),
-        api_key: Faker.String.base64(32) 
+        api_key: Faker.String.base64(32)
       }
 
       assert {:ok, %Bot{}} = Accounts.create_bot(attrs)
     end
 
     test "update_bot/2 updates an existing bot" do
-      bot = insert(:bot) 
+      bot = insert(:bot)
       name = Faker.Pokemon.name()
 
       assert {:ok, %Bot{} = updated_bot} = Accounts.update_bot(bot, %{name: name})
