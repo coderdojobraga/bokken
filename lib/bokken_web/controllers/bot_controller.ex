@@ -1,8 +1,8 @@
 defmodule BokkenWeb.BotController do
   use BokkenWeb, :controller
 
-  alias Bokken.Accounts.Bot
   alias Bokken.Accounts
+  alias Bokken.Accounts.Bot
 
   defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
 

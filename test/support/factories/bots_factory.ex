@@ -5,7 +5,7 @@ defmodule Bokken.Factories.BotsFactory do
   defmacro __using__(_opts) do
     quote do
       alias Bokken.Accounts.Bot
-      alias Faker.{String, StarWars}
+      alias Faker.{StarWars, String}
 
       def bot_factory do
         %Bot{

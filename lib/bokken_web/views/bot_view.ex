@@ -17,7 +17,7 @@ defmodule BokkenWeb.BotView do
     }
   end
 
-  def update("update.json", %{bot: bot}) do
+  def render("update.json", %{bot: bot}) do
     render_one(bot, BotView, "bot.json")
   end
 

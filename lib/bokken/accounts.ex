@@ -751,7 +751,7 @@ defmodule Bokken.Accounts do
       [%Bot{}, ...]
 
   """
-  def list_bots() do
+  def list_bots do
     Repo.all(Bot)
   end
 
