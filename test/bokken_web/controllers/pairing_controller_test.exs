@@ -3,16 +3,12 @@ defmodule BokkenWeb.PairingControllerTest do
 
   import Bokken.Factory
 
-  setup %{conn: conn} do
-    event = insert(:event)
-
-    {:ok, conn: put_resp_header(conn, "accept", "application/json"), event: event}
-  end
-
   describe "create" do
     setup [:register_and_log_in_organizer]
 
-    test "create pairings for an event", %{conn: conn, event: event} do
+    test "create pairings for an event", %{conn: conn} do
+      event = insert(:event)
+
       skill1 = insert(:skill)
       skill2 = insert(:skill)
       skill3 = insert(:skill)
@@ -41,7 +37,9 @@ defmodule BokkenWeb.PairingControllerTest do
   describe "index" do
     setup [:register_and_log_in_organizer]
 
-    test "list all pairings for an event", %{conn: conn, event: event} do
+    test "list all pairings for an event", %{conn: conn} do
+      event = insert(:event)
+
       insert_list(3, :lecture, %{event: event})
 
       conn = get(conn, Routes.event_pairing_path(conn, :index, event.id))
