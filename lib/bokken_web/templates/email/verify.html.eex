@@ -28,30 +28,15 @@
 
                   <div style="Margin-left: 20px;Margin-right: 20px;">
                     <div class="btn btn--flat btn--large" style="Margin-bottom: 20px;text-align: center;">
-                      <!--[if !mso]-->
                       <a style="border-radius: 4px;display: inline-block;font-size: 14px;font-weight: bold;line-height: 24px;padding: 12px 24px;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #ffffff !important;background-color: #642580ff; font-family: Avenir, sans-serif;"
                          href=<%= @link %>>
                         Confirmar conta
                       </a>
-                      <!--[endif]-->
-                      <!--[if mso]><p style="line-height:0;margin:0;">&nbsp;</p><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="https://discord.gg/6djqZbB" style="width:186px" arcsize="9%" fillcolor="#225053" stroke="f"><v:textbox style="mso-fit-shape-to-text:t" inset="0px,11px,0px,11px"><center style="font-size:14px;line-height:24px;color:#FFFFFF;font-family:Avenir,sans-serif;font-weight:bold;mso-line-height-rule:exactly;mso-text-raise:4px">Entrar no Discord</center></v:textbox></v:roundrect><![endif]-->
                     </div>
                   </div>
 
                   <div style="Margin-left: 20px;Margin-right: 20px;">
                     <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
-                  <!--     <p style="Margin-top: 0;Margin-bottom: 0;">O teu código pessoal, que vais necessitar para fazer o check-in, é:</p> -->
-                  <!--     <p class="size-20" style="Margin-top: 20px;Margin-bottom: 0;font-size: 17px;line-height: 26px;text-align: center;" lang="x-size-20"><strong>wcm51G3Twyod8m9jIJka</strong></p> -->
-                  <!--     <p style="Margin-top: 20px;Margin-bottom: 20px;">Deixamos -->
-                  <!--       a ressalva de que as equipas podem vir a sofrer ligeiros ajustes até ao -->
-                  <!--       momento do início da atividade, em virtude de eventuais desistências. -->
-                  <!--       As equipas que se inscreveram já completas&nbsp; excetuam-se à ressalva -->
-                  <!--       anterior!<br> -->
-                  <!--       <br> -->
-                  <!--       Estamos à tua espera no Discord! Junta-te a nós!!<br> -->
-                  <!--       <br> -->
-                  <!--       Até já,<br> -->
-                  <!--       A equipa organizadora da Hackathon HeartBits 2020</p> -->
                       <p style="Margin-top: 16px;Margin-bottom: 20px;">
                         Estamos contentes por teres demonstrado interesse em
                         fazer parte do CoderDojo Braga. Estamos ansiosos por te
