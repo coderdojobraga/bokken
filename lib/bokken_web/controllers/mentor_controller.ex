@@ -4,6 +4,7 @@ defmodule BokkenWeb.MentorController do
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
   alias Bokken.Events.TeamMentor
+  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -12,7 +13,7 @@ defmodule BokkenWeb.MentorController do
     render(conn, "index.json", mentors: mentors)
   end
 
-  def create(conn, %{"team_id" => team_id, "mentor_id" => mentor_id}) do
+  def create(conn, %{"team_id" => team_id, "mentor_id" => mentor_id}) when Guards.is_organizer(conn) do
     with {:ok, %TeamMentor{} = team_mentor} <- Accounts.add_mentor_to_team(team_id, mentor_id) do
       mentor = Accounts.get_mentor!(team_mentor.mentor_id)
 
@@ -23,7 +24,7 @@ defmodule BokkenWeb.MentorController do
     end
   end
 
-  def create(conn, %{"mentor" => mentor_params} = params) when not is_map_key(params, :team_id) do
+  def create(conn, %{"mentor" => mentor_params} = params) when not is_map_key(params, :team_id) when Guards.is_organizer(conn) do
     with {:ok, %Mentor{} = mentor} <- Accounts.create_mentor(mentor_params) do
       conn
       |> put_status(:created)
@@ -37,7 +38,7 @@ defmodule BokkenWeb.MentorController do
     render(conn, "show.json", mentor: mentor)
   end
 
-  def update(conn, %{"id" => id, "mentor" => mentor_params}) do
+  def update(conn, %{"id" => id, "mentor" => mentor_params}) when Guards.is_organizer(conn) do
     mentor = Accounts.get_mentor!(id)
 
     with {:ok, %Mentor{} = mentor} <- Accounts.update_mentor(mentor, mentor_params) do
@@ -45,13 +46,13 @@ defmodule BokkenWeb.MentorController do
     end
   end
 
-  def delete(conn, %{"team_id" => team_id, "id" => mentor_id}) do
+  def delete(conn, %{"team_id" => team_id, "id" => mentor_id}) when Guards.is_organizer(conn) do
     with {_n, nil} <- Accounts.remove_mentor_team(team_id, mentor_id) do
       send_resp(conn, :no_content, "")
     end
   end
 
-  def delete(conn, %{"id" => id} = params) when not is_map_key(params, :team_id) do
+  def delete(conn, %{"id" => id} = params) when not is_map_key(params, :team_id) when Guards.is_organizer(conn) do
     mentor = Accounts.get_mentor!(id)
 
     with {:ok, %Mentor{}} <- Accounts.delete_mentor(mentor) do

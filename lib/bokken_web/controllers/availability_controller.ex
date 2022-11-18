@@ -3,10 +3,9 @@ defmodule BokkenWeb.AvailabilityController do
 
   alias Bokken.Events
   alias Bokken.Events.Availability
+  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
-
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
 
   def show(conn, %{"id" => availability_id}) do
     availability = Events.get_availability!(availability_id)
@@ -29,7 +28,7 @@ defmodule BokkenWeb.AvailabilityController do
           %{"mentor_id" => _mentor_id, "is_available" => _is_available, "event_id" => event_id} =
             availability_params
       })
-      when is_mentor(conn) do
+      when Guards.is_mentor(conn) do
     event = Events.get_event!(event_id)
 
     case Events.create_availability(event, availability_params) do
@@ -49,7 +48,7 @@ defmodule BokkenWeb.AvailabilityController do
     end
   end
 
-  def update(conn, %{"availability" => availability_params}) when is_mentor(conn) do
+  def update(conn, %{"availability" => availability_params}) when Guards.is_mentor(conn) do
     old_availability = Events.get_availability!(availability_params["id"])
 
     with {:ok, %Availability{} = new_availability} <-

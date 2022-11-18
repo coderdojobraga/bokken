@@ -3,11 +3,9 @@ defmodule BokkenWeb.FileController do
 
   alias Bokken.Documents
   alias Bokken.Documents.File
+  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
-
-  defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
 
   defguard is_image(type) when type in ~w(avatars emblems)
   defguard is_document(type) when type in ~w(snippets projects)
@@ -39,13 +37,13 @@ defmodule BokkenWeb.FileController do
     render(conn, "index.json", files: files)
   end
 
-  def index(conn, _params) when is_mentor(conn) do
+  def index(conn, _params) when Guards.is_mentor(conn) do
     mentor_id = conn.assigns.current_user.mentor.id
     files = Documents.list_files(%{"mentor_id" => mentor_id})
     render(conn, "index.json", files: files)
   end
 
-  def index(conn, _params) when is_ninja(conn) do
+  def index(conn, _params) when Guards.is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
     files = Documents.list_files(%{"ninja_id" => ninja_id})
     render(conn, "index.json", files: files)

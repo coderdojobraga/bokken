@@ -6,19 +6,16 @@ defmodule BokkenWeb.EventController do
   alias Bokken.Events.Event
   alias Bokken.Mailer
   alias BokkenWeb.EventsEmails
+  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
-
-  defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
-  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
 
   def index(conn, params) do
     events = Events.list_events(params)
     render(conn, "index.json", events: events)
   end
 
-  def create(conn, %{"event" => event_params}) do
+  def create(conn, %{"event" => event_params}) when Guards.is_organizer(conn) do
     with {:ok, %Event{} = event} <- Events.create_event(event_params) do
       conn
       |> put_status(:created)
@@ -32,7 +29,7 @@ defmodule BokkenWeb.EventController do
     render(conn, "show.json", event: event)
   end
 
-  def update(conn, %{"id" => id, "event" => event_params}) do
+  def update(conn, %{"id" => id, "event" => event_params}) when Guards.is_organizer(conn) do
     event = Events.get_event!(id)
 
     with {:ok, %Event{} = event} <- Events.update_event(event, event_params) do
@@ -40,7 +37,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
     event = Events.get_event!(id)
 
     with {:ok, %Event{}} <- Events.delete_event(event) do
@@ -48,7 +45,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def notify_signup(conn, params) when is_organizer(conn) do
+  def notify_signup(conn, params) when Guards.is_organizer(conn) do
     event = Events.get_next_event!([:location])
 
     res =
@@ -75,7 +72,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def notify_selected(conn, params) when is_organizer(conn) do
+  def notify_selected(conn, params) when Guards.is_organizer(conn) do
     event = Events.get_next_event!([:location])
     lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
 
@@ -123,7 +120,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  defp send_email(users, email) do
+  defp send_email(users, email) when Guards.is_organizer(conn) do
     users
     |> List.foldl(
       %{success: [], fail: []},
