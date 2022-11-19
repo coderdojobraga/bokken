@@ -26,7 +26,7 @@ defmodule BokkenWeb.TeamController do
     render(conn, "show.json", team: team)
   end
 
-  def update(conn, %{"id" => id, "team" => team_params}) when Guards.is_organizer(conn) do
+  def update(conn, %{"id" => id, "team" => team_params}) do
     team = Events.get_team!(id)
 
     with {:ok, %Team{} = team} <- Events.update_team(team, team_params) do
@@ -34,7 +34,7 @@ defmodule BokkenWeb.TeamController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id}) do
     team = Events.get_team!(id)
 
     with {:ok, %Team{}} <- Events.delete_team(team) do

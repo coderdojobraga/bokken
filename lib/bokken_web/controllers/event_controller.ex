@@ -4,9 +4,9 @@ defmodule BokkenWeb.EventController do
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Event
+  alias Bokken.Guards
   alias Bokken.Mailer
   alias BokkenWeb.EventsEmails
-  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

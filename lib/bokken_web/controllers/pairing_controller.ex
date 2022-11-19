@@ -2,8 +2,8 @@ defmodule BokkenWeb.PairingController do
   use BokkenWeb, :controller
 
   alias Bokken.Events
-  alias Bokken.Pairings
   alias Bokken.Guards
+  alias Bokken.Pairings
 
   def index(conn, %{"event_id" => event_id}) when Guards.is_organizer(conn) do
     lectures = Events.get_lectures_from_event(event_id)

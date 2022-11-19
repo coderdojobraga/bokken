@@ -3,10 +3,10 @@ defmodule BokkenWeb.AuthController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
+  alias Bokken.Guards
   alias Bokken.Mailer
   alias BokkenWeb.AuthEmails
   alias BokkenWeb.Authorization
-  alias Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
