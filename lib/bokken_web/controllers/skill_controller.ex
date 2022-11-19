@@ -23,8 +23,8 @@ defmodule BokkenWeb.SkillController do
     render(conn, "index.json", skills: skills)
   end
 
-  def create(conn, %{"skill" => skill_params}) when Guards.is_organizer(conn) do
-    with {:ok, %Skill{} = skill} <- Curriculum.create_skill(skill_params) do
+  def create(conn, %{"skill" => skill_params}) do
+    with {:ok, %Skill{} = skill} <- Curriculum.create_skill(skill_params) when Guards.is_organizer(conn) do
       conn
       |> put_status(:created)
       |> render("show.json", skill: skill)
