@@ -12,8 +12,8 @@ defmodule BokkenWeb.TeamController do
     render(conn, "index.json", teams: teams)
   end
 
-  def create(conn, %{"team" => team_params}) do
-    with {:ok, %Team{} = team} <- Events.create_team(team_params) when Guards.is_organizer(conn) do
+  def create(conn, %{"team" => team_params}) when Guards.is_organizer(conn) do
+    with {:ok, %Team{} = team} <- Events.create_team(team_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.team_path(conn, :show, team))
@@ -26,19 +26,18 @@ defmodule BokkenWeb.TeamController do
     render(conn, "show.json", team: team)
   end
 
-  def update(conn, %{"id" => id, "team" => team_params}) do
+  def update(conn, %{"id" => id, "team" => team_params}) when Guards.is_organizer(conn) do
     team = Events.get_team!(id)
 
-    with {:ok, %Team{} = team} <-
-           Events.update_team(team, team_params) when Guards.is_organizer(conn) do
+    with {:ok, %Team{} = team} <- Events.update_team(team, team_params) do
       render(conn, "show.json", team: team)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
     team = Events.get_team!(id)
 
-    with {:ok, %Team{}} <- Events.delete_team(team) when Guards.is_organizer(conn) do
+    with {:ok, %Team{}} <- Events.delete_team(team) do
       send_resp(conn, :no_content, "")
     end
   end

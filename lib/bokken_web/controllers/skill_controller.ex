@@ -23,38 +23,36 @@ defmodule BokkenWeb.SkillController do
     render(conn, "index.json", skills: skills)
   end
 
-  def create(conn, %{"skill" => skill_params}) do
-    with {:ok, %Skill{} = skill} <-
-           Curriculum.create_skill(skill_params) when Guards.is_organizer(conn) do
+  def create(conn, %{"skill" => skill_params}) when Guards.is_organizer(conn) do
+    with {:ok, %Skill{} = skill} <- Curriculum.create_skill(skill_params) do
       conn
       |> put_status(:created)
       |> render("show.json", skill: skill)
     end
   end
 
-  def create(conn, %{"skill" => skill_id}) do
+  def create(conn, %{"skill" => skill_id}) when Guards.is_ninja(conn) do
     ninja_skill_attrs = %{
       skill_id: skill_id,
       ninja_id: conn.assigns.current_user.ninja.id
     }
 
-    with {:ok, %NinjaSkill{} = ninja_skill} <-
-           Curriculum.create_ninja_skill(ninja_skill_attrs) when Guards.is_ninja(conn) do
+    with {:ok, %NinjaSkill{} = ninja_skill} <- Curriculum.create_ninja_skill(ninja_skill_attrs) do
       conn
       |> put_status(:created)
       |> render("show.json", skill: skill(ninja_skill))
     end
   end
 
-  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id}) do
+  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id})
+      when Guards.is_guardian(conn) do
     if is_guardian_of_ninja?(conn.assigns.current_user.guardian, ninja_id) do
       ninja_skill_attrs = %{
         skill_id: skill_id,
         ninja_id: ninja_id
       }
 
-      with {:ok, %NinjaSkill{} = ninja_skill} <-
-             Curriculum.create_ninja_skill(ninja_skill_attrs) when Guards.is_guardian(conn) do
+      with {:ok, %NinjaSkill{} = ninja_skill} <- Curriculum.create_ninja_skill(ninja_skill_attrs) do
         conn
         |> put_status(:created)
         |> render("show.json", skill: skill(ninja_skill))
@@ -66,14 +64,14 @@ defmodule BokkenWeb.SkillController do
     end
   end
 
-  def create(conn, %{"skill" => skill_id}) do
+  def create(conn, %{"skill" => skill_id}) when Guards.is_mentor(conn) do
     mentor_skill_attrs = %{
       skill_id: skill_id,
       mentor_id: conn.assigns.current_user.mentor.id
     }
 
     with {:ok, %MentorSkill{} = mentor_skill} <-
-           Curriculum.create_mentor_skill(mentor_skill_attrs) when Guards.is_mentor(conn) do
+           Curriculum.create_mentor_skill(mentor_skill_attrs) do
       conn
       |> put_status(:created)
       |> render("show.json", skill: skill(mentor_skill))
@@ -85,19 +83,18 @@ defmodule BokkenWeb.SkillController do
     render(conn, "show.json", skill: skill)
   end
 
-  def update(conn, %{"id" => id, "skill" => skill_params}) do
+  def update(conn, %{"id" => id, "skill" => skill_params}) when Guards.is_organizer(conn) do
     skill = Curriculum.get_skill!(id)
 
-    with {:ok, %Skill{} = skill} <-
-           Curriculum.update_skill(skill, skill_params) when Guards.is_organizer(conn) do
+    with {:ok, %Skill{} = skill} <- Curriculum.update_skill(skill, skill_params) do
       render(conn, "show.json", skill: skill)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
     skill = Curriculum.get_skill!(id)
 
-    with {:ok, %Skill{}} <- Curriculum.delete_skill(skill) when Guards.is_organizer(conn) do
+    with {:ok, %Skill{}} <- Curriculum.delete_skill(skill) do
       send_resp(conn, :no_content, "")
     end
   end

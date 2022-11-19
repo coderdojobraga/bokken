@@ -18,20 +18,22 @@ defmodule BokkenWeb.NinjaController do
     render(conn, "index.json", ninjas: ninjas)
   end
 
-  def index(conn, _params) when Guards.is_guardian(conn) do
+  def index(conn, _params) when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     guardian_id = conn.assigns.current_user.guardian.id
     guardian = Accounts.get_guardian!(guardian_id, [:ninjas])
     render(conn, "index.json", ninjas: guardian.ninjas)
   end
 
-  def create(conn, %{"event_id" => event_id, "ninja_id" => ninja_id}) do
+  def create(conn, %{"event_id" => event_id, "ninja_id" => ninja_id})
+      when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     with {:ok, %Event{} = event, %Lecture{} = _lecture} <-
            Accounts.register_ninja_in_event(event_id, ninja_id) do
       render(conn, "index.json", ninjas: event.ninjas)
     end
   end
 
-  def create(conn, %{"team_id" => team_id, "ninja_id" => ninja_id}) do
+  def create(conn, %{"team_id" => team_id, "ninja_id" => ninja_id})
+      when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     with {:ok, %TeamNinja{} = team_ninja} <- Accounts.add_ninja_to_team(ninja_id, team_id) do
       ninja = Accounts.get_ninja!(team_ninja.ninja_id)
 
