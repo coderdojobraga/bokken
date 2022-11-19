@@ -24,7 +24,8 @@ defmodule BokkenWeb.BadgeController do
     render(conn, "index.json", badges: badges)
   end
 
-  def create(conn, %{"badge_id" => badge_id, "ninja_id" => ninja_id}) when Guards.is_mentor(conn) do
+  def create(conn, %{"badge_id" => badge_id, "ninja_id" => ninja_id})
+      when Guards.is_mentor(conn) do
     with {:ok, %BadgeNinja{} = badge_ninja} <- Gamification.give_badge(badge_id, ninja_id) do
       badge = Gamification.get_badge!(badge_ninja.badge_id)
 

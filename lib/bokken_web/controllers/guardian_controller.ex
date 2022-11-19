@@ -34,7 +34,7 @@ defmodule BokkenWeb.GuardianController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when Guards.is_guardian(conn)|| Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id}) when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     guardian = Accounts.get_guardian!(id)
 
     with {:ok, %Guardian{}} <- Accounts.delete_guardian(guardian) do

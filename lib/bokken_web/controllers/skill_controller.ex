@@ -44,7 +44,8 @@ defmodule BokkenWeb.SkillController do
     end
   end
 
-  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id}) when Guards.is_guardian(conn) do
+  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id})
+      when Guards.is_guardian(conn) do
     if is_guardian_of_ninja?(conn.assigns.current_user.guardian, ninja_id) do
       ninja_skill_attrs = %{
         skill_id: skill_id,

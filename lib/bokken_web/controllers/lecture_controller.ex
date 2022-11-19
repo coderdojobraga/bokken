@@ -12,7 +12,8 @@ defmodule BokkenWeb.LectureController do
     render(conn, "index.json", lectures: lectures)
   end
 
-  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentors") && Guards.is_organizer(conn) do
+  def create(conn, %{"lecture" => params})
+      when is_map_key(params, "assistant_mentors") && Guards.is_organizer(conn) do
     with {:ok, %Lecture{} = lecture} <- Events.create_lecture_assistant(params) do
       conn
       |> put_status(:created)

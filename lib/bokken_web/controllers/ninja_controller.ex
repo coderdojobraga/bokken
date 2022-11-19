@@ -60,7 +60,8 @@ defmodule BokkenWeb.NinjaController do
     render(conn, "show.json", ninja: ninja)
   end
 
-  def update(conn, %{"id" => id, "ninja" => ninja_params}) when Guards.is_guardian(conn) || when Guards.is_organizer(conn) do
+  def update(conn, %{"id" => id, "ninja" => ninja_params})
+      when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     ninja = Accounts.get_ninja!(id)
 
     with {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
@@ -68,13 +69,16 @@ defmodule BokkenWeb.NinjaController do
     end
   end
 
-  def delete(conn, %{"team_id" => team_id, "id" => ninja_id}) when Guards.is_guardian(conn) || when Guards.is_organizer(conn) do
+  def delete(conn, %{"team_id" => team_id, "id" => ninja_id})
+      when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     with {_n, nil} <- Accounts.remove_ninja_team(team_id, ninja_id) do
       send_resp(conn, :no_content, "")
     end
   end
 
-  def delete(conn, %{"id" => id} = params) when not is_map_key(params, :team_id) when Guards.is_guardian(conn) || when Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id} = params)
+      when not is_map_key(params, :team_id)
+      when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
     ninja = Accounts.get_ninja!(id)
 
     with {:ok, %Ninja{}} <- Accounts.delete_ninja(ninja) do

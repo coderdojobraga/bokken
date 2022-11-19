@@ -26,7 +26,8 @@ defmodule BokkenWeb.OrganizerController do
     render(conn, "show.json", organizer: organizer)
   end
 
-  def update(conn, %{"id" => id, "organizer" => organizer_params}) when Guards.is_organizer(conn) do
+  def update(conn, %{"id" => id, "organizer" => organizer_params})
+      when Guards.is_organizer(conn) do
     organizer = Accounts.get_organizer!(id)
 
     with {:ok, %Organizer{} = organizer} <- Accounts.update_organizer(organizer, organizer_params) do
