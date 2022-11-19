@@ -3,7 +3,7 @@ defmodule BokkenWeb.AuthController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
-  alias Bokken.Guards
+  import Bokken.Guards
   alias Bokken.Mailer
   alias BokkenWeb.AuthEmails
   alias BokkenWeb.Authorization
@@ -50,7 +50,7 @@ defmodule BokkenWeb.AuthController do
     end
   end
 
-  def update(conn, %{"user" => user_params}) when Guards.is_registered(conn) do
+  def update(conn, %{"user" => user_params}) when is_registered(conn) do
     current_user = conn.assigns.current_user
 
     with {:ok, %User{} = user} <- Accounts.edit_user(current_user, user_params, current_user.role) do

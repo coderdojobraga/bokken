@@ -4,7 +4,7 @@ defmodule BokkenWeb.EnrollmentController do
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Enrollment
-  alias Bokken.Guards
+  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -43,7 +43,7 @@ defmodule BokkenWeb.EnrollmentController do
           %{"ninja_id" => ninja_id, "accepted" => accepted, "event_id" => event_id} =
             enrollment_params
       })
-      when Guards.is_guardian(conn) do
+      when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
 
     event = Events.get_event!(event_id)
@@ -73,7 +73,7 @@ defmodule BokkenWeb.EnrollmentController do
     end
   end
 
-  def delete(conn, %{"id" => enrollment_id}) when Guards.is_guardian(conn) do
+  def delete(conn, %{"id" => enrollment_id}) when is_guardian(conn) do
     enrollment = Events.get_enrollment(enrollment_id, [:ninja])
     guardian = conn.assigns.current_user.guardian
 
@@ -96,7 +96,7 @@ defmodule BokkenWeb.EnrollmentController do
     end
   end
 
-  def update(conn, %{"enrollment" => enrollment_params}) when Guards.is_admin(conn) do
+  def update(conn, %{"enrollment" => enrollment_params}) when is_organizer(conn) do
     old_enrollment = Events.get_enrollment(enrollment_params["id"])
 
     with {:ok, %Enrollment{} = new_enrollment} <-

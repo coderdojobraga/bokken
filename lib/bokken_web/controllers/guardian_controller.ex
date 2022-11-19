@@ -3,7 +3,7 @@ defmodule BokkenWeb.GuardianController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
-  alias Bokken.Guards
+  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -12,7 +12,7 @@ defmodule BokkenWeb.GuardianController do
     render(conn, "index.json", guardians: guardians)
   end
 
-  def create(conn, %{"guardian" => guardian_params}) when Guards.is_guardian(conn) do
+  def create(conn, %{"guardian" => guardian_params}) when is_guardian(conn) do
     with {:ok, %Guardian{} = guardian} <- Accounts.create_guardian(guardian_params) do
       conn
       |> put_status(:created)
@@ -26,7 +26,7 @@ defmodule BokkenWeb.GuardianController do
     render(conn, "show.json", guardian: guardian)
   end
 
-  def update(conn, %{"id" => id, "guardian" => guardian_params}) when Guards.is_guardian(conn) do
+  def update(conn, %{"id" => id, "guardian" => guardian_params}) when is_guardian(conn) do
     guardian = Accounts.get_guardian!(id)
 
     with {:ok, %Guardian{} = guardian} <- Accounts.update_guardian(guardian, guardian_params) do
@@ -34,7 +34,7 @@ defmodule BokkenWeb.GuardianController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when Guards.is_guardian(conn) || Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id}) when is_guardian(conn) or is_organizer(conn) do
     guardian = Accounts.get_guardian!(id)
 
     with {:ok, %Guardian{}} <- Accounts.delete_guardian(guardian) do

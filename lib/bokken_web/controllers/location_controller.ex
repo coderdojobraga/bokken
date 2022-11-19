@@ -3,7 +3,7 @@ defmodule BokkenWeb.LocationController do
 
   alias Bokken.Events
   alias Bokken.Events.Location
-  alias Bokken.Guards
+  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -12,7 +12,7 @@ defmodule BokkenWeb.LocationController do
     render(conn, "index.json", locations: locations)
   end
 
-  def create(conn, %{"location" => location_params}) when Guards.is_organizer(conn) do
+  def create(conn, %{"location" => location_params}) when is_organizer(conn) do
     with {:ok, %Location{} = location} <- Events.create_location(location_params) do
       conn
       |> put_status(:created)
@@ -26,7 +26,7 @@ defmodule BokkenWeb.LocationController do
     render(conn, "show.json", location: location)
   end
 
-  def update(conn, %{"id" => id, "location" => location_params}) when Guards.is_organizer(conn) do
+  def update(conn, %{"id" => id, "location" => location_params}) when is_organizer(conn) do
     location = Events.get_location!(id)
 
     with {:ok, %Location{} = location} <- Events.update_location(location, location_params) do
@@ -34,7 +34,7 @@ defmodule BokkenWeb.LocationController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id}) when is_organizer(conn) do
     location = Events.get_location!(id)
 
     with {:ok, %Location{}} <- Events.delete_location(location) do

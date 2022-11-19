@@ -3,7 +3,7 @@ defmodule BokkenWeb.FileController do
 
   alias Bokken.Documents
   alias Bokken.Documents.File
-  alias Bokken.Guards
+  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -37,13 +37,13 @@ defmodule BokkenWeb.FileController do
     render(conn, "index.json", files: files)
   end
 
-  def index(conn, _params) when Guards.is_mentor(conn) do
+  def index(conn, _params) when is_mentor(conn) do
     mentor_id = conn.assigns.current_user.mentor.id
     files = Documents.list_files(%{"mentor_id" => mentor_id})
     render(conn, "index.json", files: files)
   end
 
-  def index(conn, _params) when Guards.is_ninja(conn) do
+  def index(conn, _params) when is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
     files = Documents.list_files(%{"ninja_id" => ninja_id})
     render(conn, "index.json", files: files)
@@ -54,7 +54,7 @@ defmodule BokkenWeb.FileController do
     render(conn, "index.json", files: files)
   end
 
-  def create(conn, %{"file" => file_params}) do
+  def create(conn, %{"file" => file_params}) when is_organizer(conn) do
     user_id = conn.assigns.current_user.id
 
     with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
@@ -70,7 +70,7 @@ defmodule BokkenWeb.FileController do
     render(conn, "show.json", file: file)
   end
 
-  def update(conn, %{"id" => id, "file" => file_params}) do
+  def update(conn, %{"id" => id, "file" => file_params}) when is_organizer(conn) do
     file = Documents.get_file!(id)
 
     with {:ok, %File{} = file} <- Documents.update_file(file, file_params) do
@@ -78,7 +78,7 @@ defmodule BokkenWeb.FileController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when is_organizer(conn) do
     file = Documents.get_file!(id)
 
     with {:ok, %File{}} <- Documents.delete_file(file) do

@@ -4,9 +4,9 @@ defmodule BokkenWeb.EventController do
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Event
-  alias Bokken.Guards
   alias Bokken.Mailer
   alias BokkenWeb.EventsEmails
+  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -15,7 +15,7 @@ defmodule BokkenWeb.EventController do
     render(conn, "index.json", events: events)
   end
 
-  def create(conn, %{"event" => event_params}) when Guards.is_organizer(conn) do
+  def create(conn, %{"event" => event_params}) when is_organizer(conn) do
     with {:ok, %Event{} = event} <- Events.create_event(event_params) do
       conn
       |> put_status(:created)
@@ -29,7 +29,7 @@ defmodule BokkenWeb.EventController do
     render(conn, "show.json", event: event)
   end
 
-  def update(conn, %{"id" => id, "event" => event_params}) when Guards.is_organizer(conn) do
+  def update(conn, %{"id" => id, "event" => event_params}) when is_organizer(conn) do
     event = Events.get_event!(id)
 
     with {:ok, %Event{} = event} <- Events.update_event(event, event_params) do
@@ -37,7 +37,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when Guards.is_organizer(conn) do
+  def delete(conn, %{"id" => id}) when is_organizer(conn) do
     event = Events.get_event!(id)
 
     with {:ok, %Event{}} <- Events.delete_event(event) do
@@ -45,7 +45,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def notify_signup(conn, params) when Guards.is_organizer(conn) do
+  def notify_signup(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
 
     res =
@@ -72,7 +72,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  def notify_selected(conn, params) when Guards.is_organizer(conn) do
+  def notify_selected(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
     lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
 
@@ -120,7 +120,7 @@ defmodule BokkenWeb.EventController do
     end
   end
 
-  defp send_email(users, email) when Guards.is_organizer(conn) do
+  defp send_email(users, email) do
     users
     |> List.foldl(
       %{success: [], fail: []},
