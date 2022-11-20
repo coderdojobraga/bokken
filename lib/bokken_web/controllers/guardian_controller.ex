@@ -12,7 +12,8 @@ defmodule BokkenWeb.GuardianController do
     render(conn, "index.json", guardians: guardians)
   end
 
-  def create(conn, %{"guardian" => guardian_params}) when is_guardian(conn) do
+  def create(conn, %{"guardian" => guardian_params})
+      when is_guardian(conn) or is_organizer(conn) do
     with {:ok, %Guardian{} = guardian} <- Accounts.create_guardian(guardian_params) do
       conn
       |> put_status(:created)
@@ -26,7 +27,8 @@ defmodule BokkenWeb.GuardianController do
     render(conn, "show.json", guardian: guardian)
   end
 
-  def update(conn, %{"id" => id, "guardian" => guardian_params}) when is_guardian(conn) do
+  def update(conn, %{"id" => id, "guardian" => guardian_params})
+      when is_guardian(conn) or is_organizer(conn) do
     guardian = Accounts.get_guardian!(id)
 
     with {:ok, %Guardian{} = guardian} <- Accounts.update_guardian(guardian, guardian_params) do

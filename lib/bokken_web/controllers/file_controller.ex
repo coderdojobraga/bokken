@@ -54,7 +54,7 @@ defmodule BokkenWeb.FileController do
     render(conn, "index.json", files: files)
   end
 
-  def create(conn, %{"file" => file_params}) when is_organizer(conn) do
+  def create(conn, %{"file" => file_params}) do
     user_id = conn.assigns.current_user.id
 
     with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
@@ -70,7 +70,7 @@ defmodule BokkenWeb.FileController do
     render(conn, "show.json", file: file)
   end
 
-  def update(conn, %{"id" => id, "file" => file_params}) when is_organizer(conn) do
+  def update(conn, %{"id" => id, "file" => file_params}) do
     file = Documents.get_file!(id)
 
     with {:ok, %File{} = file} <- Documents.update_file(file, file_params) do
@@ -78,7 +78,7 @@ defmodule BokkenWeb.FileController do
     end
   end
 
-  def delete(conn, %{"id" => id}) when is_organizer(conn) do
+  def delete(conn, %{"id" => id}) do
     file = Documents.get_file!(id)
 
     with {:ok, %File{}} <- Documents.delete_file(file) do

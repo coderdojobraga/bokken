@@ -1,10 +1,10 @@
 defmodule Bokken.Guards do
   @moduledoc """
-  A Guards module to prevent duplicated code lines.
+  A module to handle guards used on the whole project.
   """
 
   @doc """
-  Defines the diferent types of Guards.
+  Defines the different types of Guards.
 
   ## Examples
 
@@ -24,7 +24,7 @@ defmodule Bokken.Guards do
   ## Examples
 
       defguard is_401(reason) when reason in [:token_expired]
-      Means to return True when a tokken has expired.
+      Means to return True when a token has expired.
 
   """
   defguard is_404(reason) when reason in [:not_found, :not_registered, :invalid_credentials]

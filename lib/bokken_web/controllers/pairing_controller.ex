@@ -3,8 +3,9 @@ defmodule BokkenWeb.PairingController do
 
   alias Bokken.Events
   alias Bokken.Pairings
+  import Bokken.Guards
 
-  def index(conn, %{"event_id" => event_id}) do
+  def index(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Events.get_lectures_from_event(event_id)
 
     conn
@@ -12,7 +13,7 @@ defmodule BokkenWeb.PairingController do
     |> render("index.json", lectures: lectures)
   end
 
-  def create(conn, %{"event_id" => event_id}) do
+  def create(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Pairings.create_pairings(event_id)
 
     conn
