@@ -45,7 +45,7 @@ defmodule BokkenWeb.NinjaController do
   end
 
   def create(conn, %{"ninja" => ninja_params} = params)
-      when not is_map_key(params, :team_id) and is_guardian(conn) do
+      when not is_map_key(params, :team_id) and (is_guardian(conn) or is_organizer(conn)) do
     guardian_id = conn.assigns.current_user.guardian.id
 
     with {:ok, %Ninja{} = ninja} <-
@@ -79,8 +79,7 @@ defmodule BokkenWeb.NinjaController do
   end
 
   def delete(conn, %{"id" => id} = params)
-      when not is_map_key(params, :team_id)
-      when is_guardian(conn) or is_organizer(conn) do
+      when not is_map_key(params, :team_id) and (is_guardian(conn) or is_organizer(conn)) do
     ninja = Accounts.get_ninja!(id)
 
     with {:ok, %Ninja{}} <- Accounts.delete_ninja(ninja) do
