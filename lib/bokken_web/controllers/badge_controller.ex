@@ -4,7 +4,6 @@ defmodule BokkenWeb.BadgeController do
   alias Bokken.Gamification
   alias Bokken.Gamification.Badge
   alias Bokken.Gamification.BadgeNinja
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

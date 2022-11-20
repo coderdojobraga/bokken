@@ -3,7 +3,6 @@ defmodule BokkenWeb.AvailabilityController do
 
   alias Bokken.Events
   alias Bokken.Events.Availability
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

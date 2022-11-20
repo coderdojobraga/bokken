@@ -3,7 +3,6 @@ defmodule BokkenWeb.PairingController do
 
   alias Bokken.Events
   alias Bokken.Pairings
-  import Bokken.Guards
 
   def index(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Events.get_lectures_from_event(event_id)

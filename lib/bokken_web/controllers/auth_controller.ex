@@ -3,7 +3,6 @@ defmodule BokkenWeb.AuthController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
-  import Bokken.Guards
   alias Bokken.Mailer
   alias BokkenWeb.AuthEmails
   alias BokkenWeb.Authorization

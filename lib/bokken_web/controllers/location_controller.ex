@@ -3,7 +3,6 @@ defmodule BokkenWeb.LocationController do
 
   alias Bokken.Events
   alias Bokken.Events.Location
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

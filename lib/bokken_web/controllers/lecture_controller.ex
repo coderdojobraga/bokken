@@ -3,7 +3,6 @@ defmodule BokkenWeb.LectureController do
 
   alias Bokken.Events
   alias Bokken.Events.Lecture
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
@@ -37,13 +36,14 @@ defmodule BokkenWeb.LectureController do
   end
 
   def update(conn, %{"id" => id, "lecture" => params})
-      when is_map_key(params, "assistant_mentors") and is_organizer(conn) do
+      when is_map_key(params, "assistant_mentors") and (is_organizer(conn) or is_mentor(conn)) do
     with {:ok, %Lecture{} = lecture} <- Events.update_lecture_assistant_mentors(id, params) do
       render(conn, "show.json", lecture: lecture)
     end
   end
 
-  def update(conn, %{"id" => id, "lecture" => lecture_params}) when is_organizer(conn) do
+  def update(conn, %{"id" => id, "lecture" => lecture_params})
+      when is_organizer(conn) or is_mentor(conn) do
     lecture = Events.get_lecture!(id)
 
     with {:ok, %Lecture{} = lecture} <- Events.update_lecture(lecture, lecture_params) do

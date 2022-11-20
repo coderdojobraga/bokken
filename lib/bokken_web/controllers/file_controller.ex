@@ -3,7 +3,6 @@ defmodule BokkenWeb.FileController do
 
   alias Bokken.Documents
   alias Bokken.Documents.File
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

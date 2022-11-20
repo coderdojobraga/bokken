@@ -3,7 +3,6 @@ defmodule BokkenWeb.TeamController do
 
   alias Bokken.Events
   alias Bokken.Events.Team
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

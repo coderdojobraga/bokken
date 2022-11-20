@@ -4,7 +4,6 @@ defmodule BokkenWeb.MentorController do
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
   alias Bokken.Events.TeamMentor
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

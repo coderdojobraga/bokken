@@ -4,7 +4,6 @@ defmodule BokkenWeb.EnrollmentController do
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Enrollment
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

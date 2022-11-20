@@ -3,7 +3,6 @@ defmodule BokkenWeb.OrganizerController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Organizer
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

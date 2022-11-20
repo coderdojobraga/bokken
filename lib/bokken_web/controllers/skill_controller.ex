@@ -4,7 +4,6 @@ defmodule BokkenWeb.SkillController do
   alias Bokken.Accounts
   alias Bokken.Curriculum
   alias Bokken.Curriculum.{MentorSkill, NinjaSkill, Skill}
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 

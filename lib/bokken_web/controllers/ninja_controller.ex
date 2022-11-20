@@ -6,7 +6,6 @@ defmodule BokkenWeb.NinjaController do
   alias Bokken.Events.Event
   alias Bokken.Events.Lecture
   alias Bokken.Events.TeamNinja
-  import Bokken.Guards
 
   action_fallback BokkenWeb.FallbackController
 
