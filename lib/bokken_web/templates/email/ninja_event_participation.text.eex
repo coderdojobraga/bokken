@@ -1,0 +1,8 @@
+Olá 
+
+Vimos por este meio confirmar se o ninja não vai participar na próxima sessão.
+
+A sessão irá decorrer no dia <%= display_date(@event.start_time) %>, entre as <%= display_time(@event.start_time) %> e <%= display_time(@event.end_time) %> 
+no <%= @event.location.name %>.
+
+Podes ver o perfil do ninja no seguinte link: <%= @link %>
