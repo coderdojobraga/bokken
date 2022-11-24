@@ -24,7 +24,7 @@ defmodule Bokken.Accounts.Mentor do
 
     field :trial, :boolean, default: true
 
-    embeds_many :socials, Social
+    embeds_many :socials, Social, on_replace: :delete
 
     belongs_to :user, User, foreign_key: :user_id
 
