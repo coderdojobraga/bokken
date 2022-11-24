@@ -30,15 +30,6 @@
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;">
-                  <div class="btn btn--flat btn--large" style="Margin-bottom: 20px;text-align: center;">
-                    <a style="border-radius: 4px;display: inline-block;font-size: 14px;font-weight: bold;line-height: 24px;padding: 12px 24px;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #ffffff !important;background-color: #642580ff; font-family: Avenir, sans-serif;"
-                        href=<%= @link %>>
-                      Ver o perfil do mentor
-                    </a>
-                  </div>
-                </div>
-
-                <div style="Margin-left: 20px;Margin-right: 20px;">
                   <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                     <p style="Margin-top: 16px;Margin-bottom: 20px;">
                       Obrigado pelo teu interesse no CoderDojo Braga. Esperamos que a sessão seja divertida e produtiva.

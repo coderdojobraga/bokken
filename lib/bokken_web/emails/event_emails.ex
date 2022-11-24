@@ -61,7 +61,7 @@ defmodule BokkenWeb.EventsEmails do
     |> reply_to("noreply@coderdojobraga.org")
   end
 
-  def confirm_ninja_participation(event, to: email) do
+  def confirm_ninja_not_participation(event, to: email) do
     frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
 
     base_email(to: email)
