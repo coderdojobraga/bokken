@@ -5,8 +5,6 @@ defmodule BokkenWeb.FallbackController do
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
   use BokkenWeb, :controller
-  defguard is_404(reason) when reason in [:not_found, :not_registered, :invalid_credentials]
-  defguard is_401(reason) when reason in [:token_expired]
 
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do

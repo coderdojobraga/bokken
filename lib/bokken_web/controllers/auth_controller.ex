@@ -9,8 +9,6 @@ defmodule BokkenWeb.AuthController do
 
   action_fallback BokkenWeb.FallbackController
 
-  defguard is_registered(conn) when conn.assigns.current_user.registered
-
   def sign_in(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- Accounts.authenticate_user(email, password) do
       conn

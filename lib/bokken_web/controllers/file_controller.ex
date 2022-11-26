@@ -6,9 +6,6 @@ defmodule BokkenWeb.FileController do
 
   action_fallback BokkenWeb.FallbackController
 
-  defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
-
   defguard is_image(type) when type in ~w(avatars emblems)
   defguard is_document(type) when type in ~w(snippets projects)
 
