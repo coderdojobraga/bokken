@@ -42,9 +42,16 @@ defmodule Bokken.Accounts.Mentor do
   def changeset(mentor, attrs) do
     mentor
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, [:photo], allow_urls: true)
     |> validate_required(@required_fields)
+    |> then(fn changeset ->
+      if changeset.params["socials"] == "[]" do
+        Map.update!(changeset, :params, &Map.put(&1, "socials", []))
+      else
+        changeset
+      end
+    end)
+    |> cast_embed(:socials, with: &Social.changeset/2)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
