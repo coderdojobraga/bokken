@@ -99,9 +99,17 @@ defmodule BokkenWeb.EventController do
         EventsEmails.event_selected_ninja_email(event, user.lecture, to: user.email)
       end)
 
+    unselected_ninjas =
+      Accounts.list_users()
+      |> Enum.filter(fn u -> u.active and u.verified and u.role === :ninja end)
+      |> Enum.reject(fn u -> Enum.any?(lectures, fn l -> l.ninja.user_id === u.id end) end)
+      |> send_email(fn user ->
+        EventsEmails.confirm_ninja_not_participation(event, to: user.email)
+      end)
+
     res = %{
-      success: mentor_res[:success] ++ ninja_res[:success],
-      fail: mentor_res[:fail] ++ ninja_res[:fail]
+      success: mentor_res[:success] ++ ninja_res[:success] ++ unselected_ninjas[:success],
+      fail: mentor_res[:fail] ++ ninja_res[:fail] ++ unselected_ninjas[:fail]
     }
 
     status =

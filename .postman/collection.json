@@ -5881,6 +5881,24 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Confirm ninjas can't come for this session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notify_selected",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notify_selected"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
