@@ -25,10 +25,10 @@ defmodule BokkenWeb.BotController do
   def create(conn, %{"name" => name}) when is_organizer(conn) do
     api_key = Faker.String.base64(32)
 
-    with {:ok, %Bot{}} <- Accounts.create_bot(%{name: name, api_key: api_key}) do
+    with {:ok, bot} <- Accounts.create_bot(%{name: name, api_key: api_key}) do
       conn
       |> put_status(:created)
-      |> render("create.json", api_key: api_key)
+      |> render("create.json", %{bot_id: bot.id, api_key: api_key})
     end
   end
 

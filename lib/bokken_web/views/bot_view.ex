@@ -11,8 +11,9 @@ defmodule BokkenWeb.BotView do
     render_one(bot, BotView, "bot.json")
   end
 
-  def render("create.json", %{api_key: api_key}) do
+  def render("create.json", %{bot_id: bot_id, api_key: api_key}) do
     %{
+      bot_id: bot_id,
       api_key: api_key
     }
   end
