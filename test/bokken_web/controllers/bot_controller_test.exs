@@ -36,7 +36,7 @@ defmodule BokkenWeb.BotControllerTest do
       name = Faker.StarWars.character()
 
       conn = post(conn, Routes.bot_path(conn, :create, %{"name" => name}))
-      assert %{"api_key" => _api_key} = json_response(conn, 201)
+      assert %{"api_key" => _api_key, "bot_id" => _id} = json_response(conn, 201)
     end
   end
 
