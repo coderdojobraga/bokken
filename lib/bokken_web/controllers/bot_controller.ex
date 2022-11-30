@@ -4,8 +4,6 @@ defmodule BokkenWeb.BotController do
   alias Bokken.Accounts
   alias Bokken.Accounts.Bot
 
-  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
-
   def index(conn, _params) when is_organizer(conn) do
     bots = Accounts.list_bots()
 
