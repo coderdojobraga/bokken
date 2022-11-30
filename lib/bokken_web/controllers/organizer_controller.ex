@@ -11,7 +11,7 @@ defmodule BokkenWeb.OrganizerController do
     render(conn, "index.json", organizers: organizers)
   end
 
-  def create(conn, %{"organizer" => organizer_params}) do
+  def create(conn, %{"organizer" => organizer_params}) when is_organizer(conn) do
     with {:ok, %Organizer{} = organizer} <- Accounts.create_organizer(organizer_params) do
       conn
       |> put_status(:created)
@@ -25,7 +25,8 @@ defmodule BokkenWeb.OrganizerController do
     render(conn, "show.json", organizer: organizer)
   end
 
-  def update(conn, %{"id" => id, "organizer" => organizer_params}) do
+  def update(conn, %{"id" => id, "organizer" => organizer_params})
+      when is_organizer(conn) do
     organizer = Accounts.get_organizer!(id)
 
     with {:ok, %Organizer{} = organizer} <- Accounts.update_organizer(organizer, organizer_params) do
@@ -33,7 +34,7 @@ defmodule BokkenWeb.OrganizerController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when is_organizer(conn) do
     organizer = Accounts.get_organizer!(id)
 
     with {:ok, %Organizer{}} <- Accounts.delete_organizer(organizer) do

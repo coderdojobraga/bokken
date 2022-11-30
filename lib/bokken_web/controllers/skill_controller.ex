@@ -7,11 +7,6 @@ defmodule BokkenWeb.SkillController do
 
   action_fallback BokkenWeb.FallbackController
 
-  defguard is_guardian(conn) when conn.assigns.current_user.role === :guardian
-  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
-  defguard is_ninja(conn) when conn.assigns.current_user.role === :ninja
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
-
   def index(conn, %{"ninja_id" => _ninja_id} = params) do
     skills = Curriculum.list_ninja_skills(params)
     render(conn, "index.json", skills: skills)
@@ -48,7 +43,8 @@ defmodule BokkenWeb.SkillController do
     end
   end
 
-  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id}) when is_guardian(conn) do
+  def create(conn, %{"skill" => skill_id, "ninja_id" => ninja_id})
+      when is_guardian(conn) do
     if is_guardian_of_ninja?(conn.assigns.current_user.guardian, ninja_id) do
       ninja_skill_attrs = %{
         skill_id: skill_id,

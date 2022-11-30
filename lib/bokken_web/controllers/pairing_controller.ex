@@ -4,8 +4,6 @@ defmodule BokkenWeb.PairingController do
   alias Bokken.Events
   alias Bokken.Pairings
 
-  defguard is_organizer(conn) when conn.assigns.current_user.role === :organizer
-
   def index(conn, %{"event_id" => event_id}) when is_organizer(conn) do
     lectures = Events.get_lectures_from_event(event_id)
 

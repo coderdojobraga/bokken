@@ -23,6 +23,7 @@ defmodule BokkenWeb do
 
       import Plug.Conn
       import BokkenWeb.Gettext
+      import Bokken.Guards
       alias BokkenWeb.Router.Helpers, as: Routes
     end
   end
