@@ -3,7 +3,7 @@ defmodule Bokken.Repo.Migrations.AlterMentors do
 
   def change do
     alter table(:mentors, primary_key: false) do
-      add :t_shirt, :string
+      add :t_shirt, :citext
     end
   end
 end
