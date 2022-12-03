@@ -2938,7 +2938,23 @@
 							"response": []
 						},
 						{
-							"name": "Add bot",
+							"name": "Create bot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create bot status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"bot_id = pm.response.json().bot_id;",
+											"pm.environment.set(\"bot_id\", bot_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2965,25 +2981,30 @@
 							"response": []
 						},
 						{
-							"name": "Get bot",
+							"name": "Show bot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/bot/:id",
+									"raw": "{{host}}/api/bot/{{bot_id}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"bot",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "0cdc6772-0de3-4362-998f-b852f0e940e0"
-										}
+										"{{bot_id}}"
 									]
 								}
 							},
@@ -2996,7 +3017,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"bot\": {\n        \"name\": \"Gongo\"\n        }\n}",
+									"raw": "{\n    \"bot\": {\n        \"name\": \"Toto\"\n        }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3004,45 +3025,33 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/bot/:id",
+									"raw": "{{host}}/api/bot/{{bot_id}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"bot",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "0cdc6772-0de3-4362-998f-b852f0e940e0"
-										}
+										"{{bot_id}}"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Delete bot",
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/bot/:id",
+									"raw": "{{host}}/api/bot/{{bot_id}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"bot",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "0cdc6772-0de3-4362-998f-b852f0e940e0"
-										}
+										"{{bot_id}}"
 									]
 								}
 							},

@@ -10,7 +10,5 @@ defmodule Bokken.Repo.Migrations.CreateBot do
 
       timestamps()
     end
-
-    create unique_index(:bots, [:name])
   end
 end
