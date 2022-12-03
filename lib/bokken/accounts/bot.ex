@@ -18,7 +18,6 @@ defmodule Bokken.Accounts.Bot do
     bot
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint(:name)
     |> encrypt_password()
   end
 
