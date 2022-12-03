@@ -78,6 +78,7 @@ defmodule BokkenWeb.EventController do
   def notify_selected(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
     lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
+    enrollments = Events.list_enrollments()
 
     mentor_res =
       lectures
@@ -99,17 +100,26 @@ defmodule BokkenWeb.EventController do
         EventsEmails.event_selected_ninja_email(event, user.lecture, to: user.email)
       end)
 
-    unselected_ninjas =
-      Accounts.list_users()
-      |> Enum.filter(fn u -> u.active and u.verified and u.role === :ninja end)
-      |> Enum.reject(fn u -> Enum.any?(lectures, fn l -> l.ninja.user_id === u.id end) end)
-      |> send_email(fn user ->
-        EventsEmails.confirm_ninja_not_participation(event, to: user.email)
-      end)
+    not_coming_ninjas =
+      enrollments
+      |> Enum.filter(fn e -> e.event_id == event.id end)
+      |> Enum.filter(fn e -> Enum.any?(lectures, fn l -> l.ninja_id == e.ninja_id end) end)
+      |> case do
+        [] ->
+          %{success: [], fail: []}
+
+        list ->
+          Enum.map(list, fn e ->
+            Accounts.get_user!(Accounts.get_guardian!(e.ninja.guardian_id))
+            |> send_email(fn user ->
+              EventsEmails.confirm_ninja_not_participation(event, to: user.email)
+            end)
+          end)
+      end
 
     res = %{
-      success: mentor_res[:success] ++ ninja_res[:success] ++ unselected_ninjas[:success],
-      fail: mentor_res[:fail] ++ ninja_res[:fail] ++ unselected_ninjas[:fail]
+      success: mentor_res[:success] ++ ninja_res[:success] ++ not_coming_ninjas[:success],
+      fail: mentor_res[:fail] ++ ninja_res[:fail] ++ not_coming_ninjas[:fail]
     }
 
     status =
