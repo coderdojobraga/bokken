@@ -99,6 +99,8 @@ defmodule BokkenWeb.Router do
 
     post "/notify_signup", EventController, :notify_signup
     post "/notify_selected", EventController, :notify_selected
+
+    resources "/bot", BotController, except: [:new, :edit]
   end
 
   if Mix.env() in [:dev, :stg, :test] do
