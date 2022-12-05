@@ -102,8 +102,9 @@ defmodule BokkenWeb.EventController do
 
     not_coming_ninjas =
       enrollments
-      |> Enum.filter(fn e -> e.event_id == event.id end)
-      |> Enum.filter(fn e -> Enum.any?(lectures, fn l -> l.ninja_id == e.ninja_id end) end)
+      |> Enum.filter(fn e ->
+        e.event_id == event.id and Enum.any?(lectures, fn l -> l.ninja_id == e.ninja_id end)
+      end)
       |> case do
         [] ->
           %{success: [], fail: []}
@@ -111,9 +112,9 @@ defmodule BokkenWeb.EventController do
         list ->
           Enum.map(list, fn e ->
             Accounts.get_user!(Accounts.get_guardian!(e.ninja.guardian_id))
-            |> send_email(fn user ->
-              EventsEmails.confirm_ninja_not_participation(event, to: user.email)
-            end)
+          end)
+          |> send_email(fn user ->
+            EventsEmails.confirm_ninja_not_participation(event, to: user.email)
           end)
       end
 
