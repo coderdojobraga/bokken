@@ -11,7 +11,8 @@ defmodule BokkenWeb.LectureController do
     render(conn, "index.json", lectures: lectures)
   end
 
-  def create(conn, %{"lecture" => params}) when is_map_key(params, "assistant_mentors") do
+  def create(conn, %{"lecture" => params})
+      when is_map_key(params, "assistant_mentors") and is_organizer(conn) do
     with {:ok, %Lecture{} = lecture} <- Events.create_lecture_assistant(params) do
       conn
       |> put_status(:created)
@@ -20,7 +21,7 @@ defmodule BokkenWeb.LectureController do
     end
   end
 
-  def create(conn, %{"lecture" => lecture_params}) do
+  def create(conn, %{"lecture" => lecture_params}) when is_organizer(conn) do
     with {:ok, %Lecture{} = lecture} <- Events.create_lecture(lecture_params) do
       conn
       |> put_status(:created)
@@ -35,13 +36,14 @@ defmodule BokkenWeb.LectureController do
   end
 
   def update(conn, %{"id" => id, "lecture" => params})
-      when is_map_key(params, "assistant_mentors") do
+      when is_map_key(params, "assistant_mentors") and (is_organizer(conn) or is_mentor(conn)) do
     with {:ok, %Lecture{} = lecture} <- Events.update_lecture_assistant_mentors(id, params) do
       render(conn, "show.json", lecture: lecture)
     end
   end
 
-  def update(conn, %{"id" => id, "lecture" => lecture_params}) do
+  def update(conn, %{"id" => id, "lecture" => lecture_params})
+      when is_organizer(conn) or is_mentor(conn) do
     lecture = Events.get_lecture!(id)
 
     with {:ok, %Lecture{} = lecture} <- Events.update_lecture(lecture, lecture_params) do
@@ -49,7 +51,7 @@ defmodule BokkenWeb.LectureController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => id}) when is_organizer(conn) do
     lecture = Events.get_lecture!(id)
 
     with {:ok, %Lecture{}} <- Events.delete_lecture(lecture) do

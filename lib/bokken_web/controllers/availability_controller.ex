@@ -6,8 +6,6 @@ defmodule BokkenWeb.AvailabilityController do
 
   action_fallback BokkenWeb.FallbackController
 
-  defguard is_mentor(conn) when conn.assigns.current_user.role === :mentor
-
   def show(conn, %{"id" => availability_id}) do
     availability = Events.get_availability!(availability_id)
 

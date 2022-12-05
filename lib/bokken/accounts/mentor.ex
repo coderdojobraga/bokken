@@ -24,7 +24,7 @@ defmodule Bokken.Accounts.Mentor do
 
     field :trial, :boolean, default: true
 
-    embeds_many :socials, Social
+    embeds_many :socials, Social, on_replace: :delete
 
     belongs_to :user, User, foreign_key: :user_id
 
@@ -42,9 +42,10 @@ defmodule Bokken.Accounts.Mentor do
   def changeset(mentor, attrs) do
     mentor
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, [:photo], allow_urls: true)
     |> validate_required(@required_fields)
+    |> then(&Social.is_socials_empty?/1)
+    |> cast_embed(:socials, with: &Social.changeset/2)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
