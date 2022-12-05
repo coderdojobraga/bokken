@@ -275,7 +275,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
         mobile: mobile,
         trial: false,
         photo: photo,
-        birthday: birthday
+        birthday: birthday,
+        t_shirt: Enum.random(["extra_small", "small", "medium", "large", "extra_large", "extra_extra_large"])
       })
 
     Bokken.Accounts.create_mentor(mentor)
