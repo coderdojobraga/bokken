@@ -61,13 +61,14 @@ defmodule BokkenWeb.EventsEmails do
     |> reply_to("noreply@coderdojobraga.org")
   end
 
-  def confirm_ninja_not_participation(event, to: email) do
+  def confirm_ninja_not_participation(event, ninja, to: email) do
     frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
 
     base_email(to: email)
     |> subject("[CoderDojo Braga] Confirmação que o ninja não vai participar na sessão")
     |> assign(:link, frontend_url <> "/dashboard/event/" <> event.id)
     |> assign(:event, event)
-    |> render_body(:ninja_event_selected)
+    |> assign(:ninja, ninja)
+    |> render_body(:ninja_event_not_selected)
   end
 end
