@@ -1,0 +1,94 @@
+<table class="wrapper" style="border-collapse: collapse;table-layout: fixed;min-width: 320px;width: 100%;background-color: #fff;" role="presentation" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <div class="layout one-col fixed-width stack" style="Margin: 0 auto;max-width: 600px;min-width: 320px; width: 320px;width: calc(28000% - 167400px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;">
+            <div class="layout__inner" style="border-collapse: collapse;display: table;width: 100%;background-color: #ffffff;">
+              <div class="column" style="text-align: left;color: #000;font-size: 16px;line-height: 24px;font-family: Avenir,sans-serif;">
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;line-height: 23px;font-size: 1px;">&nbsp;</div>
+                </div>
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                    <h1 style="Margin-top: 16px;Margin-bottom: 20px; text-align:center">
+                      <%= @event.title %>
+                    </h1>
+                  </div>
+                </div>
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                    <ul style="Margin-top: 16px;Margin-bottom: 20px; text-align:center; list-style: none; padding: 0;">
+                      <li>📅 <%= display_date(@event.start_time) %> </li>
+                      <li>⏱ <%= display_time(@event.start_time) %> - <%= display_time(@event.end_time) %></li>
+                      <li>⌖ <%= @event.location.address %><li>
+                    </h1>
+                  </div>
+                </div>
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                    <p style="Margin-top: 16px;Margin-bottom: 20px;">
+                      Obrigado pelo teu interesse no CoderDojo Braga. Esperamos que a sessão seja divertida e produtiva.
+                    </p>
+                  </div>
+                </div>
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                    <p class="size-10" style="Margin-top: 0;Margin-bottom: 20px;font-size: 10px;line-height: 18px;" lang="x-size-10">
+                      <span style="color:#707070">
+                        Se o botão não funcionar, copia o seguinte link e cola num browser.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div style="Margin-left: 20px;Margin-right: 20px;">
+                  <div style="mso-line-height-rule: exactly;line-height: 9px;font-size: 1px;">
+                    <p class="size-8" style="Margin-top: 0;Margin-bottom: 20px;font-size: 7px;line-height: 12px;" lang="x-size-10">
+                      <span style="color:#707070">
+                        <%= @link %>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="mso-line-height-rule: exactly;line-height: 20px;font-size: 20px;">&nbsp;</div>
+
+          <div style="background-color: #ebebeb;">
+            <div class="layout one-col stack" style="Margin: 0 auto;max-width: 600px;min-width: 320px; width: 320px;width: calc(28000% - 167400px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;">
+              <div class="layout__inner" style="border-collapse: collapse;display: table;width: 100%;">
+                <div class="column" style="text-align: left;color: #000;font-size: 16px;line-height: 24px;font-family: Avenir,sans-serif;">
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;line-height: 20px;font-size: 1px;">&nbsp;</div>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;">
+                    <div style="mso-line-height-rule: exactly;line-height: 3px;font-size: 1px;">&nbsp;</div>
+                  </div>
+
+                  <div style="font-size: 12px;font-style: normal;font-weight: normal;line-height: 19px;" align="center">
+                    <a style="text-decoration: underline;transition: opacity 0.1s ease-in;color: #222d8f;" href="https://coderdojobraga.org/"><img style="border: 0;display: block;height: auto;width: 100%;max-width: 134px;" alt="CoderDojo Braga" src="https://coderdojo-braga.vercel.app/img/logo.svg" width="134"></a>
+                  </div>
+
+                  <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;">
+                    <div style="mso-line-height-rule: exactly;line-height: 1px;font-size: 1px;">&nbsp;</div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
