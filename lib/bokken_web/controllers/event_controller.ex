@@ -99,7 +99,10 @@ defmodule BokkenWeb.EventController do
     not_coming_ninjas =
       enrollments
       |> Enum.filter(fn e ->
-        not Enum.any?(lectures, fn l -> l.ninja_id == e.ninja_id and l.event_id == e.event_id end)
+        e.event_id == event.id and
+          not Enum.any?(lectures, fn l ->
+            l.ninja_id == e.ninja_id and l.event_id == e.event_id
+          end)
       end)
       |> case do
         [] ->
