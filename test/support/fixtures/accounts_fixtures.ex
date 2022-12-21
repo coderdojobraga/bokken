@@ -55,6 +55,8 @@ defmodule Bokken.AccountsFixtures do
 
   def valid_organizer_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
+      first_name: Person.PtBr.first_name(),
+      last_name: Person.PtBr.last_name(),
       champion: true
     })
   end
