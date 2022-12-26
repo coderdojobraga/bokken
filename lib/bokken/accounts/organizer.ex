@@ -6,12 +6,13 @@ defmodule Bokken.Accounts.Organizer do
 
   alias Bokken.Accounts.{Mentor, User}
 
-  @required_fields [:champion, :user_id]
+  @required_fields [:champion, :user_id, :first_name, :last_name]
   @optional_fields [:mentor_id]
 
   schema "organizers" do
     field :champion, :boolean, default: false
-
+    field :first_name, :string
+    field :last_name, :string
     belongs_to :user, User, foreign_key: :user_id
     belongs_to :mentor, Mentor, foreign_key: :mentor_id
 
