@@ -214,7 +214,7 @@ defmodule Bokken.Repo.Seeds.Accounts do
           create_ninja(names, user_id)
 
         {:ok, %{id: user_id}} when role == :organizer ->
-          create_organizer(user_id)
+          create_organizer(names, user_id)
       end
     end
   end
@@ -282,11 +282,11 @@ defmodule Bokken.Repo.Seeds.Accounts do
     Bokken.Accounts.create_mentor(mentor)
   end
 
-  def create_organizer(user_id) do
-    organizer = %{
+  def create_organizer(names, user_id) do
+    organizer = Enum.into(names, %{
       champion: true,
       user_id: user_id
-    }
+    })
 
     Bokken.Accounts.create_organizer(organizer)
   end
