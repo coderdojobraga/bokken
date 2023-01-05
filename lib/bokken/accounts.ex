@@ -96,9 +96,16 @@ defmodule Bokken.Accounts do
       iex> list_mentors()
       [%Mentor{}, ...]
 
+      iex> list_mentors([:user])
+      [%Mentor{}, ...]
+
   """
-  @spec list_mentors(map()) :: list(Mentor.t())
-  def list_mentors(args \\ %{})
+
+  def list_mentors(preloads) when is_list(preloads) do
+    Mentor
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_mentors(%{"team_id" => team_id}) do
     team_id
@@ -112,7 +119,7 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
-  def list_mentors(_args) do
+  def list_mentors() do
     Mentor
     |> Repo.all()
   end
@@ -213,6 +220,41 @@ defmodule Bokken.Accounts do
         where: team_mentor.mentor_id == ^mentor_id
 
     Repo.delete_all(query)
+  end
+
+  alias Bokken.Accounts.User
+
+  def update_mentor_and_user(mentor_params, user_params) do
+    IO.inspect(user_params)
+    IO.inspect(mentor_params)
+
+    user =
+      Map.get(user_params, "user_id")
+      |> get_user!()
+
+    mentor =
+      Map.get(mentor_params, "id")
+      |> get_mentor!()
+
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(
+        :user,
+        User.admin_changeset(user, user_params)
+      )
+      |> Ecto.Multi.update(
+        :mentor,
+        Mentor.changeset(mentor, mentor_params)
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{user: _user, mentor: mentor}} ->
+        {:ok, mentor |> Repo.preload([:user], force: true)}
+
+      {:error, _transaction, errors, _change_so_far} ->
+        {:error, errors}
+    end
   end
 
   alias Bokken.Accounts.Ninja

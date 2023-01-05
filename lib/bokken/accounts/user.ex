@@ -49,6 +49,11 @@ defmodule Bokken.Accounts.User do
     |> user_validations()
   end
 
+  def admin_changeset(user, attrs) do
+    user
+    |> cast(attrs, @optional_fields)
+  end
+
   def changeset(user, attrs) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
