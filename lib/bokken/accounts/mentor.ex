@@ -10,7 +10,9 @@ defmodule Bokken.Accounts.Mentor do
   alias Bokken.Uploaders.Avatar
 
   @required_fields [:first_name, :last_name, :mobile, :user_id]
-  @optional_fields [:birthday, :major, :trial]
+  @optional_fields [:birthday, :major, :trial, :t_shirt]
+
+  @sizes ~w(extra_small small medium large extra_large extra_extra_large)a
 
   schema "mentors" do
     field :photo, Avatar.Type
@@ -21,6 +23,8 @@ defmodule Bokken.Accounts.Mentor do
 
     field :birthday, :date
     field :major, :string
+
+    field :t_shirt, Ecto.Enum, values: @sizes
 
     field :trial, :boolean, default: true
 

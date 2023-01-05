@@ -54,6 +54,8 @@ defmodule Bokken.Factories.AccountFactory do
         mentor = build(:mentor)
 
         %Organizer{
+          first_name: Person.PtBr.first_name(),
+          last_name: Person.PtBr.last_name(),
           champion: true,
           mentor: mentor,
           user: mentor.user

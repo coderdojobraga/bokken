@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "428dae20-ab16-4849-8d2e-42602475d28a",
+		"_postman_id": "54881493-16e1-42bb-abea-85db08ce8f49",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21780706"
 	},
 	"item": [
 		{
@@ -493,12 +494,36 @@
 								},
 								{
 									"name": "Sign in as an Organizer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sign in status is OK\", function(){",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"set-cookie is present\", function () {",
+													"    pm.response.to.have.header(\"set-cookie\");",
+													"});",
+													"",
+													"pm.test(\"user is registered\", function () {",
+													"    pm.expect(pm.response.json().registered).to.eql(true);",
+													"});",
+													"",
+													"const token = pm.response.headers.get(\"set-cookie\").split(\"=\")[1];",
+													"pm.environment.set(\"token\", token);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"email\": \"Bernie.Bailey85@hotmail.com\",\n    \"password\": \"password1234\"\n}",
+											"raw": "{\n    \"email\": \"monicageller@mail.com\",\n    \"password\": \"password1234\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2884,6 +2909,149 @@
 										"api",
 										"skills",
 										"{{skill_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bot",
+					"item": [
+						{
+							"name": "Get all bots",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/bot",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"bot"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create bot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create bot status is OK\", function(){",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"bot_id = pm.response.json().bot_id;",
+											"pm.environment.set(\"bot_id\", bot_id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Gongo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/bot",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"bot"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show bot",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/bot/{{bot_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"bot",
+										"{{bot_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update bot",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bot\": {\n        \"name\": \"Toto\"\n        }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/bot/{{bot_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"bot",
+										"{{bot_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete bot",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/bot/{{bot_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"bot",
+										"{{bot_id}}"
 									]
 								}
 							},
