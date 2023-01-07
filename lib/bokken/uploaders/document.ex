@@ -4,27 +4,24 @@ defmodule Bokken.Uploaders.Document do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
-
-  @versions [:snippets, :projects]
-  @min_file_size 10_000
+  @extension_whitelist ~w(.jpg .jpeg .gif .png)
   @max_file_size 10_000_000
 
   def validate({file, _}) do
+    size = file_size(file)
+
     file.file_name
     |> Path.extname()
     |> String.downcase()
+    |> then(&Enum.member?(@extension_whitelist, &1))
+    |> check_file_size(size)
+  end
 
-    size = file_size(file)
-
-    cond do
-      size < @min_file_size ->
-        {:error, "File is too small. Minimum size is #{@min_file_size} bytes."}
-
-      size > @max_file_size ->
-        {:error, "File is too large. Maximum size is #{@max_file_size} bytes."}
-
-      true ->
-        {:ok, file}
+  defp check_file_size(_, size) do
+    if size > @max_file_size do
+      {:error, "File size is too large"}
+    else
+      :ok
     end
   end
 
@@ -42,7 +39,7 @@ defmodule Bokken.Uploaders.Document do
     "uploads/snippets/#{scope.user_id}/#{scope.lecture_id}"
   end
 
-  def file_size(%Waffle.File{} = file) do
+  defp file_size(%Waffle.File{} = file) do
     File.stat!(file.path)
     |> Map.get(:size)
   end
