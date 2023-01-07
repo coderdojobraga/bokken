@@ -45,6 +45,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
   def valid_admin do
     %{
+      first_name: "Jéssica",
+      last_name: "Fernandes",
       champion: true
     }
   end
@@ -73,12 +75,13 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       valid_admin()
       |> Map.put(:user_id, new_user.id)
 
-    {:ok, _new_admin} = Accounts.create_organizer(admin)
+    {:ok, new_admin} = Accounts.create_organizer(admin)
 
     user
     |> Map.put(:user_id, new_user.id)
     |> Map.put(:email, new_user.email)
     |> Map.put(:password, new_user.password)
+    |> Map.put(:organizer, new_admin)
   end
 
   def ninja_attrs do
