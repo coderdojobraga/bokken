@@ -7,6 +7,8 @@ defmodule Bokken.Uploaders.Emblem do
 
   @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
+  @min_file_size 10_000
+  @max_file_size 10_000_000
 
   # Whitelist file extensions:
   def validate({file, _}) do
@@ -14,6 +16,19 @@ defmodule Bokken.Uploaders.Emblem do
     |> Path.extname()
     |> String.downcase()
     |> then(&Enum.member?(@extension_whitelist, &1))
+
+    size = file_size(file)
+
+    cond do
+      size < @min_file_size ->
+        {:error, "File is too small. Minimum size is #{@min_file_size} bytes."}
+
+      size > @max_file_size ->
+        {:error, "File is too large. Maximum size is #{@max_file_size} bytes."}
+
+      true ->
+        {:ok, file}
+    end
   end
 
   # Override the persisted filenames:
@@ -33,5 +48,10 @@ defmodule Bokken.Uploaders.Emblem do
 
   defp base_url do
     Application.fetch_env!(:waffle, :asset_host)
+  end
+
+  def file_size(%Waffle.File{} = file) do
+    File.stat!(file.path)
+    |> Map.get(:size)
   end
 end
