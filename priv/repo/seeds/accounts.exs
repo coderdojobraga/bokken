@@ -245,13 +245,20 @@ defmodule Bokken.Repo.Seeds.Accounts do
 
     photo = nil
 
+    codemonkey = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
+    lightbot = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
+    codewars = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
+
     ninja =
       Enum.into(names, %{
         user_id: user_id,
         guardian_id: guardian_id,
         photo: photo,
         belt: belt,
-        birthday: birthday
+        birthday: birthday,
+        codemonkey: codemonkey,
+        lightbot: lightbot,
+        codewars: codewars
       })
 
     Bokken.Accounts.create_ninja(ninja)

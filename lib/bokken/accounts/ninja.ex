@@ -26,6 +26,10 @@ defmodule Bokken.Accounts.Ninja do
 
     field :notes, :string
 
+    field :codemonkey, :string
+    field :lightbot, :string
+    field :codewars, :string
+
     embeds_many :socials, Social
 
     belongs_to :user, User, foreign_key: :user_id
