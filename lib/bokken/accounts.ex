@@ -258,6 +258,12 @@ defmodule Bokken.Accounts do
     |> Repo.all()
   end
 
+  def list_ninjas_preload(args) do
+    Ninja
+    |> Repo.all()
+    |> Repo.preload(args)
+  end
+
   @doc """
   Gets a single ninja.
 

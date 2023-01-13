@@ -54,6 +54,14 @@ defmodule BokkenWeb.EventsEmails do
     |> render_body(:mentor_event_reminder)
   end
 
+  def ninja_birthday_email(to: email) do
+    frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
+
+    base_email(to: email)
+    |> subject("[CoderDojo Braga] O Dojo deseja-te parabéns!")
+    |> render_body(:ninja_birthday)
+  end
+
   defp base_email(to: email) do
     new()
     |> from({"CoderDojo Braga", "noreply@coderdojobraga.org"})

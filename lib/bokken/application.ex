@@ -15,9 +15,11 @@ defmodule Bokken.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Bokken.PubSub},
       # Start the Endpoint (http/https)
-      BokkenWeb.Endpoint
+      BokkenWeb.Endpoint,
       # Start a worker by calling: Bokken.Worker.start_link(arg)
       # {Bokken.Worker, arg}
+      Bokken.Periodically
+      # Executes an endpoint periodically
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
