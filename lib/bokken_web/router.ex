@@ -35,8 +35,11 @@ defmodule BokkenWeb.Router do
       pipe_through [:authenticated, :admin]
 
       get "/mentors", AdminController, :index_mentors
-      # get "/mentor", AdminController, :show_mentor
       post "/mentor", AdminController, :update_mentor
+      get "/ninjas", AdminController, :index_ninjas
+      post "/ninja", AdminController, :update_ninja
+      get "/guardians", AdminController, :index_guardians
+      post "/guardian", AdminController, :update_guardian
     end
 
     scope "/auth" do

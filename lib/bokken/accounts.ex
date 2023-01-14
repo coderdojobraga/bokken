@@ -11,6 +11,8 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
+  alias Bokken.Accounts.User
+
   alias Bokken.Accounts.Guardian
 
   @doc """
@@ -19,6 +21,12 @@ defmodule Bokken.Accounts do
       iex> list_guardians()
       [%Guardian{}, ...]
   """
+  def list_guardians(preloads) when is_list(preloads) do
+    Guardian
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
   def list_guardians do
     Repo.all(Guardian)
   end
@@ -86,6 +94,36 @@ defmodule Bokken.Accounts do
     Guardian.changeset(guardian, attrs)
   end
 
+  def update_guardian_and_user(guardian_params, user_params) do
+    user =
+      Map.get(user_params, "user_id")
+      |> get_user!()
+
+    guardian =
+      Map.get(guardian_params, "id")
+      |> get_guardian!()
+
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(
+        :user,
+        User.admin_changeset(user, user_params)
+      )
+      |> Ecto.Multi.update(
+        :guardian,
+        Guardian.changeset(guardian, guardian_params)
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{user: _user, guardian: guardian}} ->
+        {:ok, guardian |> Repo.preload([:user], force: true)}
+
+      {:error, _transaction, errors, _changes_so_far} ->
+        {:error, errors}
+    end
+  end
+
   alias Bokken.Accounts.Mentor
 
   @doc """
@@ -100,7 +138,6 @@ defmodule Bokken.Accounts do
       [%Mentor{}, ...]
 
   """
-
   def list_mentors(preloads) when is_list(preloads) do
     Mentor
     |> Repo.all()
@@ -222,12 +259,7 @@ defmodule Bokken.Accounts do
     Repo.delete_all(query)
   end
 
-  alias Bokken.Accounts.User
-
   def update_mentor_and_user(mentor_params, user_params) do
-    IO.inspect(user_params)
-    IO.inspect(mentor_params)
-
     user =
       Map.get(user_params, "user_id")
       |> get_user!()
@@ -273,9 +305,11 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
-
-  @spec list_ninjas(map()) :: list(Ninja.t())
-  def list_ninjas(args \\ %{})
+  def list_ninjas(preloads) when is_list(preloads) do
+    Ninja
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_ninjas(%{"team_id" => team_id}) do
     team_id
@@ -295,7 +329,7 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:ninjas)
   end
 
-  def list_ninjas(_args) do
+  def list_ninjas() do
     Ninja
     |> Repo.all()
   end
@@ -416,6 +450,36 @@ defmodule Bokken.Accounts do
     case transaction do
       {:ok, %{event: event, lecture: lecture}} ->
         {:ok, event |> Repo.preload([:ninjas], force: true), lecture}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
+  end
+
+  def update_ninja_and_user(ninja_params, user_params) do
+    user =
+      Map.get(user_params, "user_id")
+      |> get_user!()
+
+    ninja =
+      Map.get(ninja_params, "id")
+      |> get_ninja!()
+
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(
+        :user,
+        User.admin_changeset(user, user_params)
+      )
+      |> Ecto.Multi.update(
+        :ninja,
+        Ninja.changeset(ninja, ninja_params)
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{user: _user, ninja: ninja}} ->
+        {:ok, ninja |> Repo.preload([:user], force: true)}
 
       {:error, _transation, errors, _changes_so_far} ->
         {:error, errors}
