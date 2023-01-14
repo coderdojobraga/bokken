@@ -156,7 +156,7 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
-  def list_mentors() do
+  def list_mentors do
     Mentor
     |> Repo.all()
   end
@@ -329,7 +329,7 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:ninjas)
   end
 
-  def list_ninjas() do
+  def list_ninjas do
     Ninja
     |> Repo.all()
   end

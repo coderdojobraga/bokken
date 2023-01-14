@@ -2,7 +2,7 @@ defmodule BokkenWeb.AdminController do
   use BokkenWeb, :controller
 
   alias Bokken.Accounts
-  alias Bokken.Accounts.{Mentor, Ninja, Guardian}
+  alias Bokken.Accounts.{Guardian, Mentor, Ninja}
 
   action_fallback BokkenWeb.FallbackController
 

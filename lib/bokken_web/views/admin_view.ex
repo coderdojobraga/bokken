@@ -1,7 +1,6 @@
 defmodule BokkenWeb.AdminView do
   use BokkenWeb, :view
 
-  alias BokkenWeb.AdminView
   alias Bokken.Uploaders.Avatar
   alias BokkenWeb.AuthView
 
