@@ -95,32 +95,30 @@ defmodule Bokken.Accounts do
   end
 
   def update_guardian_and_user(guardian_params, user_params) do
-    user =
-      Map.get(user_params, "user_id")
-      |> get_user!()
+    with {:ok, user} <- get_user!(user_params["user_id"]),
+         {:ok, guardian} <- get_guardian!(guardian_params["id"]) do
+      transaction =
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(
+          :user,
+          User.admin_changeset(user, user_params)
+        )
+        |> Ecto.Multi.update(
+          :guardian,
+          Guardian.changeset(guardian, guardian_params)
+        )
+        |> Repo.transaction()
 
-    guardian =
-      Map.get(guardian_params, "id")
-      |> get_guardian!()
+      case transaction do
+        {:ok, %{user: _user, guardian: guardian}} ->
+          {:ok, guardian |> Repo.preload([:user], force: true)}
 
-    transaction =
-      Ecto.Multi.new()
-      |> Ecto.Multi.update(
-        :user,
-        User.admin_changeset(user, user_params)
-      )
-      |> Ecto.Multi.update(
-        :guardian,
-        Guardian.changeset(guardian, guardian_params)
-      )
-      |> Repo.transaction()
-
-    case transaction do
-      {:ok, %{user: _user, guardian: guardian}} ->
-        {:ok, guardian |> Repo.preload([:user], force: true)}
-
-      {:error, _transaction, errors, _changes_so_far} ->
-        {:error, errors}
+        {:error, _transaction, errors, _change_so_far} ->
+          {:error, errors}
+      end
+    else
+      {:error, _} ->
+        {:error, "User or guardian not found"}
     end
   end
 
@@ -260,32 +258,30 @@ defmodule Bokken.Accounts do
   end
 
   def update_mentor_and_user(mentor_params, user_params) do
-    user =
-      Map.get(user_params, "user_id")
-      |> get_user!()
+    with {:ok, user} <- get_user!(user_params["user_id"]),
+         {:ok, mentor} <- get_mentor!(mentor_params["id"]) do
+      transaction =
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(
+          :user,
+          User.admin_changeset(user, user_params)
+        )
+        |> Ecto.Multi.update(
+          :mentor,
+          Mentor.changeset(mentor, mentor_params)
+        )
+        |> Repo.transaction()
 
-    mentor =
-      Map.get(mentor_params, "id")
-      |> get_mentor!()
+      case transaction do
+        {:ok, %{user: _user, mentor: mentor}} ->
+          {:ok, mentor |> Repo.preload([:user], force: true)}
 
-    transaction =
-      Ecto.Multi.new()
-      |> Ecto.Multi.update(
-        :user,
-        User.admin_changeset(user, user_params)
-      )
-      |> Ecto.Multi.update(
-        :mentor,
-        Mentor.changeset(mentor, mentor_params)
-      )
-      |> Repo.transaction()
-
-    case transaction do
-      {:ok, %{user: _user, mentor: mentor}} ->
-        {:ok, mentor |> Repo.preload([:user], force: true)}
-
-      {:error, _transaction, errors, _change_so_far} ->
-        {:error, errors}
+        {:error, _transaction, errors, _change_so_far} ->
+          {:error, errors}
+      end
+    else
+      {:error, _} ->
+        {:error, "User or mentor not found"}
     end
   end
 
@@ -457,32 +453,30 @@ defmodule Bokken.Accounts do
   end
 
   def update_ninja_and_user(ninja_params, user_params) do
-    user =
-      Map.get(user_params, "user_id")
-      |> get_user!()
+    with {:ok, user} <- get_user!(user_params["user_id"]),
+         {:ok, ninja} <- get_ninja!(ninja_params["id"]) do
+      transaction =
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(
+          :user,
+          User.admin_changeset(user, user_params)
+        )
+        |> Ecto.Multi.update(
+          :ninja,
+          Ninja.changeset(ninja, ninja_params)
+        )
+        |> Repo.transaction()
 
-    ninja =
-      Map.get(ninja_params, "id")
-      |> get_ninja!()
+      case transaction do
+        {:ok, %{user: _user, ninja: ninja}} ->
+          {:ok, ninja |> Repo.preload([:user], force: true)}
 
-    transaction =
-      Ecto.Multi.new()
-      |> Ecto.Multi.update(
-        :user,
-        User.admin_changeset(user, user_params)
-      )
-      |> Ecto.Multi.update(
-        :ninja,
-        Ninja.changeset(ninja, ninja_params)
-      )
-      |> Repo.transaction()
-
-    case transaction do
-      {:ok, %{user: _user, ninja: ninja}} ->
-        {:ok, ninja |> Repo.preload([:user], force: true)}
-
-      {:error, _transation, errors, _changes_so_far} ->
-        {:error, errors}
+        {:error, _transaction, errors, _change_so_far} ->
+          {:error, errors}
+      end
+    else
+      {:error, _} ->
+        {:error, "User or ninja not found"}
     end
   end
 
