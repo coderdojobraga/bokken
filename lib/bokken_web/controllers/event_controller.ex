@@ -4,8 +4,8 @@ defmodule BokkenWeb.EventController do
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Event
-  alias Bokken.Mailer
   alias BokkenWeb.EventsEmails
+  import Bokken.Events.EventAdmin
 
   action_fallback BokkenWeb.FallbackController
 
@@ -142,21 +142,5 @@ defmodule BokkenWeb.EventController do
       |> assign(:result, res)
       |> render("emails.json", res)
     end
-  end
-
-  defp send_email(users, email) do
-    users
-    |> List.foldl(
-      %{success: [], fail: []},
-      fn user, accumulator ->
-        case Mailer.deliver(email.(user)) do
-          {:ok, _} ->
-            %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
-
-          {:error, _} ->
-            %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
-        end
-      end
-    )
   end
 end

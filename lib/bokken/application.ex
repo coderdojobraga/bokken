@@ -19,7 +19,7 @@ defmodule Bokken.Application do
       # Start a worker by calling: Bokken.Worker.start_link(arg)
       # {Bokken.Worker, arg}
       Bokken.Periodically
-      # Executes an endpoint periodically
+      # Executes a task periodically
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

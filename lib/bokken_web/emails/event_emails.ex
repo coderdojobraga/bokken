@@ -54,7 +54,7 @@ defmodule BokkenWeb.EventsEmails do
     |> render_body(:mentor_event_reminder)
   end
 
-  def ninja_birthday_email(to: email) do
+  def ninja_birthday_email(ninja, to: email) do
     frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
 
     base_email(to: email)

@@ -3,6 +3,7 @@ defmodule Bokken.Events.EventAdmin do
   The admin view config of events
   """
   alias Bokken.{Events, Pairings}
+  alias Bokken.Mailer
 
   def list_actions(_conn) do
     [
@@ -45,5 +46,21 @@ defmodule Bokken.Events.EventAdmin do
       enrollments_open: nil,
       enrollments_close: nil
     ]
+  end
+
+  def send_email(users, email) do
+    users
+    |> List.foldl(
+      %{success: [], fail: []},
+      fn user, accumulator ->
+        case Mailer.deliver(email.(user)) do
+          {:ok, _} ->
+            %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
+
+          {:error, _} ->
+            %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
+        end
+      end
+    )
   end
 end

@@ -232,8 +232,11 @@ defmodule Bokken.Accounts do
 
   """
 
-  @spec list_ninjas(map()) :: list(Ninja.t())
-  def list_ninjas(args \\ %{})
+  def list_ninjas(preloads) when is_list(preloads) do
+    Ninja
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_ninjas(%{"team_id" => team_id}) do
     team_id
@@ -253,15 +256,9 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:ninjas)
   end
 
-  def list_ninjas(_args) do
+  def list_ninjas do
     Ninja
     |> Repo.all()
-  end
-
-  def list_ninjas_preload(args) do
-    Ninja
-    |> Repo.all()
-    |> Repo.preload(args)
   end
 
   @doc """
@@ -384,6 +381,16 @@ defmodule Bokken.Accounts do
       {:error, _transation, errors, _changes_so_far} ->
         {:error, errors}
     end
+  end
+
+  def get_guardian_email_by_ninja(ninja: user) do
+    user =
+      user
+      |> Repo.preload(:ninja)
+
+    guardian = get_guardian!(user.ninja.guardian_id, [:user])
+
+    guardian.user.email
   end
 
   alias Bokken.Accounts.Organizer

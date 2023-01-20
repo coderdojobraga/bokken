@@ -3,11 +3,9 @@ defmodule BokkenWeb.NinjaController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Ninja
-  alias BokkenWeb.EventsEmails
   alias Bokken.Events.Event
   alias Bokken.Events.Lecture
   alias Bokken.Events.TeamNinja
-  alias Bokken.Mailer
 
   action_fallback BokkenWeb.FallbackController
 
@@ -88,28 +86,4 @@ defmodule BokkenWeb.NinjaController do
     end
   end
 
-  def notify_ninja_birthday() do
-    ninjas = Accounts.list_ninjas_preload([:user])
-    current_time = DateTime.utc_now()
-    ninjas
-    |> Enum.map(fn ninja -> (ninja.birthday == current_time)
-      send_email(ninja, EventsEmails.ninja_birthday_email(to: ninja.user.email))
-    end)
-  end
-
-  defp send_email(users, email) do
-    [users]
-    |> List.foldl(
-      %{success: [], fail: []},
-      fn user, accumulator ->
-        case Mailer.deliver(email.(user)) do
-          {:ok, _} ->
-            %{success: [user.email | accumulator[:success]], fail: accumulator[:fail]}
-
-          {:error, _} ->
-            %{success: [accumulator[:success]], fail: [user.email | accumulator[:fail]]}
-        end
-      end
-    )
-  end
 end
