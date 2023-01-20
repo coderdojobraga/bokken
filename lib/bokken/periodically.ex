@@ -1,4 +1,7 @@
 defmodule Bokken.Periodically do
+  @moduledoc """
+  Executes a task periodically.
+  """
   use GenServer
 
   alias Bokken.Accounts
@@ -22,11 +25,11 @@ defmodule Bokken.Periodically do
     {:noreply, state}
   end
 
-  defp schedule_work() do
+  defp schedule_work do
     Process.send_after(self(), :work, @one_day)
   end
 
-  defp notify_ninja_birthday() do
+  defp notify_ninja_birthday do
     ninjas = Accounts.list_ninjas([:user])
     current_time = Date.utc_today()
 
