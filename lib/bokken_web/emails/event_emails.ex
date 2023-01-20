@@ -55,10 +55,9 @@ defmodule BokkenWeb.EventsEmails do
   end
 
   def ninja_birthday_email(ninja, to: email) do
-    frontend_url = Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
-
     base_email(to: email)
     |> subject("[CoderDojo Braga] O Dojo deseja-te parabéns!")
+    |> assign(:ninja, ninja)
     |> render_body(:ninja_birthday)
   end
 

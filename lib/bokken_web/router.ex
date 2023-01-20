@@ -100,8 +100,6 @@ defmodule BokkenWeb.Router do
     post "/notify_signup", EventController, :notify_signup
     post "/notify_selected", EventController, :notify_selected
 
-    # post "/notify_ninja_birthday", NinjaController, :notify_ninja_birthday
-
     resources "/bot", BotController, except: [:new, :edit]
   end
 

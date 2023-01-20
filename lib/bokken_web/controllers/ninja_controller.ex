@@ -85,5 +85,4 @@ defmodule BokkenWeb.NinjaController do
       send_resp(conn, :no_content, "")
     end
   end
-
 end
