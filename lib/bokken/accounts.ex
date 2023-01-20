@@ -31,6 +31,8 @@ defmodule Bokken.Accounts do
     Repo.all(Guardian)
   end
 
+  def get_guardian(id), do: Repo.get(Guardian, id)
+
   @doc """
   Gets a single guardian.
   Raises `Ecto.NoResultsError` if the Guardian does not exist.
@@ -95,8 +97,11 @@ defmodule Bokken.Accounts do
   end
 
   def update_guardian_and_user(guardian_params, user_params) do
-    with {:ok, user} <- get_user!(user_params["user_id"]),
-         {:ok, guardian} <- get_guardian!(guardian_params["id"]) do
+    user_id = user_params["user_id"]
+    guardian_id = guardian_params["id"]
+
+    with user when not is_nil(user_id) <- get_user(user_id),
+         guardian when not is_nil(guardian_id) <- get_guardian(guardian_id) do
       transaction =
         Ecto.Multi.new()
         |> Ecto.Multi.update(
@@ -158,6 +163,8 @@ defmodule Bokken.Accounts do
     Mentor
     |> Repo.all()
   end
+
+  def get_mentor(id), do: Repo.get(Mentor, id)
 
   @doc """
   Gets a single mentor.
@@ -258,8 +265,11 @@ defmodule Bokken.Accounts do
   end
 
   def update_mentor_and_user(mentor_params, user_params) do
-    with {:ok, user} <- get_user!(user_params["user_id"]),
-         {:ok, mentor} <- get_mentor!(mentor_params["id"]) do
+    user_id = user_params["user_id"]
+    mentor_id = mentor_params["id"]
+
+    with user when not is_nil(user_id) <- get_user(user_id),
+         mentor when not is_nil(mentor_id) <- get_mentor(mentor_id) do
       transaction =
         Ecto.Multi.new()
         |> Ecto.Multi.update(
@@ -329,6 +339,8 @@ defmodule Bokken.Accounts do
     Ninja
     |> Repo.all()
   end
+
+  def get_ninja(id), do: Repo.get(Ninja, id)
 
   @doc """
   Gets a single ninja.
@@ -453,8 +465,11 @@ defmodule Bokken.Accounts do
   end
 
   def update_ninja_and_user(ninja_params, user_params) do
-    with {:ok, user} <- get_user!(user_params["user_id"]),
-         {:ok, ninja} <- get_ninja!(ninja_params["id"]) do
+    user_id = user_params["user_id"]
+    ninja_id = ninja_params["id"]
+
+    with user when not is_nil(user_id) <- get_user(user_id),
+         ninja when not is_nil(ninja_id) <- get_ninja(ninja_id) do
       transaction =
         Ecto.Multi.new()
         |> Ecto.Multi.update(
