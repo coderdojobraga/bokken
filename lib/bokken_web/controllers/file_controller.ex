@@ -55,12 +55,25 @@ defmodule BokkenWeb.FileController do
 
   def create(conn, %{"file" => file_params}) do
     user_id = conn.assigns.current_user.id
+    files = Documents.list_files(%{"user_id" => user_id})
+
+    total_size = Enum.reduce(files, 0, fn file, acc -> acc + File.file_size(file) end)
 
     with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.file_path(conn, :show, file))
-      |> render("show.json", file: file)
+      file_size = File.file_size(file)
+
+      if total_size + file_size > 100_000_000 do
+        Documents.delete_file(file)
+
+        conn
+        |> put_status(:forbidden)
+        |> render("error.json", message: "File size is too large")
+      else
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.file_path(conn, :show, file))
+        |> render("show.json", file: file)
+      end
     end
   end
 
