@@ -5,7 +5,7 @@ defmodule Bokken.Uploaders.Document do
   use Waffle.Definition
   use Waffle.Ecto.Definition
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
-  @max_file_size 10_000_000
+  @max_file_size 50_000_000
 
   def validate({file, _}) do
     size = file_size(file)
@@ -13,15 +13,15 @@ defmodule Bokken.Uploaders.Document do
     file.file_name
     |> Path.extname()
     |> String.downcase()
-    |> then(&Enum.member?(@extension_whitelist, &1))
-    |> check_file_size(size)
+    |> then(&Enum.member?(@extension_whitelist, &1)) and check_file_size(size)
   end
 
-  defp check_file_size(_, size) do
+  defp check_file_size(size) do
     if size > @max_file_size do
       {:error, "File size is too large"}
+      false
     else
-      :ok
+      true
     end
   end
 
