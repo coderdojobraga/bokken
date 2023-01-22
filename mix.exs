@@ -15,7 +15,6 @@ defmodule Bokken.MixProject do
       git_ref: git_revision_hash(),
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      elixirc_options: [debug_info: Mix.env() == :dev],
       compilers: Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
       deps: deps(),
