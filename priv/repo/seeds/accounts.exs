@@ -267,9 +267,6 @@ defmodule Bokken.Repo.Seeds.Accounts do
       day: Enum.random(1..28)
     }
 
-    major =
-      Enum.random(["Engenharia Informática", "Ciências da Computação", "Medicina", "Ciências da Comunicação"])
-
     photo = nil
 
     mentor =
@@ -279,7 +276,6 @@ defmodule Bokken.Repo.Seeds.Accounts do
         trial: false,
         photo: photo,
         birthday: birthday,
-        major: major
         t_shirt: Enum.random(["extra_small", "small", "medium", "large", "extra_large", "extra_extra_large"])
       })
 
