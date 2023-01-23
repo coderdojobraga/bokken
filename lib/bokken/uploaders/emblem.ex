@@ -7,7 +7,11 @@ defmodule Bokken.Uploaders.Emblem do
 
   @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
+<<<<<<< HEAD
   @max_file_size 5_000_000
+=======
+  @max_file_size 50_000_000
+>>>>>>> 76f82bd699ac13b44c2cf5eca0524417e9914414
 
   def validate({file, _}) do
     size = file_size(file)
@@ -15,7 +19,19 @@ defmodule Bokken.Uploaders.Emblem do
     file.file_name
     |> Path.extname()
     |> String.downcase()
+<<<<<<< HEAD
     |> then(&Enum.member?(@extension_whitelist, &1)) and size < @max_file_size
+=======
+    |> then(&Enum.member?(@extension_whitelist, &1)) and check_file_size(size)
+  end
+
+  defp check_file_size(size) do
+    if size > @max_file_size do
+      false
+    else
+      true
+    end
+>>>>>>> 76f82bd699ac13b44c2cf5eca0524417e9914414
   end
 
   # Override the persisted filenames:
