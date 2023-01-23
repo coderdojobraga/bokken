@@ -12,6 +12,9 @@ defmodule Bokken.Accounts.User do
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified, :registered, :discord_id]
 
+  # List of fields that can be updated by admins (organizers)
+  @admin_fields [:active, :verified, :registered]
+
   schema "users" do
     field :email, :string
     field :password_hash, :string
@@ -53,7 +56,7 @@ defmodule Bokken.Accounts.User do
 
   def admin_changeset(user, attrs) do
     user
-    |> cast(attrs, @optional_fields)
+    |> cast(attrs, @admin_fields)
   end
 
   def changeset(user, attrs) do

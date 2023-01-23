@@ -122,7 +122,7 @@ defmodule Bokken.Accounts do
           {:error, errors}
       end
     else
-      {:error, _} ->
+      nil ->
         {:error, "User or guardian not found"}
     end
   end
@@ -290,7 +290,7 @@ defmodule Bokken.Accounts do
           {:error, errors}
       end
     else
-      {:error, _} ->
+      nil ->
         {:error, "User or mentor not found"}
     end
   end
@@ -490,7 +490,7 @@ defmodule Bokken.Accounts do
           {:error, errors}
       end
     else
-      {:error, _} ->
+      nil ->
         {:error, "User or ninja not found"}
     end
   end
@@ -709,6 +709,19 @@ defmodule Bokken.Accounts do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_user_as_admin(user_params) do
+    user_id = user_params["user_id"]
+
+    with user when not is_nil(user_id) <- get_user(user_id) do
+      user
+      |> User.admin_changeset(user_params)
+      |> Repo.update()
+    else
+      nil ->
+        {:error, "User not found"}
+    end
   end
 
   def edit_user(%User{} = user, attrs, role) do

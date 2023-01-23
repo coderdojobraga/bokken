@@ -5,6 +5,10 @@ defmodule BokkenWeb.AdminView do
   alias BokkenWeb.AdminView
   alias BokkenWeb.AuthView
 
+  def render("index.json", %{users: users}) do
+    %{data: render_many(users, AdminView, "user.json", as: :user)}
+  end
+
   def render("index.json", %{mentors: mentors}) do
     %{data: render_many(mentors, AdminView, "mentor.json", as: :mentor)}
   end
@@ -15,6 +19,18 @@ defmodule BokkenWeb.AdminView do
 
   def render("index.json", %{guardians: guardians}) do
     %{data: render_many(guardians, AdminView, "guardian.json", as: :guardian)}
+  end
+
+  def render("user.json", %{user: user}) do
+    %{
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      active: user.active,
+      verified: user.verified,
+      registered: user.registered,
+      since: user.inserted_at
+    }
   end
 
   def render("mentor.json", %{mentor: mentor}) do
