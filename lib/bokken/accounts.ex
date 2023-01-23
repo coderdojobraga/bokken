@@ -714,13 +714,14 @@ defmodule Bokken.Accounts do
   def update_user_as_admin(user_params) do
     user_id = user_params["user_id"]
 
-    with user when not is_nil(user_id) <- get_user(user_id) do
-      user
-      |> User.admin_changeset(user_params)
-      |> Repo.update()
-    else
+    case get_user(user_id) do
       nil ->
         {:error, "User not found"}
+
+      user ->
+        user
+        |> User.admin_changeset(user_params)
+        |> Repo.update()
     end
   end
 
