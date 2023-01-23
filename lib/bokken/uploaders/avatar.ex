@@ -7,7 +7,7 @@ defmodule Bokken.Uploaders.Avatar do
 
   @versions [:original, :thumb]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
-  @max_file_size 50_000_000
+  @max_file_size 4_000_000
 
   def validate({file, _}) do
     size = file_size(file)
@@ -15,15 +15,7 @@ defmodule Bokken.Uploaders.Avatar do
     file.file_name
     |> Path.extname()
     |> String.downcase()
-    |> then(&Enum.member?(@extension_whitelist, &1)) and check_file_size(size)
-  end
-
-  defp check_file_size(size) do
-    if size > @max_file_size do
-      false
-    else
-      true
-    end
+    |> then(&Enum.member?(@extension_whitelist, &1)) and size < @max_file_size
   end
 
   # Define a thumbnail transformation:
