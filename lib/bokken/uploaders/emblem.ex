@@ -8,7 +8,7 @@ defmodule Bokken.Uploaders.Emblem do
 
   @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
-  @max_file_size 5_000_000
+  @max_file_size 1_000_000
 
   def validate({file, _}) do
     size = File.file_size(file)
