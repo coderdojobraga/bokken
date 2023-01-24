@@ -4,13 +4,14 @@ defmodule Bokken.Uploaders.Emblem do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
+  alias Bokken.Documents.File
 
   @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
   @max_file_size 5_000_000
 
   def validate({file, _}) do
-    size = file_size(file)
+    size = File.file_size(file)
 
     file.file_name
     |> Path.extname()
@@ -35,10 +36,5 @@ defmodule Bokken.Uploaders.Emblem do
 
   defp base_url do
     Application.fetch_env!(:waffle, :asset_host)
-  end
-
-  defp file_size(%Waffle.File{} = file) do
-    File.stat!(file.path)
-    |> Map.get(:size)
   end
 end

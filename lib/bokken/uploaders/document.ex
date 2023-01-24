@@ -4,11 +4,12 @@ defmodule Bokken.Uploaders.Document do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
+  alias Bokken.Documents.File
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
   @max_file_size 5_000_000
 
   def validate({file, _}) do
-    size = file_size(file)
+    size = File.file_size(file)
 
     file.file_name
     |> Path.extname()
@@ -28,10 +29,5 @@ defmodule Bokken.Uploaders.Document do
 
   def storage_dir(_version, {_file, scope}) do
     "uploads/snippets/#{scope.user_id}/#{scope.lecture_id}"
-  end
-
-  defp file_size(%Waffle.File{} = file) do
-    File.stat!(file.path)
-    |> Map.get(:size)
   end
 end

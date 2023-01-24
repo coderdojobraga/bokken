@@ -4,13 +4,14 @@ defmodule Bokken.Uploaders.Avatar do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
+  alias Bokken.Documents.File
 
   @versions [:original, :thumb]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
   @max_file_size 2_000_000
 
   def validate({file, _}) do
-    size = file_size(file)
+    size = File.file_size(file)
 
     file.file_name
     |> Path.extname()
@@ -38,10 +39,5 @@ defmodule Bokken.Uploaders.Avatar do
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(_version, scope) do
     "https://robohash.org/#{scope.first_name}-#{scope.last_name}"
-  end
-
-  defp file_size(%Waffle.File{} = file) do
-    File.stat!(file.path)
-    |> Map.get(:size)
   end
 end

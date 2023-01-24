@@ -62,7 +62,7 @@ defmodule BokkenWeb.FileController do
     with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
       file_size = File.file_size(file)
 
-      if total_size + file_size > 30_000_000 do
+      if total_size + file_size > 6_000_000 do
         Documents.delete_file(file)
 
         conn
