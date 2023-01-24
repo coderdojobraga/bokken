@@ -7,7 +7,7 @@ defmodule Bokken.Uploaders.Avatar do
 
   @versions [:original, :thumb]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
-  @max_file_size 4_000_000
+  @max_file_size 2_000_000
 
   def validate({file, _}) do
     size = file_size(file)
