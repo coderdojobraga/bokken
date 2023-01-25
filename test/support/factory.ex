@@ -8,5 +8,4 @@ defmodule Bokken.Factory do
   use Bokken.Factories.GamificationFactory
   use Bokken.Factories.EventFactory
   use Bokken.Factories.BotsFactory
-
 end

@@ -8,20 +8,23 @@ defmodule Bokken.EventsTest do
   describe "enrollments" do
     test "list_enrollments/0 returns all enrollments" do
       enrollment = insert(:enrollment)
+
       assert Events.list_enrollments()
-            |> Enum.map(fn x -> x.id end) == [enrollment.id]
+             |> Enum.map(fn x -> x.id end) == [enrollment.id]
     end
 
     test "list_enrollments/1 returns all enrollments of the event" do
       enrollment = insert(:enrollment)
+
       assert Events.list_enrollments(%{"event_id" => enrollment.event_id})
-            |> Enum.map(fn x -> x.id end) == [enrollment.id]
+             |> Enum.map(fn x -> x.id end) == [enrollment.id]
     end
 
     test "list_enrollments/1 returns all enrollments of the ninja" do
       enrollment = insert(:enrollment)
+
       assert Events.list_enrollments(%{"ninja_id" => enrollment.ninja_id})
-            |> Enum.map(fn x -> x.id end) == [enrollment.id]
+             |> Enum.map(fn x -> x.id end) == [enrollment.id]
     end
 
     test "get_enrollment/1 returns the requested enrollment" do
@@ -37,13 +40,15 @@ defmodule Bokken.EventsTest do
     end
 
     test "create_enrollment/1 returns error if the enrollments are closed" do
-      event = insert(:event, start_time: ~U[2022-07-03 10:00:00.0Z],
-      end_time: ~U[2022-07-03 12:30:00.0Z],
-      enrollments_open: ~U[2022-07-03 07:00:00.0Z],
-      enrollments_close: ~U[2022-07-03 08:00:00.0Z])
+      event =
+        insert(:event,
+          start_time: ~U[2022-07-03 10:00:00.0Z],
+          end_time: ~U[2022-07-03 12:30:00.0Z],
+          enrollments_open: ~U[2022-07-03 07:00:00.0Z],
+          enrollments_close: ~U[2022-07-03 08:00:00.0Z]
+        )
 
-
-      assert elem(Events.create_enrollment(event,params_for(:enrollment)), 0) == :error
+      assert elem(Events.create_enrollment(event, params_for(:enrollment)), 0) == :error
     end
 
     test "update_enrollment/2 updates existing enrollment" do
