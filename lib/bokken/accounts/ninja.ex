@@ -46,7 +46,7 @@ defmodule Bokken.Accounts.Ninja do
     |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
-    |> validate_birthdate()
+    |> validate_birthday()
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
