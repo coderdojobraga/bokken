@@ -52,7 +52,9 @@ defmodule Bokken.Accounts.Ninja do
     |> unique_constraint(:user_id)
   end
 
-  defp validate_birthdate(%Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset) do
+  defp validate_birthdate(
+         %Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset
+       ) do
     if birthday > Date.utc_today() do
       add_error(changeset, :birthdate, "can't be in the future")
     else
@@ -61,5 +63,4 @@ defmodule Bokken.Accounts.Ninja do
   end
 
   defp validate_birthdate(changeset), do: changeset
-
 end
