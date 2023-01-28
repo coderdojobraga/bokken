@@ -97,7 +97,7 @@ defmodule Bokken.AccountsTest do
     end
   end
 
-  describe "Ninjas" do
+  describe "ninjas" do
     test "create_ninja/1 with invalid birthdate" do
       future_date = Date.utc_today() |> Date.add(1)
       guardian = insert(:guardian)

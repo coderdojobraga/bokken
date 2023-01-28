@@ -55,8 +55,11 @@ defmodule Bokken.Accounts.Ninja do
   defp validate_birthday(
          %Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset
        ) do
-    if birthday > Date.utc_today() do
-      add_error(changeset, :birthdate, "can't be in the future")
+    lower_limit = Date.utc_today() |> Date.add(-(365 * 17))
+    upper_limit = Date.utc_today() |> Date.add(-(365 * 6))
+
+    if birthday <= lower_limit or birthday >= upper_limit do
+      add_error(changeset, :birthdate, "Ninja's age should be between 6 and 17 years old")
     else
       changeset
     end
