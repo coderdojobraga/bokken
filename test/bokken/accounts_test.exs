@@ -2,6 +2,8 @@ defmodule Bokken.AccountsTest do
   @moduledoc false
   use Bokken.DataCase
 
+  import Bokken.Factory
+
   alias Bokken.Accounts
 
   describe "guardians" do
@@ -93,5 +95,23 @@ defmodule Bokken.AccountsTest do
       guardian = guardian_fixture()
       assert %Ecto.Changeset{} = Accounts.change_guardian(guardian)
     end
+  end
+
+  describe "Ninjas" do
+
+    test "create_ninja/1 with invalid birthdate" do
+      future_date = Date.utc_today() |> Date.add(1)
+      guardian = insert(:guardian)
+
+      attrs = %{
+        first_name: "Ana Maria",
+        last_name: "Silva Costa",
+        birthday: future_date,
+        guardian_id: guardian.id
+      }
+
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_ninja(attrs)
+    end
+
   end
 end

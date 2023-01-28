@@ -46,8 +46,20 @@ defmodule Bokken.Accounts.Ninja do
     |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
+    |> validate_birthdate()
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
+
+  defp validate_birthdate(%Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset) do
+    if birthday > Date.utc_today() do
+      add_error(changeset, :birthdate, "can't be in the future")
+    else
+      changeset
+    end
+  end
+
+  defp validate_birthdate(changeset), do: changeset
+
 end
