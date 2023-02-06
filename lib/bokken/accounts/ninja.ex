@@ -50,8 +50,24 @@ defmodule Bokken.Accounts.Ninja do
     |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
+    |> validate_birthday()
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
+
+  defp validate_birthday(
+         %Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset
+       ) do
+    lower_limit = Date.utc_today() |> Date.add(-(365 * 17))
+    upper_limit = Date.utc_today() |> Date.add(-(365 * 6))
+
+    if birthday <= lower_limit or birthday >= upper_limit do
+      add_error(changeset, :birthdate, "Ninja's age should be between 6 and 17 years old")
+    else
+      changeset
+    end
+  end
+
+  defp validate_birthday(changeset), do: changeset
 end
