@@ -46,7 +46,7 @@ defmodule BokkenWeb.AdminView do
       socials: mentor.socials,
       since: mentor.inserted_at
     }
-    |> Map.merge(user(mentor))
+    |> Map.merge(user(mentor, :mentor))
   end
 
   def render("ninja.json", %{ninja: ninja}) do
@@ -57,9 +57,12 @@ defmodule BokkenWeb.AdminView do
       last_name: ninja.last_name,
       birthday: ninja.birthday,
       socials: ninja.socials,
-      since: ninja.inserted_at
+      since: ninja.inserted_at,
+      active: ninja.user.active,
+      verified: ninja.user.verified,
+      registered: ninja.user.registered
     }
-    |> Map.merge(user(ninja))
+    |> Map.merge(user(ninja, :ninja))
   end
 
   def render("guardian.json", %{guardian: guardian}) do
@@ -72,20 +75,37 @@ defmodule BokkenWeb.AdminView do
       city: guardian.city,
       since: guardian.inserted_at
     }
-    |> Map.merge(user(guardian))
+    |> Map.merge(user(guardian, :guardian))
   end
 
-  defp user(mentor) do
-    if Ecto.assoc_loaded?(mentor.user) do
-      render_one(mentor.user, AuthView, "user.json")
-      |> then(
-        &Map.new(&1, fn
-          {:id, value} -> {:user_id, value}
-          pair -> pair
-        end)
-      )
+  defp user(struct, role) do
+    if Ecto.assoc_loaded?(struct.user) do
+      # If the user is a ninja, we simply don't want to render the user email
+      if role == :ninja do
+        %{
+          id: struct.user.id,
+          active: struct.user.active,
+          verified: struct.user.verified,
+          registered: struct.user.registered
+        }
+        |> merge_user_safe()
+      else
+        render_one(struct.user, AuthView, "user.json")
+        |> merge_user_safe()
+      end
     else
       %{}
     end
+  end
+
+  # Renames the user_id key to id to prevent conflicts before merging
+  defp merge_user_safe(struct) do
+    struct
+    |> then(
+      &Map.new(&1, fn
+        {:id, value} -> {:user_id, value}
+        pair -> pair
+      end)
+    )
   end
 end
