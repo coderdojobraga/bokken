@@ -79,7 +79,7 @@ defmodule Bokken.Factories.EventFactory do
       def location_factory do
         %Location{
           address: Address.PtBr.street_address(),
-          name: Pokemon.En.name()
+          name: Pokemon.En.name() <> "#{System.unique_integer([:positive])}"
         }
       end
 

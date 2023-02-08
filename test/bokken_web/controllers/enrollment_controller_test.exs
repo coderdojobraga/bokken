@@ -5,7 +5,6 @@ defmodule BokkenWeb.EnrollmentControllerTest do
 
   alias Bokken.Accounts
   alias Bokken.Events
-  alias BokkenWeb.Authorization
 
   @valid_attrs %{
     city: "Braga",
@@ -60,18 +59,6 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     {:ok, guardian_user} =
       Accounts.authenticate_user(guardian_attrs.email, guardian_attrs.password)
 
-    {:ok, jwt, _claims} =
-      Authorization.encode_and_sign(guardian_user, %{
-        role: guardian_user.role,
-        active: guardian_user.active
-      })
-
-    conn =
-      conn
-      |> put_req_header("accept", "application/json")
-      |> put_req_header("authorization", "Bearer #{jwt}")
-      |> put_req_header("user_id", "#{guardian_attrs[:user_id]}")
-
     {:ok, guardian} = Accounts.create_guardian(guardian_attrs)
 
     ninja_attrs = %{
@@ -116,7 +103,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
 
     {:ok, event} = Events.create_event(event_fixture)
 
-    {:ok, conn: conn, ninja: ninja, event: event}
+    {:ok, conn: log_in_user(conn, guardian_user), ninja: ninja, event: event}
   end
 
   describe "create enrollment" do
@@ -205,28 +192,16 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
       assert not is_nil(json_response(conn, 403)["reason"])
     end
+  end
 
-    test "fails when user is not a guardian", %{
+  describe "create enrollment when is not guardian" do
+    setup [:login_as_organizer]
+
+    test "fails", %{
       conn: conn,
       ninja: ninja,
       event: event
     } do
-      admin_attrs = admin_attrs()
-
-      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
-
-      {:ok, jwt, _claims} =
-        Authorization.encode_and_sign(admin_user, %{
-          role: admin_user.role,
-          active: admin_user.active
-        })
-
-      conn =
-        conn
-        |> Authorization.Plug.sign_out()
-        |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
-
       enrollment_attrs = %{enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true}}
 
       assert_raise Phoenix.ActionClauseError, ~r/(?s).*/, fn ->
@@ -281,6 +256,10 @@ defmodule BokkenWeb.EnrollmentControllerTest do
         )
       end
     end
+  end
+
+  describe "as admin" do
+    setup [:login_as_organizer]
 
     test "updates enrollment when valid data is received and user is admin", %{
       conn: conn,
@@ -289,22 +268,6 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     } do
       enrollment_attrs = %{event_id: event.id, ninja_id: ninja.id, accepted: false}
       {:ok, enrollment} = Events.create_enrollment(event, enrollment_attrs)
-
-      admin_attrs = admin_attrs()
-
-      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
-
-      {:ok, jwt, _claims} =
-        Authorization.encode_and_sign(admin_user, %{
-          role: admin_user.role,
-          active: admin_user.active
-        })
-
-      conn =
-        conn
-        |> Authorization.Plug.sign_out()
-        |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
 
       new_enrollment_attrs = %{
         enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment.id}
