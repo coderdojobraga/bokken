@@ -3,7 +3,6 @@ defmodule Bokken.Documents.File do
   Files related to CoderDojo's Lectures
   """
   use Bokken.Schema
-  use Waffle.Ecto.Schema
   use Waffle.Definition
   use Waffle.Ecto.Definition
 

@@ -5,14 +5,14 @@ defmodule Bokken.AccountsTest do
   import Bokken.Factory
 
   alias Bokken.Accounts
-
+  alias Faker.Avatar
   describe "guardians" do
     alias Bokken.Accounts.Guardian
 
     @update_attrs %{city: "Vizela", mobile: "+351934568701"}
     @invalid_attrs %{city: "Guimarães", mobile: nil}
 
-    def valid_attr do
+    def valid_attr_guardian do
       %{
         city: "Braga",
         mobile: "+351915096743",
@@ -29,8 +29,8 @@ defmodule Bokken.AccountsTest do
       }
     end
 
-    def attrs do
-      valid_attrs = valid_attr()
+    def attrs_guardians do
+      valid_attrs = valid_attr_guardian()
       user = valid_user()
       new_user = Accounts.create_user(user)
       user_id = elem(new_user, 1).id
@@ -38,7 +38,7 @@ defmodule Bokken.AccountsTest do
     end
 
     def guardian_fixture(atributes \\ %{}) do
-      valid_attrs = attrs()
+      valid_attrs = attrs_guardians()
 
       {:ok, guardian} =
         atributes
@@ -59,7 +59,7 @@ defmodule Bokken.AccountsTest do
     end
 
     test "create_guardian/1 with valid data creates a guardian" do
-      attrs = attrs()
+      attrs = attrs_guardians()
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
       assert guardian.city == "Braga"
       assert guardian.mobile == "+351915096743"
@@ -110,6 +110,111 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:error, %Ecto.Changeset{}} = Accounts.create_ninja(attrs)
+    end
+  end
+
+  describe "mentors" do
+    alias Bokken.Accounts.Mentor
+
+    @update_attrs %{mobile: "+351934568701"}
+    @invalid_attrs %{mobile: nil}
+
+    def valid_attr_mentor do
+      %{
+        mobile: "+351915096743",
+        first_name: "Jéssica",
+        last_name: "Macedo Fernandes"
+      }
+    end
+
+    def valid_user_mentor do
+      %{
+        email: "jessica_fernandes@gmail.com",
+        password: "mentor123",
+        role: "mentor"
+      }
+    end
+
+    def attrs_mentors do
+      valid_attrs = valid_attr_mentor()
+      user = valid_user_mentor()
+      new_user = Accounts.create_user(user)
+      user_id = elem(new_user, 1).id
+      Map.put(valid_attrs, :user_id, user_id)
+    end
+
+    def mentor_fixture(atributes \\ %{}) do
+      valid_attrs = attrs_mentors()
+
+      {:ok, mentor} =
+        atributes
+        |> Enum.into(valid_attrs)
+        |> Accounts.create_mentor()
+
+      mentor
+    end
+
+    test "list_mentors/0 returns all mentors" do
+      mentor = mentor_fixture()
+      assert Accounts.list_mentors() == [mentor]
+    end
+
+    test "get_mentor!/1 returns the mentor with given id" do
+      mentor = mentor_fixture()
+      assert Accounts.get_mentor!(mentor.id) == mentor
+    end
+
+    test "create_mentor/1 with valid data creates a mentor" do
+      attrs = attrs_mentors()
+      assert {:ok, %Mentor{} = mentor} = Accounts.create_mentor(attrs)
+      assert mentor.mobile == "+351915096743"
+    end
+
+    test "create_mentor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_mentor(@invalid_attrs)
+    end
+
+    test "update_mentor/2 with valid data updates the mentor" do
+      mentor = mentor_fixture()
+      assert {:ok, %Mentor{} = mentor} = Accounts.update_mentor(mentor, @update_attrs)
+      assert mentor.mobile == "+351934568701"
+    end
+
+    test "update_mentor/2 with invalid data returns error changeset" do
+      mentor = mentor_fixture()
+
+      assert {:error, %Ecto.Changeset{} = _error} =
+               Accounts.update_mentor(mentor, @invalid_attrs)
+
+      assert mentor == Accounts.get_mentor!(mentor.id)
+    end
+
+    test "delete_mentor/1 deletes the mentor" do
+      mentor = mentor_fixture()
+      assert {:ok, %Mentor{}} = Accounts.delete_mentor(mentor)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_mentor!(mentor.id) end
+    end
+
+    test "change_mentor/1 returns a mentor changeset" do
+      mentor = mentor_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_mentor(mentor)
+    end
+
+    test "add an avatar to a mentor" do
+      mentor = mentor_fixture()
+      mentor2 = Accounts.update_mentor(mentor, %{photo: Avatar.image_url("./priv/faker/images/avatar.png")})
+      photo = elem(mentor2, 1).photo
+      assert photo != nil
+    end
+
+    test "add an avatar to a mentor with invalid file" do
+      mentor = mentor_fixture()
+      mentor2 = Accounts.update_mentor(mentor, %{photo: Avatar.image_url("./priv/faker/images/avatar.txt")})
+      photo = nil
+      if elem(mentor2, 0) == :ok do
+        photo = elem(mentor2, 1).photo
+      end
+      assert photo == nil
     end
   end
 end
