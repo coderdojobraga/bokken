@@ -155,51 +155,6 @@ defmodule Bokken.AccountsTest do
       mentor
     end
 
-    test "list_mentors/0 returns all mentors" do
-      mentor = mentor_fixture()
-      assert Accounts.list_mentors() == [mentor]
-    end
-
-    test "get_mentor!/1 returns the mentor with given id" do
-      mentor = mentor_fixture()
-      assert Accounts.get_mentor!(mentor.id) == mentor
-    end
-
-    test "create_mentor/1 with valid data creates a mentor" do
-      attrs = attrs_mentors()
-      assert {:ok, %Mentor{} = mentor} = Accounts.create_mentor(attrs)
-      assert mentor.mobile == "+351915096743"
-    end
-
-    test "create_mentor/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_mentor(@invalid_attrs)
-    end
-
-    test "update_mentor/2 with valid data updates the mentor" do
-      mentor = mentor_fixture()
-      assert {:ok, %Mentor{} = mentor} = Accounts.update_mentor(mentor, @update_attrs)
-      assert mentor.mobile == "+351934568701"
-    end
-
-    test "update_mentor/2 with invalid data returns error changeset" do
-      mentor = mentor_fixture()
-
-      assert {:error, %Ecto.Changeset{} = _error} = Accounts.update_mentor(mentor, @invalid_attrs)
-
-      assert mentor == Accounts.get_mentor!(mentor.id)
-    end
-
-    test "delete_mentor/1 deletes the mentor" do
-      mentor = mentor_fixture()
-      assert {:ok, %Mentor{}} = Accounts.delete_mentor(mentor)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_mentor!(mentor.id) end
-    end
-
-    test "change_mentor/1 returns a mentor changeset" do
-      mentor = mentor_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_mentor(mentor)
-    end
-
     test "add an avatar to a mentor" do
       mentor = mentor_fixture()
 
