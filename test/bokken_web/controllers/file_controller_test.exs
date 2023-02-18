@@ -42,26 +42,38 @@ defmodule Bokken.FileControllerTest do
   test "validate/1 returns true with small file" do
     user = mentor_fixture()
     title = "My title"
+
     document = %Plug.Upload{
       content_type: "image/png",
       filename: "avatar.png",
       path: "priv/faker/images/avatar.png"
     }
 
-    assert {:ok, %File{}} = Bokken.Documents.create_file(%{title: title, description: title, document: document, user_id: user.user_id})
+    assert {:ok, %File{}} =
+             Bokken.Documents.create_file(%{
+               title: title,
+               description: title,
+               document: document,
+               user_id: user.user_id
+             })
   end
 
   test "validate/1 returns false with large file" do
     user = mentor_fixture()
     title = "My title"
+
     document = %Plug.Upload{
       content_type: "image/jpg",
       filename: "large_image.jpg",
       path: "priv/faker/images/large_image.jpg"
     }
 
-    assert {:error, %Ecto.Changeset{}} = Bokken.Documents.create_file(%{title: title, description: title, document: document, user_id: user.user_id})
+    assert {:error, %Ecto.Changeset{}} =
+             Bokken.Documents.create_file(%{
+               title: title,
+               description: title,
+               document: document,
+               user_id: user.user_id
+             })
   end
-
-
 end

@@ -6,6 +6,7 @@ defmodule Bokken.AccountsTest do
 
   alias Bokken.Accounts
   alias Faker.Avatar
+
   describe "guardians" do
     alias Bokken.Accounts.Guardian
 
@@ -183,8 +184,7 @@ defmodule Bokken.AccountsTest do
     test "update_mentor/2 with invalid data returns error changeset" do
       mentor = mentor_fixture()
 
-      assert {:error, %Ecto.Changeset{} = _error} =
-               Accounts.update_mentor(mentor, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{} = _error} = Accounts.update_mentor(mentor, @invalid_attrs)
 
       assert mentor == Accounts.get_mentor!(mentor.id)
     end
@@ -202,18 +202,30 @@ defmodule Bokken.AccountsTest do
 
     test "add an avatar to a mentor" do
       mentor = mentor_fixture()
-      mentor2 = Accounts.update_mentor(mentor, %{photo: Avatar.image_url("./priv/faker/images/avatar.png")})
+
+      mentor2 =
+        Accounts.update_mentor(mentor, %{
+          photo: Avatar.image_url("./priv/faker/images/avatar.png")
+        })
+
       photo = elem(mentor2, 1).photo
       assert photo != nil
     end
 
     test "add an avatar to a mentor with invalid file" do
       mentor = mentor_fixture()
-      mentor2 = Accounts.update_mentor(mentor, %{photo: Avatar.image_url("./priv/faker/images/avatar.txt")})
+
+      mentor2 =
+        Accounts.update_mentor(mentor, %{
+          photo: Avatar.image_url("./priv/faker/images/avatar.txt")
+        })
+
       photo = nil
+
       if elem(mentor2, 0) == :ok do
         photo = elem(mentor2, 1).photo
       end
+
       assert photo == nil
     end
   end
