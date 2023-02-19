@@ -1,9 +1,7 @@
 defmodule Bokken.EventsTest do
   use Bokken.DataCase
 
-  alias Bokken.Accounts
   alias Bokken.Events
-  alias Bokken.Repo
 
   import Bokken.Factory
 
@@ -67,10 +65,12 @@ defmodule Bokken.EventsTest do
     end
 
     test "update_enrollment/2 fails if the enrollment does not exist" do
-      enrollment = insert(:enrollment)
+      enrollment = insert(:enrollment, %{accepted: false})
+      new_uuid = Ecto.UUID.generate()
+      enrollment = Map.put(enrollment, :id, new_uuid)
 
-      assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
-        Events.update_enrollment(Map.put(enrollment, :id, Ecto.UUID.generate()), %{accepted: true})
+      assert_raise Ecto.StaleEntryError, fn ->
+        Events.update_enrollment(enrollment, %{accepted: true})
       end
     end
 
@@ -167,12 +167,13 @@ defmodule Bokken.EventsTest do
     end
 
     test "update_availability/1 fails if the availability does not exist" do
-      availability = insert(:availability)
+      availability = insert(:availability, %{is_available: true})
+      fake_id = Ecto.UUID.generate()
 
-      assert_raise Ecto.StaleEntryError, ~r/.*/, fn ->
-        Events.update_availability(Map.put(availability, :id, Ecto.UUID.generate()), %{
-          is_available: false
-        })
+      availability = Map.put(availability, :id, fake_id)
+
+      assert_raise Ecto.StaleEntryError, fn ->
+        Events.update_availability(availability, %{is_available: false})
       end
     end
   end

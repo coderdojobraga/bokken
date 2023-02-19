@@ -39,20 +39,21 @@ defmodule BokkenWeb.AvailabilityControllerTest do
 
     # {:ok, event} = Events.create_event(event_fixture)
 
-    event_attrs = %{
-      title: "Test event",
-      spots_available: 30,
-      start_time: ~U[2023-02-14 10:00:00.000Z],
-      end_time: ~U[2023-02-14 12:30:00.000Z],
-      enrollments_open: ~U[2022-07-03 12:30:00.0Z],
-      enrollments_close: ~U[2023-02-13 12:30:00.0Z],
-      online: false,
-      notes: "Valentines",
-      location_id: location.id,
-      team_id: team.id
-    }
+    # event_attrs = %{
+    #   title: "Test event",
+    #   spots_available: 30,
+    #   start_time: ~U[2023-02-14 10:00:00.000Z],
+    #   end_time: ~U[2023-02-14 12:30:00.000Z],
+    #   enrollments_open: ~U[2022-07-03 12:30:00.0Z],
+    #   enrollments_close: ~U[2023-02-13 12:30:00.0Z],
+    #   online: false,
+    #   notes: "Valentines",
+    #   location_id: location.id,
+    #   team_id: team.id
+    # }
 
-    event = insert(:event, event_attrs)
+    # event = insert(:event, event_attrs)
+    event = insert(:event)
 
     {:ok, conn: put_resp_header(conn, "accept", "application/json"), event: event}
   end
