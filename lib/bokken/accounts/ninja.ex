@@ -3,7 +3,7 @@ defmodule Bokken.Accounts.Ninja do
   A ninja is a dojo participant who is doing his training to learn and master programming.
   """
   use Bokken.Schema
-
+  alias Date
   alias Bokken.Accounts.{Guardian, Social, User}
   alias Bokken.Curriculum.{NinjaSkill, Skill}
   alias Bokken.Events.{Event, Lecture, Team, TeamNinja}
@@ -46,8 +46,24 @@ defmodule Bokken.Accounts.Ninja do
     |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
+    |> validate_birthday()
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
     |> unique_constraint(:user_id)
   end
+
+  defp validate_birthday(
+         %Ecto.Changeset{valid?: true, changes: %{birthday: birthday}} = changeset
+       ) do
+    lower_limit = Date.utc_today() |> Date.add(-(365 * 17))
+    upper_limit = Date.utc_today() |> Date.add(-(365 * 6))
+
+    if Date.compare(birthday, lower_limit) == :lt or Date.compare(birthday, upper_limit) == :gt do
+      add_error(changeset, :birthdate, "Ninja's age should be between 6 and 17 years old")
+    else
+      changeset
+    end
+  end
+
+  defp validate_birthday(changeset), do: changeset
 end
