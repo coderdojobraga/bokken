@@ -11,6 +11,7 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
+  alias Bokken.Accounts.Credential
   alias Bokken.Accounts.Guardian
 
   @doc """
@@ -819,5 +820,27 @@ defmodule Bokken.Accounts do
   """
   def delete_bot(%Bot{} = bot) do
     Repo.delete(bot)
+  end
+
+  def create_credential(attrs \\ %{}) do
+    %Credential{}
+    |> Credential.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def get_credential!(%{"credential_id" => id}) do
+    Credential
+    |> Repo.get!(id)
+  end
+
+  def update_credential(%Credential{} = credential, attrs \\ %{}) do
+    credential
+    |> Credential.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_credential(%Credential{} = credential) do
+    credential
+    |> Repo.delete()
   end
 end

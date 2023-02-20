@@ -36,6 +36,8 @@ defmodule Bokken.Accounts.Ninja do
     many_to_many :events, Event, join_through: Lecture
     many_to_many :skills, Skill, join_through: NinjaSkill
 
+    has_one :credential, Credential
+
     timestamps()
   end
 

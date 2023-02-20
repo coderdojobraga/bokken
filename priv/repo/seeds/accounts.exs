@@ -228,8 +228,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
     photo = nil
 
     guardian = Enum.into(names, %{user_id: user_id, photo: photo, mobile: mobile, city: city})
-
-    Bokken.Accounts.create_guardian(guardian)
+    {:ok, guardian} = Bokken.Accounts.create_guardian(guardian)
+    Bokken.Accounts.create_credential(%{guardian_id: guardian.id})
   end
 
   def create_ninja(names, user_id) do
@@ -254,7 +254,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
         birthday: birthday
       })
 
-    Bokken.Accounts.create_ninja(ninja)
+    {:ok, ninja} = Bokken.Accounts.create_ninja(ninja)
+    Bokken.Accounts.create_credential(%{ninja_id: ninja.id})
   end
 
   def create_mentor(names, user_id) do
@@ -279,7 +280,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
         t_shirt: Enum.random(["extra_small", "small", "medium", "large", "extra_large", "extra_extra_large"])
       })
 
-    Bokken.Accounts.create_mentor(mentor)
+    {:ok, mentor} = Bokken.Accounts.create_mentor(mentor)
+    Bokken.Accounts.create_credential(%{mentor_id: mentor.id})
   end
 
   def create_organizer(names, user_id) do
@@ -288,7 +290,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
       user_id: user_id
     })
 
-    Bokken.Accounts.create_organizer(organizer)
+    {:ok, organizer} = Bokken.Accounts.create_organizer(organizer)
+    Bokken.Accounts.create_credential(%{organizer_id: organizer.id})
   end
 
   defp gen_user(character, role) do

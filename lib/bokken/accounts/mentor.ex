@@ -38,6 +38,7 @@ defmodule Bokken.Accounts.Mentor do
     many_to_many :lectures, Lecture, join_through: LectureMentorAssistant
 
     has_one :organizer, Organizer, on_delete: :delete_all
+    has_one :credential, Credential
 
     timestamps()
   end

@@ -16,6 +16,8 @@ defmodule Bokken.Accounts.Organizer do
     belongs_to :user, User, foreign_key: :user_id
     belongs_to :mentor, Mentor, foreign_key: :mentor_id
 
+    has_one :credential, Credential
+
     timestamps()
   end
 
