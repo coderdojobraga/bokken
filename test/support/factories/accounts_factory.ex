@@ -4,7 +4,7 @@ defmodule Bokken.Factories.AccountFactory do
   """
   defmacro __using__(_opts) do
     quote do
-      alias Bokken.Accounts.{Guardian, Mentor, Ninja, Organizer, User}
+      alias Bokken.Accounts.{Credential, Guardian, Mentor, Ninja, Organizer, User}
       alias Faker.{Avatar, Date, Person, Phone}
 
       defp add_mobile_prefix(number), do: "+351" <> number
@@ -60,6 +60,24 @@ defmodule Bokken.Factories.AccountFactory do
           mentor: mentor,
           user: mentor.user
         }
+      end
+
+      def credential_factory(attrs \\ %{}) do
+        case attrs do
+          %{} ->
+            role = Enum.random([:mentor, :ninja, :organizer, :guardian, :none])
+
+            case role do
+              :mentor -> %Credential{mentor: build(:mentor)}
+              :ninja -> %Credential{ninja: build(:ninja)}
+              :organizer -> %Credential{organizer: build(:organizer)}
+              :guardian -> %Credential{guardian: build(:guardian)}
+              :none -> %Credential{}
+            end
+
+          _ ->
+            merge_attributes(%Credential{}, attrs)
+        end
       end
     end
   end

@@ -112,4 +112,89 @@ defmodule Bokken.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_ninja(attrs)
     end
   end
+
+  describe "credentials" do
+    test "create_credential/1 with valid data (ninja)" do
+      ninja = insert(:ninja)
+      {:ok, credential} = Accounts.create_credential(%{ninja_id: ninja.id})
+      assert credential.ninja_id == ninja.id
+      assert credential.mentor_id == nil
+      assert credential.guardian_id == nil
+      assert credential.organizer_id == nil
+    end
+
+    test "create_credential/1 with valid data (nothing)" do
+      {:ok, credential} = Accounts.create_credential()
+      assert credential.ninja_id == nil
+      assert credential.mentor_id == nil
+      assert credential.guardian_id == nil
+      assert credential.organizer_id == nil
+    end
+
+    test "create_credential/1 with invalid data" do
+      ninja = insert(:ninja)
+      guardian = insert(:guardian)
+
+      assert {:error, _reason} =
+               Accounts.create_credential(%{ninja_id: ninja.id, guardian_id: guardian.id})
+    end
+
+    test "get_credential!/1 with valid data (credential exists)" do
+      credential_0 = insert(:credential)
+      credential_1 = Accounts.get_credential!(%{"credential_id" => credential_0.id})
+      assert credential_0.ninja_id == credential_1.ninja_id
+      assert credential_0.mentor_id == credential_1.mentor_id
+      assert credential_0.guardian_id == credential_1.guardian_id
+      assert credential_0.organizer_id == credential_1.organizer_id
+      assert credential_0.id == credential_1.id
+    end
+
+    test "get_credential!/1 with invalid data (credential does not exist)" do
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_credential!(%{"credential_id" => Ecto.UUID.generate()})
+      end
+    end
+
+    test "update_credential/2 with valid data (credential exists)" do
+      credential = insert(:credential)
+      ninja = insert(:ninja)
+
+      {:ok, credential_1} =
+        Accounts.update_credential(credential, %{
+          ninja_id: ninja.id,
+          mentor_id: nil,
+          organizer_id: nil,
+          guardian_id: nil
+        })
+
+      assert credential_1.ninja_id == ninja.id
+      assert credential_1.mentor_id == nil
+      assert credential_1.guardian_id == nil
+      assert credential_1.organizer_id == nil
+      assert credential.id == credential_1.id
+    end
+
+    test "update_credential/2 with invalid data (credential exists)" do
+      credential = insert(:credential)
+      ninja = insert(:ninja)
+      mentor = insert(:mentor)
+
+      assert {:error, _reason} =
+               Accounts.update_credential(credential, %{
+                 ninja_id: ninja.id,
+                 mentor_id: mentor.id,
+                 organizer_id: nil,
+                 guardian_id: nil
+               })
+    end
+
+    test "delete_credential/1 with valid data" do
+      credential = insert(:credential)
+      Accounts.delete_credential(credential)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_credential!(%{"credential_id" => credential.id})
+      end
+    end
+  end
 end
