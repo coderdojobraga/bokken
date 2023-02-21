@@ -60,6 +60,7 @@ defmodule BokkenWeb.Router do
     resources "/skills", SkillController, except: [:new, :edit]
 
     resources "/organizers", OrganizerController, except: [:new, :edit]
+    resources "/credentials", CredentialController, only: [:show, :update, :delete]
 
     resources "/ninjas", NinjaController, except: [:new, :edit] do
       resources "/badges", BadgeController, only: [:index, :create, :delete]

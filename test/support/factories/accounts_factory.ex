@@ -63,20 +63,18 @@ defmodule Bokken.Factories.AccountFactory do
       end
 
       def credential_factory(attrs \\ %{}) do
-        case attrs do
-          %{} ->
-            role = Enum.random([:mentor, :ninja, :organizer, :guardian, :none])
+        if attrs == %{} do
+          role = Enum.random([:mentor, :ninja, :organizer, :guardian, :none])
 
-            case role do
-              :mentor -> %Credential{mentor: build(:mentor)}
-              :ninja -> %Credential{ninja: build(:ninja)}
-              :organizer -> %Credential{organizer: build(:organizer)}
-              :guardian -> %Credential{guardian: build(:guardian)}
-              :none -> %Credential{}
-            end
-
-          _ ->
-            merge_attributes(%Credential{}, attrs)
+          case role do
+            :mentor -> %Credential{mentor: build(:mentor)}
+            :ninja -> %Credential{ninja: build(:ninja)}
+            :organizer -> %Credential{organizer: build(:organizer)}
+            :guardian -> %Credential{guardian: build(:guardian)}
+            :none -> %Credential{}
+          end
+        else
+          merge_attributes(%Credential{}, attrs)
         end
       end
     end
