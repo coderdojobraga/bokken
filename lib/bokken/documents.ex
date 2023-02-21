@@ -66,7 +66,7 @@ defmodule Bokken.Documents do
 
   """
   def create_file(attrs \\ %{}) do
-    if verify_total_size(attrs.file, attrs.user_id) > 6_000_000 do
+    if verify_total_size(attrs.document, attrs.user_id) > 6_000_000 do
       {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
     else
       %File{}
@@ -123,13 +123,9 @@ defmodule Bokken.Documents do
   end
 
   def verify_total_size(file, user_id) do
-    user = Accounts.get_user!(user_id)
+    user = Accounts.get_user!(user_id) |> Repo.preload(:files)
 
-    total_size =
-      user.files
-      |> Enum.map(fn file -> file.size end)
-      |> Enum.sum()
-
-    total_size + file.size
+    total_size = Enum.reduce(user.files, 0, fn file, acc -> acc + File.file_size(file) end)
+    total_size + File.file_size(file)
   end
 end

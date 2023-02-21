@@ -68,7 +68,7 @@ defmodule Bokken.FileControllerTest do
       path: "priv/faker/images/large_image.jpg"
     }
 
-    assert {:error, %Ecto.Changeset{}} =
+    assert {:error, "You exceeded the maximum storage quota. Try to delete one or more files"} =
              Bokken.Documents.create_file(%{
                title: title,
                description: title,
