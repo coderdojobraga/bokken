@@ -66,9 +66,13 @@ defmodule Bokken.Documents do
 
   """
   def create_file(attrs \\ %{}) do
-    %File{}
-    |> File.changeset(attrs)
-    |> Repo.insert()
+    if verify_total_size(attrs.file, attrs.user_id) > 6_000_000 do
+      {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
+    else
+      %File{}
+      |> File.changeset(attrs)
+      |> Repo.insert()
+    end
   end
 
   @doc """
@@ -116,5 +120,16 @@ defmodule Bokken.Documents do
   """
   def change_file(%File{} = file, attrs \\ %{}) do
     File.changeset(file, attrs)
+  end
+
+  def verify_total_size(file, user_id) do
+    user = Accounts.get_user!(user_id)
+
+    total_size =
+      user.files
+      |> Enum.map(fn file -> file.size end)
+      |> Enum.sum()
+
+    total_size + file.size
   end
 end
