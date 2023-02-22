@@ -8,6 +8,7 @@ defmodule Bokken.EventsTest do
   describe "enrollments" do
     test "list_enrollments/0 returns all enrollments" do
       enrollment = insert(:enrollment)
+
       enrollments = Events.list_enrollments()
 
       enrollments_ids = Enum.map(enrollments, fn e -> e.id end)

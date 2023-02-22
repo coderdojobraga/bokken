@@ -11,27 +11,6 @@ defmodule Bokken.CurriculumTest do
   describe "skills" do
     alias Bokken.Curriculum.Skill
 
-    # def valid_skill do
-    #   %{
-    #     name: "Java",
-    #     description:
-    #       "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible"
-    #   }
-    # end
-
-    # def update_skill do
-    #   %{
-    #     description:
-    #       "It is a general-purpose programming language intended to let programmers write once, run anywhere"
-    #   }
-    # end
-
-    # def invalid_skill do
-    #   %{
-    #     name: "Haskell"
-    #   }
-    # end
-
     test "create_skill/1 creates a skill when the data is valid" do
       skill_fixture = params_for(:skill)
       assert {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
