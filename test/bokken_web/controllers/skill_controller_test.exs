@@ -11,9 +11,6 @@ defmodule BokkenWeb.SkillControllerTest do
   @password "password1234!"
 
   def admin_attrs do
-    # user = valid_admin()
-
-    # {:ok, new_user} = Accounts.create_user(user)
     user = params_for(:user, role: "organizer", password: @password)
     new_user = insert(:user, user)
 
@@ -24,9 +21,6 @@ defmodule BokkenWeb.SkillControllerTest do
   end
 
   def mentor_attrs do
-    # user = valid_mentor()
-
-    # {:ok, new_user} = Accounts.create_user(user)
     user = params_for(:user, role: "mentor", password: @password)
     new_user = insert(:user, user)
 

@@ -14,7 +14,7 @@ defmodule Bokken.AccountsTest do
       guardians = Accounts.list_guardians()
 
       gurdians_ids = Enum.map(guardians, fn guardian -> guardian.id end)
-      
+
       assert Enum.member?(gurdians_ids, guardian.id)
     end
 
@@ -27,7 +27,9 @@ defmodule Bokken.AccountsTest do
 
     test "create_guardian/1 with valid data creates a guardian" do
       user = insert(:user)
-      attrs = params_for(:guardian, user_id: user.id, user: user, city: "Braga", mobile: "+351915096743")
+
+      attrs =
+        params_for(:guardian, user_id: user.id, user: user, city: "Braga", mobile: "+351915096743")
 
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
       assert guardian.city == "Braga"

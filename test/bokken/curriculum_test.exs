@@ -7,7 +7,6 @@ defmodule Bokken.CurriculumTest do
 
   import Bokken.Factory
 
-
   describe "skills" do
     alias Bokken.Curriculum.Skill
 
@@ -112,6 +111,7 @@ defmodule Bokken.CurriculumTest do
         "mentor_id" => mentor.id,
         "skill_id" => skill.id
       }
+
       insert(:mentor_skill, mentor: mentor, skill: skill)
 
       assert Curriculum.mentor_has_skill?(mentor_skill_attrs)
@@ -122,6 +122,7 @@ defmodule Bokken.CurriculumTest do
       skill: skill
     } do
       insert(:mentor_skill, mentor: mentor, skill: skill)
+
       mentor_skill_attrs = %{
         "mentor_id" => mentor.id,
         "skill_id" => skill.id
@@ -180,7 +181,6 @@ defmodule Bokken.CurriculumTest do
            ninja: ninja,
            skill: skill
          } do
-
       insert(:ninja_skill, ninja: ninja, skill: skill)
 
       assert [%Skill{}] = Curriculum.list_ninja_skills(%{"ninja_id" => ninja.id})
@@ -196,6 +196,7 @@ defmodule Bokken.CurriculumTest do
         "ninja_id" => ninja.id,
         "skill_id" => skill.id
       }
+
       insert(:ninja_skill, ninja: ninja, skill: skill)
 
       assert Curriculum.ninja_has_skill?(ninja_skill_attrs)

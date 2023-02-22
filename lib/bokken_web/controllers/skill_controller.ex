@@ -159,23 +159,6 @@ defmodule BokkenWeb.SkillController do
     end
   end
 
-  # def delete(conn, %{"id" => skill_id, "mentor_id" => mentor_id}) when is_mentor(conn) do
-  #   params = %{
-  #     "mentor_id" => mentor_id,
-  #     "skill_id" => skill_id
-  #   }
-
-  #   if Curriculum.mentor_has_skill?(params) do
-  #     with {1, nil} <- Curriculum.delete_mentor_skill(params) do
-  #       send_resp(conn, :no_content, "")
-  #     end
-  #   else
-  #     conn
-  #     |> put_status(:not_found)
-  #     |> render("error.json", reason: "Mentor doesn't have that skill")
-  #   end
-  # end
-
   defp skill(user_skill) do
     Curriculum.get_skill!(user_skill.skill_id)
   end

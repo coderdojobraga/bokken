@@ -9,13 +9,11 @@ defmodule BokkenWeb.EnrollmentControllerTest do
 
   setup %{conn: conn} do
     guardian = insert(:guardian)
-    {:ok, guardian_user} =
-      Accounts.authenticate_user(guardian.user.email, "password1234!")
+    {:ok, guardian_user} = Accounts.authenticate_user(guardian.user.email, "password1234!")
 
     location = insert(:location)
 
     team = insert(:team)
-
 
     {:ok, jwt, _claims} =
       Authorization.encode_and_sign(guardian_user, %{

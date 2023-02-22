@@ -35,6 +35,7 @@ defmodule BokkenWeb.GuardianControllerTest do
   describe "create guardian" do
     test "renders guardian when data is valid", %{conn: conn} do
       new_user = insert(:user, role: "guardian")
+
       guardian_attrs = %{
         city: "Guimarães",
         mobile: "+351915196743",
@@ -42,6 +43,7 @@ defmodule BokkenWeb.GuardianControllerTest do
         last_name: "Silva Costa",
         user_id: new_user.id
       }
+
       guardian = params_for(:guardian, guardian_attrs)
 
       conn = post(conn, Routes.guardian_path(conn, :create), guardian: guardian)
@@ -75,7 +77,13 @@ defmodule BokkenWeb.GuardianControllerTest do
       conn: conn,
       guardian: %Guardian{id: _id} = guardian
     } do
-      update_attrs = %{mobile: "+351915096743", first_name: "Ana Maria", last_name: "Silva Costa", city: "Guimarães"}
+      update_attrs = %{
+        mobile: "+351915096743",
+        first_name: "Ana Maria",
+        last_name: "Silva Costa",
+        city: "Guimarães"
+      }
+
       conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: update_attrs)
       assert %{"id" => id} = json_response(conn, 200)["data"]
 

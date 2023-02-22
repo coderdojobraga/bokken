@@ -113,7 +113,7 @@ defmodule Bokken.EventsTest do
       availability = insert(:availability)
       availabilities = Events.list_availabilities([])
 
-      availability_ids = Enum.map(availabilities, &(&1.id))
+      availability_ids = Enum.map(availabilities, & &1.id)
 
       assert Enum.member?(availability_ids, availability.id)
     end
@@ -121,9 +121,11 @@ defmodule Bokken.EventsTest do
     test "list_availabilities/1 returns all availabilities of the event" do
       event = insert(:event)
       availability = insert(:availability, %{event: event})
-      availabilities = Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
 
-      availability_ids = Enum.map(availabilities, &(&1.id))
+      availabilities =
+        Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
+
+      availability_ids = Enum.map(availabilities, & &1.id)
 
       assert Enum.member?(availability_ids, availability.id)
     end
@@ -143,6 +145,7 @@ defmodule Bokken.EventsTest do
     test "create_availability/1 returns error if the enrollments are closed" do
       valid_attrs = insert(:availability)
       event = insert(:event)
+
       {:ok, event} =
         Events.update_event(event, %{
           start_time: ~U[2022-07-03 10:00:00.0Z],
