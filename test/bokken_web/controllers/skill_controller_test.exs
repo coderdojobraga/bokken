@@ -6,42 +6,16 @@ defmodule BokkenWeb.SkillControllerTest do
   alias Bokken.Curriculum
   alias BokkenWeb.Authorization
 
-  def valid_admin do
-    %{
-      email: "admin@gmail.com",
-      password: "administrator123",
-      role: "organizer",
-      active: true
-    }
-  end
+  import Bokken.Factory
 
-  def valid_mentor do
-    %{
-      email: "mentor@gmail.com",
-      password: "mentor123",
-      role: "mentor",
-      active: true
-    }
-  end
-
-  def valid_skill do
-    %{
-      name: "Kotlin",
-      description:
-        "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
-    }
-  end
-
-  def valid_skill_update do
-    %{
-      name: "Haskell"
-    }
-  end
+  @password "password1234!"
 
   def admin_attrs do
-    user = valid_admin()
+    # user = valid_admin()
 
-    {:ok, new_user} = Accounts.create_user(user)
+    # {:ok, new_user} = Accounts.create_user(user)
+    user = params_for(:user, role: "organizer", password: @password)
+    new_user = insert(:user, user)
 
     user
     |> Map.put(:user_id, new_user.id)
@@ -50,9 +24,11 @@ defmodule BokkenWeb.SkillControllerTest do
   end
 
   def mentor_attrs do
-    user = valid_mentor()
+    # user = valid_mentor()
 
-    {:ok, new_user} = Accounts.create_user(user)
+    # {:ok, new_user} = Accounts.create_user(user)
+    user = params_for(:user, role: "mentor", password: @password)
+    new_user = insert(:user, user)
 
     user
     |> Map.put(:user_id, new_user.id)
@@ -67,7 +43,7 @@ defmodule BokkenWeb.SkillControllerTest do
       conn: conn
     } do
       skill_attrs = %{
-        "skill" => valid_skill()
+        "skill" => params_for(:skill)
       }
 
       conn = post(conn, Routes.skill_path(conn, :create), skill_attrs)
@@ -85,14 +61,14 @@ defmodule BokkenWeb.SkillControllerTest do
       conn: conn
     } do
       skill_attrs = %{
-        "skill" => valid_skill()
+        "skill" => params_for(:skill)
       }
 
       conn = post(conn, Routes.skill_path(conn, :create), skill_attrs)
       assert %{"id" => skill_id} = json_response(conn, 201)["data"]
 
       skill_attrs = %{
-        "skill" => valid_skill_update()
+        "skill" => params_for(:skill)
       }
 
       conn = patch(conn, Routes.skill_path(conn, :update, skill_id), skill_attrs)
@@ -103,7 +79,7 @@ defmodule BokkenWeb.SkillControllerTest do
       conn: conn
     } do
       skill_attrs = %{
-        "skill" => valid_skill()
+        "skill" => params_for(:skill)
       }
 
       conn = post(conn, Routes.skill_path(conn, :create), skill_attrs)
@@ -147,7 +123,7 @@ defmodule BokkenWeb.SkillControllerTest do
       conn: conn
     } do
       skill_attrs = %{
-        "skill" => valid_skill()
+        "skill" => params_for(:skill)
       }
 
       assert_error_sent 500, fn ->
@@ -158,7 +134,7 @@ defmodule BokkenWeb.SkillControllerTest do
     test "show skills works", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(params_for(:skill))
 
       conn = get(conn, Routes.skill_path(conn, :show, skill.id))
       assert json_response(conn, 200)["data"]
@@ -170,10 +146,10 @@ defmodule BokkenWeb.SkillControllerTest do
     test "update a skill fails", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(params_for(:skill))
 
       skill_attrs = %{
-        "skill" => valid_skill_update()
+        "skill" => params_for(:skill)
       }
 
       assert_error_sent 400, fn ->
@@ -184,7 +160,7 @@ defmodule BokkenWeb.SkillControllerTest do
     test "delete a skill fails", %{
       conn: conn
     } do
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+      {:ok, %Skill{} = skill} = Curriculum.create_skill(params_for(:skill))
 
       assert_error_sent 500, fn ->
         delete(conn, Routes.skill_path(conn, :delete, skill.id))
