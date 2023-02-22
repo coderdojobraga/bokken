@@ -5,58 +5,17 @@ defmodule BokkenWeb.EnrollmentControllerTest do
   alias Bokken.Events
   alias BokkenWeb.Authorization
 
-  @valid_attrs %{
-    city: "Braga",
-    mobile: "+351915096743",
-    first_name: "Ana Maria",
-    last_name: "Silva Costa"
-  }
-
-  def valid_user do
-    %{
-      email: "anamaria@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-  end
-
-  def valid_admin do
-    %{
-      email: "admin@gmail.com",
-      password: "administrator123",
-      role: "organizer",
-      active: true
-    }
-  end
-
-  def attrs do
-    user = valid_user()
-
-    {:ok, new_user} = Accounts.create_user(user)
-
-    @valid_attrs
-    |> Map.put(:user_id, new_user.id)
-    |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
-  end
-
-  def admin_attrs do
-    user = valid_admin()
-
-    {:ok, new_user} = Accounts.create_user(user)
-
-    @valid_attrs
-    |> Map.put(:user_id, new_user.id)
-    |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
-  end
+  import Bokken.Factory
 
   setup %{conn: conn} do
-    guardian_attrs = attrs()
-
+    guardian = insert(:guardian)
     {:ok, guardian_user} =
-      Accounts.authenticate_user(guardian_attrs.email, guardian_attrs.password)
+      Accounts.authenticate_user(guardian.user.email, "password1234!")
+
+    location = insert(:location)
+
+    team = insert(:team)
+
 
     {:ok, jwt, _claims} =
       Authorization.encode_and_sign(guardian_user, %{
@@ -68,62 +27,10 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       conn
       |> put_req_header("accept", "application/json")
       |> put_req_header("authorization", "Bearer #{jwt}")
-      |> put_req_header("user_id", "#{guardian_attrs[:user_id]}")
+      |> put_req_header("user_id", "#{guardian.user_id}")
 
-    {:ok, guardian} = Accounts.create_guardian(guardian_attrs)
-
-    ninja_attrs = %{
-      first_name: "Joana",
-      last_name: "Costa",
-      birthday: ~U[2007-03-14 00:00:00.000Z]
-    }
-
-    user_ninja = %{
-      email: "joanacosta@gmail.com",
-      password: "ninja123",
-      role: "ninja"
-    }
-
-    location_attrs = %{
-      address: "Test address",
-      name: "Departamento de Informática"
-    }
-
-    team_attrs = %{
-      name: "Turma Yin",
-      description: "Uma turma"
-    }
-
-    event_attrs = %{
-      title: "Test event",
-      spots_available: 30,
-      start_time: ~U[2023-02-14 10:00:00.000Z],
-      end_time: ~U[2023-02-14 12:30:00.000Z],
-      enrollments_open: ~U[2022-07-03 12:30:00.0Z],
-      enrollments_close: ~U[2023-02-13 12:30:00.0Z],
-      online: false,
-      notes: "Valentines"
-    }
-
-    new_user_ninja = Accounts.create_user(user_ninja)
-
-    ninja_fixture =
-      ninja_attrs
-      |> Map.put(:user_id, elem(new_user_ninja, 1).id)
-      |> Map.put(:guardian_id, guardian.id)
-
-    {:ok, ninja} = Accounts.create_ninja(ninja_fixture)
-
-    {:ok, location} = Events.create_location(location_attrs)
-
-    {:ok, team} = Events.create_team(team_attrs)
-
-    event_fixture =
-      event_attrs
-      |> Map.put(:location_id, location.id)
-      |> Map.put(:team_id, team.id)
-
-    {:ok, event} = Events.create_event(event_fixture)
+    ninja = insert(:ninja, %{guardian: guardian})
+    event = insert(:event, %{location: location, team: team})
 
     {:ok, conn: conn, ninja: ninja, event: event}
   end
@@ -165,47 +72,13 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       ninja: _ninja,
       event: event
     } do
-      ninja_attrs = %{
-        first_name: "Rafaela",
-        last_name: "Costa",
-        birthday: ~U[2007-03-14 00:00:00.000Z]
-      }
+      new_user_ninja = insert(:user, %{active: true, role: "ninja"})
 
-      user_ninja = %{
-        email: "rafaelacosta@gmail.com",
-        password: "ninja123",
-        role: "ninja",
-        active: true
-      }
+      new_user_guardian = insert(:user, %{active: true, role: "guardian"})
 
-      user_guardian = %{
-        email: "anamaria5@gmail.com",
-        password: "guardian123",
-        role: "guardian",
-        active: true
-      }
+      new_guardian = insert(:guardian, %{user: new_user_guardian})
 
-      new_guardian_attrs = %{
-        first_name: "Ana",
-        last_name: "Maria",
-        mobile: "+351912345678"
-      }
-
-      new_user_ninja = Accounts.create_user(user_ninja)
-      new_user_guardian = Accounts.create_user(user_guardian)
-
-      new_guardian_attrs =
-        new_guardian_attrs
-        |> Map.put(:user_id, elem(new_user_guardian, 1).id)
-
-      {:ok, new_guardian} = Accounts.create_guardian(new_guardian_attrs)
-
-      ninja_fixture =
-        ninja_attrs
-        |> Map.put(:user_id, elem(new_user_ninja, 1).id)
-        |> Map.put(:guardian_id, new_guardian.id)
-
-      {:ok, new_ninja} = Accounts.create_ninja(ninja_fixture)
+      new_ninja = insert(:ninja, %{guardian: new_guardian, user: new_user_ninja})
 
       enrollment_attrs = %{
         enrollment: %{event_id: event.id, ninja_id: new_ninja.id, accepted: true}
@@ -220,9 +93,8 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       ninja: ninja,
       event: event
     } do
-      admin_attrs = admin_attrs()
-
-      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
+      role = Enum.random(["organizer", "mentor", "ninja"])
+      admin_user = insert(:user, %{active: true, role: role})
 
       {:ok, jwt, _claims} =
         Authorization.encode_and_sign(admin_user, %{
@@ -234,7 +106,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
         conn
         |> Authorization.Plug.sign_out()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
+        |> put_req_header("user_id", "#{admin_user.id}")
 
       enrollment_attrs = %{enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true}}
 
@@ -269,9 +141,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       ninja: ninja,
       event: event
     } do
-      enrollment_attrs = %{
-        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: false}
-      }
+      enrollment_attrs = %{enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: false}}
 
       conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
       assert %{"id" => enrollment_id} = json_response(conn, 201)["data"]
@@ -279,10 +149,10 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       enrollment = Events.get_enrollment(enrollment_id, [:ninja, :event])
 
       new_enrollment_attrs = %{
-        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment.id}
+        enrollment: %{accepted: true, id: enrollment.id}
       }
 
-      assert_raise Phoenix.ActionClauseError, ~r/(?s).*/, fn ->
+      assert_raise Phoenix.ActionClauseError, fn ->
         patch(
           conn,
           Routes.event_enrollment_path(conn, :update, event.id, enrollment.id),
@@ -296,12 +166,10 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       ninja: ninja,
       event: event
     } do
-      enrollment_attrs = %{event_id: event.id, ninja_id: ninja.id, accepted: false}
-      {:ok, enrollment} = Events.create_enrollment(event, enrollment_attrs)
+      enrollment_attrs = %{event: event, ninja: ninja, accepted: false}
+      enrollment = insert(:enrollment, enrollment_attrs)
 
-      admin_attrs = admin_attrs()
-
-      {:ok, admin_user} = Accounts.authenticate_user(admin_attrs.email, admin_attrs.password)
+      admin_user = insert(:user, %{role: "organizer"})
 
       {:ok, jwt, _claims} =
         Authorization.encode_and_sign(admin_user, %{
@@ -313,10 +181,10 @@ defmodule BokkenWeb.EnrollmentControllerTest do
         conn
         |> Authorization.Plug.sign_out()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{admin_attrs[:user_id]}")
+        |> put_req_header("user_id", "#{admin_user.id}")
 
       new_enrollment_attrs = %{
-        enrollment: %{event_id: event.id, ninja_id: ninja.id, accepted: true, id: enrollment.id}
+        enrollment: %{accepted: true, id: enrollment.id}
       }
 
       conn =

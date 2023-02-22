@@ -4,97 +4,43 @@ defmodule BokkenWeb.MentorSkillControllerTest do
 
   alias Bokken.Accounts
   alias Bokken.Curriculum
-  alias Bokken.Curriculum.{MentorSkill, Skill}
+  alias Bokken.Curriculum.MentorSkill
   alias BokkenWeb.Authorization
 
-  def valid_admin_user do
-    %{
-      email: "admin@gmail.com",
-      password: "administrator123",
-      role: "organizer",
-      active: true
-    }
-  end
+  import Bokken.Factory
 
-  def valid_mentor_user do
-    %{
-      email: "mentor@gmail.com",
-      password: "mentor123",
-      role: "mentor",
-      active: true
-    }
-  end
-
-  def valid_admin do
-    %{
-      first_name: "Jéssica",
-      last_name: "Fernandes",
-      champion: true
-    }
-  end
-
-  def valid_mentor do
-    %{
-      city: "Braga",
-      mobile: "915096743",
-      first_name: "Ana Maria",
-      last_name: "Silva Costa"
-    }
-  end
-
-  def valid_ninja do
-    %{
-      first_name: "Joana",
-      last_name: "Costa",
-      birthday: ~U[2007-03-14 00:00:00.000Z]
-    }
-  end
-
-  def valid_skill do
-    %{
-      name: "Kotlin",
-      description:
-        "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
-    }
-  end
+  @password "password1234!"
 
   def admin_attrs do
-    user = valid_admin_user()
-    {:ok, new_user} = Accounts.create_user(user)
+    user = params_for(:user, role: "organizer", password: @password)
+    new_user = insert(:user, user)
 
-    admin =
-      valid_admin()
-      |> Map.put(:user_id, new_user.id)
-
-    {:ok, new_admin} = Accounts.create_organizer(admin)
+    new_admin = insert(:organizer, user_id: new_user.id, user: new_user)
 
     user
     |> Map.put(:user_id, new_user.id)
     |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
+    |> Map.put(:password, @password)
     |> Map.put(:organizer, new_admin)
   end
 
   def mentor_attrs do
-    user = valid_mentor_user()
-    {:ok, new_user} = Accounts.create_user(user)
+    user = params_for(:user, role: "mentor", password: @password)
+    new_user = insert(:user, user)
 
-    mentor =
-      valid_mentor()
-      |> Map.put(:user_id, new_user.id)
-
-    {:ok, new_mentor} = Accounts.create_mentor(mentor)
+    new_mentor = insert(:mentor, %{user: new_user})
 
     user
     |> Map.put(:user_id, new_user.id)
     |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
+    |> Map.put(:password, @password)
     |> Map.put(:mentor, new_mentor)
   end
 
   # Create a skill
   setup %{conn: conn} do
-    {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+    # {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+    skill = insert(:skill)
     {:ok, conn: conn, skill: skill}
   end
 

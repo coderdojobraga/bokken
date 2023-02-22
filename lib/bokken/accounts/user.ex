@@ -10,14 +10,12 @@ defmodule Bokken.Accounts.User do
   @roles [:ninja, :guardian, :mentor, :organizer]
 
   @required_fields [:email, :password, :role]
-  @optional_fields [:active, :verified, :registered, :discord_id]
+  @optional_fields [:active, :verified, :registered]
 
   schema "users" do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
-
-    field :discord_id, :string
 
     field :active, :boolean, default: false
     field :verified, :boolean, default: false
