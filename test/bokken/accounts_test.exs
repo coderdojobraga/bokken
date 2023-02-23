@@ -13,9 +13,9 @@ defmodule Bokken.AccountsTest do
       guardian = insert(:guardian)
       guardians = Accounts.list_guardians()
 
-      gurdians_ids = Enum.map(guardians, fn guardian -> guardian.id end)
+      guardians_ids = Enum.map(guardians, fn guardian -> guardian.id end)
 
-      assert Enum.member?(gurdians_ids, guardian.id)
+      assert Enum.member?(guardians_ids, guardian.id)
     end
 
     test "get_guardian!/1 returns the guardian with given id" do

@@ -16,6 +16,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     {:ok, new_user} = Accounts.create_user(user)
 
     valid_admin = params_for(:organizer)
+
     admin =
       valid_admin
       |> Map.put(:user_id, new_user.id)
@@ -54,8 +55,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     user = params_for(:user, role: "guardian", password: @password)
     {:ok, new_user} = Accounts.create_user(user)
 
+    # valid_guardian()
     guardian =
-      # valid_guardian()
       params_for(:guardian)
       |> Map.put(:user_id, new_user.id)
       |> Map.put(:user, new_user)
