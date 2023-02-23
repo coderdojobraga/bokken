@@ -4,76 +4,22 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
   alias Bokken.Accounts
   alias Bokken.Curriculum
-  alias Bokken.Curriculum.{NinjaSkill, Skill}
+  alias Bokken.Curriculum.NinjaSkill
   alias BokkenWeb.Authorization
 
-  def valid_admin_user do
-    %{
-      email: "admin@gmail.com",
-      password: "administrator123",
-      role: "organizer",
-      active: true
-    }
-  end
+  import Bokken.Factory
 
-  def valid_ninja_user do
-    %{
-      email: "ninja@gmail.com",
-      password: "ninja123",
-      role: "ninja",
-      active: true
-    }
-  end
-
-  def valid_guardian_user do
-    %{
-      email: "guardian@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-  end
-
-  def valid_guardian do
-    %{
-      city: "Guimarães",
-      mobile: "+351915096743",
-      first_name: "Ana Maria",
-      last_name: "Silva Costa"
-    }
-  end
-
-  def valid_admin do
-    %{
-      first_name: "Jéssica",
-      last_name: "Fernandes",
-      champion: true
-    }
-  end
-
-  def valid_ninja do
-    %{
-      first_name: "Joana",
-      last_name: "Costa",
-      birthday: ~U[2007-03-14 00:00:00.000Z]
-    }
-  end
-
-  def valid_skill do
-    %{
-      name: "Kotlin",
-      description:
-        "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
-    }
-  end
+  @password "password1234!"
 
   def admin_attrs do
-    user = valid_admin_user()
+    user = params_for(:user, role: "organizer", password: @password)
     {:ok, new_user} = Accounts.create_user(user)
 
+    valid_admin = params_for(:organizer)
     admin =
-      valid_admin()
+      valid_admin
       |> Map.put(:user_id, new_user.id)
+      |> Map.put(:user, new_user)
 
     {:ok, new_admin} = Accounts.create_organizer(admin)
 
@@ -85,12 +31,13 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   end
 
   def ninja_attrs do
-    user = valid_ninja_user()
+    user = params_for(:user, role: "ninja", password: @password)
     {:ok, new_user} = Accounts.create_user(user)
+
     guardian = guardian_attrs()
 
     ninja =
-      valid_ninja()
+      params_for(:ninja)
       |> Map.put(:user_id, new_user.id)
       |> Map.put(:guardian_id, guardian.id)
 
@@ -104,31 +51,35 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   end
 
   def guardian_attrs do
-    user = valid_guardian_user()
+    user = params_for(:user, role: "guardian", password: @password)
     {:ok, new_user} = Accounts.create_user(user)
 
     guardian =
-      valid_guardian()
+      # valid_guardian()
+      params_for(:guardian)
       |> Map.put(:user_id, new_user.id)
+      |> Map.put(:user, new_user)
 
     {:ok, new_guardian} = Accounts.create_guardian(guardian)
+
     new_guardian
   end
 
   def ninja_guardian_attrs do
-    ninja_user = valid_ninja_user()
+    ninja_user = params_for(:user, role: "ninja", password: @password)
     {:ok, new_ninja_user} = Accounts.create_user(ninja_user)
-    guardian_user = valid_guardian_user()
+
+    guardian_user = params_for(:user, role: "guardian", password: @password)
     {:ok, new_guardian_user} = Accounts.create_user(guardian_user)
 
     guardian =
-      valid_guardian()
+      params_for(:guardian)
       |> Map.put(:user_id, new_guardian_user.id)
 
     {:ok, new_guardian} = Accounts.create_guardian(guardian)
 
     ninja =
-      valid_ninja()
+      params_for(:ninja)
       |> Map.put(:user_id, new_ninja_user.id)
       |> Map.put(:guardian_id, new_guardian.id)
 
@@ -143,7 +94,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
 
   # Create a skill
   setup %{conn: conn} do
-    {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+    skill = insert(:skill)
     {:ok, conn: conn, skill: skill}
   end
 
@@ -446,7 +397,7 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
       {:ok, new_user} = Accounts.create_user(guardian_user)
 
       guardian =
-        valid_guardian()
+        params_for(:guardian)
         |> Map.put(:user_id, new_user.id)
 
       {:ok, _new_guardian} = Accounts.create_guardian(guardian)

@@ -1,5 +1,5 @@
 defmodule Bokken.GamificationTest do
-  use Bokken.DataCase
+  use Bokken.DataCase, async: false 
 
   alias Bokken.Gamification
 
