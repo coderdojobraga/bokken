@@ -1,5 +1,4 @@
 defmodule BokkenWeb.NinjaSkillControllerTest do
-  @moduledoc false
   use BokkenWeb.ConnCase
 
   alias Bokken.Accounts
