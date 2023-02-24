@@ -35,7 +35,7 @@ COPY priv priv
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.15 AS app
+FROM alpine:3.17 AS app
 
 ARG MIX_ENV
 
