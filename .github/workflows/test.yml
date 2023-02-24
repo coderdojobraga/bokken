@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         otp: [25.x]
-        elixir: [1.13.x]
+        elixir: [1.14.x]
     services:
       db:
         image: postgres:14.1
