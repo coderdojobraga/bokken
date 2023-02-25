@@ -15,7 +15,6 @@ defmodule Bokken.MixProject do
       git_ref: git_revision_hash(),
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
       deps: deps(),
       docs: docs(),
@@ -70,9 +69,10 @@ defmodule Bokken.MixProject do
       {:cors_plug, "~> 3.0"},
 
       # utilities
-      {:gettext, "~> 0.18"},
+      {:gettext, "~> 0.22.1"},
       {:jason, "~> 1.3"},
       {:browser, "~> 0.5.1"},
+      {:timex, "~> 3.7.9"},
 
       # monitoring
       {:telemetry_metrics, "~> 0.6"},
