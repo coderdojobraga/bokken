@@ -1,5 +1,4 @@
 defmodule Bokken.CurriculumTest do
-  @moduledoc false
   use Bokken.DataCase
 
   alias Bokken.Accounts.{Mentor, Ninja}

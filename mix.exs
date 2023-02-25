@@ -13,7 +13,7 @@ defmodule Bokken.MixProject do
       version: @version,
       description: @description,
       git_ref: git_revision_hash(),
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
@@ -85,7 +85,7 @@ defmodule Bokken.MixProject do
       {:kaffy, "~> 0.9.0", override: true},
 
       # development
-      {:dotenvy, "~> 0.6.0"},
+      {:dotenvy, "~> 0.7.0"},
 
       # testing
       {:faker, "~> 0.17", only: [:dev, :test]},
