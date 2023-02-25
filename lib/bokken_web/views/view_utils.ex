@@ -15,11 +15,11 @@ defmodule BokkenWeb.ViewUtils do
 
   ## Examples
 
-      iex> display_name(%{"first_name" => "John", "last_name" => "Doe"})
+      iex> display_name(%{first_name: "John", last_name: "Doe"})
       "John Doe"
   """
-  def display_name(%{"first_name" => first_name, "last_name" => last_name}) do
-    "#{first_name} #{last_name}"
+  def display_name(user) do
+    "#{user.first_name} #{user.last_name}"
   end
 
   @doc """
@@ -36,7 +36,7 @@ defmodule BokkenWeb.ViewUtils do
       iex> display_time(~U[2018-01-01 23:59:00Z])
       "23:59"
   """
-  def display_time(datetime = %DateTime{}) do
+  def display_time(%DateTime{} = datetime) do
     hour = two_characters(datetime.hour)
     minute = two_characters(datetime.minute)
 
@@ -48,11 +48,11 @@ defmodule BokkenWeb.ViewUtils do
 
   ## Examples
 
-      iex> display_date(~N[2018-01-01 00:00:00], "pt")
-      "Segunda-feira, 1 de Janeiro de 2018"
+      iex> display_date(~N[2021-03-10 02:27:07], "pt")
+      "Quarta-feira, 10 de Março de 2021"
 
-      iex> display_date(~N[2018-01-01 00:00:00], "en")
-      "Monday, January 1, 2018"
+      iex> display_date(~N[2023-02-25 22:25:46], "en")
+      "Saturday, February 25, 2023"
   """
   def display_date(datetime, locale \\ "pt")
 
