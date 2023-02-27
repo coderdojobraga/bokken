@@ -23,6 +23,7 @@ defmodule Bokken.Accounts.User do
     field :verified, :boolean, default: false
     field :registered, :boolean, default: false
     field :role, Ecto.Enum, values: @roles
+    field :total_file_size, :integer, default: 0
 
     has_one :guardian, Guardian, on_delete: :delete_all
     has_one :mentor, Mentor, on_delete: :delete_all

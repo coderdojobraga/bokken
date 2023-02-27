@@ -123,9 +123,8 @@ defmodule Bokken.Documents do
   end
 
   def verify_total_size(file, user_id) do
-    user = Accounts.get_user!(user_id) |> Repo.preload(:files)
+    user = Accounts.get_user!(user_id)
 
-    total_size = Enum.reduce(user.files, 0, fn file, acc -> acc + File.file_size(file) end)
-    total_size + File.file_size(file)
+    user.total_file_size + File.file_size(file)
   end
 end

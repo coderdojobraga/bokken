@@ -10,6 +10,7 @@ defmodule Bokken.Repo.Migrations.CreateUsers do
       add :email, :citext, null: false
       add :password_hash, :string, null: false
       add :role, :string, null: false
+      add :total_file_size, :integer, default: 0
 
       add :reset_password_token, :string
       add :reset_token_sent_at, :utc_datetime
