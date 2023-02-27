@@ -1,5 +1,4 @@
 defmodule Bokken.AccountsTest do
-  @moduledoc false
   use Bokken.DataCase
 
   import Bokken.Factory

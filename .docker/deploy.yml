@@ -18,6 +18,7 @@ services:
       - SECRET_KEY_BASE
       - SECRET_KEY_GUARDIAN
       - FRONTEND_URL
+      - MAILER_API_KEY
       - HOST_URL
       - PORT
     restart: unless-stopped
