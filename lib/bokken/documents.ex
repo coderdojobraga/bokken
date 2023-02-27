@@ -72,6 +72,10 @@ defmodule Bokken.Documents do
       %File{}
       |> File.changeset(attrs)
       |> Repo.insert()
+
+      %User{}
+      |> User.changeset(:total_file_size, verify_total_size(attrs.document, attrs.user_id))
+      |> Repo.update()
     end
   end
 
