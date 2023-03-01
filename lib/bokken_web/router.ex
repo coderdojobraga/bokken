@@ -34,14 +34,13 @@ defmodule BokkenWeb.Router do
     scope "/admin" do
       pipe_through [:authenticated, :admin]
 
-      get "/users", AdminController, :index_users
-      post "/user", AdminController, :update_user
-      get "/mentors", AdminController, :index_mentors
-      post "/mentor", AdminController, :update_mentor
-      get "/ninjas", AdminController, :index_ninjas
-      post "/ninja", AdminController, :update_ninja
-      get "/guardians", AdminController, :index_guardians
-      post "/guardian", AdminController, :update_guardian
+      resources "/users", Admin.UserController, only: [:index, :update], as: :admin_user
+      resources "/mentors", Admin.MentorController, only: [:index, :update], as: :admin_mentor
+      resources "/ninjas", Admin.NinjaController, only: [:index, :update], as: :admin_ninja
+
+      resources "/guardians", Admin.GuardianController,
+        only: [:index, :update],
+        as: :admin_guardian
     end
 
     scope "/auth" do

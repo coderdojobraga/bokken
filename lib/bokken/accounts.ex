@@ -96,34 +96,44 @@ defmodule Bokken.Accounts do
     Guardian.changeset(guardian, attrs)
   end
 
-  def update_guardian_and_user(guardian_params, user_params) do
-    user_id = user_params["user_id"]
-    guardian_id = guardian_params["id"]
+  @doc """
+  Updates a guardian and the associated user.
+  Should only be used by admins.
 
-    with user when not is_nil(user_id) <- get_user(user_id),
-         guardian when not is_nil(guardian_id) <- get_guardian(guardian_id) do
-      transaction =
-        Ecto.Multi.new()
-        |> Ecto.Multi.update(
-          :user,
-          User.admin_changeset(user, user_params)
-        )
-        |> Ecto.Multi.update(
-          :guardian,
-          Guardian.changeset(guardian, guardian_params)
-        )
-        |> Repo.transaction()
+  ## Examples
+      iex> update_guardian_and_user(guardian, %{field: new_value}, %{field: new_value})
+      {:ok, %Guardian{}}
 
-      case transaction do
-        {:ok, %{user: _user, guardian: guardian}} ->
-          {:ok, guardian |> Repo.preload([:user], force: true)}
+      iex> update_guardian_and_user(guardian, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_guardian_and_user(guardian, guardian_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
 
-        {:error, _transaction, errors, _change_so_far} ->
-          {:error, errors}
-      end
-    else
+    case get_user(user_id) do
       nil ->
-        {:error, "User or guardian not found"}
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :guardian,
+            Guardian.changeset(guardian, guardian_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, guardian: guardian}} ->
+            {:ok, guardian |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
     end
   end
 
@@ -264,34 +274,44 @@ defmodule Bokken.Accounts do
     Repo.delete_all(query)
   end
 
-  def update_mentor_and_user(mentor_params, user_params) do
-    user_id = user_params["user_id"]
-    mentor_id = mentor_params["id"]
+  @doc """
+  Updates a mentor and the associated user.
+  Should only be used by admins.
 
-    with user when not is_nil(user_id) <- get_user(user_id),
-         mentor when not is_nil(mentor_id) <- get_mentor(mentor_id) do
-      transaction =
-        Ecto.Multi.new()
-        |> Ecto.Multi.update(
-          :user,
-          User.admin_changeset(user, user_params)
-        )
-        |> Ecto.Multi.update(
-          :mentor,
-          Mentor.changeset(mentor, mentor_params)
-        )
-        |> Repo.transaction()
+  ## Examples
+      iex> update_mentor_and_user(mentor, %{field: new_value}, %{field: new_value})
+      {:ok, %Mentor{}}
 
-      case transaction do
-        {:ok, %{user: _user, mentor: mentor}} ->
-          {:ok, mentor |> Repo.preload([:user], force: true)}
+      iex> update_mentor_and_user(mentor, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_mentor_and_user(mentor, mentor_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
 
-        {:error, _transaction, errors, _change_so_far} ->
-          {:error, errors}
-      end
-    else
+    case get_user(user_id) do
       nil ->
-        {:error, "User or mentor not found"}
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :mentor,
+            Mentor.changeset(mentor, mentor_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, mentor: mentor}} ->
+            {:ok, mentor |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
     end
   end
 
@@ -461,37 +481,6 @@ defmodule Bokken.Accounts do
 
       {:error, _transation, errors, _changes_so_far} ->
         {:error, errors}
-    end
-  end
-
-  def update_ninja_and_user(ninja_params, user_params) do
-    user_id = user_params["user_id"]
-    ninja_id = ninja_params["id"]
-
-    with user when not is_nil(user_id) <- get_user(user_id),
-         ninja when not is_nil(ninja_id) <- get_ninja(ninja_id) do
-      transaction =
-        Ecto.Multi.new()
-        |> Ecto.Multi.update(
-          :user,
-          User.admin_changeset(user, user_params)
-        )
-        |> Ecto.Multi.update(
-          :ninja,
-          Ninja.changeset(ninja, ninja_params)
-        )
-        |> Repo.transaction()
-
-      case transaction do
-        {:ok, %{user: _user, ninja: ninja}} ->
-          {:ok, ninja |> Repo.preload([:user], force: true)}
-
-        {:error, _transaction, errors, _change_so_far} ->
-          {:error, errors}
-      end
-    else
-      nil ->
-        {:error, "User or ninja not found"}
     end
   end
 
@@ -711,18 +700,21 @@ defmodule Bokken.Accounts do
     |> Repo.update()
   end
 
-  def update_user_as_admin(user_params) do
-    user_id = user_params["user_id"]
+  @doc """
+  Update a user as an admin. This function should only be used by admins.
 
-    case get_user(user_id) do
-      nil ->
-        {:error, "User not found"}
+  ## Examples
 
-      user ->
-        user
-        |> User.admin_changeset(user_params)
-        |> Repo.update()
-    end
+        iex> update_user_as_admin(user, %{field: new_value})
+        {:ok, %User{}}
+
+        iex> update_user_as_admin(user, %{field: bad_value})
+        {:error, %Ecto.Changeset{}}
+  """
+  def update_user_as_admin(user, user_params) do
+    user
+    |> User.admin_changeset(user_params)
+    |> Repo.update()
   end
 
   def edit_user(%User{} = user, attrs, role) do
