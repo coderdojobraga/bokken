@@ -65,6 +65,8 @@ defmodule Bokken.Documents do
       {:error, %Ecto.Changeset{}}
 
   """
+  alias Bokken.Accounts.User
+
   def create_file(attrs \\ %{}) do
     if verify_total_size(attrs.document, attrs.user_id) > 6_000_000 do
       {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
@@ -73,8 +75,10 @@ defmodule Bokken.Documents do
       |> File.changeset(attrs)
       |> Repo.insert()
 
-      %User{}
-      |> User.changeset(:total_file_size, verify_total_size(attrs.document, attrs.user_id))
+    user = Accounts.get_user!(attrs.user_id)
+
+      user
+      |> User.changeset(%{total_file_size: verify_total_size(attrs.document, attrs.user_id)})
       |> Repo.update()
     end
   end
