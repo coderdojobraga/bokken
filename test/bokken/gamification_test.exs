@@ -21,7 +21,8 @@ defmodule Bokken.GamificationTest do
     end
 
     test "create_badge/1 with valid data creates a badge" do
-      img_url = Faker.Avatar.image_url("#{System.unique_integer()}.png")
+      random_number = Enum.random(1..100)
+      img_url = Faker.Avatar.image_url("#{random_number}.png")
       valid_attrs = %{description: "some description", image: img_url, name: "some name"}
 
       assert {:ok, %Badge{} = badge} = Gamification.create_badge(valid_attrs)

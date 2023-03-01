@@ -54,7 +54,7 @@ defmodule Bokken.MixProject do
       {:postgrex, ">= 0.0.0"},
 
       # security
-      {:guardian, "~> 2.2"},
+      {:guardian, "~> 2.3.1"},
       {:argon2_elixir, "~> 3.0"},
 
       # uploads
