@@ -11,27 +11,21 @@ defmodule Bokken.EventsTest do
 
       enrollments = Events.list_enrollments()
 
-      enrollments_ids = Enum.map(enrollments, fn e -> e.id end)
-
-      assert Enum.member?(enrollments_ids, enrollment.id)
+      assert hd(enrollments).id == enrollment.id
     end
 
     test "list_enrollments/1 returns all enrollments of the event" do
       enrollment = insert(:enrollment)
       enrollments = Events.list_enrollments(%{"event_id" => enrollment.event_id})
 
-      enrollments_ids = Enum.map(enrollments, fn e -> e.id end)
-
-      assert Enum.member?(enrollments_ids, enrollment.id)
+      assert hd(enrollments).id == enrollment.id
     end
 
     test "list_enrollments/1 returns all enrollments of the ninja" do
       enrollment = insert(:enrollment)
       enrollments = Events.list_enrollments(%{"ninja_id" => enrollment.ninja_id})
 
-      enrollments_ids = Enum.map(enrollments, fn e -> e.id end)
-
-      assert Enum.member?(enrollments_ids, enrollment.id)
+      assert hd(enrollments).id == enrollment.id
     end
 
     test "get_enrollment/1 returns the requested enrollment" do
@@ -113,9 +107,7 @@ defmodule Bokken.EventsTest do
       availability = insert(:availability)
       availabilities = Events.list_availabilities([])
 
-      availability_ids = Enum.map(availabilities, & &1.id)
-
-      assert Enum.member?(availability_ids, availability.id)
+      assert hd(availabilities).id == availability.id
     end
 
     test "list_availabilities/1 returns all availabilities of the event" do
@@ -125,9 +117,7 @@ defmodule Bokken.EventsTest do
       availabilities =
         Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
 
-      availability_ids = Enum.map(availabilities, & &1.id)
-
-      assert Enum.member?(availability_ids, availability.id)
+      assert hd(availabilities).id == availability.id
     end
 
     test "get_availability!/1 returns the requested availability" do
