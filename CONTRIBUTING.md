@@ -9,8 +9,8 @@ local machine for development and testing purposes.
 
 The following software is required to be installed on your system:
 
-- [Erlang 24+](https://www.erlang.org/downloads)
-- [Elixir 1.13+](https://elixir-lang.org/install.html)
+- [Erlang 25+](https://www.erlang.org/downloads)
+- [Elixir 1.14+](https://elixir-lang.org/install.html)
 - [PostgreSQL 13+](https://www.postgresql.org/download/)(^See [this section](#-docker) for setting up with docker.)
 
 We recommend using [asdf version manager][asdf-vm] to install and manage all

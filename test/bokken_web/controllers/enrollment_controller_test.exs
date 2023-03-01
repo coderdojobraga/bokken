@@ -1,6 +1,8 @@
 defmodule BokkenWeb.EnrollmentControllerTest do
   use BokkenWeb.ConnCase
 
+  import Bokken.Factory
+
   alias Bokken.Accounts
   alias Bokken.Events
   alias BokkenWeb.Authorization
@@ -94,17 +96,6 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       description: "Uma turma"
     }
 
-    event_attrs = %{
-      title: "Test event",
-      spots_available: 30,
-      start_time: ~U[2023-02-14 10:00:00.000Z],
-      end_time: ~U[2023-02-14 12:30:00.000Z],
-      enrollments_open: ~U[2022-07-03 12:30:00.0Z],
-      enrollments_close: ~U[2023-02-13 12:30:00.0Z],
-      online: false,
-      notes: "Valentines"
-    }
-
     new_user_ninja = Accounts.create_user(user_ninja)
 
     ninja_fixture =
@@ -119,7 +110,7 @@ defmodule BokkenWeb.EnrollmentControllerTest do
     {:ok, team} = Events.create_team(team_attrs)
 
     event_fixture =
-      event_attrs
+      params_for(:event)
       |> Map.put(:location_id, location.id)
       |> Map.put(:team_id, team.id)
 
