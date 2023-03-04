@@ -7,8 +7,8 @@ defmodule BokkenWeb.MentorController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, params) do
-    mentors = Accounts.list_mentors(params)
+  def index(conn, _params) do
+    mentors = Accounts.list_mentors()
     render(conn, "index.json", mentors: mentors)
   end
 

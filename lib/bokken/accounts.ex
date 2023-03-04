@@ -11,6 +11,8 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
+  alias Bokken.Accounts.User
+
   alias Bokken.Accounts.Guardian
 
   @doc """
@@ -19,9 +21,17 @@ defmodule Bokken.Accounts do
       iex> list_guardians()
       [%Guardian{}, ...]
   """
+  def list_guardians(preloads) when is_list(preloads) do
+    Guardian
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
   def list_guardians do
     Repo.all(Guardian)
   end
+
+  def get_guardian(id), do: Repo.get(Guardian, id)
 
   @doc """
   Gets a single guardian.
@@ -86,6 +96,47 @@ defmodule Bokken.Accounts do
     Guardian.changeset(guardian, attrs)
   end
 
+  @doc """
+  Updates a guardian and the associated user.
+  Should only be used by admins.
+
+  ## Examples
+      iex> update_guardian_and_user(guardian, %{field: new_value}, %{field: new_value})
+      {:ok, %Guardian{}}
+
+      iex> update_guardian_and_user(guardian, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_guardian_and_user(guardian, guardian_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
+
+    case get_user(user_id) do
+      nil ->
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :guardian,
+            Guardian.changeset(guardian, guardian_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, guardian: guardian}} ->
+            {:ok, guardian |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
+    end
+  end
+
   alias Bokken.Accounts.Mentor
 
   @doc """
@@ -96,9 +147,15 @@ defmodule Bokken.Accounts do
       iex> list_mentors()
       [%Mentor{}, ...]
 
+      iex> list_mentors([:user])
+      [%Mentor{}, ...]
+
   """
-  @spec list_mentors(map()) :: list(Mentor.t())
-  def list_mentors(args \\ %{})
+  def list_mentors(preloads) when is_list(preloads) do
+    Mentor
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_mentors(%{"team_id" => team_id}) do
     team_id
@@ -112,10 +169,12 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
-  def list_mentors(_args) do
+  def list_mentors do
     Mentor
     |> Repo.all()
   end
+
+  def get_mentor(id), do: Repo.get(Mentor, id)
 
   @doc """
   Gets a single mentor.
@@ -215,6 +274,47 @@ defmodule Bokken.Accounts do
     Repo.delete_all(query)
   end
 
+  @doc """
+  Updates a mentor and the associated user.
+  Should only be used by admins.
+
+  ## Examples
+      iex> update_mentor_and_user(mentor, %{field: new_value}, %{field: new_value})
+      {:ok, %Mentor{}}
+
+      iex> update_mentor_and_user(mentor, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_mentor_and_user(mentor, mentor_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
+
+    case get_user(user_id) do
+      nil ->
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :mentor,
+            Mentor.changeset(mentor, mentor_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, mentor: mentor}} ->
+            {:ok, mentor |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
+    end
+  end
+
   alias Bokken.Accounts.Ninja
 
   @doc """
@@ -231,7 +331,7 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
-
+  
   def list_ninjas(preloads) when is_list(preloads) do
     Ninja
     |> Repo.all()
@@ -260,6 +360,8 @@ defmodule Bokken.Accounts do
     Ninja
     |> Repo.all()
   end
+
+  def get_ninja(id), do: Repo.get(Ninja, id)
 
   @doc """
   Gets a single ninja.
@@ -606,6 +708,23 @@ defmodule Bokken.Accounts do
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Update a user as an admin. This function should only be used by admins.
+
+  ## Examples
+
+        iex> update_user_as_admin(user, %{field: new_value})
+        {:ok, %User{}}
+
+        iex> update_user_as_admin(user, %{field: bad_value})
+        {:error, %Ecto.Changeset{}}
+  """
+  def update_user_as_admin(user, user_params) do
+    user
+    |> User.admin_changeset(user_params)
     |> Repo.update()
   end
 
