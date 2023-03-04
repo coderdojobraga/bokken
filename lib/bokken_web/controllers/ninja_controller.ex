@@ -13,7 +13,7 @@ defmodule BokkenWeb.NinjaController do
       when is_map_key(params, "team_id")
       when is_map_key(params, "badge_id")
       when is_map_key(params, "event_id") do
-    ninjas = Accounts.list_ninjas(params)
+    ninjas = Accounts.list_ninjas()
     render(conn, "index.json", ninjas: ninjas)
   end
 
