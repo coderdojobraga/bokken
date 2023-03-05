@@ -331,7 +331,7 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
-  
+
   def list_ninjas(preloads) when is_list(preloads) do
     Ninja
     |> Repo.all()
