@@ -56,7 +56,7 @@ config :phoenix, :json_library, Jason
 config :bokken, Bokken.Scheduler,
   jobs: [
     # Every midnight
-    {"@daily", {Heartbeat, :send, []}}
+    {"@daily", {BirthdayNotifier, :notify_ninja_birthday, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom
