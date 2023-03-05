@@ -18,8 +18,8 @@ defmodule Bokken.Application do
       BokkenWeb.Endpoint,
       # Start a worker by calling: Bokken.Worker.start_link(arg)
       # {Bokken.Worker, arg}
-      Bokken.Periodically
-      # Executes a task periodically
+      Bokken.BirthdayNotifier
+      # Executes a task periodically to notify Ninjas on their birthday
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

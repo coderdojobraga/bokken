@@ -1,6 +1,6 @@
-defmodule Bokken.Periodically do
+defmodule Bokken.BirthdayNotifier do
   @moduledoc """
-  Executes a task periodically.
+  Executes a task periodically to notify Ninjas on their birthday.
   """
   use GenServer
 
