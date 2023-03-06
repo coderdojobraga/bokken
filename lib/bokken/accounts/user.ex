@@ -10,7 +10,7 @@ defmodule Bokken.Accounts.User do
   @roles [:ninja, :guardian, :mentor, :organizer]
 
   @required_fields [:email, :password, :role]
-  @optional_fields [:active, :verified, :registered, :discord_id]
+  @optional_fields [:active, :verified, :registered]
 
   # List of fields that can be updated by admins (organizers)
   @admin_fields [:active, :verified, :registered]
@@ -19,8 +19,6 @@ defmodule Bokken.Accounts.User do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
-
-    field :discord_id, :string
 
     field :active, :boolean, default: false
     field :verified, :boolean, default: false
@@ -38,6 +36,20 @@ defmodule Bokken.Accounts.User do
     has_many :files, File, on_delete: :delete_all
 
     timestamps()
+  end
+
+  def register_ninja_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email])
+    |> validate_required([:email])
+    |> change(%{
+      active: true,
+      registered: true,
+      role: :ninja,
+      password: Base.encode64(:crypto.strong_rand_bytes(32))
+    })
+    |> hash_password()
+    |> check_if_email_changed()
   end
 
   def register_changeset(user, attrs) do
@@ -76,7 +88,7 @@ defmodule Bokken.Accounts.User do
     |> cast(attrs, [:password])
     |> validate_required([:password])
     |> validate_length(:password, min: 8)
-    |> encrypt_password()
+    |> hash_password()
   end
 
   defp user_validations(changeset) do
@@ -84,7 +96,7 @@ defmodule Bokken.Accounts.User do
     |> unique_constraint(:email, downcase: true)
     |> validate_format(:email, ~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
     |> validate_length(:password, min: 8)
-    |> encrypt_password()
+    |> hash_password()
     |> check_if_email_changed()
   end
 
@@ -100,11 +112,11 @@ defmodule Bokken.Accounts.User do
     end
   end
 
-  defp encrypt_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+  defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password_hash: Argon2.hash_pwd_salt(password))
   end
 
-  defp encrypt_password(changeset), do: changeset
+  defp hash_password(changeset), do: changeset
 
   defp check_if_email_changed(
          %Ecto.Changeset{valid?: true, changes: %{email: _email}} = changeset

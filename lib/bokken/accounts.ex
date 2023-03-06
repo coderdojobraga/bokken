@@ -381,6 +381,32 @@ defmodule Bokken.Accounts do
   end
 
   @doc """
+  Gets a single ninja by its discord_id.
+
+  Raises `{:error, :not_found}` if the Ninja does not exist.
+
+  ## Examples
+
+      iex> get_ninja_by_discord("123")
+      {:ok, %Ninja{}}
+
+      iex> get_ninja_by_discord("456")
+      {:error, :not_found}
+  """
+  def get_ninja_by_discord(discord) do
+    query = ~s|{"name": "discord", "username": "#{discord}"}|
+
+    result =
+      from(p in Ninja, where: fragment("? <@ ANY(?)", ~s|#{query}|, p.socials))
+      |> Repo.one()
+
+    case result do
+      nil -> {:error, :not_found}
+      _ -> {:ok, result}
+    end
+  end
+
+  @doc """
   Creates a ninja.
 
   ## Examples
@@ -645,6 +671,22 @@ defmodule Bokken.Accounts do
     |> Repo.insert()
   end
 
+  def create_account_for_ninja(%Ninja{} = ninja, attrs \\ %{}) do
+    result =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:user, User.register_ninja_changeset(%User{}, attrs))
+      |> Ecto.Multi.update(:ninja, &Ninja.changeset(ninja, %{user_id: &1.user.id}))
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{user: user}} ->
+        {:ok, Repo.preload(user, :ninja)}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
+  end
+
   def register_user(%User{} = user, attrs \\ %{}) do
     result =
       Ecto.Multi.new()
@@ -861,84 +903,104 @@ defmodule Bokken.Accounts do
     |> Repo.transaction()
   end
 
-  alias Bokken.Accounts.Bot
+  alias Bokken.Accounts.Token
 
   @doc """
-  Returns the list of bots.
+  Returns the list of Tokens.
 
   ## Examples
 
-      iex> list_bots()
-      [%Bot{}, ...]
+      iex> list_tokens()
+      [%Token{}, ...]
 
   """
-  def list_bots do
-    Repo.all(Bot)
+  def list_tokens do
+    Repo.all(Token)
   end
 
   @doc """
-  Creates a Bot.
+  Creates a Token.
 
   ## Examples
 
-      iex> create_bot(%{field: value})
+      iex> create_token(%{field: value})
       {:ok, %Bot{}}
 
-      iex> create_bot(%{field: bad_value})
+      iex> create_token(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_bot(attrs \\ %{}) do
-    %Bot{}
-    |> Bot.changeset(attrs)
-    |> Repo.insert()
+  def create_token(attrs \\ %{}) do
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:token, Token.changeset(%Token{}, attrs))
+      |> Ecto.Multi.update(
+        :api_key,
+        fn results ->
+          {:ok, token, _claims} =
+            Bokken.Authorization.encode_and_sign(results.token, %{}, ttl: {90, :day})
+
+          Token.key_changeset(results.token, %{
+            "api_key" => token
+          })
+        end
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{api_key: token}} ->
+        {:ok, token}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
   end
 
   @doc """
-  Updates a Bot.
+  Updates a Token.
 
   ## Examples
 
-      iex> update_bot(%Bot{}, %{field: value})
-      {:ok, %Bot{}}
+      iex> update_token(%Token{}, %{field: value})
+      {:ok, %Token{}}
 
-      iex> update_bot(%Bot{}, %{field: bad_value})
+      iex> update_token(%Token{}, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_bot(%Bot{} = bot, attrs) do
-    bot
-    |> Bot.changeset(attrs)
+  def update_token(%Token{} = token, attrs) do
+    token
+    |> Token.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Gets a single Bot.
+  Gets a single Token.
 
   Raises `Ecto.NoResultsError` if the Bot does not exist.
 
   ## Examples
 
-      iex> get_bot!(123)
-      %Bot{}
+      iex> get_token!(123)
+      %Token{}
 
-      iex> get_bot!(456)
+      iex> get_token!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_bot!(id, preloads \\ []) do
-    Repo.get!(Bot, id) |> Repo.preload(preloads)
+  def get_token!(id) do
+    Repo.get!(Token, id)
   end
 
   @doc """
-  Deletes a bot.
+  Deletes a Token.
   ## Examples
-      iex> delete_bot(bot)
-      {:ok, %Bot{}}
-      iex> delete_bot(bot)
+      iex> delete_token(token)
+      {:ok, %Token{}}
+      iex> delete_token(token)
       {:error, %Ecto.Changeset{}}
   """
-  def delete_bot(%Bot{} = bot) do
-    Repo.delete(bot)
+  def delete_token(%Token{} = token) do
+    Repo.delete(token)
   end
 end
