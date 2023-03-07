@@ -3,5 +3,5 @@ defmodule Bokken.Scheduler do
   Standard module to run a cronjob.
   """
 
-  use Quantum, otp_app: :bokken
+  use Quantum, otp_app: :bokkenasdasdads
 end
