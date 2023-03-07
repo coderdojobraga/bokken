@@ -30,7 +30,7 @@ config :cors_plug,
     "http://localhost:3002"
   ]
 
-config :bokken, BokkenWeb.Authorization,
+config :bokken, Bokken.Authorization,
   issuer: "bokken",
   secret_key: "L368R4kzcjSP9bzNrESFzxbysiysnxLwF2BYZgX04PtPC47aRqc4ZGVu2ieAwkeB"
 

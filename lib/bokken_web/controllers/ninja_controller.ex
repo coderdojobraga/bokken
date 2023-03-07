@@ -61,11 +61,24 @@ defmodule BokkenWeb.NinjaController do
     render(conn, "show.json", ninja: ninja)
   end
 
+  def show(conn, %{"discord_id" => discord_id}) do
+    with {:ok, %Ninja{} = ninja} <- Accounts.get_ninja_by_discord(discord_id) do
+      render(conn, "show.json", ninja: ninja)
+    end
+  end
+
   def update(conn, %{"id" => id, "ninja" => ninja_params})
       when is_guardian(conn) or is_organizer(conn) do
     ninja = Accounts.get_ninja!(id)
 
     with {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
+      render(conn, "show.json", ninja: ninja)
+    end
+  end
+
+  def update(conn, %{"discord_id" => discord_id, "ninja" => ninja_params}) do
+    with {:ok, %Ninja{} = ninja} <- Accounts.get_ninja_by_discord(discord_id),
+         {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
       render(conn, "show.json", ninja: ninja)
     end
   end

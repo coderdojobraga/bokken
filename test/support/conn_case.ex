@@ -16,7 +16,9 @@ defmodule BokkenWeb.ConnCase do
   """
   use ExUnit.CaseTemplate
 
-  alias BokkenWeb.Authorization
+  alias Bokken.Accounts
+  alias Bokken.Authorization
+  alias Bokken.Repo
 
   using do
     quote do
@@ -40,34 +42,50 @@ defmodule BokkenWeb.ConnCase do
   @doc """
   Setup helper that registers and logs in users.
 
-      setup :register_and_log_in_guardian
-      setup :register_and_log_in_mentor
-      setup :register_and_log_in_ninja
-      setup :register_and_log_in_organizer
+      setup [:login_as_organizer]
+      setup [:login_as_mentor]
+      setup [:login_as_guardian]
+      setup [:login_as_ninja]
 
   It stores an updated connection and a registered user in the
   test context.
   """
-  def register_and_log_in_guardian(args) do
-    register_and_log_in_user(args, :guardian)
+  def login_as_guardian(args), do: {:ok, register_and_log_in_user(args, :guardian)}
+  def login_as_mentor(args), do: {:ok, register_and_log_in_user(args, :mentor)}
+  def login_as_organizer(args), do: {:ok, register_and_log_in_user(args, :organizer)}
+
+  def login_as_ninja(%{conn: conn, guardian: guardian}) do
+    ninja_attrs = Bokken.AccountsFixtures.valid_ninja_attributes(%{guardian_id: guardian.id})
+
+    {:ok, ninja} = Accounts.create_ninja(ninja_attrs)
+
+    {:ok, user} =
+      Accounts.create_account_for_ninja(ninja, %{"email" => Faker.Internet.free_email()})
+
+    {:ok, [conn: log_in_user(conn, user), user: user]}
   end
 
-  def register_and_log_in_mentor(args) do
-    register_and_log_in_user(args, :mentor)
-  end
+  def login_as_ninja(%{conn: conn}) do
+    guardian_user = Bokken.AccountsFixtures.user_fixture(%{role: :guardian})
 
-  def register_and_log_in_ninja(args) do
-    register_and_log_in_user(args, :ninja)
-  end
+    ninja_attrs =
+      Bokken.AccountsFixtures.valid_ninja_attributes(%{guardian_id: guardian_user.guardian.id})
 
-  def register_and_log_in_organizer(args) do
-    register_and_log_in_user(args, :organizer)
+    {:ok, ninja} = Accounts.create_ninja(ninja_attrs)
+
+    {:ok, user} =
+      Accounts.create_account_for_ninja(ninja, %{"email" => Faker.Internet.free_email()})
+
+    {:ok, [conn: log_in_user(conn, user), user: user]}
   end
 
   defp register_and_log_in_user(%{conn: conn}, role)
-       when role in [:guardian, :mentor, :ninja, :organizer] do
-    user = Bokken.AccountsFixtures.user_fixture(%{role: role})
-    %{conn: log_in_user(conn, user), user: user}
+       when role in [:guardian, :mentor, :organizer] do
+    user =
+      Bokken.AccountsFixtures.user_fixture(%{role: role})
+      |> Repo.preload(role)
+
+    [conn: log_in_user(conn, user), user: user]
   end
 
   @doc """
