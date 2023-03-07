@@ -23,5 +23,6 @@ defmodule Bokken.Events.Location do
     location
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint(:name, downcase: true)
   end
 end

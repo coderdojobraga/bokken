@@ -3,7 +3,6 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
-  alias BokkenWeb.Authorization
 
   @invalid_attrs %{
     city: "Braga",
@@ -50,16 +49,7 @@ defmodule BokkenWeb.GuardianControllerTest do
     guardian = attrs()
     {:ok, user} = Accounts.authenticate_user(guardian.email, guardian.password)
 
-    {:ok, jwt, _claims} =
-      Authorization.encode_and_sign(user, %{role: user.role, active: user.active})
-
-    conn =
-      conn
-      |> put_req_header("accept", "application/json")
-      |> put_req_header("authorization", "Bearer #{jwt}")
-      |> put_req_header("user_id", "#{guardian[:user_id]}")
-
-    {:ok, conn: conn}
+    {:ok, conn: log_in_user(conn, user)}
   end
 
   describe "index" do

@@ -6,12 +6,11 @@ defmodule BokkenWeb.Auth.Pipeline do
   """
   use Guardian.Plug.Pipeline,
     otp_app: :bokken,
-    module: BokkenWeb.Authorization,
+    module: Bokken.Authorization,
     error_handler: BokkenWeb.Auth.ErrorHandler
 
-  plug Guardian.Plug.VerifySession
-  plug Guardian.Plug.VerifyHeader
-  plug Guardian.Plug.EnsureAuthenticated
+  plug Guardian.Plug.VerifySession, claims: %{"typ" => "access"}
+  plug Guardian.Plug.EnsureAuthenticated, claims: %{"typ" => "access"}
   plug Guardian.Plug.LoadResource
 
   plug BokkenWeb.Auth.CurrentUser
