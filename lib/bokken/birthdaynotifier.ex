@@ -7,7 +7,7 @@ defmodule Bokken.BirthdayNotifier do
   alias BokkenWeb.EventsEmails
   import Bokken.Events.EventAdmin
 
-  defp notify_ninja_birthday do
+  def notify_ninja_birthday do
     ninjas = Accounts.list_ninjas([:user])
     current_time = Date.utc_today()
 
