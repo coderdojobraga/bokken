@@ -1,3 +1,3 @@
 defmodule Bokken.Scheduler do
-  use Quantum, otp_app: :your_app
+  use Quantum, otp_app: :bokken
 end

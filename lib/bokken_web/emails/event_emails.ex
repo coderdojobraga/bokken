@@ -48,7 +48,7 @@ defmodule BokkenWeb.EventsEmails do
 
   def ninja_birthday_email(ninja, to: email) do
     base_email(to: email)
-    |> subject("[CoderDojo Braga] O Dojo deseja-te parabéns!")
+    |> subject("O CoderDojo Braga deseja-te um feliz aniversário! 🎂")
     |> assign(:ninja, ninja)
     |> render_body(:ninja_birthday)
   end

@@ -68,6 +68,9 @@ defmodule Bokken.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:cors_plug, "~> 3.0"},
 
+      # cronjobs
+      {:quantum, "~> 3.0"},
+
       # utilities
       {:gettext, "~> 0.22.1"},
       {:jason, "~> 1.3"},
@@ -93,10 +96,7 @@ defmodule Bokken.MixProject do
       # tools
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.28", only: [:dev], runtime: false},
-
-      # periodically
-      {:quantum, "~> 3.0"}
+      {:ex_doc, "~> 0.28", only: [:dev], runtime: false}
     ]
   end
 
