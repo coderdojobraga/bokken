@@ -50,7 +50,7 @@ defmodule Bokken.Events.EventAdmin do
 
   def send_email(users, email) do
     users
-    |> List.foldl(
+    |> Enum.reduce(
       %{success: [], fail: []},
       fn user, accumulator ->
         case Mailer.deliver(email.(user)) do
