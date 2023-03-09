@@ -3,7 +3,7 @@ defmodule Bokken.MixProject do
 
   @app :bokken
   @name "Bokken"
-  @version "1.0.5-#{Mix.env()}"
+  @version "1.0.6-#{Mix.env()}"
   @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
 
   def project do

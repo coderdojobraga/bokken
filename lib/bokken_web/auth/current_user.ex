@@ -1,7 +1,7 @@
 defmodule BokkenWeb.Auth.CurrentUser do
   @moduledoc false
+  alias Bokken.Authorization
   alias Bokken.Repo
-  alias BokkenWeb.Authorization
 
   def init(opts), do: opts
 

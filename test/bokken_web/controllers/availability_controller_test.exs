@@ -10,7 +10,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "index" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "list all availabilities", %{conn: conn, event: event} do
       conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
@@ -19,7 +19,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "create availability" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "render availability when data is valid", %{conn: conn, event: event, user: user} do
       valid_availability_attrs = %{
@@ -62,7 +62,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "update availability" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "renders availability when data is valid", %{conn: conn, event: event, user: user} do
       attrs = %{event: event, mentor: user.mentor, is_available: false}

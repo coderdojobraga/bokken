@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "54881493-16e1-42bb-abea-85db08ce8f49",
+		"_postman_id": "c9c4a8c0-481d-4586-8a50-4259f6a7df12",
 		"name": "Bokken - Documentation",
 		"description": "Bokken is the backend platform for managing session registrations and recording ninjas' progress for [CoderDojo Braga](https://coderdojobraga.org).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21780706"
+		"_exporter_id": "19670604"
 	},
 	"item": [
 		{
@@ -2445,7 +2445,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"ninja\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"city\": \"Vieira do Minho\",\n        \"birthday\": \"1996-12-12\",\n        \"belt\": \"white\"\n    }\n}",
+									"raw": "{\n    \"ninja\": {\n        \"first_name\": \"Nelson\",\n        \"last_name\": \"de Oliveira\",\n        \"mobile\": \"+351 912345678\",\n        \"city\": \"Vieira do Minho\",\n        \"birthday\": \"2010-12-12\",\n        \"belt\": \"white\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -6049,6 +6049,275 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "List users",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/admin/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": {\n        \"active\": true\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/admin/users/{{user_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const token = pm.environment.get(\"token\");",
+									"",
+									"let utils = eval(pm.environment.get(\"utils\"))().requests;",
+									"",
+									"email = `rui${parseInt((Math.random() * 100), 10)}@mail.com`",
+									"",
+									"pm.sendRequest({",
+									"    url: `${pm.environment.replaceIn('{{host}}')}/api/auth/sign_up`,",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    method: 'POST',",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"email\": email,",
+									"            \"password\": \"password1234\",",
+									"            \"role\": \"organizer\"",
+									"        })",
+									"    }",
+									"}, utils.create_user)",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Ninjas",
+					"item": [
+						{
+							"name": "List ninjas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/admin/ninjas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"ninjas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update ninja",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ninja\": {\n        \"belt\": \"yellow\"\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/admin/ninjas/{{ninja_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"ninjas",
+										"{{ninja_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mentors",
+					"item": [
+						{
+							"name": "List mentors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/admin/mentors",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"mentors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update mentor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"mentor\": {},\n    \"user\": {\n        \"user_id\": \"{{user_id}}\",\n        \"active\": true\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/admin/mentors/{{mentor_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"mentors",
+										"{{mentor_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Guardians",
+					"item": [
+						{
+							"name": "List guardians",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/admin/guardians",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"guardians"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create guardian",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"guardian\": {},\n    \"user\": {\n        \"user_id\": \"{{user_id}}\",\n        \"active\": true\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/admin/guardians/{{guardian_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"guardians",
+										"{{guardian_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
