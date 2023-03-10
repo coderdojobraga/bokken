@@ -18,8 +18,8 @@ defmodule Bokken.Application do
       BokkenWeb.Endpoint,
       # Start a worker by calling: Bokken.Worker.start_link(arg)
       # {Bokken.Worker, arg}
-      Bokken.Scheduler
       # Operates cronjob tasks using :quantum
+      Bokken.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
