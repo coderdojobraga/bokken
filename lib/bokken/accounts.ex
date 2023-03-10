@@ -512,10 +512,10 @@ defmodule Bokken.Accounts do
   end
 
   def get_guardian_email_by_ninja(ninja: user) do
-      user
-      |> Repo.preload(:ninja)
-      |> then(fn user -> get_guardian!(user.ninja.guardian_id, [:user]) end)
-      |> then(fn guardian -> guardian.user.email end)
+    user
+    |> Repo.preload(:ninja)
+    |> then(fn user -> get_guardian!(user.ninja.guardian_id, [:user]) end)
+    |> then(fn guardian -> guardian.user.email end)
   end
 
   alias Bokken.Accounts.Organizer
