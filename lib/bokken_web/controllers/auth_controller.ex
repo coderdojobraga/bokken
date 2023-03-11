@@ -3,9 +3,9 @@ defmodule BokkenWeb.AuthController do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User
+  alias Bokken.Authorization
   alias Bokken.Mailer
   alias BokkenWeb.AuthEmails
-  alias BokkenWeb.Authorization
 
   action_fallback BokkenWeb.FallbackController
 
@@ -49,6 +49,20 @@ defmodule BokkenWeb.AuthController do
     end
   end
 
+  def create(conn, %{"ninja_id" => ninja_id, "user" => user_params}) when is_guardian(conn) do
+    current_guardian = conn.assigns.current_user
+    ninja = Accounts.get_ninja!(ninja_id, [:guardian])
+
+    with true <- current_guardian.id == ninja.guardian.id,
+         {:ok, %User{} = user} <- Accounts.create_account_for_ninja(ninja, user_params) do
+      send_verification_token(user)
+
+      conn
+      |> put_status(:created)
+      |> render("me.json", %{user: user})
+    end
+  end
+
   def update(conn, %{"user" => user_params}) when is_registered(conn) do
     current_user = conn.assigns.current_user
 
@@ -82,7 +96,7 @@ defmodule BokkenWeb.AuthController do
 
   defp send_verification_token(user) do
     {:ok, token, _claims} =
-      Authorization.encode_and_sign(user, %{email: user.email}, ttl: {15, :minute})
+      Authorization.encode_and_sign(user, %{email: user.email}, ttl: {30, :minute})
 
     AuthEmails.verify_user_email(token, to: user.email) |> Mailer.deliver()
   end

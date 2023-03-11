@@ -4,7 +4,7 @@ defmodule BokkenWeb.PairingControllerTest do
   import Bokken.Factory
 
   describe "create" do
-    setup [:register_and_log_in_organizer]
+    setup [:login_as_organizer]
 
     test "create pairings for an event", %{conn: conn} do
       event = insert(:event)
@@ -35,7 +35,7 @@ defmodule BokkenWeb.PairingControllerTest do
   end
 
   describe "index" do
-    setup [:register_and_log_in_organizer]
+    setup [:login_as_organizer]
 
     test "list all pairings for an event", %{conn: conn} do
       event = insert(:event)

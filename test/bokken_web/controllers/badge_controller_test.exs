@@ -35,7 +35,7 @@ defmodule BokkenWeb.BadgeControllerTest do
   end
 
   describe "index" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "lists all badges", %{conn: conn} do
       conn = get(conn, Routes.badge_path(conn, :index))
@@ -44,7 +44,7 @@ defmodule BokkenWeb.BadgeControllerTest do
   end
 
   describe "create badge" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "renders badge when data is valid", %{conn: conn} do
       conn = post(conn, Routes.badge_path(conn, :create), badge: @create_attrs)
@@ -67,7 +67,7 @@ defmodule BokkenWeb.BadgeControllerTest do
   end
 
   describe "update badge" do
-    setup [:create_badge, :register_and_log_in_mentor]
+    setup [:create_badge, :login_as_mentor]
 
     test "renders badge when data is valid", %{conn: conn, badge: %Badge{id: id} = badge} do
       conn = put(conn, Routes.badge_path(conn, :update, badge), badge: @update_attrs)
@@ -90,7 +90,7 @@ defmodule BokkenWeb.BadgeControllerTest do
   end
 
   describe "delete badge" do
-    setup [:create_badge, :register_and_log_in_mentor]
+    setup [:create_badge, :login_as_mentor]
 
     test "deletes chosen badge", %{conn: conn, badge: badge} do
       conn = delete(conn, Routes.badge_path(conn, :delete, badge))

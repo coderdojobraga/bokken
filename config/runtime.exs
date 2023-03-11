@@ -78,7 +78,7 @@ if config_env() in [:prod, :stg] do
       You can generate one by calling: mix guardian.gen.secret
       """)
 
-  config :bokken, BokkenWeb.Authorization,
+  config :bokken, Bokken.Authorization,
     issuer: "bokken",
     secret_key: secret_key_guardian,
     ttl: {1, :day}
