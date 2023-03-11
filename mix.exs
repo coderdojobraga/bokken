@@ -3,7 +3,7 @@ defmodule Bokken.MixProject do
 
   @app :bokken
   @name "Bokken"
-  @version "1.0.5-#{Mix.env()}"
+  @version "1.0.6-#{Mix.env()}"
   @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
 
   def project do
@@ -13,9 +13,8 @@ defmodule Bokken.MixProject do
       version: @version,
       description: @description,
       git_ref: git_revision_hash(),
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers(),
       start_permanent: Mix.env() in [:prod, :stg],
       deps: deps(),
       docs: docs(),
@@ -70,9 +69,10 @@ defmodule Bokken.MixProject do
       {:cors_plug, "~> 3.0"},
 
       # utilities
-      {:gettext, "~> 0.18"},
+      {:gettext, "~> 0.22.1"},
       {:jason, "~> 1.3"},
       {:browser, "~> 0.5.1"},
+      {:timex, "~> 3.7.9"},
 
       # monitoring
       {:telemetry_metrics, "~> 0.6"},
@@ -84,7 +84,7 @@ defmodule Bokken.MixProject do
       {:kaffy, "~> 0.9.0", override: true},
 
       # development
-      {:dotenvy, "~> 0.6.0"},
+      {:dotenvy, "~> 0.7.0"},
 
       # testing
       {:faker, "~> 0.17", only: [:dev, :test]},

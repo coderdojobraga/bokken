@@ -1,6 +1,8 @@
 defmodule BokkenWeb.AvailabilityControllerTest do
   use BokkenWeb.ConnCase
 
+  import Bokken.Factory
+
   alias Bokken.Events
 
   setup %{conn: conn} do
@@ -19,16 +21,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       |> Events.create_team()
 
     event_fixture =
-      %{
-        title: "Test event",
-        spots_available: 30,
-        start_time: ~U[2023-02-14 10:00:00.000Z],
-        end_time: ~U[2023-02-14 12:30:00.000Z],
-        enrollments_open: ~U[2022-07-03 12:30:00.0Z],
-        enrollments_close: ~U[2023-02-13 12:30:00.0Z],
-        online: false,
-        notes: "Valentines"
-      }
+      params_for(:event)
       |> Map.put(:location_id, location.id)
       |> Map.put(:team_id, team.id)
 
@@ -38,7 +31,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "index" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "list all availabilities", %{conn: conn, event: event} do
       conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
@@ -47,7 +40,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "create availability" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "render availability when data is valid", %{conn: conn, event: event, user: user} do
       valid_availability_attrs = %{
@@ -90,7 +83,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
   end
 
   describe "update availability" do
-    setup [:register_and_log_in_mentor]
+    setup [:login_as_mentor]
 
     test "renders availability when data is valid", %{conn: conn, event: event, user: user} do
       availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available: false}

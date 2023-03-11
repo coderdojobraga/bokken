@@ -1,5 +1,4 @@
 defmodule Bokken.PairingsTest do
-  @moduledoc false
   use Bokken.DataCase
 
   import Bokken.Factory

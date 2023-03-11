@@ -1,5 +1,8 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :argon2_elixir, t_cost: 1, m_cost: 8
+
 # Configure your database
 config :bokken, Bokken.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -15,7 +18,7 @@ config :bokken, BokkenWeb.Endpoint,
   secret_key_base: "UYOacKoTtE8G5zQ4bjnfor+cxMxtRf3wOhpmYHPuMZDgrqtzzwXdt9uMfTb9wsSl",
   server: true
 
-config :bokken, BokkenWeb.Authorization,
+config :bokken, Bokken.Authorization,
   issuer: "bokken",
   secret_key: "3ZMckYtz7b+IbkHna9191NDcZFEGk06QYQBCbGtvfV6rASJ8zxjhvRwBez5CuMV4"
 

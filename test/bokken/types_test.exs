@@ -1,5 +1,5 @@
 defmodule Bokken.TypesTests do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   describe "PT Phone number testing" do
     alias Bokken.Ecto.PtMobile

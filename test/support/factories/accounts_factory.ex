@@ -43,7 +43,7 @@ defmodule Bokken.Factories.AccountFactory do
         %Ninja{
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
-          birthday: Date.date_of_birth(7..17),
+          birthday: Date.date_of_birth(7..16),
           belt: Enum.random(Ecto.Enum.values(Ninja, :belt)),
           guardian: build(:guardian),
           user: build(:user, role: :ninja)

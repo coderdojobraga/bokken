@@ -11,6 +11,8 @@ defmodule Bokken.Accounts do
 
   alias Bokken.Gamification
 
+  alias Bokken.Accounts.User
+
   alias Bokken.Accounts.Guardian
 
   @doc """
@@ -19,9 +21,17 @@ defmodule Bokken.Accounts do
       iex> list_guardians()
       [%Guardian{}, ...]
   """
+  def list_guardians(preloads) when is_list(preloads) do
+    Guardian
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
   def list_guardians do
     Repo.all(Guardian)
   end
+
+  def get_guardian(id), do: Repo.get(Guardian, id)
 
   @doc """
   Gets a single guardian.
@@ -86,6 +96,47 @@ defmodule Bokken.Accounts do
     Guardian.changeset(guardian, attrs)
   end
 
+  @doc """
+  Updates a guardian and the associated user.
+  Should only be used by admins.
+
+  ## Examples
+      iex> update_guardian_and_user(guardian, %{field: new_value}, %{field: new_value})
+      {:ok, %Guardian{}}
+
+      iex> update_guardian_and_user(guardian, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_guardian_and_user(guardian, guardian_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
+
+    case get_user(user_id) do
+      nil ->
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :guardian,
+            Guardian.changeset(guardian, guardian_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, guardian: guardian}} ->
+            {:ok, guardian |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
+    end
+  end
+
   alias Bokken.Accounts.Mentor
 
   @doc """
@@ -96,9 +147,15 @@ defmodule Bokken.Accounts do
       iex> list_mentors()
       [%Mentor{}, ...]
 
+      iex> list_mentors([:user])
+      [%Mentor{}, ...]
+
   """
-  @spec list_mentors(map()) :: list(Mentor.t())
-  def list_mentors(args \\ %{})
+  def list_mentors(preloads) when is_list(preloads) do
+    Mentor
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_mentors(%{"team_id" => team_id}) do
     team_id
@@ -112,10 +169,12 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
-  def list_mentors(_args) do
+  def list_mentors do
     Mentor
     |> Repo.all()
   end
+
+  def get_mentor(id), do: Repo.get(Mentor, id)
 
   @doc """
   Gets a single mentor.
@@ -215,6 +274,47 @@ defmodule Bokken.Accounts do
     Repo.delete_all(query)
   end
 
+  @doc """
+  Updates a mentor and the associated user.
+  Should only be used by admins.
+
+  ## Examples
+      iex> update_mentor_and_user(mentor, %{field: new_value}, %{field: new_value})
+      {:ok, %Mentor{}}
+
+      iex> update_mentor_and_user(mentor, %{field: bad_value}, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_mentor_and_user(mentor, mentor_params, user_params) do
+    user_id = Map.get(user_params, "user_id")
+
+    case get_user(user_id) do
+      nil ->
+        {:error, "User not found"}
+
+      user ->
+        transaction =
+          Ecto.Multi.new()
+          |> Ecto.Multi.update(
+            :user,
+            User.admin_changeset(user, user_params)
+          )
+          |> Ecto.Multi.update(
+            :mentor,
+            Mentor.changeset(mentor, mentor_params)
+          )
+          |> Repo.transaction()
+
+        case transaction do
+          {:ok, %{user: _user, mentor: mentor}} ->
+            {:ok, mentor |> Repo.preload([:user], force: true)}
+
+          {:error, _transaction, errors, _change_so_far} ->
+            {:error, errors}
+        end
+    end
+  end
+
   alias Bokken.Accounts.Ninja
 
   @doc """
@@ -231,9 +331,11 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
-
-  @spec list_ninjas(map()) :: list(Ninja.t())
-  def list_ninjas(args \\ %{})
+  def list_ninjas(preloads) when is_list(preloads) do
+    Ninja
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
 
   def list_ninjas(%{"team_id" => team_id}) do
     team_id
@@ -253,10 +355,12 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:ninjas)
   end
 
-  def list_ninjas(_args) do
+  def list_ninjas do
     Ninja
     |> Repo.all()
   end
+
+  def get_ninja(id), do: Repo.get(Ninja, id)
 
   @doc """
   Gets a single ninja.
@@ -274,6 +378,32 @@ defmodule Bokken.Accounts do
   """
   def get_ninja!(id, preloads \\ []) do
     Repo.get!(Ninja, id) |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Gets a single ninja by its discord_id.
+
+  Raises `{:error, :not_found}` if the Ninja does not exist.
+
+  ## Examples
+
+      iex> get_ninja_by_discord("123")
+      {:ok, %Ninja{}}
+
+      iex> get_ninja_by_discord("456")
+      {:error, :not_found}
+  """
+  def get_ninja_by_discord(discord) do
+    query = ~s|{"name": "discord", "username": "#{discord}"}|
+
+    result =
+      from(p in Ninja, where: fragment("? <@ ANY(?)", ~s|#{query}|, p.socials))
+      |> Repo.one()
+
+    case result do
+      nil -> {:error, :not_found}
+      _ -> {:ok, result}
+    end
   end
 
   @doc """
@@ -541,6 +671,22 @@ defmodule Bokken.Accounts do
     |> Repo.insert()
   end
 
+  def create_account_for_ninja(%Ninja{} = ninja, attrs \\ %{}) do
+    result =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:user, User.register_ninja_changeset(%User{}, attrs))
+      |> Ecto.Multi.update(:ninja, &Ninja.changeset(ninja, %{user_id: &1.user.id}))
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{user: user}} ->
+        {:ok, Repo.preload(user, :ninja)}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
+  end
+
   def register_user(%User{} = user, attrs \\ %{}) do
     result =
       Ecto.Multi.new()
@@ -593,6 +739,23 @@ defmodule Bokken.Accounts do
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Update a user as an admin. This function should only be used by admins.
+
+  ## Examples
+
+        iex> update_user_as_admin(user, %{field: new_value})
+        {:ok, %User{}}
+
+        iex> update_user_as_admin(user, %{field: bad_value})
+        {:error, %Ecto.Changeset{}}
+  """
+  def update_user_as_admin(user, user_params) do
+    user
+    |> User.admin_changeset(user_params)
     |> Repo.update()
   end
 
@@ -740,84 +903,104 @@ defmodule Bokken.Accounts do
     |> Repo.transaction()
   end
 
-  alias Bokken.Accounts.Bot
+  alias Bokken.Accounts.Token
 
   @doc """
-  Returns the list of bots.
+  Returns the list of Tokens.
 
   ## Examples
 
-      iex> list_bots()
-      [%Bot{}, ...]
+      iex> list_tokens()
+      [%Token{}, ...]
 
   """
-  def list_bots do
-    Repo.all(Bot)
+  def list_tokens do
+    Repo.all(Token)
   end
 
   @doc """
-  Creates a Bot.
+  Creates a Token.
 
   ## Examples
 
-      iex> create_bot(%{field: value})
+      iex> create_token(%{field: value})
       {:ok, %Bot{}}
 
-      iex> create_bot(%{field: bad_value})
+      iex> create_token(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_bot(attrs \\ %{}) do
-    %Bot{}
-    |> Bot.changeset(attrs)
-    |> Repo.insert()
+  def create_token(attrs \\ %{}) do
+    transaction =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:token, Token.changeset(%Token{}, attrs))
+      |> Ecto.Multi.update(
+        :api_key,
+        fn results ->
+          {:ok, token, _claims} =
+            Bokken.Authorization.encode_and_sign(results.token, %{}, ttl: {90, :day})
+
+          Token.key_changeset(results.token, %{
+            "api_key" => token
+          })
+        end
+      )
+      |> Repo.transaction()
+
+    case transaction do
+      {:ok, %{api_key: token}} ->
+        {:ok, token}
+
+      {:error, _transation, errors, _changes_so_far} ->
+        {:error, errors}
+    end
   end
 
   @doc """
-  Updates a Bot.
+  Updates a Token.
 
   ## Examples
 
-      iex> update_bot(%Bot{}, %{field: value})
-      {:ok, %Bot{}}
+      iex> update_token(%Token{}, %{field: value})
+      {:ok, %Token{}}
 
-      iex> update_bot(%Bot{}, %{field: bad_value})
+      iex> update_token(%Token{}, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_bot(%Bot{} = bot, attrs) do
-    bot
-    |> Bot.changeset(attrs)
+  def update_token(%Token{} = token, attrs) do
+    token
+    |> Token.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Gets a single Bot.
+  Gets a single Token.
 
   Raises `Ecto.NoResultsError` if the Bot does not exist.
 
   ## Examples
 
-      iex> get_bot!(123)
-      %Bot{}
+      iex> get_token!(123)
+      %Token{}
 
-      iex> get_bot!(456)
+      iex> get_token!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_bot!(id, preloads \\ []) do
-    Repo.get!(Bot, id) |> Repo.preload(preloads)
+  def get_token!(id) do
+    Repo.get!(Token, id)
   end
 
   @doc """
-  Deletes a bot.
+  Deletes a Token.
   ## Examples
-      iex> delete_bot(bot)
-      {:ok, %Bot{}}
-      iex> delete_bot(bot)
+      iex> delete_token(token)
+      {:ok, %Token{}}
+      iex> delete_token(token)
       {:error, %Ecto.Changeset{}}
   """
-  def delete_bot(%Bot{} = bot) do
-    Repo.delete(bot)
+  def delete_token(%Token{} = token) do
+    Repo.delete(token)
   end
 end

@@ -43,6 +43,14 @@ defmodule BokkenWeb do
     end
   end
 
+  def email_view do
+    quote do
+      use Phoenix.Swoosh, view: BokkenWeb.EmailView, layout: {BokkenWeb.LayoutView, :email}
+
+      unquote(view_helpers())
+    end
+  end
+
   def router do
     quote do
       use Phoenix.Router
@@ -67,6 +75,8 @@ defmodule BokkenWeb do
       import BokkenWeb.ErrorHelpers
       import BokkenWeb.Gettext
       alias BokkenWeb.Router.Helpers, as: Routes
+
+      import BokkenWeb.ViewUtils
     end
   end
 

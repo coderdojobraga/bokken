@@ -22,7 +22,7 @@ defmodule Bokken.AccountsFixtures do
       photo: Avatar.image_url("#{System.unique_integer()}.png"),
       first_name: Person.PtBr.first_name(),
       last_name: Person.PtBr.last_name(),
-      mobile: Phone.PtPt.cell_number(),
+      mobile: "+351" <> Phone.PtPt.cell_number(),
       city: Enum.random(Jason.decode!(File.read!("data/pt/cities.json")))
     })
   end
@@ -32,7 +32,7 @@ defmodule Bokken.AccountsFixtures do
       photo: Avatar.image_url("#{System.unique_integer()}.png"),
       first_name: Person.PtBr.first_name(),
       last_name: Person.PtBr.last_name(),
-      mobile: Phone.PtPt.cell_number(),
+      mobile: "+351" <> Phone.PtPt.cell_number(),
       city: Enum.random(Jason.decode!(File.read!("data/pt/cities.json"))),
       major: "Software Engineering",
       birthday: Date.date_of_birth(18..27)
@@ -46,7 +46,7 @@ defmodule Bokken.AccountsFixtures do
       photo: Avatar.image_url("#{System.unique_integer()}.png"),
       first_name: Person.PtBr.first_name(),
       last_name: Person.PtBr.last_name(),
-      birthday: Date.date_of_birth(7..17),
+      birthday: Date.date_of_birth(7..16),
       belt: Enum.random(Ecto.Enum.values(Accounts.Ninja, :belt)),
       city: Enum.random(Jason.decode!(File.read!("data/pt/cities.json"))),
       guardian_id: guardian.id
