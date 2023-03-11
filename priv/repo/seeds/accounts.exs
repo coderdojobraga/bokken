@@ -245,9 +245,14 @@ defmodule Bokken.Repo.Seeds.Accounts do
 
     photo = nil
 
-    codemonkey = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
-    lightbot = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
-    codewars = Enum.random(["Ze","Antonio","Mario","Julio","Durate","Dinis"])
+    socials = [
+      %{name: :discord, username: "#{names.first_name}##{System.unique_integer([:positive])}"},
+      %{name: :github, username: "#{names.first_name <> names.last_name}"},
+      %{name: :slack, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codemonkey, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :lightbot, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codewars, username: "@#{String.downcase(names.first_name)}"}
+    ]
 
     ninja =
       Enum.into(names, %{
@@ -256,9 +261,7 @@ defmodule Bokken.Repo.Seeds.Accounts do
         photo: photo,
         belt: belt,
         birthday: birthday,
-        codemonkey: codemonkey,
-        lightbot: lightbot,
-        codewars: codewars
+        socials: socials
       })
 
     Bokken.Accounts.create_ninja(ninja)
