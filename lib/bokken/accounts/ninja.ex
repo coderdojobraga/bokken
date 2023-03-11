@@ -26,7 +26,7 @@ defmodule Bokken.Accounts.Ninja do
 
     field :notes, :string
 
-    embeds_many :socials, Social
+    embeds_many :socials, Social, on_replace: :delete
 
     belongs_to :user, User, foreign_key: :user_id
     belongs_to :guardian, Guardian, foreign_key: :guardian_id
@@ -43,9 +43,10 @@ defmodule Bokken.Accounts.Ninja do
   def changeset(ninja, attrs) do
     ninja
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> cast_embed(:socials, with: &Social.changeset/2)
     |> cast_attachments(attrs, @attachment_fields, allow_urls: true)
     |> validate_required(@required_fields)
+    |> then(&Social.is_socials_empty?/1)
+    |> cast_embed(:socials, with: &Social.changeset/2)
     |> validate_birthday()
     |> assoc_constraint(:guardian)
     |> assoc_constraint(:user)
