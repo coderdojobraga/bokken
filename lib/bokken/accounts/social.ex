@@ -11,7 +11,17 @@ defmodule Bokken.Accounts.Social do
 
   @derive Jason.Encoder
   @primary_key {:name, Ecto.Enum,
-                values: [:scratch, :codewars, :github, :gitlab, :trello, :discord, :slack, :codemonkey, :lightbot],
+                values: [
+                  :scratch,
+                  :codewars,
+                  :github,
+                  :gitlab,
+                  :trello,
+                  :discord,
+                  :slack,
+                  :codemonkey,
+                  :lightbot
+                ],
                 autogenerate: false}
   @foreign_key_type Ecto.Enum
   embedded_schema do
