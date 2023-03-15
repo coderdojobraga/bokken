@@ -1,7 +1,27 @@
 defmodule Bokken.Ecto.PtMobile do
-  @moduledoc """
+  @moduledoc false
+
+  @doc ~S"""
   PT Phone number type with validation and formatting for Ecto.
+
+  ## Examples
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 912 345 678")
+    {:ok, "+351912345678"}
+    
+    iex> Bokken.Ecto.PtMobile.cast("929066855")
+    {:ok, "+351929066855"}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 939-066-855")
+    {:ok, "+351939066855"}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 979 066 855")
+    {:error, [message: "invalid PT phone number"]}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 989 066 855")
+    {:error, [message: "invalid PT phone number"]}
   """
+  import BokkenWeb.Gettext
 
   use Ecto.Type
 
@@ -13,20 +33,11 @@ defmodule Bokken.Ecto.PtMobile do
   ## Parameters
     - number: valid PT phone number with the "+351" indicative in a string format
   """
-  def cast("+351" <> number) do
-    mobile =
-      format(number)
-      |> List.to_string()
-
-    if is_nil(Regex.run(~r/9[12356]\d{7}/, mobile)) do
-      {:error, [message: "número PT não válido"]}
-    else
-      {:ok, "+351" <> mobile}
+  def cast(number) do
+    case format(number) do
+      {:ok, number} -> {:ok, number}
+      {:error, message} -> {:error, message}
     end
-  end
-
-  def cast(_number) do
-    {:error, [message: "número PT não válido"]}
   end
 
   @doc """
@@ -35,11 +46,12 @@ defmodule Bokken.Ecto.PtMobile do
   ## Parameters
     - number: valid PT phone number with the "+351" indicative in a string format
   """
-  def dump("+351" <> mobile) do
-    {:ok, "+351" <> mobile}
+  def dump(number) do
+    case format(number) do
+      {:ok, number} -> {:ok, number}
+      {:error, _message} -> :error
+    end
   end
-
-  def dump(_mobile), do: :error
 
   @doc """
   Transforms the data back to a runtime format
@@ -47,32 +59,20 @@ defmodule Bokken.Ecto.PtMobile do
   ## Parameters
     - number: valid PT phone number with the "+351" indicative in a string format
   """
-  def load("+351" <> mobile) do
-    {:ok, "+351" <> mobile}
-  end
-
-  def load(_mobile), do: :error
-
-  # Transforms a number into the standard format
-  # ## Parameters
-  #   - number: valis PT phone number in a list of strings (ex: ["9", "1", "6", "0", "6", "5", "5", "0", "0"])
-  defp format([]), do: []
-
-  defp format(number) when is_list(number) do
-    [n | rest] = number
-    <<v::utf8>> = n
-
-    if v >= 48 and v <= 57 do
-      [n | format(rest)]
-    else
-      format(rest)
+  def load(number) do
+    case format(number) do
+      {:ok, number} -> {:ok, number}
+      {:error, _message} -> :error
     end
   end
 
   defp format(number) do
-    number
-    |> String.trim()
-    |> String.graphemes()
-    |> format()
+    {:ok, phone_number} = ExPhoneNumber.parse(number, "PT")
+
+    if ExPhoneNumber.is_valid_number?(phone_number) do
+      {:ok, ExPhoneNumber.format(phone_number, :e164)}
+    else
+      {:error, [message: gettext("invalid PT phone number")]}
+    end
   end
 end
