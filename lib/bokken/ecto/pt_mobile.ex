@@ -1,7 +1,27 @@
 defmodule Bokken.Ecto.PtMobile do
-  @moduledoc """
+  @moduledoc false
+
+  @doc ~S"""
   PT Phone number type with validation and formatting for Ecto.
+
+  ## Examples
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 912 345 678")
+    {:ok, "+351912345678"}
+    
+    iex> Bokken.Ecto.PtMobile.cast("929066855")
+    {:ok, "+351929066855"}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 939-066-855")
+    {:ok, "+351939066855"}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 979 066 855")
+    {:error, [message: "invalid PT phone number"]}
+
+    iex> Bokken.Ecto.PtMobile.cast("+351 989 066 855")
+    {:error, [message: "invalid PT phone number"]}
   """
+  import BokkenWeb.Gettext
 
   use Ecto.Type
 
@@ -52,7 +72,7 @@ defmodule Bokken.Ecto.PtMobile do
     if ExPhoneNumber.is_valid_number?(phone_number) do
       {:ok, ExPhoneNumber.format(phone_number, :e164)}
     else
-      {:error, [message: "invalid PT phone number"]}
+      {:error, [message: gettext("invalid PT phone number")]}
     end
   end
 end
