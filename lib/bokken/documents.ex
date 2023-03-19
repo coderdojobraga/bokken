@@ -37,6 +37,22 @@ defmodule Bokken.Documents do
     |> Map.fetch!(:files)
   end
 
+  # Returns all the files of a guardian and its ninjas
+  def list_files(%{"guardian_id" => guardian_id}) do
+    guardian = Accounts.get_guardian!(guardian_id, [:ninjas])
+
+    guardian.user_id
+    |> Accounts.get_user!([:files])
+    |> Map.fetch!(:files)
+    |> Enum.concat(
+      guardian.ninjas
+      |> Enum.map(fn ninja ->
+        list_files(%{"ninja_id" => ninja.id})
+      end)
+      |> List.flatten()
+    )
+  end
+
   def list_files(_args) do
     File
     |> Repo.all()

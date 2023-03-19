@@ -12,6 +12,7 @@ defmodule Bokken.Documents.File do
   @required_fields [:user_id]
   @optional_fields [:title, :description, :lecture_id]
   @attachment_fields [:document]
+
   schema "files" do
     field :title, :string
     field :description, :string
