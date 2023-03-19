@@ -21,9 +21,14 @@ defmodule Bokken.Documents do
   def list_files(args \\ %{})
 
   def list_files(%{"ninja_id" => ninja_id}) do
-    Accounts.get_ninja!(ninja_id).user_id
-    |> Accounts.get_user!([:files])
-    |> Map.fetch!(:files)
+    user_id = Accounts.get_ninja!(ninja_id).user_id
+
+    if is_nil(user_id) do
+      []
+    else
+      Accounts.get_user!(user_id, [:files])
+      |> Map.fetch!(:files)
+    end
   end
 
   def list_files(%{"mentor_id" => mentor_id}) do
