@@ -49,7 +49,7 @@ defmodule Bokken.Documents do
       |> Enum.map(fn ninja ->
         list_files(%{"ninja_id" => ninja.id})
       end)
-      |> List.flatten()
+      |> Enum.flat_map(& &1)
     )
   end
 
