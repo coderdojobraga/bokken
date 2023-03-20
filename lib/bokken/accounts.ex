@@ -331,6 +331,7 @@ defmodule Bokken.Accounts do
       [%Ninja{}, ...]
 
   """
+
   def list_ninjas(preloads) when is_list(preloads) do
     Ninja
     |> Repo.all()
@@ -508,6 +509,13 @@ defmodule Bokken.Accounts do
       {:error, _transation, errors, _changes_so_far} ->
         {:error, errors}
     end
+  end
+
+  def get_guardian_email_by_ninja(ninja: user) do
+    user
+    |> Repo.preload(:ninja)
+    |> then(fn user -> get_guardian!(user.ninja.guardian_id, [:user]) end)
+    |> then(fn guardian -> guardian.user.email end)
   end
 
   alias Bokken.Accounts.Organizer

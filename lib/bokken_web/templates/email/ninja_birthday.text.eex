@@ -1,0 +1,3 @@
+Olá, <%= @ninja.first_name %>! 👋
+
+O CoderDojo Braga deseja-te um feliz aniversário! 🎂 Esperamos por ti na próxima sessão! 😄

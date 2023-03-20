@@ -68,6 +68,9 @@ defmodule Bokken.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:cors_plug, "~> 3.0"},
 
+      # cronjobs
+      {:quantum, "~> 3.0"},
+
       # utilities
       {:gettext, "~> 0.22.1"},
       {:jason, "~> 1.3"},
