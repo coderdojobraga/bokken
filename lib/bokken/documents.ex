@@ -96,7 +96,7 @@ defmodule Bokken.Documents do
       |> File.changeset(attrs)
       |> Repo.insert()
 
-    user = Accounts.get_user!(attrs.user_id)
+      user = Accounts.get_user!(attrs.user_id)
 
       user
       |> User.changeset(%{total_file_size: verify_total_size(attrs.document, attrs.user_id)})
