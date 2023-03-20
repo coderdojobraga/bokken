@@ -1,6 +1,5 @@
 defmodule Bokken.FileControllerTest do
   use Bokken.DataCase
-  import Bokken.AccountsFixtures
   alias Bokken.Accounts
   alias Bokken.Documents.File
 

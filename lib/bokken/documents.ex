@@ -89,7 +89,9 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts.User
 
   def create_file(attrs \\ %{}) do
-    if verify_total_size(attrs.document, attrs.user_id) > 6_000_000 do
+    max_total_size = String.to_integer(System.get_env("MAX_TOTAL_SIZE", "6000000"))
+
+    if verify_total_size(attrs.document, attrs.user_id) > max_total_size do
       {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
     else
       %File{}
@@ -101,6 +103,8 @@ defmodule Bokken.Documents do
       user
       |> User.changeset(%{total_file_size: verify_total_size(attrs.document, attrs.user_id)})
       |> Repo.update()
+
+      {:ok, %File{}}
     end
   end
 

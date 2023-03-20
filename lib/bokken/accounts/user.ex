@@ -10,7 +10,7 @@ defmodule Bokken.Accounts.User do
   @roles [:ninja, :guardian, :mentor, :organizer]
 
   @required_fields [:email, :password, :role]
-  @optional_fields [:active, :verified, :registered, :discord_id, :total_file_size]
+  @optional_fields [:active, :verified, :registered, :total_file_size]
 
   # List of fields that can be updated by admins (organizers)
   @admin_fields [:active, :verified, :registered]
