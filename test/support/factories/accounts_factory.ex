@@ -13,7 +13,8 @@ defmodule Bokken.Factories.AccountFactory do
         %User{
           email: sequence(:email, &"email-#{&1}@mail.com"),
           password_hash: Argon2.hash_pwd_salt("password1234!"),
-          role: sequence(:role, ["organizer", "guardian", "mentor", "ninja"])
+          role: sequence(:role, ["organizer", "guardian", "mentor", "ninja"]),
+          active: true
         }
       end
 

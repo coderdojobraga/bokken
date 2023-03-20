@@ -6,145 +6,11 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
   alias Bokken.Accounts
   alias Bokken.Authorization
   alias Bokken.Curriculum
-  alias Bokken.Curriculum.{NinjaSkill, Skill}
-
-  def valid_admin_user do
-    %{
-      email: "admin-#{System.unique_integer()}@gmail.com",
-      password: "administrator123",
-      role: "organizer",
-      active: true
-    }
-  end
-
-  def valid_ninja_user do
-    %{
-      email: "ninja-#{System.unique_integer()}@gmail.com",
-      password: "ninja123",
-      role: "ninja",
-      active: true
-    }
-  end
-
-  def valid_guardian_user do
-    %{
-      email: "guardian-#{System.unique_integer()}@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-  end
-
-  def valid_guardian do
-    %{
-      city: "Guimarães",
-      mobile: "+351915096743",
-      first_name: "Ana Maria",
-      last_name: "Silva Costa"
-    }
-  end
-
-  def valid_admin do
-    %{
-      first_name: "Jéssica",
-      last_name: "Fernandes",
-      champion: true
-    }
-  end
-
-  def valid_ninja do
-    %{
-      first_name: "Joana",
-      last_name: "Costa",
-      birthday: ~U[2007-03-14 00:00:00.000Z]
-    }
-  end
-
-  def valid_skill do
-    %{
-      name: "Kotlin",
-      description:
-        "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
-    }
-  end
-
-  def admin_attrs do
-    user = valid_admin_user()
-    {:ok, new_user} = Accounts.create_user(user)
-
-    admin =
-      valid_admin()
-      |> Map.put(:user_id, new_user.id)
-
-    {:ok, new_admin} = Accounts.create_organizer(admin)
-
-    user
-    |> Map.put(:user_id, new_user.id)
-    |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
-    |> Map.put(:organizer, new_admin)
-  end
-
-  def ninja_attrs do
-    user = valid_ninja_user()
-    {:ok, new_user} = Accounts.create_user(user)
-    guardian = guardian_attrs()
-
-    ninja =
-      valid_ninja()
-      |> Map.put(:user_id, new_user.id)
-      |> Map.put(:guardian_id, guardian.id)
-
-    {:ok, new_ninja} = Accounts.create_ninja(ninja)
-
-    user
-    |> Map.put(:user_id, new_user.id)
-    |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
-    |> Map.put(:ninja, new_ninja)
-  end
-
-  def guardian_attrs do
-    user = valid_guardian_user()
-    {:ok, new_user} = Accounts.create_user(user)
-
-    guardian =
-      valid_guardian()
-      |> Map.put(:user_id, new_user.id)
-
-    {:ok, new_guardian} = Accounts.create_guardian(guardian)
-    new_guardian
-  end
-
-  def ninja_guardian_attrs do
-    ninja_user = valid_ninja_user()
-    {:ok, new_ninja_user} = Accounts.create_user(ninja_user)
-    guardian_user = valid_guardian_user()
-    {:ok, new_guardian_user} = Accounts.create_user(guardian_user)
-
-    guardian =
-      valid_guardian()
-      |> Map.put(:user_id, new_guardian_user.id)
-
-    {:ok, new_guardian} = Accounts.create_guardian(guardian)
-
-    ninja =
-      valid_ninja()
-      |> Map.put(:user_id, new_ninja_user.id)
-      |> Map.put(:guardian_id, new_guardian.id)
-
-    {:ok, new_ninja} = Accounts.create_ninja(ninja)
-
-    guardian
-    |> Map.put(:user_id, new_guardian_user.id)
-    |> Map.put(:email, new_guardian_user.email)
-    |> Map.put(:password, new_guardian_user.password)
-    |> Map.put(:ninja, new_ninja)
-  end
+  alias Bokken.Curriculum.NinjaSkill
 
   # Create a skill
   setup %{conn: conn} do
-    {:ok, %Skill{} = skill} = Curriculum.create_skill(valid_skill())
+    skill = insert(:skill)
     guardian = insert(:guardian)
     {:ok, conn: conn, skill: skill, guardian: guardian}
   end
@@ -378,21 +244,13 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
     end
 
     defp login_as_another_guardian(%{conn: conn}) do
-      ninja_attrs = ninja_attrs()
+      password = "password1234"
+      ninja = insert(:ninja)
 
-      guardian_user = %{
-        email: "guardian2@mail.com",
-        password: "password1234",
-        role: "guardian",
-        active: true
-      }
-
+      guardian_user = params_for(:user, %{role: "guardian", password: password})
       {:ok, new_user} = Accounts.create_user(guardian_user)
 
-      guardian =
-        valid_guardian()
-        |> Map.put(:user_id, new_user.id)
-
+      guardian = params_for(:guardian, %{user: new_user})
       {:ok, _new_guardian} = Accounts.create_guardian(guardian)
 
       {:ok, guardian_user} =
@@ -408,8 +266,8 @@ defmodule BokkenWeb.NinjaSkillControllerTest do
         conn
         |> Authorization.Plug.sign_out()
         |> put_req_header("authorization", "Bearer #{jwt}")
-        |> put_req_header("user_id", "#{guardian[:user_id]}")
-        |> assign(:ninja_id, ninja_attrs[:ninja].id)
+        |> put_req_header("user_id", "#{guardian.user_id}")
+        |> assign(:ninja_id, ninja.id)
 
       {:ok, conn: conn}
     end

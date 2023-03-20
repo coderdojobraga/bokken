@@ -47,12 +47,13 @@ defmodule Bokken.MixProject do
       {:phoenix, "~> 1.6.0"},
 
       # database
+      {:ecto, "~> 3.9.3"},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.7"},
+      {:ecto_sql, "~> 3.9.2"},
       {:postgrex, ">= 0.0.0"},
 
       # security
-      {:guardian, "~> 2.2"},
+      {:guardian, "~> 2.3.1"},
       {:argon2_elixir, "~> 3.0"},
 
       # uploads

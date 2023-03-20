@@ -3,29 +3,8 @@ defmodule BokkenWeb.AvailabilityControllerTest do
 
   import Bokken.Factory
 
-  alias Bokken.Events
-
   setup %{conn: conn} do
-    {:ok, location} =
-      %{
-        address: "Test address",
-        name: "Departamento de Informática"
-      }
-      |> Events.create_location()
-
-    {:ok, team} =
-      %{
-        name: "Turma Yin",
-        description: "Uma turma"
-      }
-      |> Events.create_team()
-
-    event_fixture =
-      params_for(:event)
-      |> Map.put(:location_id, location.id)
-      |> Map.put(:team_id, team.id)
-
-    {:ok, event} = Events.create_event(event_fixture)
+    event = insert(:event)
 
     {:ok, conn: put_resp_header(conn, "accept", "application/json"), event: event}
   end
@@ -86,15 +65,13 @@ defmodule BokkenWeb.AvailabilityControllerTest do
     setup [:login_as_mentor]
 
     test "renders availability when data is valid", %{conn: conn, event: event, user: user} do
-      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available: false}
-      {:ok, availability} = Events.create_availability(event, availability_attrs)
+      attrs = %{event: event, mentor: user.mentor, is_available: false}
+      availability = insert(:availability, attrs)
 
       new_availability_attrs = %{
         availability: %{
-          event_id: event.id,
-          mentor_id: user.mentor.id,
-          is_available: true,
-          id: availability.id
+          id: availability.id,
+          is_available: true
         }
       }
 
@@ -109,15 +86,13 @@ defmodule BokkenWeb.AvailabilityControllerTest do
     end
 
     test "render errors when data is invalid", %{conn: conn, event: event, user: user} do
-      availability_attrs = %{event_id: event.id, mentor_id: user.mentor.id, is_available: false}
-      {:ok, availability} = Events.create_availability(event, availability_attrs)
+      attrs = %{event: event, mentor: user.mentor, is_available: false}
+      availability = insert(:availability, attrs)
 
       invalid_availability_attrs = %{
         availability: %{
-          event_id: event.id,
-          mentor_id: user.mentor.id,
-          is_available: nil,
-          id: availability.id
+          id: availability.id,
+          is_available: nil
         }
       }
 

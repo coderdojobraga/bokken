@@ -11,7 +11,6 @@ defmodule Bokken.Accounts.User do
 
   @required_fields [:email, :password, :role]
   @optional_fields [:active, :verified, :registered]
-
   # List of fields that can be updated by admins (organizers)
   @admin_fields [:active, :verified, :registered]
 

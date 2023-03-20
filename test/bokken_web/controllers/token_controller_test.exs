@@ -34,7 +34,7 @@ defmodule BokkenWeb.TokenControllerTest do
 
     test "create token", %{conn: conn} do
       name = Faker.StarWars.character()
-      description = Faker.StarWars.quote()
+      description = Faker.Lorem.sentence()
       role = "bot"
       attrs = %{"token" => %{name: name, description: description, role: role}}
 
