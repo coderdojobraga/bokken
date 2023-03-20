@@ -88,11 +88,6 @@ defmodule Bokken.AccountsTest do
   end
 
   describe "mentors" do
-    alias Bokken.Accounts.Mentor
-
-    @update_attrs %{mobile: "+351934568701"}
-    @invalid_attrs %{mobile: nil}
-
     def valid_attr_mentor do
       %{
         mobile: "+351915096743",
@@ -148,13 +143,11 @@ defmodule Bokken.AccountsTest do
           photo: Avatar.image_url("./priv/faker/images/avatar.txt")
         })
 
-      photo = nil
+      if elem(mentor2, 0) != :ok do
+        photo = nil
 
-      if elem(mentor2, 0) == :ok do
-        photo = elem(mentor2, 1).photo
+        assert photo == nil
       end
-
-      assert photo == nil
     end
   end
 end
