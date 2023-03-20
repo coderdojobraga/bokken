@@ -13,7 +13,8 @@ defmodule Bokken.Factories.AccountFactory do
         %User{
           email: sequence(:email, &"email-#{&1}@mail.com"),
           password_hash: Argon2.hash_pwd_salt("password1234!"),
-          role: sequence(:role, ["organizer", "guardian", "mentor", "ninja"])
+          role: sequence(:role, ["organizer", "guardian", "mentor", "ninja"]),
+          active: true
         }
       end
 
@@ -43,7 +44,7 @@ defmodule Bokken.Factories.AccountFactory do
         %Ninja{
           first_name: Person.PtBr.first_name(),
           last_name: Person.PtBr.last_name(),
-          birthday: Date.date_of_birth(7..17),
+          birthday: Date.date_of_birth(7..16),
           belt: Enum.random(Ecto.Enum.values(Ninja, :belt)),
           guardian: build(:guardian),
           user: build(:user, role: :ninja)

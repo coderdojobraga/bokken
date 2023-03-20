@@ -21,15 +21,36 @@ defmodule Bokken.Documents do
   def list_files(args \\ %{})
 
   def list_files(%{"ninja_id" => ninja_id}) do
-    Accounts.get_ninja!(ninja_id).user_id
-    |> Accounts.get_user!([:files])
-    |> Map.fetch!(:files)
+    user_id = Accounts.get_ninja!(ninja_id).user_id
+
+    if is_nil(user_id) do
+      []
+    else
+      Accounts.get_user!(user_id, [:files])
+      |> Map.fetch!(:files)
+    end
   end
 
   def list_files(%{"mentor_id" => mentor_id}) do
     Accounts.get_mentor!(mentor_id).user_id
     |> Accounts.get_user!([:files])
     |> Map.fetch!(:files)
+  end
+
+  # Returns all the files of a guardian and its ninjas
+  def list_files(%{"guardian_id" => guardian_id}) do
+    guardian = Accounts.get_guardian!(guardian_id, [:ninjas])
+
+    guardian.user_id
+    |> Accounts.get_user!([:files])
+    |> Map.fetch!(:files)
+    |> Enum.concat(
+      guardian.ninjas
+      |> Enum.map(fn ninja ->
+        list_files(%{"ninja_id" => ninja.id})
+      end)
+      |> Enum.flat_map(& &1)
+    )
   end
 
   def list_files(_args) do

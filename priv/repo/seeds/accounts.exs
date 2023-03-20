@@ -225,16 +225,23 @@ defmodule Bokken.Repo.Seeds.Accounts do
 
     city = Enum.random(Jason.decode!(File.read!("data/pt/cities.json")))
 
+    socials = [
+      %{name: :discord, username: "#{names.first_name}##{System.unique_integer([:positive])}"},
+      %{name: :github, username: "#{names.first_name <> names.last_name}"},
+      %{name: :slack, username: "@#{String.downcase(names.first_name)}"}
+    ]
+
     photo = nil
 
-    guardian = Enum.into(names, %{user_id: user_id, photo: photo, mobile: mobile, city: city})
+    guardian = Enum.into(names, %{user_id: user_id, photo: photo, mobile: mobile, city: city, socials: socials})
 
     Bokken.Accounts.create_guardian(guardian)
   end
 
   def create_ninja(names, user_id) do
+    current_year = Date.utc_today().year
     birthday = %Date{
-      year: Enum.random(1995..2013),
+      year: current_year - Enum.random(7..17),
       month: Enum.random(1..12),
       day: Enum.random(1..28)
     }
@@ -245,13 +252,23 @@ defmodule Bokken.Repo.Seeds.Accounts do
 
     photo = nil
 
+    socials = [
+      %{name: :discord, username: "#{names.first_name}##{System.unique_integer([:positive])}"},
+      %{name: :github, username: "#{names.first_name <> names.last_name}"},
+      %{name: :slack, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codemonkey, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :lightbot, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codewars, username: "@#{String.downcase(names.first_name)}"}
+    ]
+
     ninja =
       Enum.into(names, %{
         user_id: user_id,
         guardian_id: guardian_id,
         photo: photo,
         belt: belt,
-        birthday: birthday
+        birthday: birthday,
+        socials: socials
       })
 
     Bokken.Accounts.create_ninja(ninja)
@@ -269,6 +286,12 @@ defmodule Bokken.Repo.Seeds.Accounts do
 
     photo = nil
 
+    socials = [
+      %{name: :discord, username: "#{names.first_name}##{System.unique_integer([:positive])}"},
+      %{name: :github, username: "#{names.first_name <> names.last_name}"},
+      %{name: :slack, username: "@#{String.downcase(names.first_name)}"}
+    ]
+
     mentor =
       Enum.into(names, %{
         user_id: user_id,
@@ -276,7 +299,8 @@ defmodule Bokken.Repo.Seeds.Accounts do
         trial: false,
         photo: photo,
         birthday: birthday,
-        t_shirt: Enum.random(["extra_small", "small", "medium", "large", "extra_large", "extra_extra_large"])
+        t_shirt: Enum.random(["extra_small", "small", "medium", "large", "extra_large", "extra_extra_large"]),
+        socials: socials
       })
 
     Bokken.Accounts.create_mentor(mentor)

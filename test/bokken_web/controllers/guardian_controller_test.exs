@@ -3,63 +3,16 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
-  alias BokkenWeb.Authorization
 
-  @invalid_attrs %{
-    city: "Braga",
-    mobile: nil,
-    first_name: "Ana Maria",
-    last_name: "Silva Costa"
-  }
-
-  @valid_attrs %{
-    city: "Braga",
-    mobile: "+351915096743",
-    first_name: "Ana Maria",
-    last_name: "Silva Costa"
-  }
-
-  def valid_user do
-    %{
-      email: "anamaria@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-  end
-
-  def attrs do
-    user = valid_user()
-
-    {:ok, new_user} = Accounts.create_user(user)
-
-    @valid_attrs
-    |> Map.put(:user_id, new_user.id)
-    |> Map.put(:email, new_user.email)
-    |> Map.put(:password, new_user.password)
-  end
-
-  @update_attrs %{
-    city: "Guimarães",
-    mobile: "+351915096743",
-    first_name: "Ana Maria",
-    last_name: "Silva Costa"
-  }
+  import Bokken.Factory
 
   setup %{conn: conn} do
-    guardian = attrs()
-    {:ok, user} = Accounts.authenticate_user(guardian.email, guardian.password)
+    password = "password1234!"
+    guardian_user = insert(:user, role: "guardian", password: password)
 
-    {:ok, jwt, _claims} =
-      Authorization.encode_and_sign(user, %{role: user.role, active: user.active})
+    {:ok, user} = Accounts.authenticate_user(guardian_user.email, password)
 
-    conn =
-      conn
-      |> put_req_header("accept", "application/json")
-      |> put_req_header("authorization", "Bearer #{jwt}")
-      |> put_req_header("user_id", "#{guardian[:user_id]}")
-
-    {:ok, conn: conn}
+    {:ok, conn: log_in_user(conn, user)}
   end
 
   describe "index" do
@@ -71,22 +24,18 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   describe "create guardian" do
     test "renders guardian when data is valid", %{conn: conn} do
-      guardian = %{
+      new_user = insert(:user, role: "guardian")
+
+      guardian_attrs = %{
         city: "Guimarães",
         mobile: "+351915196743",
         first_name: "Carla Maria",
-        last_name: "Silva Costa"
+        last_name: "Silva Costa",
+        user_id: new_user.id
       }
 
-      user = %{
-        email: "carlacosta@gmail.com",
-        password: "guardian123",
-        role: "guardian",
-        active: true
-      }
+      guardian = params_for(:guardian, guardian_attrs)
 
-      new_user = Accounts.create_user(user)
-      guardian = Map.put(guardian, :user_id, elem(new_user, 1).id)
       conn = post(conn, Routes.guardian_path(conn, :create), guardian: guardian)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
@@ -102,7 +51,7 @@ defmodule BokkenWeb.GuardianControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      guardian = @invalid_attrs
+      guardian = params_for(:guardian, mobile: nil)
       user_id = get_req_header(conn, "user_id")
       user_id = Enum.at(user_id, 0)
       guardian = Map.put(guardian, :user_id, user_id)
@@ -118,7 +67,14 @@ defmodule BokkenWeb.GuardianControllerTest do
       conn: conn,
       guardian: %Guardian{id: _id} = guardian
     } do
-      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: @update_attrs)
+      update_attrs = %{
+        mobile: "+351915096743",
+        first_name: "Ana Maria",
+        last_name: "Silva Costa",
+        city: "Guimarães"
+      }
+
+      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: update_attrs)
       assert %{"id" => id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.guardian_path(conn, :show, id))
@@ -132,7 +88,8 @@ defmodule BokkenWeb.GuardianControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, guardian: guardian} do
-      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: @invalid_attrs)
+      invalid_attrs = %{mobile: nil}
+      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -151,48 +108,12 @@ defmodule BokkenWeb.GuardianControllerTest do
   end
 
   defp new_guardian(_) do
-    guardian = %{
-      city: "Braga",
-      mobile: "+351915026743",
-      first_name: "Ana",
-      last_name: "Silva Costa"
-    }
-
-    user = %{
-      email: "ana@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-
-    new_user = Accounts.create_user(user)
-    attrs = Map.put(guardian, :user_id, elem(new_user, 1).id)
-
-    {:ok, guardian} = Accounts.create_guardian(attrs)
-
+    guardian = insert(:guardian)
     %{guardian: guardian}
   end
 
   defp new_guardian_update(_) do
-    guardian = %{
-      city: "Braga",
-      mobile: "+351915426743",
-      first_name: "Catarina Anabela",
-      last_name: "Silva Costa"
-    }
-
-    user = %{
-      email: "catarinasilvacosta@gmail.com",
-      password: "guardian123",
-      role: "guardian",
-      active: true
-    }
-
-    new_user = Accounts.create_user(user)
-    attrs = Map.put(guardian, :user_id, elem(new_user, 1).id)
-
-    {:ok, guardian} = Accounts.create_guardian(attrs)
-
+    guardian = insert(:guardian)
     %{guardian: guardian}
   end
 end

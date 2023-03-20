@@ -13,7 +13,9 @@ defmodule BokkenWeb.OrganizerView do
   def render("organizer.json", %{organizer: organizer}) do
     %{
       id: organizer.id,
-      champion: organizer.champion
+      champion: organizer.champion,
+      first_name: organizer.first_name,
+      last_name: organizer.last_name
     }
   end
 end

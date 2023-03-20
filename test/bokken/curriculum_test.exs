@@ -1,69 +1,41 @@
 defmodule Bokken.CurriculumTest do
   use Bokken.DataCase
 
-  alias Bokken.Accounts
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Curriculum
+
+  import Bokken.Factory
 
   describe "skills" do
     alias Bokken.Curriculum.Skill
 
-    def valid_skill do
-      %{
-        name: "Java",
-        description:
-          "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible"
-      }
-    end
-
-    def update_skill do
-      %{
-        description:
-          "It is a general-purpose programming language intended to let programmers write once, run anywhere"
-      }
-    end
-
-    def invalid_skill do
-      %{
-        name: "Haskell"
-      }
-    end
-
     test "create_skill/1 creates a skill when the data is valid" do
-      skill_fixture = valid_skill()
+      skill_fixture = params_for(:skill)
       assert {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
       assert skill.name == skill_fixture.name
       assert skill.description == skill_fixture.description
     end
 
     test "create_skill/1 fails when the data is invalid" do
-      skill_fixture = invalid_skill()
+      skill_fixture = params_for(:skill, name: nil)
       assert {:error, _changeset} = Curriculum.create_skill(skill_fixture)
     end
 
     test "get_skill!/1 returns the skill" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
+      skill = insert(:skill)
 
       assert %Skill{} = Curriculum.get_skill!(skill.id)
     end
 
     test "list_skills/0 returns all skills" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{}} = Curriculum.create_skill(skill_fixture)
+      insert(:skill)
 
       assert [%Skill{}] = Curriculum.list_skills()
     end
 
     test "update_skill/1 updates a skill when the data is valid" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
-
-      skill_fixture = %{
-        name: "Kotlin",
-        description:
-          "Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference"
-      }
+      skill = insert(:skill)
+      skill_fixture = params_for(:skill)
 
       assert {:ok, %Skill{} = skill} = Curriculum.update_skill(skill, skill_fixture)
 
@@ -72,8 +44,7 @@ defmodule Bokken.CurriculumTest do
     end
 
     test "updates_skill/1 fails when the data is invalid" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
+      skill = insert(:skill)
 
       skill_fixture = %{
         name: "Kotlin",
@@ -83,27 +54,9 @@ defmodule Bokken.CurriculumTest do
       {:error, _changeset} = Curriculum.update_skill(skill, skill_fixture)
     end
 
-    test "updates_skills/1 fails when the data is invalid" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
-
-      skill_fixture = %{
-        name: "Kotlin",
-        description: nil
-      }
-
-      {:error, _changeset} = Curriculum.update_skill(skill, skill_fixture)
-    end
-
-    test "delete_skill/1 deletes the data when valid" do
-      skill_fixture = valid_skill()
-      {:ok, %Skill{} = skill} = Curriculum.create_skill(skill_fixture)
-
-      skill_fixture = %{
-        name: "Haskell"
-      }
-
-      assert %Ecto.Changeset{} = Curriculum.change_skill(skill, skill_fixture)
+    test "delete_skill/1 deletes existing skill" do
+      skill = insert(:skill)
+      assert {:ok, %Skill{}} = Curriculum.delete_skill(skill)
     end
   end
 
@@ -116,10 +69,7 @@ defmodule Bokken.CurriculumTest do
       mentor: mentor,
       skill: skill
     } do
-      mentor_skill_attrs = %{
-        mentor_id: mentor.id,
-        skill_id: skill.id
-      }
+      mentor_skill_attrs = params_for(:mentor_skill, skill_id: skill.id, mentor_id: mentor.id)
 
       assert {:ok, %MentorSkill{} = mentor_skill} =
                Curriculum.create_mentor_skill(mentor_skill_attrs)
@@ -132,10 +82,7 @@ defmodule Bokken.CurriculumTest do
       mentor: _mentor,
       skill: skill
     } do
-      mentor_skill_attrs = %{
-        mentor_id: nil,
-        skill_id: skill.id
-      }
+      mentor_skill_attrs = params_for(:mentor_skill, skill_id: skill.id, mentor_id: nil)
 
       assert {:error, _changeset} = Curriculum.create_mentor_skill(mentor_skill_attrs)
     end
@@ -164,7 +111,7 @@ defmodule Bokken.CurriculumTest do
         "skill_id" => skill.id
       }
 
-      assert {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
+      insert(:mentor_skill, mentor: mentor, skill: skill)
 
       assert Curriculum.mentor_has_skill?(mentor_skill_attrs)
     end
@@ -173,36 +120,22 @@ defmodule Bokken.CurriculumTest do
       mentor: mentor,
       skill: skill
     } do
+      insert(:mentor_skill, mentor: mentor, skill: skill)
+
       mentor_skill_attrs = %{
         "mentor_id" => mentor.id,
         "skill_id" => skill.id
       }
 
-      {:ok, %MentorSkill{}} = Curriculum.create_mentor_skill(mentor_skill_attrs)
-
       assert {1, nil} = Curriculum.delete_mentor_skill(mentor_skill_attrs)
     end
 
     defp create_mentor_data(_x) do
-      mentor_user_attrs = %{
-        email: "mentor1@gmail.com",
-        password: "mentor123",
-        role: "mentor"
-      }
+      mentor_user = insert(:user, role: "mentor")
 
-      mentor_attrs = %{
-        first_name: "Rui",
-        last_name: "Lopes",
-        mobile: "912345678"
-      }
+      mentor = insert(:mentor, user: mentor_user)
 
-      skill_attrs = valid_skill()
-
-      {:ok, mentor_user} = Accounts.create_user(mentor_user_attrs)
-
-      {:ok, mentor} = Accounts.create_mentor(Map.put(mentor_attrs, :user_id, mentor_user.id))
-
-      {:ok, skill} = Curriculum.create_skill(skill_attrs)
+      skill = insert(:skill)
 
       %{
         mentor: mentor,
@@ -247,12 +180,8 @@ defmodule Bokken.CurriculumTest do
            ninja: ninja,
            skill: skill
          } do
-      ninja_skill_attrs = %{
-        ninja_id: ninja.id,
-        skill_id: skill.id
-      }
+      insert(:ninja_skill, ninja: ninja, skill: skill)
 
-      assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
       assert [%Skill{}] = Curriculum.list_ninja_skills(%{"ninja_id" => ninja.id})
 
       assert [%Ninja{}] = Curriculum.list_ninjas_with_skill(%{"skill_id" => skill.id})
@@ -267,7 +196,8 @@ defmodule Bokken.CurriculumTest do
         "skill_id" => skill.id
       }
 
-      assert {:ok, %NinjaSkill{}} = Curriculum.create_ninja_skill(ninja_skill_attrs)
+      insert(:ninja_skill, ninja: ninja, skill: skill)
+
       assert Curriculum.ninja_has_skill?(ninja_skill_attrs)
     end
 
@@ -286,46 +216,9 @@ defmodule Bokken.CurriculumTest do
     end
 
     defp create_ninja_data(_x) do
-      ninja_user_attrs = %{
-        email: "ninja1@gmail.com",
-        password: "ninja123",
-        role: "ninja"
-      }
+      ninja = insert(:ninja)
 
-      ninja_attrs = %{
-        first_name: "Maria",
-        last_name: "Silva",
-        birthday: ~U[2007-03-14 00:00:00.000Z]
-      }
-
-      guardian_user_attrs = %{
-        email: "guardian1@gmail.com",
-        password: "guardian123",
-        role: "guardian"
-      }
-
-      guardian_attrs = %{
-        first_name: "João",
-        last_name: "Silva",
-        mobile: "+351912345678"
-      }
-
-      skill_attrs = valid_skill()
-
-      {:ok, ninja_user} = Accounts.create_user(ninja_user_attrs)
-      {:ok, guardian_user} = Accounts.create_user(guardian_user_attrs)
-
-      {:ok, guardian} =
-        Accounts.create_guardian(Map.put(guardian_attrs, :user_id, guardian_user.id))
-
-      ninja_attrs =
-        ninja_attrs
-        |> Map.put(:guardian_id, guardian.id)
-        |> Map.put(:user_id, ninja_user.id)
-
-      {:ok, ninja} = Accounts.create_ninja(ninja_attrs)
-
-      {:ok, skill} = Curriculum.create_skill(skill_attrs)
+      skill = insert(:skill)
 
       %{
         ninja: ninja,

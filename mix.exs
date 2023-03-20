@@ -3,7 +3,7 @@ defmodule Bokken.MixProject do
 
   @app :bokken
   @name "Bokken"
-  @version "1.0.5-#{Mix.env()}"
+  @version "1.0.6-#{Mix.env()}"
   @description "Backend platform for managing session registrations and recording ninjas' progress for CoderDojo Braga"
 
   def project do
@@ -47,12 +47,13 @@ defmodule Bokken.MixProject do
       {:phoenix, "~> 1.6.0"},
 
       # database
+      {:ecto, "~> 3.9.3"},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.7"},
+      {:ecto_sql, "~> 3.9.2"},
       {:postgrex, ">= 0.0.0"},
 
       # security
-      {:guardian, "~> 2.2"},
+      {:guardian, "~> 2.3.1"},
       {:argon2_elixir, "~> 3.0"},
 
       # uploads
@@ -73,6 +74,7 @@ defmodule Bokken.MixProject do
       {:jason, "~> 1.3"},
       {:browser, "~> 0.5.1"},
       {:timex, "~> 3.7.9"},
+      {:ex_phone_number, "~> 0.3"},
 
       # monitoring
       {:telemetry_metrics, "~> 0.6"},

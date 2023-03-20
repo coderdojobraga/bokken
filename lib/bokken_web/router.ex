@@ -1,6 +1,5 @@
 defmodule BokkenWeb.Router do
   use BokkenWeb, :router
-  use Kaffy.Routes, scope: "/admin", pipe_through: [:authenticated, :admin, :protect_from_forgery]
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -19,6 +18,14 @@ defmodule BokkenWeb.Router do
     plug BokkenWeb.Auth.AllowedRoles, [:organizer]
   end
 
+  pipeline :jwt_auth do
+    plug BokkenWeb.Auth.JWT.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   scope "/", BokkenWeb do
     get "/", PageController, :index
     get "/humans.txt", FileController, :humans_txt
@@ -32,6 +39,16 @@ defmodule BokkenWeb.Router do
   scope "/api", BokkenWeb do
     pipe_through :api
 
+    scope "/bot" do
+      pipe_through :jwt_auth
+
+      resources "/ninja", NinjaController, only: [:show, :update], param: "discord_id"
+    end
+  end
+
+  scope "/api", BokkenWeb do
+    pipe_through :api
+
     scope "/auth" do
       pipe_through [:fetch_session]
       post "/sign_up", AuthController, :sign_up
@@ -40,7 +57,7 @@ defmodule BokkenWeb.Router do
 
       resources "/reset_password", ResetPasswordController, only: [:create, :update]
 
-      pipe_through :authenticated
+      pipe_through [:authenticated]
 
       resources "/me", AuthController, only: [:show, :create, :update], singleton: true
       post "/resend", AuthController, :resend
@@ -48,6 +65,21 @@ defmodule BokkenWeb.Router do
     end
 
     pipe_through [:authenticated, :active]
+
+    scope "/admin" do
+      pipe_through :admin
+
+      resources "/users", Admin.UserController, only: [:index, :update], as: :admin_user
+      resources "/mentors", Admin.MentorController, only: [:index, :update], as: :admin_mentor
+      resources "/ninjas", Admin.NinjaController, only: [:index, :update], as: :admin_ninja
+      resources "/tokens", TokenController, except: [:new, :edit]
+
+      resources "/guardians", Admin.GuardianController,
+        only: [:index, :update],
+        as: :admin_guardian
+    end
+
+    post "/accounts/:ninja_id", AuthController, :create
 
     resources "/guardians", GuardianController, except: [:new, :edit]
 
@@ -99,8 +131,6 @@ defmodule BokkenWeb.Router do
 
     post "/notify_signup", EventController, :notify_signup
     post "/notify_selected", EventController, :notify_selected
-
-    resources "/bot", BotController, except: [:new, :edit]
   end
 
   if Mix.env() in [:dev, :stg, :test] do

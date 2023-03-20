@@ -26,16 +26,6 @@ defmodule BokkenWeb.FileController do
     send_file(conn, 200, "uploads/snippets/#{user_id}/#{lecture_id}/#{file}")
   end
 
-  def index(conn, %{"ninja_id" => _ninja_id} = params) do
-    files = Documents.list_files(params)
-    render(conn, "index.json", files: files)
-  end
-
-  def index(conn, %{"mentor_id" => _mentor_id} = params) do
-    files = Documents.list_files(params)
-    render(conn, "index.json", files: files)
-  end
-
   def index(conn, _params) when is_mentor(conn) do
     mentor_id = conn.assigns.current_user.mentor.id
     files = Documents.list_files(%{"mentor_id" => mentor_id})
@@ -45,6 +35,12 @@ defmodule BokkenWeb.FileController do
   def index(conn, _params) when is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
     files = Documents.list_files(%{"ninja_id" => ninja_id})
+    render(conn, "index.json", files: files)
+  end
+
+  def index(conn, _params) when is_guardian(conn) do
+    guardian_id = conn.assigns.current_user.guardian.id
+    files = Documents.list_files(%{"guardian_id" => guardian_id})
     render(conn, "index.json", files: files)
   end
 
