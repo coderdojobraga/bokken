@@ -255,7 +255,10 @@ defmodule Bokken.Repo.Seeds.Accounts do
     socials = [
       %{name: :discord, username: "#{names.first_name}##{System.unique_integer([:positive])}"},
       %{name: :github, username: "#{names.first_name <> names.last_name}"},
-      %{name: :slack, username: "@#{String.downcase(names.first_name)}"}
+      %{name: :slack, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codemonkey, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :lightbot, username: "@#{String.downcase(names.first_name)}"},
+      %{name: :codewars, username: "@#{String.downcase(names.first_name)}"}
     ]
 
     ninja =

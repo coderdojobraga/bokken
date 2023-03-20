@@ -74,6 +74,7 @@ defmodule Bokken.MixProject do
       {:jason, "~> 1.3"},
       {:browser, "~> 0.5.1"},
       {:timex, "~> 3.7.9"},
+      {:ex_phone_number, "~> 0.3"},
 
       # monitoring
       {:telemetry_metrics, "~> 0.6"},
