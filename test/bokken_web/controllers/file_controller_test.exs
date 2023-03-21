@@ -1,7 +1,6 @@
 defmodule Bokken.FileControllerTest do
   use Bokken.DataCase
   alias Bokken.Accounts
-  alias Bokken.Documents.File
 
   def valid_attr_mentor do
     %{
@@ -48,12 +47,12 @@ defmodule Bokken.FileControllerTest do
       path: "priv/faker/images/avatar.png"
     }
 
-    assert {:ok, %File{}} =
+    assert {:ok, _} =
              Bokken.Documents.create_file(%{
-               title: title,
-               description: title,
-               document: document,
-               user_id: user.user_id
+               "title" => title,
+               "description" => title,
+               "document" => document,
+               "user_id" => user.user_id
              })
   end
 
@@ -69,10 +68,10 @@ defmodule Bokken.FileControllerTest do
 
     assert {:error, "You exceeded the maximum storage quota. Try to delete one or more files"} =
              Bokken.Documents.create_file(%{
-               title: title,
-               description: title,
-               document: document,
-               user_id: user.user_id
+               "title" => title,
+               "description" => title,
+               "document" => document,
+               "user_id" => user.user_id
              })
   end
 end

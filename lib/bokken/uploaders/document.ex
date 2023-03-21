@@ -5,7 +5,8 @@ defmodule Bokken.Uploaders.Document do
   use Waffle.Definition
   use Waffle.Ecto.Definition
   alias Bokken.Documents.File
-  @extension_whitelist ~w(.jpg .jpeg .gif .png)
+
+  @extension_whitelist ~w(.txt .md .htm .html .css .js .ts .tsx .jsx .py .ipynb .c .cpp .h .hpp .cs .java .hs .doc .docx .ppt .pptx .xsl .xslx .png .jpg .svg .mp4 .mp3 .wav .zip .odf .odt .ods .xcf .sql)
   @max_file_size 4_000_000
 
   def validate({file, _}) do

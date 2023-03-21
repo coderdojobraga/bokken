@@ -89,22 +89,50 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts.User
 
   def create_file(attrs \\ %{}) do
-    max_total_size = String.to_integer(System.get_env("MAX_TOTAL_SIZE", "6000000"))
+    max_total_size_str = System.get_env("MAX_TOTAL_SIZE", "6000000")
 
-    if verify_total_size(attrs.document, attrs.user_id) > max_total_size do
-      {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
-    else
-      %File{}
-      |> File.changeset(attrs)
-      |> Repo.insert()
+    case max_total_size_str do
+      nil ->
+        {:error, "MAX_TOTAL_SIZE environment variable not defined"}
 
-      user = Accounts.get_user!(attrs.user_id)
+      _ ->
+        max_total_size = String.to_integer(max_total_size_str)
 
-      user
-      |> User.changeset(%{total_file_size: verify_total_size(attrs.document, attrs.user_id)})
-      |> Repo.update()
+        attrs =
+          Map.put(attrs, :total_size, get_new_total_size(attrs["document"], attrs["user_id"]))
 
-      {:ok, %File{}}
+        case attrs[:total_size] do
+          total_size when total_size > max_total_size ->
+            {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
+
+          total_size ->
+            map = %{
+              user_id: attrs["user_id"],
+              document: attrs["document"],
+              title: attrs["title"],
+              description: attrs["description"]
+            }
+
+            Repo.transaction(fn ->
+              changeset = File.changeset(%File{}, map)
+
+              case Repo.insert(changeset) do
+                {:ok, file} ->
+                  user_changeset =
+                    User.changeset(Accounts.get_user!(attrs["user_id"]), %{
+                      total_file_size: total_size
+                    })
+
+                  case Repo.update(user_changeset) do
+                    {:ok, _} -> {:ok, file}
+                    {:error, _} -> {:error, "Failed to update user's total file size"}
+                  end
+
+                {:error, _} ->
+                  {:error, "Failed to create file"}
+              end
+            end)
+        end
     end
   end
 
@@ -155,7 +183,7 @@ defmodule Bokken.Documents do
     File.changeset(file, attrs)
   end
 
-  def verify_total_size(file, user_id) do
+  def get_new_total_size(file, user_id) do
     user = Accounts.get_user!(user_id)
 
     user.total_file_size + File.file_size(file)
