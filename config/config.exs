@@ -11,6 +11,8 @@ config :bokken,
   ecto_repos: [Bokken.Repo],
   generators: [binary_id: true]
 
+config :bokken, Bokken.Uploaders.Document, max_file_size: 6_000_000
+
 # Configures the endpoint
 config :bokken, BokkenWeb.Endpoint,
   url: [host: "localhost"],

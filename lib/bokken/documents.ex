@@ -89,13 +89,11 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts.User
 
   def create_file(attrs \\ %{}) do
-    case System.get_env("MAX_TOTAL_SIZE", "6000000") do
+    case Application.fetch_env!(:bokken, Bokken.Uploaders.Document)[:max_file_size] do
       nil ->
         {:error, "MAX_TOTAL_SIZE environment variable not defined"}
 
-      max_total_size_str ->
-        max_total_size = String.to_integer(max_total_size_str)
-
+      max_total_size ->
         total_size = get_new_total_size(attrs["document"], attrs["user_id"])
 
         case total_size do
