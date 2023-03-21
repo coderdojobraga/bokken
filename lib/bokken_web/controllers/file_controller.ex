@@ -52,11 +52,17 @@ defmodule BokkenWeb.FileController do
   def create(conn, %{"file" => file_params}) do
     user_id = conn.assigns.current_user.id
 
-    with {:ok, {:ok, file}} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.file_path(conn, :show, file))
-      |> render("show.json", file: file)
+    case Documents.create_file(Map.put(file_params, "user_id", user_id)) do
+      {:ok, {:ok, file}} ->
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.file_path(conn, :show, file))
+        |> render("show.json", file: file)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:forbidden)
+        |> render(BokkenWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
