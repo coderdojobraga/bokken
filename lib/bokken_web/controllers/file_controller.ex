@@ -52,7 +52,7 @@ defmodule BokkenWeb.FileController do
   def create(conn, %{"file" => file_params}) do
     user_id = conn.assigns.current_user.id
 
-    with {:ok, %File{} = file} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
+    with {:ok, {:ok, file}} <- Documents.create_file(Map.put(file_params, "user_id", user_id)) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.file_path(conn, :show, file))

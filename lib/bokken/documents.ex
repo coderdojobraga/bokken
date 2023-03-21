@@ -89,23 +89,20 @@ defmodule Bokken.Documents do
   alias Bokken.Accounts.User
 
   def create_file(attrs \\ %{}) do
-    max_total_size_str = System.get_env("MAX_TOTAL_SIZE", "6000000")
-
-    case max_total_size_str do
+    case System.get_env("MAX_TOTAL_SIZE", "6000000") do
       nil ->
         {:error, "MAX_TOTAL_SIZE environment variable not defined"}
 
-      _ ->
+      max_total_size_str ->
         max_total_size = String.to_integer(max_total_size_str)
 
-        attrs =
-          Map.put(attrs, :total_size, get_new_total_size(attrs["document"], attrs["user_id"]))
+        total_size = get_new_total_size(attrs["document"], attrs["user_id"])
 
-        case attrs[:total_size] do
+        case total_size do
           total_size when total_size > max_total_size ->
             {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
 
-          total_size ->
+          _ ->
             map = %{
               user_id: attrs["user_id"],
               document: attrs["document"],
@@ -113,26 +110,34 @@ defmodule Bokken.Documents do
               description: attrs["description"]
             }
 
-            Repo.transaction(fn ->
-              changeset = File.changeset(%File{}, map)
-
-              case Repo.insert(changeset) do
-                {:ok, file} ->
-                  user_changeset =
-                    User.changeset(Accounts.get_user!(attrs["user_id"]), %{
-                      total_file_size: total_size
-                    })
-
-                  case Repo.update(user_changeset) do
-                    {:ok, _} -> {:ok, file}
-                    {:error, _} -> {:error, "Failed to update user's total file size"}
-                  end
-
-                {:error, _} ->
-                  {:error, "Failed to create file"}
-              end
-            end)
+            create_file_with_user_update(map, total_size)
         end
+    end
+  end
+
+  defp create_file_with_user_update(map, total_size) do
+    Repo.transaction(fn ->
+      changeset = File.changeset(%File{}, map)
+
+      case Repo.insert(changeset) do
+        {:ok, file} ->
+          user_changeset =
+            User.changeset(Accounts.get_user!(map[:user_id]), %{
+              total_file_size: total_size
+            })
+
+          update_user_withchangeset(user_changeset, file)
+
+        {:error, _} ->
+          {:error, "Failed to create file"}
+      end
+    end)
+  end
+
+  defp update_user_withchangeset(user_changeset, file) do
+    case Repo.update(user_changeset) do
+      {:ok, _} -> {:ok, file}
+      {:error, _} -> {:error, "Failed to update user's total file size"}
     end
   end
 
