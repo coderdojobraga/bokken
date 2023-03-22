@@ -95,27 +95,22 @@ defmodule Bokken.Documents do
   end
 
   def create_file(attrs \\ %{}) do
-    case Application.fetch_env!(:bokken, Bokken.Uploaders.Document)[:max_file_size] do
-      nil ->
-        {:error, "MAX_TOTAL_SIZE environment variable not defined"}
+    max_total_size = Application.fetch_env!(:bokken, Bokken.Uploaders.Document)[:max_file_size]
+    total_size = get_new_total_size(attrs["document"], attrs["user_id"])
 
-      max_total_size ->
-        total_size = get_new_total_size(attrs["document"], attrs["user_id"])
+    case total_size do
+      total_size when total_size > max_total_size ->
+        {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
 
-        case total_size do
-          total_size when total_size > max_total_size ->
-            {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
+      _ ->
+        map = %{
+          user_id: attrs["user_id"],
+          document: attrs["document"],
+          title: attrs["title"],
+          description: attrs["description"]
+        }
 
-          _ ->
-            map = %{
-              user_id: attrs["user_id"],
-              document: attrs["document"],
-              title: attrs["title"],
-              description: attrs["description"]
-            }
-
-            create_file_with_user_update(map, total_size)
-        end
+        create_file_with_user_update(map, total_size)
     end
   end
 
