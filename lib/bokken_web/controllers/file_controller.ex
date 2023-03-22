@@ -59,10 +59,10 @@ defmodule BokkenWeb.FileController do
         |> put_resp_header("location", Routes.file_path(conn, :show, file))
         |> render("show.json", file: file)
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, reason} ->
         conn
         |> put_status(:forbidden)
-        |> render(BokkenWeb.ChangesetView, "error.json", changeset: changeset)
+        |> render("error.json", reason: reason)
     end
   end
 

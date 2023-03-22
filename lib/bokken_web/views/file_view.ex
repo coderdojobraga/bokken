@@ -11,6 +11,10 @@ defmodule BokkenWeb.FileView do
     %{data: render_one(file, FileView, "file.json")}
   end
 
+  def render("error.json", %{reason: reason}) do
+    %{reason: reason}
+  end
+
   def render("file.json", %{file: file}) do
     type = if is_nil(file.lecture_id), do: :projects, else: :snippets
 

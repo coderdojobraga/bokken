@@ -126,9 +126,15 @@ defmodule Bokken.AccountsTest do
     test "add an avatar to a mentor" do
       mentor = mentor_fixture()
 
+      image = %Plug.Upload{
+        content_type: "image/png",
+        filename: "avatar.png",
+        path: "priv/faker/images/avatar.png"
+      }
+
       mentor2 =
         Accounts.update_mentor(mentor, %{
-          photo: Avatar.image_url("./priv/faker/images/avatar.png")
+          photo: image
         })
 
       photo = elem(mentor2, 1).photo
