@@ -36,7 +36,7 @@ defmodule Bokken.Repo.Seeds.Documents do
 
         file = %{title: title, description: title, document: document, user_id: user_id}
 
-        Bokken.Documents.create_file_with_seeds(file)
+        Bokken.Documents.create_file(file)
       end
     end
   end
@@ -54,7 +54,7 @@ defmodule Bokken.Repo.Seeds.Documents do
 
         file = %{title: title, description: title, document: document, user_id: user_id}
 
-        Bokken.Documents.create_file_with_seeds(file)
+        Bokken.Documents.create_file(file)
       end
     end
   end

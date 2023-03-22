@@ -176,7 +176,7 @@ defmodule Bokken.Repo.Seeds.Events do
           user_id: ninja.user_id
         }
 
-        Bokken.Documents.create_file_with_seeds(file)
+        Bokken.Documents.create_file(file)
       end
     end
   end
