@@ -59,10 +59,17 @@ defmodule BokkenWeb.FileController do
         |> put_resp_header("location", Routes.file_path(conn, :show, file))
         |> render("show.json", file: file)
 
-      {:error, reason} ->
+      {:ok, {:error, reason}} ->
         conn
         |> put_status(:forbidden)
         |> render("error.json", reason: reason)
+
+      _ ->
+        conn
+        |> put_status(:forbidden)
+        |> render("error.json",
+          reason: "You exceeded the maximum storage quota. Try to delete one or more files"
+        )
     end
   end
 
