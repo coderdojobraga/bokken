@@ -4,8 +4,19 @@ defmodule Bokken.Uploaders.Document do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
+  alias Bokken.Documents.File
 
-  @versions [:snippets, :projects]
+  @extension_whitelist ~w(.txt .md .htm .html .css .js .ts .tsx .jsx .py .ipynb .c .cpp .h .hpp .cs .java .hs .doc .docx .ppt .pptx .xsl .xslx .png .jpg .svg .mp4 .mp3 .wav .zip .odf .odt .ods .xcf .sql)
+  @max_file_size 4_000_000
+
+  def validate({file, _}) do
+    size = File.file_size(file)
+
+    file.file_name
+    |> Path.extname()
+    |> String.downcase()
+    |> then(&Enum.member?(@extension_whitelist, &1)) and size < @max_file_size
+  end
 
   # Override the persisted filenames:
   def filename(_version, {file, _scope}) do

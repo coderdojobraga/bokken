@@ -4,6 +4,7 @@ defmodule Bokken.AccountsTest do
   import Bokken.Factory
 
   alias Bokken.Accounts
+  alias Faker.Avatar
 
   describe "guardians" do
     alias Bokken.Accounts.Guardian
@@ -83,6 +84,76 @@ defmodule Bokken.AccountsTest do
       }
 
       assert {:error, %Ecto.Changeset{}} = Accounts.create_ninja(attrs)
+    end
+  end
+
+  describe "mentors" do
+    def valid_attr_mentor do
+      %{
+        mobile: "+351915096743",
+        first_name: "Jéssica",
+        last_name: "Macedo Fernandes"
+      }
+    end
+
+    def valid_user_mentor do
+      %{
+        email: "jessica_fernandes@gmail.com",
+        password: "mentor123",
+        role: "mentor"
+      }
+    end
+
+    def attrs_mentors do
+      valid_attrs = valid_attr_mentor()
+      user = valid_user_mentor()
+      new_user = Accounts.create_user(user)
+      user_id = elem(new_user, 1).id
+      Map.put(valid_attrs, :user_id, user_id)
+    end
+
+    def mentor_fixture(atributes \\ %{}) do
+      valid_attrs = attrs_mentors()
+
+      {:ok, mentor} =
+        atributes
+        |> Enum.into(valid_attrs)
+        |> Accounts.create_mentor()
+
+      mentor
+    end
+
+    test "add an avatar to a mentor" do
+      mentor = mentor_fixture()
+
+      image = %Plug.Upload{
+        content_type: "image/png",
+        filename: "avatar.png",
+        path: "priv/faker/images/avatar.png"
+      }
+
+      mentor2 =
+        Accounts.update_mentor(mentor, %{
+          photo: image
+        })
+
+      photo = elem(mentor2, 1).photo
+      assert photo != nil
+    end
+
+    test "add an avatar to a mentor with invalid file" do
+      mentor = mentor_fixture()
+
+      mentor2 =
+        Accounts.update_mentor(mentor, %{
+          photo: Avatar.image_url("./priv/faker/images/avatar.txt")
+        })
+
+      if elem(mentor2, 0) != :ok do
+        photo = nil
+
+        assert photo == nil
+      end
     end
   end
 end

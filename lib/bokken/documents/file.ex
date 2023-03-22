@@ -3,7 +3,8 @@ defmodule Bokken.Documents.File do
   Files related to CoderDojo's Lectures
   """
   use Bokken.Schema
-  use Waffle.Ecto.Schema
+  use Waffle.Definition
+  use Waffle.Ecto.Definition
 
   alias Bokken.Accounts.User
   alias Bokken.Events.Lecture
@@ -40,5 +41,10 @@ defmodule Bokken.Documents.File do
     |> cast_attachments(attrs, @attachment_fields)
     |> validate_required(@required_fields ++ @attachment_fields)
     |> assoc_constraint(:user)
+  end
+
+  def file_size(file) do
+    File.stat!(file.path)
+    |> Map.get(:size)
   end
 end

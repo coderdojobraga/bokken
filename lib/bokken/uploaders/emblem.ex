@@ -4,16 +4,19 @@ defmodule Bokken.Uploaders.Emblem do
   """
   use Waffle.Definition
   use Waffle.Ecto.Definition
+  alias Bokken.Documents.File
 
   @versions [:original]
   @extension_whitelist ~w(.jpg .jpeg .gif .png)
+  @max_file_size 1_000_000
 
-  # Whitelist file extensions:
   def validate({file, _}) do
+    size = File.file_size(file)
+
     file.file_name
     |> Path.extname()
     |> String.downcase()
-    |> then(&Enum.member?(@extension_whitelist, &1))
+    |> then(&Enum.member?(@extension_whitelist, &1)) and size < @max_file_size
   end
 
   # Override the persisted filenames:

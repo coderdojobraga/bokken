@@ -74,22 +74,60 @@ defmodule Bokken.Documents do
   """
   def get_file!(id), do: Repo.get!(File, id)
 
-  @doc """
-  Creates a file.
+  alias Bokken.Accounts.User
 
-  ## Examples
+  def create_file(attrs \\ %{})
 
-      iex> create_file(%{field: value})
-      {:ok, %File{}}
+  def create_file(attrs) when is_map_key(attrs, "user_id") do
+    max_total_size = Application.fetch_env!(:bokken, Bokken.Uploaders.Document)[:max_file_size]
+    total_size = get_new_total_size(attrs["document"], attrs["user_id"])
 
-      iex> create_file(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+    case total_size do
+      total_size when total_size > max_total_size ->
+        {:error, "You exceeded the maximum storage quota. Try to delete one or more files"}
 
-  """
-  def create_file(attrs \\ %{}) do
+      _ ->
+        map = %{
+          user_id: attrs["user_id"],
+          document: attrs["document"],
+          title: attrs["title"],
+          description: attrs["description"]
+        }
+
+        create_file_with_user_update(map, total_size)
+    end
+  end
+
+  def create_file(attrs) do
     %File{}
     |> File.changeset(attrs)
     |> Repo.insert()
+  end
+
+  defp create_file_with_user_update(map, total_size) do
+    Repo.transaction(fn ->
+      changeset = File.changeset(%File{}, map)
+
+      case Repo.insert(changeset) do
+        {:ok, file} ->
+          user_changeset =
+            User.changeset(Accounts.get_user!(map[:user_id]), %{
+              total_file_size: total_size
+            })
+
+          update_user_with_changeset(user_changeset, file)
+
+        {:error, _} ->
+          {:error, "Failed to create file"}
+      end
+    end)
+  end
+
+  defp update_user_with_changeset(user_changeset, file) do
+    case Repo.update(user_changeset) do
+      {:ok, _} -> {:ok, file}
+      {:error, _} -> {:error, "Failed to update user's total file size"}
+    end
   end
 
   @doc """
@@ -137,5 +175,11 @@ defmodule Bokken.Documents do
   """
   def change_file(%File{} = file, attrs \\ %{}) do
     File.changeset(file, attrs)
+  end
+
+  def get_new_total_size(file, user_id) do
+    user = Accounts.get_user!(user_id)
+
+    user.total_file_size + File.file_size(file)
   end
 end

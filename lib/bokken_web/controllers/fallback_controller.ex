@@ -14,6 +14,13 @@ defmodule BokkenWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
+  def call(conn, {:error, reason}) when is_403(reason) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"403")
+  end
+
   def call(conn, {:error, reason}) when is_404(reason) do
     conn
     |> put_status(:not_found)

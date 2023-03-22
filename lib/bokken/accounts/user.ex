@@ -10,7 +10,8 @@ defmodule Bokken.Accounts.User do
   @roles [:ninja, :guardian, :mentor, :organizer]
 
   @required_fields [:email, :password, :role]
-  @optional_fields [:active, :verified, :registered]
+  @optional_fields [:active, :verified, :registered, :total_file_size]
+
   # List of fields that can be updated by admins (organizers)
   @admin_fields [:active, :verified, :registered]
 
@@ -23,6 +24,7 @@ defmodule Bokken.Accounts.User do
     field :verified, :boolean, default: false
     field :registered, :boolean, default: false
     field :role, Ecto.Enum, values: @roles
+    field :total_file_size, :integer, default: 0
 
     has_one :guardian, Guardian, on_delete: :delete_all
     has_one :mentor, Mentor, on_delete: :delete_all
