@@ -21,7 +21,6 @@ defmodule BokkenWeb.AvailabilityController do
     conn
     |> put_status(:ok)
     |> render("index.json", availabilities: availabilities, unavailabilities: unavailabilities)
-    |> IO.inspect()
   end
 
   def create(conn, %{
