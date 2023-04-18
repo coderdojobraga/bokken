@@ -727,6 +727,34 @@ defmodule Bokken.Events do
   end
 
   @doc """
+  Returns the list of the unavailabilities.
+
+  ## Examples
+
+      iex> list_unavailabilities([:mentor])
+      [%Availability{is_available: false}, ...]
+
+      iex> list_unavailabilities(123, [:mentor, :event])
+      [%Availability{is_available: false}, ...]
+
+      iex> list_unavailabilities(123)
+      [%Availability{is_available: false}, ...]
+
+  """
+  def list_unavailabilities(preloads) when is_list(preloads) do
+    Availability
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_unavailabilities(%{"event_id" => event_id}, preloads \\ []) do
+    Availability
+    |> where([a], a.event_id == ^event_id and a.is_available == false)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
   Gets a single availability.
 
   Raises `Ecto.NoResultsError` if the Badge does not exist.

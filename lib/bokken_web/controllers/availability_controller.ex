@@ -16,10 +16,12 @@ defmodule BokkenWeb.AvailabilityController do
 
   def index(conn, availability_params) do
     availabilities = Events.list_availabilities(availability_params, [:mentor])
+    unavailabilities = Events.list_unavailabilities(availability_params, [:mentor])
 
     conn
     |> put_status(:ok)
-    |> render("index.json", availabilities: availabilities)
+    |> render("index.json", availabilities: availabilities, unavailabilities: unavailabilities)
+    |> IO.inspect()
   end
 
   def create(conn, %{
