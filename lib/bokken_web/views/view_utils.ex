@@ -28,16 +28,21 @@ defmodule BokkenWeb.ViewUtils do
   ## Examples
 
       iex> display_time(~U[2018-01-01 00:00:00Z])
-      "00:00"
+      "01:00"
 
       iex> display_time(~U[2018-01-01 12:00:00Z])
-      "12:00"
+      "13:00"
 
       iex> display_time(~U[2018-01-01 23:59:00Z])
-      "23:59"
+      "00:59"
   """
   def display_time(%DateTime{} = datetime) do
-    hour = two_characters(datetime.hour)
+    hour =
+      case datetime.hour do
+        23 -> 0 |> two_characters()
+        x -> (x + 1) |> two_characters()
+      end
+
     minute = two_characters(datetime.minute)
 
     "#{hour}:#{minute}"
