@@ -4,6 +4,7 @@ defmodule BokkenWeb.ViewUtils do
   """
   use Phoenix.HTML
 
+  alias Bokken.Time
   require Timex.Translator
 
   def frontend_url do
@@ -28,21 +29,18 @@ defmodule BokkenWeb.ViewUtils do
   ## Examples
 
       iex> display_time(~U[2018-01-01 00:00:00Z])
-      "01:00"
+      "00:00"
 
       iex> display_time(~U[2018-01-01 12:00:00Z])
-      "13:00"
+      "12:00"
 
       iex> display_time(~U[2018-01-01 23:59:00Z])
-      "00:59"
+      "23:59"
   """
   def display_time(%DateTime{} = datetime) do
-    hour =
-      case datetime.hour do
-        23 -> 0 |> two_characters()
-        x -> (x + 1) |> two_characters()
-      end
+    datetime = Time.convert_to_lisbon(datetime)
 
+    hour = two_characters(datetime.hour)
     minute = two_characters(datetime.minute)
 
     "#{hour}:#{minute}"
