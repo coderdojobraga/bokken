@@ -55,6 +55,16 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Configure swagger to create routes
+config :bokken, :phoenix_swagger,
+  swagger_files: %{
+    "priv/static/swagger.json" => [
+      router: BokkenWeb.Router,
+    ]
+  }
+
+config :phoenix_swagger, json_library: Jason
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

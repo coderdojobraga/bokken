@@ -1,6 +1,10 @@
 defmodule BokkenWeb.Router do
   use BokkenWeb, :router
 
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :bokken, swagger_file: "swagger.json"
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -154,5 +158,14 @@ defmodule BokkenWeb.Router do
       # node running the Phoenix server.
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "0.0.1",
+        title: "Bokken"
+      }
+    }
   end
 end

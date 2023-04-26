@@ -19,6 +19,7 @@ defmodule Bokken.MixProject do
       deps: deps(),
       docs: docs(),
       aliases: aliases(),
+      compilers: [:phoenix] ++ Mix.compilers ++ [:phoenix_swagger],
       preferred_cli_env: [
         check: :test
       ]
@@ -95,7 +96,9 @@ defmodule Bokken.MixProject do
       # tools
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.28", only: [:dev], runtime: false}
+      {:ex_doc, "~> 0.28", only: [:dev], runtime: false},
+      {:phoenix_swagger, "~> 0.8"},
+      {:ex_json_schema, "~> 0.5"}
     ]
   end
 
