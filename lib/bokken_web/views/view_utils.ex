@@ -4,6 +4,7 @@ defmodule BokkenWeb.ViewUtils do
   """
   use Phoenix.HTML
 
+  alias Bokken.Time
   require Timex.Translator
 
   def frontend_url do
@@ -37,6 +38,8 @@ defmodule BokkenWeb.ViewUtils do
       "23:59"
   """
   def display_time(%DateTime{} = datetime) do
+    datetime = Time.convert_to_lisbon(datetime)
+
     hour = two_characters(datetime.hour)
     minute = two_characters(datetime.minute)
 
