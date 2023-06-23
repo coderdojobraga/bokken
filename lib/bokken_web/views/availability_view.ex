@@ -5,26 +5,34 @@ defmodule BokkenWeb.AvailabilityView do
   alias BokkenWeb.EventView
   alias BokkenWeb.MentorView
 
-  def render("index.json", %{availabilities: availabilities}) do
-    %{data: render_many(availabilities, AvailabilityView, "availability.json")}
+  def render("index.json", %{availabilities: availabilities, current_user: current_user}) do
+    %{
+      data:
+        render_many(availabilities, AvailabilityView, "availability.json",
+          current_user: current_user
+        )
+    }
   end
 
-  def render("show.json", %{availability: availability}) do
-    %{data: render_one(availability, AvailabilityView, "availability.json")}
+  def render("show.json", %{availability: availability, current_user: current_user}) do
+    %{
+      data:
+        render_one(availability, AvailabilityView, "availability.json", current_user: current_user)
+    }
   end
 
   def render("error.json", %{reason: reason}) do
     %{reason: reason}
   end
 
-  def render("availability.json", %{availability: availability}) do
+  def render("availability.json", %{availability: availability, current_user: current_user}) do
     %{
       availability_id: availability.id,
       is_available: availability.is_available,
       notes: availability.notes
     }
     |> Map.merge(event(availability))
-    |> Map.merge(mentor(availability))
+    |> Map.merge(mentor(availability, current_user))
   end
 
   defp event(availability) do
@@ -35,9 +43,9 @@ defmodule BokkenWeb.AvailabilityView do
     end
   end
 
-  defp mentor(availability) do
+  defp mentor(availability, current_user) do
     if Ecto.assoc_loaded?(availability.mentor) do
-      render_one(availability.mentor, MentorView, "mentor.json")
+      render_one(availability.mentor, MentorView, "mentor.json", current_user: current_user)
     else
       %{mentor_id: availability.mentor_id}
     end

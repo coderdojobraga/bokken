@@ -4,8 +4,9 @@ defmodule BokkenWeb.ViewUtils do
   """
   use Phoenix.HTML
 
-  alias Bokken.Time
   require Timex.Translator
+
+  alias Bokken.Time
 
   def frontend_url do
     Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]

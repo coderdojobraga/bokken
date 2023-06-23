@@ -43,11 +43,12 @@ defmodule BokkenWeb.GuardianControllerTest do
 
       assert %{
                "id" => _id,
-               "city" => "Guimarães",
                "first_name" => "Carla Maria",
-               "last_name" => "Silva Costa",
-               "mobile" => "+351915196743"
+               "last_name" => "Silva Costa"
              } = json_response(conn, 200)["data"]
+
+      assert not Map.has_key?(json_response(conn, 200)["data"], "city")
+      assert not Map.has_key?(json_response(conn, 200)["data"], "mobile")
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -80,11 +81,12 @@ defmodule BokkenWeb.GuardianControllerTest do
       conn = get(conn, Routes.guardian_path(conn, :show, id))
 
       assert %{
-               "city" => "Guimarães",
                "first_name" => "Ana Maria",
-               "last_name" => "Silva Costa",
-               "mobile" => "+351915096743"
+               "last_name" => "Silva Costa"
              } = json_response(conn, 200)["data"]
+
+      assert not Map.has_key?(json_response(conn, 200)["data"], "mobile")
+      assert not Map.has_key?(json_response(conn, 200)["data"], "city")
     end
 
     test "renders errors when data is invalid", %{conn: conn, guardian: guardian} do

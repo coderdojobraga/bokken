@@ -1,5 +1,6 @@
 defmodule BokkenWeb.LocationView do
   use BokkenWeb, :view
+
   alias BokkenWeb.LocationView
 
   def render("index.json", %{locations: locations}) do

@@ -1,25 +1,26 @@
 defmodule BokkenWeb.LectureView do
   use BokkenWeb, :view
+
   alias BokkenWeb.EventView
   alias BokkenWeb.FileView
   alias BokkenWeb.LectureView
   alias BokkenWeb.MentorView
   alias BokkenWeb.NinjaView
 
-  def render("index.json", %{lectures: lectures}) do
-    %{data: render_many(lectures, LectureView, "lecture.json")}
+  def render("index.json", %{lectures: lectures, current_user: current_user}) do
+    %{data: render_many(lectures, LectureView, "lecture.json", current_user: current_user)}
   end
 
-  def render("show.json", %{lecture: lecture}) do
-    %{data: render_one(lecture, LectureView, "lecture.json")}
+  def render("show.json", %{lecture: lecture, current_user: current_user}) do
+    %{data: render_one(lecture, LectureView, "lecture.json", current_user: current_user)}
   end
 
-  def render("lecture.json", %{lecture: lecture}) do
+  def render("lecture.json", %{lecture: lecture, current_user: current_user}) do
     base(lecture)
-    |> Map.merge(ninja(lecture))
-    |> Map.merge(mentor(lecture))
+    |> Map.merge(ninja(lecture, current_user))
+    |> Map.merge(mentor(lecture, current_user))
     |> Map.merge(event(lecture))
-    |> Map.merge(mentor_assistants(lecture))
+    |> Map.merge(mentor_assistants(lecture, current_user))
     |> Map.merge(files(lecture))
   end
 
@@ -32,25 +33,30 @@ defmodule BokkenWeb.LectureView do
     }
   end
 
-  defp ninja(lecture) do
+  defp ninja(lecture, current_user) do
     if Ecto.assoc_loaded?(lecture.ninja) do
-      %{ninja: render_one(lecture.ninja, NinjaView, "ninja.json")}
+      %{ninja: render_one(lecture.ninja, NinjaView, "ninja.json", current_user: current_user)}
     else
       %{ninja_id: lecture.ninja_id}
     end
   end
 
-  defp mentor(lecture) do
+  defp mentor(lecture, current_user) do
     if Ecto.assoc_loaded?(lecture.mentor) do
-      %{mentor: render_one(lecture.mentor, MentorView, "mentor.json")}
+      %{mentor: render_one(lecture.mentor, MentorView, "mentor.json", current_user: current_user)}
     else
       %{mentor_id: lecture.mentor_id}
     end
   end
 
-  defp mentor_assistants(lecture) do
+  defp mentor_assistants(lecture, current_user) do
     if Ecto.assoc_loaded?(lecture.assistant_mentors) do
-      %{assistant_mentors: render_many(lecture.assistant_mentors, MentorView, "mentor.json")}
+      %{
+        assitant_mentors:
+          render_many(lecture.assistant_mentors, MentorView, "mentor.json",
+            current_user: current_user
+          )
+      }
     else
       %{}
     end

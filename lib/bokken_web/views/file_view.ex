@@ -1,5 +1,6 @@
 defmodule BokkenWeb.FileView do
   use BokkenWeb, :view
+
   alias Bokken.Uploaders.Document
   alias BokkenWeb.FileView
 
