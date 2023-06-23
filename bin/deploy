@@ -13,7 +13,7 @@ cd "${BASE_DIR}/.." || exit 127
 . scripts/utils.sh
 
 PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
-VERSION=0.5.4
+VERSION=0.9.0
 
 function display_help() {
   cat <<EOF
@@ -52,13 +52,37 @@ function deploy() {
   log_success "Successfully deployed ${env} to ${CYAN}${DOCKER_HOST}${RESET}"
 }
 
-case ${1:-stg} in
+case ${1:-skip} in
   -h | --help)
     display_help
+
+    exit 0
     ;;
   -v | --version)
     display_version "${VERSION}" "${PROGRAM}"
+
+    exit 0
     ;;
+esac
+
+if [[ "${1:-NOFORCE}" != "--force" ]]; then
+  if [[ $(git branch --show-current) != 'main' ]]; then
+    log_error "You're trying to release from git branch $(git branch --show-current) instead of main." \
+      "To prevent releases from unstable branches, releases are only allowed from main."
+    exit 1
+  fi
+
+  if [[ $(git status -s) ]]; then
+    log_error "There are some uncommitted changes in this repository." \
+      "This might introduce unwanted artifacts in the release." \
+      "Please stash or commit your changes prior to cooking a new release."
+    exit 2
+  fi
+else
+  shift 1
+fi
+
+case ${1:-stg} in
   prod | stg)
     deploy "${1:-stg}"
     ;;

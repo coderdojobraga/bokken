@@ -13,7 +13,7 @@ cd "${BASE_DIR}/.." || exit 127
 . scripts/utils.sh
 
 PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
-VERSION=0.5.4
+VERSION=0.9.0
 
 function display_help() {
   cat <<EOF

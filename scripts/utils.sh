@@ -20,10 +20,14 @@ function load_env_file() {
   local file="${1:-.env}"
   if [ -f "$file" ]; then
     log_info "Environment" "Loading ${BLUE}${file}${RESET}..." "$(cat "${file}")"
-    set -o allexport
-    # shellcheck source=/dev/null
-    source "$file"
-    set +o allexport
+    case ${2:-skip} in
+      -dbg | --dbg | --debug)
+        set -o allexport
+        # shellcheck source=/dev/null
+        source "$file"
+        set +o allexport
+        ;;
+    esac
   else
     log_warn "${file} file not found, skipping..."
   fi
@@ -57,4 +61,8 @@ function get_os_name() {
   uname | tr '[:upper:]' '[:lower:]'
 }
 
-[ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.7.0 || true
+function timestamp() {
+  date --utc +%FT%TZ
+}
+
+([ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.9.0) || true
