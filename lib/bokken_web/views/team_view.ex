@@ -1,5 +1,6 @@
 defmodule BokkenWeb.TeamView do
   use BokkenWeb, :view
+
   alias BokkenWeb.TeamView
 
   def render("index.json", %{teams: teams}) do

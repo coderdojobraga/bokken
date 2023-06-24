@@ -1,5 +1,6 @@
 defmodule BokkenWeb.BadgeView do
   use BokkenWeb, :view
+
   alias Bokken.Uploaders.Emblem
   alias BokkenWeb.BadgeView
 
