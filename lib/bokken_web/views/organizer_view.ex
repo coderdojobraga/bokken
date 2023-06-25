@@ -1,5 +1,6 @@
 defmodule BokkenWeb.OrganizerView do
   use BokkenWeb, :view
+
   alias BokkenWeb.OrganizerView
 
   def render("index.json", %{organizers: organizers}) do

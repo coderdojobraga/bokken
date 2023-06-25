@@ -6,6 +6,8 @@ defmodule BokkenWeb.ViewUtils do
 
   require Timex.Translator
 
+  alias Bokken.Time
+
   def frontend_url do
     Application.fetch_env!(:bokken, BokkenWeb.Endpoint)[:frontend_url]
   end
@@ -37,6 +39,8 @@ defmodule BokkenWeb.ViewUtils do
       "23:59"
   """
   def display_time(%DateTime{} = datetime) do
+    datetime = Time.convert_to_lisbon(datetime)
+
     hour = two_characters(datetime.hour)
     minute = two_characters(datetime.minute)
 
