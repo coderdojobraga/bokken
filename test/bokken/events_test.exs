@@ -129,12 +129,12 @@ defmodule Bokken.EventsTest do
 
     test "list_unavailabilities/1 returns all unavailabilities of the event" do
       event = insert(:event)
-      availability = insert(:availability, %{event: event})
+      unavailability = insert(:availability, %{event: event})
 
-      availabilities =
-        Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
+      unavailabilities =
+        Events.list_unavailabilities(%{"event_id" => unavailability.event_id}, [:mentor])
 
-      assert hd(availabilities).id == availability.id
+      assert hd(unavailabilities).id == unavailability.id
     end
 
     test "get_availability!/1 returns the requested availability" do
