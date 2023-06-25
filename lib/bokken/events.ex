@@ -750,8 +750,7 @@ defmodule Bokken.Events do
   def list_unavailabilities(%{"event_id" => event_id}, preloads \\ []) do
     Availability
     |> where([a], a.event_id == ^event_id and a.is_available == false)
-    |> Repo.all()
-    |> Repo.preload(preloads)
+    |> Repo.all(preload: preloads)
   end
 
   @doc """
