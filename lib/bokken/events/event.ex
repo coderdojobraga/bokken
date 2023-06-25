@@ -4,6 +4,8 @@ defmodule Bokken.Events.Event do
   """
   use Bokken.Schema
 
+  import BokkenWeb.Gettext
+
   alias Bokken.Accounts.{Mentor, Ninja}
   alias Bokken.Events.{Lecture, Location, Team}
 
@@ -50,23 +52,24 @@ defmodule Bokken.Events.Event do
   end
 
   defp validate_dates(changeset) do
-    starts_on = get_field(changeset, :start_time)
-    ends_on = get_field(changeset, :end_time)
-    enrollments_open = get_field(changeset, :enrollments_open)
-    enrollments_close = get_field(changeset, :enrollments_close)
+    changeset
+    |> compare_dates(:start_time, :end_time, gettext("must be greater than start_time"))
+    |> compare_dates(
+      :enrollments_open,
+      :enrollments_close,
+      gettext("must be greater than enrollments_open")
+    )
+    |> compare_dates(:enrollments_close, :start_time, gettext("must be smaller than start_time"))
+  end
 
-    if Date.compare(starts_on, ends_on) == :gt do
-      add_error(changeset, :end_time, "must be greater than start_time")
+  defp compare_dates(changeset, date_field1, date_field2, error_message) do
+    date1 = get_field(changeset, date_field1)
+    date2 = get_field(changeset, date_field2)
+
+    if Date.compare(date1, date2) == :gt do
+      add_error(changeset, date_field2, error_message)
     else
-      if Date.compare(enrollments_open, enrollments_close) == :gt do
-        add_error(changeset, :enrollments_close, "must be greater than enrollments_open")
-      else
-        if Date.compare(enrollments_close, starts_on) == :gt do
-          add_error(changeset, :enrollments_close, "must be smaller than start_time")
-        else
-          changeset
-        end
-      end
+      changeset
     end
   end
 end

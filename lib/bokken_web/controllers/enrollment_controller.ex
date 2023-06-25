@@ -37,38 +37,40 @@ defmodule BokkenWeb.EnrollmentController do
     |> render("index.json", enrollments: enrollments)
   end
 
-  def create(conn, %{
-        "enrollment" =>
-          %{"ninja_id" => ninja_id, "accepted" => accepted, "event_id" => event_id} =
-            enrollment_params
-      })
+  def create(
+        conn,
+        %{
+          "enrollment" =>
+            %{"ninja_id" => ninja_id, "accepted" => accepted, "event_id" => event_id} =
+              enrollment_params
+        }
+      )
       when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
-
     event = Events.get_event!(event_id)
 
-    if is_guardian_of_ninja(guardian, ninja_id) do
-      if accepted do
+    cond do
+      # credo:disable-for-next-line Credo.Check.Design.TagTODO
+      # TODO verify guardian inside the Events.create_enrollment function
+      !is_guardian_of_ninja(guardian, ninja_id) ->
         conn
         |> put_status(:forbidden)
-        |> render("error.json", reason: "Guardian can not submit an accepted enrollment")
-      else
-        case Events.create_enrollment(event, enrollment_params) do
-          {:ok, %Enrollment{} = enrollment} ->
-            conn
-            |> put_status(:created)
-            |> render("show.json", enrollment: enrollment)
+        |> render("error.json", reason: "Not the ninja's guardian")
 
-          {:error, reason} ->
-            conn
-            |> put_status(:unprocessable_entity)
-            |> render("error.json", reason: reason)
+      # credo:disable-for-next-line Credo.Check.Design.TagTODO
+      # TODO create a create_enrollement_changeset for guardians and one for admins
+      accepted ->
+        conn
+        |> put_status(:forbidden)
+        |> render("error.json", reason: "Guardian cannot submit an accepted enrollment")
+
+      true ->
+        with {:ok, %Enrollment{} = enrollment} <-
+               Events.create_enrollment(event, enrollment_params) do
+          conn
+          |> put_status(:created)
+          |> render("show.json", enrollment: enrollment)
         end
-      end
-    else
-      conn
-      |> put_status(:forbidden)
-      |> render("error.json", reason: "Not the ninja's guardian")
     end
   end
 

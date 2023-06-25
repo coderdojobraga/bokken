@@ -30,20 +30,15 @@ defmodule BokkenWeb.AvailabilityController do
       when is_mentor(conn) do
     event = Events.get_event!(event_id)
 
-    case Events.create_availability(event, availability_params) do
-      {:ok, %Availability{} = availability} ->
-        conn
-        |> put_status(:created)
-        |> put_resp_header(
-          "location",
-          Routes.event_availability_path(conn, :show, event, availability)
-        )
-        |> render("show.json", availability: availability)
-
-      {:error, reason} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render("error.json", reason: reason)
+    with {:ok, %Availability{} = availability} <-
+           Events.create_availability(event, availability_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header(
+        "location",
+        Routes.event_availability_path(conn, :show, event, availability)
+      )
+      |> render("show.json", availability: availability)
     end
   end
 

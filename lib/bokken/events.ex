@@ -620,26 +620,24 @@ defmodule Bokken.Events do
     cur_time = DateTime.utc_now()
     ninja_id = Map.get(attrs, :ninja_id) || Map.get(attrs, "ninja_id")
 
-    has_enrolled =
-      Enrollment
-      |> where([e], e.event_id == ^event.id and e.ninja_id == ^ninja_id)
-      |> Repo.exists?()
-
     if DateTime.compare(event.enrollments_open, cur_time) == :lt and
          DateTime.compare(event.enrollments_close, cur_time) == :gt do
-      if has_enrolled do
-        {:error, "Already enrolled"}
+      if is_ninja_enrolled?(ninja_id, event.id) do
+        {:error, "Ninja already enrolled"}
       else
-        case %Enrollment{}
-             |> Enrollment.changeset(attrs)
-             |> Repo.insert() do
-          {:ok, enrollment} -> {:ok, enrollment}
-          {:error, _changeset} -> {:error, "Invalid data"}
-        end
+        %Enrollment{}
+        |> Enrollment.changeset(attrs)
+        |> Repo.insert()
       end
     else
       {:error, "Enrollments are closed"}
     end
+  end
+
+  defp is_ninja_enrolled?(ninja_id, event_id) do
+    Enrollment
+    |> where([e], e.event_id == ^event_id and e.ninja_id == ^ninja_id)
+    |> Repo.exists?()
   end
 
   @doc """
@@ -760,30 +758,26 @@ defmodule Bokken.Events do
   """
   def create_availability(event, attrs \\ %{}) do
     current_time = DateTime.utc_now()
-    first_comparison = DateTime.compare(event.enrollments_open, current_time)
-    second_comparison = DateTime.compare(event.enrollments_close, current_time)
-
     mentor_id = Map.get(attrs, :mentor_id) || Map.get(attrs, "mentor_id")
 
-    has_answered =
-      Availability
-      |> where([a], a.mentor_id == ^mentor_id and a.event_id == ^event.id)
-      |> Repo.exists?()
-
-    if first_comparison == :lt and second_comparison == :gt do
-      if has_answered do
-        {:error, "Already stated your availability"}
+    if DateTime.compare(event.enrollments_open, current_time) == :lt and
+         DateTime.compare(event.enrollments_close, current_time) == :gt do
+      if mentor_availability_exists?(mentor_id, event.id) do
+        {:error, "Mentor has already stated availability for this event"}
       else
-        case %Availability{}
-             |> Availability.changeset(attrs)
-             |> Repo.insert() do
-          {:ok, availability} -> {:ok, availability}
-          {:error, _changeset} -> {:error, "Invalid data"}
-        end
+        %Availability{}
+        |> Availability.changeset(attrs)
+        |> Repo.insert()
       end
     else
-      {:error, "You can't create the availability for an event with closed enrollments"}
+      {:error, "Availability cannot be created when event enrollments are closed"}
     end
+  end
+
+  defp mentor_availability_exists?(mentor_id, event_id) do
+    Availability
+    |> where([a], a.mentor_id == ^mentor_id and a.event_id == ^event_id)
+    |> Repo.exists?()
   end
 
   @doc """
