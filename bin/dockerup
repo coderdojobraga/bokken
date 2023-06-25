@@ -42,13 +42,13 @@ case ${1:-all} in
     display_version "${VERSION}" "${PROGRAM}"
     ;;
   all)
-    docker-compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d
+    docker compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d
     ;;
   db)
-    docker-compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d db
+    docker compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d db
     ;;
   web)
-    docker-compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d web
+    docker compose -f "docker-compose.${ENV}.yml" -f "${OS}.yml" up -d web
     ;;
   *)
     display_help >&2

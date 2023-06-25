@@ -47,9 +47,9 @@ defmodule Bokken.MixProject do
       {:phoenix, "~> 1.6.0"},
 
       # database
-      {:ecto, "~> 3.9.3"},
+      {:ecto, "~> 3.10.2"},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.9.2"},
+      {:ecto_sql, "~> 3.10.1"},
       {:postgrex, ">= 0.0.0"},
 
       # security
@@ -63,6 +63,7 @@ defmodule Bokken.MixProject do
       # mailer
       {:swoosh, "~> 1.5"},
       {:phoenix_swoosh, "~> 1.0"},
+      {:phoenix_html, "~> 3.0"},
       {:hackney, "~> 1.18"},
 
       # plugs
@@ -80,10 +81,6 @@ defmodule Bokken.MixProject do
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:phoenix_live_dashboard, "~> 0.5"},
-
-      # admin panel
-      {:phoenix_html, "~> 2.11", override: true},
-      {:kaffy, "~> 0.9.0", override: true},
 
       # development
       {:dotenvy, "~> 0.7.0"},
