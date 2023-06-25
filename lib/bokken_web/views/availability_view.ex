@@ -5,10 +5,18 @@ defmodule BokkenWeb.AvailabilityView do
   alias BokkenWeb.EventView
   alias BokkenWeb.MentorView
 
-  def render("index.json", %{availabilities: availabilities, current_user: current_user}) do
+  def render("index.json", %{
+        availabilities: availabilities,
+        unavailabilities: unavailabilities,
+        current_user: current_user
+      }) do
     %{
-      data:
+      availabilities:
         render_many(availabilities, AvailabilityView, "availability.json",
+          current_user: current_user
+        ),
+      unavailabilities:
+        render_many(unavailabilities, AvailabilityView, "unavailability.json",
           current_user: current_user
         )
     }
@@ -26,6 +34,16 @@ defmodule BokkenWeb.AvailabilityView do
   end
 
   def render("availability.json", %{availability: availability, current_user: current_user}) do
+    %{
+      availability_id: availability.id,
+      is_available: availability.is_available,
+      notes: availability.notes
+    }
+    |> Map.merge(event(availability))
+    |> Map.merge(mentor(availability, current_user))
+  end
+
+  def render("unavailability.json", %{availability: availability, current_user: current_user}) do
     %{
       availability_id: availability.id,
       is_available: availability.is_available,
