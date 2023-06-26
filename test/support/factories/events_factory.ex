@@ -20,7 +20,16 @@ defmodule Bokken.Factories.EventFactory do
 
       def availability_factory do
         %Availability{
-          is_available: Enum.random([true, false]),
+          is_available: true,
+          mentor: build(:mentor),
+          event: build(:event),
+          notes: Lorem.sentence(0..10)
+        }
+      end
+
+      def unavailability_factory do
+        %Availability{
+          is_available: false,
           mentor: build(:mentor),
           event: build(:event),
           notes: Lorem.sentence(0..10)
