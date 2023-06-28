@@ -33,17 +33,7 @@ defmodule BokkenWeb.AvailabilityView do
     %{reason: reason}
   end
 
-  def render("availability.json", %{availability: availability, current_user: current_user}) do
-    %{
-      availability_id: availability.id,
-      is_available: availability.is_available,
-      notes: availability.notes
-    }
-    |> Map.merge(event(availability))
-    |> Map.merge(mentor(availability, current_user))
-  end
-
-  def render("unavailability.json", %{availability: availability, current_user: current_user}) do
+  def render(_json, %{availability: availability, current_user: current_user}) do
     %{
       availability_id: availability.id,
       is_available: availability.is_available,
