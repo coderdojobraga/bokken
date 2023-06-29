@@ -37,7 +37,7 @@ defmodule Bokken.EventsTest do
       assert is_nil(Events.get_enrollment(Ecto.UUID.generate(), [:ninja, :event]))
     end
 
-    test "create_enrollment/1 returns error if the enrollments are closed" do
+    test "create_enrollment/2 returns error if the enrollments are closed" do
       valid_attrs = insert(:enrollment)
       event = Events.get_event!(valid_attrs.event_id)
 
@@ -50,6 +50,22 @@ defmodule Bokken.EventsTest do
         })
 
       assert elem(Events.create_enrollment(event, valid_attrs), 0) == :error
+    end
+
+    # test "guardian_create_enrollment/4 creates a new enrollment" do
+    #   guardian = insert(:guardian)
+    #   ninja = insert(:ninja)
+    #   valid_attrs = insert(:enrollment, %{ninja_id: ninja.id})
+    #   event = Events.get_event!(valid_attrs.event_id)
+
+    #   assert elem(Events.guardian_create_enrollment(event, guardian.id, ninja.id, valid_attrs), 0) == :ok
+    # end
+
+    test "guardian_create_enrollment/4 returns error if it's not the ninja guaridan" do
+      valid_attrs = insert(:enrollment)
+      event = Events.get_event!(valid_attrs.event_id)
+
+      assert elem(Events.guardian_create_enrollment(event, Ecto.UUID.generate(), valid_attrs.ninja_id, valid_attrs), 0) == :error
     end
 
     test "update_enrollment/2 updates existing enrollment" do

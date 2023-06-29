@@ -28,4 +28,13 @@ defmodule Bokken.Events.Enrollment do
     |> assoc_constraint(:event)
     |> assoc_constraint(:ninja)
   end
+
+  def guardian_changeset(enrollment, attrs) do
+    enrollment
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
+    |> validate_inclusion(:accepted, [false], message: "Guardian cannot submit an accepted enrollment")
+    |> assoc_constraint(:event)
+    |> assoc_constraint(:ninja)
+  end
 end

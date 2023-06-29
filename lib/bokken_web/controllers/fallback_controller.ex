@@ -34,4 +34,25 @@ defmodule BokkenWeb.FallbackController do
     |> put_view(BokkenWeb.ErrorView)
     |> render(:"401")
   end
+
+  def call(conn, {:error, :ninja_already_enrolled}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"403")
+  end
+
+  def call(conn, {:error, :enrollments_closed}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"403")
+  end
+
+  def call(conn, {:error, :not_ninja_guardian}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(BokkenWeb.ErrorView)
+    |> render(:"403")
+  end
 end
