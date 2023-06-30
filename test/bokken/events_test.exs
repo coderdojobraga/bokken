@@ -104,7 +104,7 @@ defmodule Bokken.EventsTest do
 
   describe "availabilities" do
     test "list_availabilities/0 returns all availabilities" do
-      availability = insert(:availability)
+      availability = insert(:availability, %{is_available: true})
       availabilities = Events.list_availabilities([])
 
       assert hd(availabilities).id == availability.id
@@ -112,12 +112,44 @@ defmodule Bokken.EventsTest do
 
     test "list_availabilities/1 returns all availabilities of the event" do
       event = insert(:event)
-      availability = insert(:availability, %{event: event})
+      availability = insert(:availability, %{event: event, is_available: true})
 
       availabilities =
         Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
 
       assert hd(availabilities).id == availability.id
+    end
+
+    test "list_unavailabilities/0 returns all unavailabilities" do
+      unavailability = insert(:availability, %{is_available: false})
+      unavailabilities = Events.list_unavailabilities([])
+
+      assert hd(unavailabilities).id == unavailability.id
+    end
+
+    test "list_unavailabilities/1 returns all unavailabilities of the event" do
+      event = insert(:event)
+      unavailability = insert(:availability, %{event: event, is_available: false})
+
+      unavailabilities =
+        Events.list_unavailabilities(%{"event_id" => unavailability.event_id}, [:mentor])
+
+      assert hd(unavailabilities).id == unavailability.id
+    end
+
+    test "returns all availabilities and unavailabilities of the event" do
+      event = insert(:event)
+      availability = insert(:availability, %{event: event, is_available: true})
+      unavailability = insert(:availability, %{event: event, is_available: false})
+
+      availabilities =
+        Events.list_availabilities(%{"event_id" => availability.event_id}, [:mentor])
+
+      unavailabilities =
+        Events.list_unavailabilities(%{"event_id" => unavailability.event_id}, [:mentor])
+
+      assert hd(availabilities).id == availability.id
+      assert hd(unavailabilities).id == unavailability.id
     end
 
     test "get_availability!/1 returns the requested availability" do
