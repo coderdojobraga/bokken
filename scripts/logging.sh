@@ -9,6 +9,8 @@ import() {
   . "${SCRIPTS_DIR}/${1}"
 }
 
+# shellcheck source=./colors.sh
+import colors.sh
 # shellcheck source=./helpers.sh
 import helpers.sh
 
@@ -49,7 +51,11 @@ function log_info() {
     shift 1
   fi
 
-  __log "${LABEL}" "$CYAN" "$@"
+  __log "${LABEL}" "$BLUE" "$@"
 }
 
-([ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.9.0) || true
+function log_debug() {
+  __log "DEBUG" "$PURPLE" "$@"
+}
+
+([ "$0" = "${BASH_SOURCE[0]}" ] && display_version 0.10.0) || true
