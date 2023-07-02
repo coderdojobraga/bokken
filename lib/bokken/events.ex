@@ -777,13 +777,43 @@ defmodule Bokken.Events do
   """
   def list_availabilities(preloads) when is_list(preloads) do
     Availability
+    |> where([a], a.is_available)
     |> Repo.all()
     |> Repo.preload(preloads)
   end
 
   def list_availabilities(%{"event_id" => event_id}, preloads \\ []) do
     Availability
-    |> where([a], a.event_id == ^event_id)
+    |> where([a], a.event_id == ^event_id and a.is_available)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  @doc """
+  Returns the list of the unavailabilities.
+
+  ## Examples
+
+      iex> list_unavailabilities([:mentor])
+      [%Availability{is_available: false}, ...]
+
+      iex> list_unavailabilities(123, [:mentor, :event])
+      [%Availability{is_available: false}, ...]
+
+      iex> list_unavailabilities(123)
+      [%Availability{is_available: false}, ...]
+
+  """
+  def list_unavailabilities(preloads) when is_list(preloads) do
+    Availability
+    |> where([a], not a.is_available)
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
+  def list_unavailabilities(%{"event_id" => event_id}, preloads \\ []) do
+    Availability
+    |> where([a], a.event_id == ^event_id and not a.is_available)
     |> Repo.all()
     |> Repo.preload(preloads)
   end

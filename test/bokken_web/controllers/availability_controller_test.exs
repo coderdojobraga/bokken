@@ -14,7 +14,8 @@ defmodule BokkenWeb.AvailabilityControllerTest do
 
     test "list all availabilities", %{conn: conn, event: event} do
       conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["availabilities"] == []
+      assert json_response(conn, 200)["unavailabilities"] == []
     end
   end
 
@@ -39,10 +40,10 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       assert json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
-      assert json_response(conn, 200)["data"]
+      assert json_response(conn, 200)["availabilities"]
 
       conn = get(conn, Routes.event_availability_path(conn, :index, user.mentor.id))
-      assert json_response(conn, 200)["data"]
+      assert json_response(conn, 200)["availabilities"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, event: event, user: user} do
