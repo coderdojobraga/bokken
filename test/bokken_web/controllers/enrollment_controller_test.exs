@@ -25,7 +25,6 @@ defmodule BokkenWeb.EnrollmentControllerTest do
       conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
       assert %{"id" => enrollment_id} = json_response(conn, 201)["data"]
 
-
       conn = get(conn, Routes.event_enrollment_path(conn, :show, event.id, enrollment_id))
       assert json_response(conn, 200)
     end

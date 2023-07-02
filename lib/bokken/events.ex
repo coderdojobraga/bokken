@@ -625,15 +625,7 @@ defmodule Bokken.Events do
       if is_ninja_enrolled?(ninja_id, event.id) do
         {:error, :ninja_already_enrolled}
       else
-        case role do
-          :admin ->
-            insert_enrollment(:admin, attrs)
-
-          :guardian ->
-            insert_enrollment(:guardian, attrs)
-          _ ->
-            {:error, :invalid_role}
-        end
+        insert_enrollment(role, attrs)
       end
     else
       {:error, :enrollments_closed}
@@ -658,6 +650,10 @@ defmodule Bokken.Events do
     |> Repo.insert()
   end
 
+  defp insert_enrollment(_, _attrs) do
+    {:error, :invalid_role}
+  end
+
   @doc """
   Creates an enrollment as a guardian.
 
@@ -666,7 +662,7 @@ defmodule Bokken.Events do
       iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: value})
       {:ok, %Enrollment{}}
 
-      iex> guardian_create_enrollment(%{field: bad_value})
+      iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
       iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: value})
@@ -675,6 +671,7 @@ defmodule Bokken.Events do
   """
   def guardian_create_enrollment(event, guardian_id, ninja_id, attrs \\ %{}) do
     ninja = Accounts.get_ninja!(ninja_id, [:guardian])
+
     if ninja.guardian.id == guardian_id do
       create_enrollment(event, :guardian, attrs)
     else
@@ -724,7 +721,7 @@ defmodule Bokken.Events do
   end
 
   @doc """
-  Creates an enrollment as a guardian.
+  Deletes an enrollment as a guardian.
 
   ## Examples
 
@@ -738,8 +735,9 @@ defmodule Bokken.Events do
       {:error, :not_ninja_guardian}
 
   """
-  def guardian_delete_enrollment(enrollment, guardian_id, ninja_id, attrs \\ %{}) do
+  def guardian_delete_enrollment(enrollment, guardian_id, ninja_id) do
     ninja = Accounts.get_ninja!(ninja_id, [:guardian])
+
     if ninja.guardian.id == guardian_id do
       delete_enrollment(enrollment)
     else

@@ -52,20 +52,31 @@ defmodule Bokken.EventsTest do
       assert elem(Events.create_enrollment(event, valid_attrs), 0) == :error
     end
 
-    # test "guardian_create_enrollment/4 creates a new enrollment" do
-    #   guardian = insert(:guardian)
-    #   ninja = insert(:ninja)
-    #   valid_attrs = insert(:enrollment, %{ninja_id: ninja.id})
-    #   event = Events.get_event!(valid_attrs.event_id)
+    test "guardian_create_enrollment/4 creates a new enrollment" do
+      event = insert(:event)
+      ninja = insert(:ninja)
+      guardian_id = ninja.guardian_id
 
-    #   assert elem(Events.guardian_create_enrollment(event, guardian.id, ninja.id, valid_attrs), 0) == :ok
-    # end
+      valid_attrs =
+        params_for(:enrollment, %{event_id: event.id, ninja_id: ninja.id, accepted: false})
+
+      assert elem(Events.guardian_create_enrollment(event, guardian_id, ninja.id, valid_attrs), 0) ==
+               :ok
+    end
 
     test "guardian_create_enrollment/4 returns error if it's not the ninja guaridan" do
       valid_attrs = insert(:enrollment)
       event = Events.get_event!(valid_attrs.event_id)
 
-      assert elem(Events.guardian_create_enrollment(event, Ecto.UUID.generate(), valid_attrs.ninja_id, valid_attrs), 0) == :error
+      assert elem(
+               Events.guardian_create_enrollment(
+                 event,
+                 Ecto.UUID.generate(),
+                 valid_attrs.ninja_id,
+                 valid_attrs
+               ),
+               0
+             ) == :error
     end
 
     test "update_enrollment/2 updates existing enrollment" do

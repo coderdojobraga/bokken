@@ -39,9 +39,7 @@ defmodule BokkenWeb.EnrollmentController do
   def create(
         conn,
         %{
-          "enrollment" =>
-            %{"ninja_id" => ninja_id, "accepted" => _accepted, "event_id" => event_id} =
-              enrollment_params
+          "enrollment" => %{"ninja_id" => ninja_id, "event_id" => event_id} = enrollment_params
         }
       )
       when is_guardian(conn) do
@@ -66,7 +64,8 @@ defmodule BokkenWeb.EnrollmentController do
       |> put_status(:not_found)
       |> render("error.json", reason: "No such enrollment")
     else
-      with {:ok, %Enrollment{}} <- Events.guardian_delete_enrollment(enrollment, guardian.id, ninja.id) do
+      with {:ok, %Enrollment{}} <-
+             Events.guardian_delete_enrollment(enrollment, guardian.id, ninja.id) do
         conn
         |> put_status(:ok)
         |> render("success.json", message: "Enrollment deleted successfully")
