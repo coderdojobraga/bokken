@@ -46,16 +46,16 @@ defmodule BokkenWeb.BadgeControllerTest do
     test "lists all badges of ninja", %{conn: conn} do
       ninja = insert(:ninja)
       %{id: badge_id, description: badge_description, name: badge_name} = badge = insert(:badge)
-      badge_ninja = insert(:badge_ninja, badge: badge, ninja: ninja)
+      insert(:badge_ninja, badge: badge, ninja: ninja)
 
       conn = get(conn, Routes.ninja_badge_path(conn, :index, ninja.id))
 
       assert [
                %{
-                 "id" => badge_id,
-                 "description" => badge_description,
+                 "id" => ^badge_id,
+                 "description" => ^badge_description,
                  "image" => "/images/default_badge.png",
-                 "name" => badge_name
+                 "name" => ^badge_name
                }
              ] = json_response(conn, 200)["data"]
     end
