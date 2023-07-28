@@ -29,24 +29,24 @@ defmodule BokkenWeb.FileController do
   def index(conn, _params) when is_mentor(conn) do
     mentor_id = conn.assigns.current_user.mentor.id
     files = Documents.list_files(%{"mentor_id" => mentor_id})
-    render(conn, "index.json", files: files)
+    render(conn, :index, files: files)
   end
 
   def index(conn, _params) when is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
     files = Documents.list_files(%{"ninja_id" => ninja_id})
-    render(conn, "index.json", files: files)
+    render(conn, :index, files: files)
   end
 
   def index(conn, _params) when is_guardian(conn) do
     guardian_id = conn.assigns.current_user.guardian.id
     files = Documents.list_files(%{"guardian_id" => guardian_id})
-    render(conn, "index.json", files: files)
+    render(conn, :index, files: files)
   end
 
   def index(conn, _params) do
     files = Documents.list_files()
-    render(conn, "index.json", files: files)
+    render(conn, :index, files: files)
   end
 
   def create(conn, %{"file" => file_params}) do
@@ -57,7 +57,7 @@ defmodule BokkenWeb.FileController do
         conn
         |> put_status(:created)
         |> put_resp_header("location", Routes.file_path(conn, :show, file))
-        |> render("show.json", file: file)
+        |> render(:show, file: file)
 
       {:ok, {:error, reason}} ->
         conn
@@ -75,14 +75,14 @@ defmodule BokkenWeb.FileController do
 
   def show(conn, %{"id" => id}) do
     file = Documents.get_file!(id)
-    render(conn, "show.json", file: file)
+    render(conn, :show, file: file)
   end
 
   def update(conn, %{"id" => id, "file" => file_params}) do
     file = Documents.get_file!(id)
 
     with {:ok, %File{} = file} <- Documents.update_file(file, file_params) do
-      render(conn, "show.json", file: file)
+      render(conn, :show, file: file)
     end
   end
 

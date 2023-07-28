@@ -1,5 +1,5 @@
 defmodule BokkenWeb.LocationController do
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   alias Bokken.Events
   alias Bokken.Events.Location

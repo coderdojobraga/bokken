@@ -17,14 +17,34 @@ defmodule BokkenWeb do
   and import those modules here.
   """
 
-  def controller do
+  def static_paths, do: ~w(images favicon.ico dojo.html robots.txt)
+
+  def controller(version \\ "1.7") do
+    result =
+      case version do
+        "1.7" ->
+          quote do
+            use Phoenix.Controller,
+              namespace: BokkenWeb,
+              formats: [:html, :json],
+              layouts: [html: BokkenWeb.Layouts]
+          end
+
+        _ ->
+          quote do
+            use Phoenix.Controller, namespace: BokkenWeb
+          end
+      end
+
     quote do
-      use Phoenix.Controller, namespace: BokkenWeb
+      unquote(result)
 
       import Plug.Conn
       import BokkenWeb.Gettext
       import Bokken.Guards
       alias BokkenWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -77,12 +97,27 @@ defmodule BokkenWeb do
       alias BokkenWeb.Router.Helpers, as: Routes
 
       import BokkenWeb.ViewUtils
+
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: BokkenWeb.Endpoint,
+        router: BokkenWeb.Router,
+        statics: BokkenWeb.static_paths()
     end
   end
 
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
+  defmacro __using__(controller: "1.6" = version) do
+    controller(version)
+  end
+
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
