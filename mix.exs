@@ -44,7 +44,8 @@ defmodule Bokken.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.6.0"},
+      {:phoenix, "~> 1.7.7"},
+      {:phoenix_view, "~> 2.0.2"},
 
       # database
       {:ecto, "~> 3.10.2"},

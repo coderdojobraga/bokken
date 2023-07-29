@@ -31,6 +31,8 @@ defmodule BokkenWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint BokkenWeb.Endpoint
+
+      use BokkenWeb, :verified_routes
     end
   end
 

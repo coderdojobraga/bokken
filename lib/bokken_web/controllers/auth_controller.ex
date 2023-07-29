@@ -1,5 +1,5 @@
 defmodule BokkenWeb.AuthController do
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   alias Bokken.Accounts
   alias Bokken.Accounts.User

@@ -1,5 +1,5 @@
 defmodule BokkenWeb.BadgeController do
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   alias Bokken.Gamification
   alias Bokken.Gamification.Badge

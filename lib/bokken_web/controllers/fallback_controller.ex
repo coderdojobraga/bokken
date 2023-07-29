@@ -4,7 +4,7 @@ defmodule BokkenWeb.FallbackController do
 
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
