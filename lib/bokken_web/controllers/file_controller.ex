@@ -56,7 +56,7 @@ defmodule BokkenWeb.FileController do
       {:ok, {:ok, file}} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", Routes.file_path(conn, :show, file))
+        |> put_resp_header("location", ~p"/api/files/#{file.id}")
         |> render(:show, file: file)
 
       {:ok, {:error, reason}} ->

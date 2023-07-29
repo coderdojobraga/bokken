@@ -28,11 +28,14 @@ defmodule BokkenWeb do
               namespace: BokkenWeb,
               formats: [:html, :json],
               layouts: [html: BokkenWeb.Layouts]
+
+            unquote(verified_routes())
           end
 
         _ ->
           quote do
             use Phoenix.Controller, namespace: BokkenWeb
+            alias BokkenWeb.Router.Helpers, as: Routes
           end
       end
 
@@ -42,9 +45,6 @@ defmodule BokkenWeb do
       import Plug.Conn
       import BokkenWeb.Gettext
       import Bokken.Guards
-      alias BokkenWeb.Router.Helpers, as: Routes
-
-      unquote(verified_routes())
     end
   end
 
