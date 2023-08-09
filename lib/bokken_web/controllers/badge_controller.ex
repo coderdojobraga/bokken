@@ -1,5 +1,5 @@
 defmodule BokkenWeb.BadgeController do
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   alias Bokken.Gamification
   alias Bokken.Gamification.Badge
@@ -7,7 +7,7 @@ defmodule BokkenWeb.BadgeController do
 
   action_fallback BokkenWeb.FallbackController
 
-  def index(conn, params) when is_map_key(params, :ninja_id) do
+  def index(conn, params) when is_map_key(params, "ninja_id") do
     badges = Gamification.list_badges(params)
     render(conn, "index.json", badges: badges)
   end

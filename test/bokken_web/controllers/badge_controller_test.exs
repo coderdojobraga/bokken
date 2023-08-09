@@ -2,6 +2,7 @@ defmodule BokkenWeb.BadgeControllerTest do
   use BokkenWeb.ConnCase
 
   import Bokken.GamificationFixtures
+  import Bokken.Factory
 
   alias Bokken.Gamification.Badge
 
@@ -40,6 +41,23 @@ defmodule BokkenWeb.BadgeControllerTest do
     test "lists all badges", %{conn: conn} do
       conn = get(conn, Routes.badge_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
+    end
+
+    test "lists all badges of ninja", %{conn: conn} do
+      ninja = insert(:ninja)
+      %{id: badge_id, description: badge_description, name: badge_name} = badge = insert(:badge)
+      insert(:badge_ninja, badge: badge, ninja: ninja)
+
+      conn = get(conn, Routes.ninja_badge_path(conn, :index, ninja.id))
+
+      assert [
+               %{
+                 "id" => ^badge_id,
+                 "description" => ^badge_description,
+                 "image" => "/images/default_badge.png",
+                 "name" => ^badge_name
+               }
+             ] = json_response(conn, 200)["data"]
     end
   end
 

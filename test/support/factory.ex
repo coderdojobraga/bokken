@@ -6,6 +6,8 @@ defmodule Bokken.Factory do
     AccountFactory,
     TokenFactory,
     CurriculumFactory,
-    EventFactory
+    EventFactory,
+    GamificationFactory,
+    DocumentsFactory
   }
 end

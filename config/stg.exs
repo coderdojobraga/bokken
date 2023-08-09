@@ -16,10 +16,6 @@ config :bokken, BokkenWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   frontend_url: "https://coderdojobraga.org"
 
-config :bokken, Bokken.Mailer,
-  adapter: Swoosh.Adapters.Sendinblue,
-  api_key: {:system, "MAILER_API_KEY"}
-
 # :cors_plug must be configured only in compilation time
 # See https://github.com/mschae/cors_plug/issues/49 for alternative solutions
 # with functions

@@ -24,7 +24,7 @@ defmodule BokkenWeb.Endpoint do
     at: "/",
     from: @app,
     gzip: false,
-    only: ~w(images favicon.ico dojo.html robots.txt)
+    only: BokkenWeb.static_paths()
 
   plug Plug.Static,
     at: "/uploads",
