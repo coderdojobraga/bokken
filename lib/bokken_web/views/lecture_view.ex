@@ -1,10 +1,10 @@
 defmodule BokkenWeb.LectureView do
   use BokkenWeb, :view
 
-  alias BokkenWeb.EventView
-  alias BokkenWeb.FileView
+  alias BokkenWeb.EventJSON
+  alias BokkenWeb.FileJSON
   alias BokkenWeb.LectureView
-  alias BokkenWeb.MentorView
+  alias BokkenWeb.MentorJSON
   alias BokkenWeb.NinjaView
 
   def render("index.json", %{lectures: lectures, current_user: current_user}) do
@@ -43,7 +43,7 @@ defmodule BokkenWeb.LectureView do
 
   defp mentor(lecture, current_user) do
     if Ecto.assoc_loaded?(lecture.mentor) do
-      %{mentor: render_one(lecture.mentor, MentorView, "mentor.json", current_user: current_user)}
+      %{mentor: MentorJSON.data(lecture.mentor, current_user)}
     else
       %{mentor_id: lecture.mentor_id}
     end
@@ -53,9 +53,7 @@ defmodule BokkenWeb.LectureView do
     if Ecto.assoc_loaded?(lecture.assistant_mentors) do
       %{
         assitant_mentors:
-          render_many(lecture.assistant_mentors, MentorView, "mentor.json",
-            current_user: current_user
-          )
+          for(mentor <- lecture.assistant_mentors, do: MentorJSON.data(mentor, current_user))
       }
     else
       %{}
@@ -64,7 +62,7 @@ defmodule BokkenWeb.LectureView do
 
   defp event(lecture) do
     if Ecto.assoc_loaded?(lecture.event) do
-      %{event: render_one(lecture.event, EventView, "event.json")}
+      %{event: EventJSON.data(lecture.event)}
     else
       %{event_id: lecture.event_id}
     end
@@ -72,7 +70,7 @@ defmodule BokkenWeb.LectureView do
 
   defp files(lecture) do
     if Ecto.assoc_loaded?(lecture.files) do
-      %{files: render_many(lecture.files, FileView, "file.json")}
+      %{files: for(file <- lecture.files, do: FileJSON.data(file))}
     else
       %{}
     end

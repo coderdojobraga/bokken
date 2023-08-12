@@ -18,7 +18,7 @@ defmodule BokkenWeb.NinjaView do
     |> Map.merge(sensitive(ninja, current_user))
   end
 
-  defp data(ninja) do
+  def data(ninja) do
     %{
       id: ninja.id,
       photo: Avatar.url({ninja.photo, ninja}, :thumb),

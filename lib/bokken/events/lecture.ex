@@ -1,6 +1,6 @@
 defmodule Bokken.Events.Lecture do
   @moduledoc """
-  one on one lecture
+  Lecture between one or more mentors and a ninja.
   """
   use Bokken.Schema
 

@@ -25,6 +25,7 @@ defmodule Bokken.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Bokken.DataCase
+      import Bokken.TestUtils
     end
   end
 

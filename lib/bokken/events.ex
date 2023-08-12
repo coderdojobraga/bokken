@@ -840,4 +840,70 @@ defmodule Bokken.Events do
   def change_availability(%Availability{} = availability, attrs \\ %{}) do
     Availability.changeset(availability, attrs)
   end
+
+  @doc """
+  Lists all the users that can be notified about a new event.
+
+  ## Examples
+
+      iex> list_notifiable_signup_users()
+      [%User{}, ...]
+  """
+  def list_notifiable_signup_users do
+    Accounts.list_users()
+    |> Enum.filter(fn user ->
+      user.active and user.verified and user.role in [:guardian, :mentor]
+    end)
+  end
+
+  @doc """
+  Lists all the mentors that can be notified, because they have been selected for an event.
+
+  ## Examples
+
+      iex> list_notifiable_selected_mentors(%Event{})
+      [%Mentor{}, ...]
+  """
+  def list_notifiable_selected_mentors(%Event{} = event) do
+    Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
+    |> Enum.map(fn lecture ->
+      Accounts.get_user!(lecture.mentor.user_id) |> Map.put(:lecture, lecture)
+    end)
+  end
+
+  @doc """
+  Lists all the ninjas that can be notified, because they have been selected for an event.
+
+  ## Examples
+
+      iex> list_notifiable_selected_ninjas(%Event{})
+      [%Ninja{}, ...]
+  """
+  def list_notifiable_selected_ninjas(%Event{} = event) do
+    Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
+    |> Enum.map(fn lecture ->
+      Accounts.get_user!(lecture.ninja.guardian_id).user_id |> Map.put(:lecture, lecture)
+    end)
+  end
+
+  @doc """
+  Lists all the ninjas that won't be coming to an event.
+
+  ## Examples
+
+      iex> list_not_coming_ninjas(%Event{})
+      [%Ninja{}, ...]
+  """
+  def list_not_coming_ninjas(%Event{} = event) do
+    enrollments = list_enrollments(%{"event_id" => event.id})
+    lectures = list_lectures(%{"event_id" => event.id})
+
+    enrollments
+    |> Enum.filter(fn e ->
+      e.event_id == event.id and
+        not Enum.any?(lectures, fn l ->
+          l.ninja_id == e.ninja_id and l.event_id == e.event_id
+        end)
+    end)
+  end
 end

@@ -3,20 +3,9 @@ defmodule Bokken.PairingsTest do
 
   import Bokken.Factory
 
+  alias Bokken.Pairings
+
   describe "pairings" do
-    alias Bokken.Pairings
-
-    defp forget(struct, field, cardinality \\ :one) do
-      %{
-        struct
-        | field => %Ecto.Association.NotLoaded{
-            __field__: field,
-            __owner__: struct.__struct__,
-            __cardinality__: cardinality
-          }
-      }
-    end
-
     test "get_available_mentors/1 returns all available mentors for an event" do
       event = insert(:event)
       skill = insert(:skill)

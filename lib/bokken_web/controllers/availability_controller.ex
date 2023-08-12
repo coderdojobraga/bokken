@@ -1,26 +1,26 @@
 defmodule BokkenWeb.AvailabilityController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Availability
 
   action_fallback BokkenWeb.FallbackController
 
+  def index(conn, availability_params) do
+    availabilities = Events.list_availabilities(availability_params)
+    unavailabilities = Events.list_unavailabilities(availability_params, [:mentor])
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, availabilities: availabilities, unavailabilities: unavailabilities)
+  end
+
   def show(conn, %{"id" => availability_id}) do
     availability = Events.get_availability!(availability_id)
 
     conn
     |> put_status(:ok)
-    |> render("show.json", availability: availability)
-  end
-
-  def index(conn, availability_params) do
-    availabilities = Events.list_availabilities(availability_params, [:mentor])
-    unavailabilities = Events.list_unavailabilities(availability_params, [:mentor])
-
-    conn
-    |> put_status(:ok)
-    |> render("index.json", availabilities: availabilities, unavailabilities: unavailabilities)
+    |> render(:show, availability: availability)
   end
 
   def create(conn, %{
@@ -37,9 +37,9 @@ defmodule BokkenWeb.AvailabilityController do
       |> put_status(:created)
       |> put_resp_header(
         "location",
-        Routes.event_availability_path(conn, :show, event, availability)
+        ~p"/api/events/#{event}/availabilities/#{availability}"
       )
-      |> render("show.json", availability: availability)
+      |> render(:show, availability: availability)
     end
   end
 
@@ -50,7 +50,7 @@ defmodule BokkenWeb.AvailabilityController do
            Events.update_availability(old_availability, availability_params) do
       conn
       |> put_status(:ok)
-      |> render("show.json", availability: new_availability)
+      |> render(:show, availability: new_availability)
     end
   end
 end

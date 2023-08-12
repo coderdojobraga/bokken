@@ -1,5 +1,5 @@
 defmodule BokkenWeb.TeamController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Team
@@ -8,28 +8,36 @@ defmodule BokkenWeb.TeamController do
 
   def index(conn, params) do
     teams = Events.list_teams(params)
-    render(conn, "index.json", teams: teams)
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, teams: teams)
   end
 
   def create(conn, %{"team" => team_params}) when is_organizer(conn) do
     with {:ok, %Team{} = team} <- Events.create_team(team_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.team_path(conn, :show, team))
-      |> render("show.json", team: team)
+      |> put_resp_header("location", ~p"/api/teams/#{team}")
+      |> render(:show, team: team)
     end
   end
 
   def show(conn, %{"id" => id}) do
     team = Events.get_team!(id)
-    render(conn, "show.json", team: team)
+
+    conn
+    |> put_status(:ok)
+    |> render(:show, team: team)
   end
 
   def update(conn, %{"id" => id, "team" => team_params}) when is_organizer(conn) do
     team = Events.get_team!(id)
 
     with {:ok, %Team{} = team} <- Events.update_team(team, team_params) do
-      render(conn, "show.json", team: team)
+      conn
+      |> put_status(:ok)
+      |> render(:show, team: team)
     end
   end
 
