@@ -664,19 +664,16 @@ defmodule Bokken.Events do
 
       iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
-
-      iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: value})
-      {:error, :not_ninja_guardian}
-
   """
   def guardian_create_enrollment(event, guardian_id, ninja_id, attrs \\ %{}) do
     ninja = Accounts.get_ninja!(ninja_id, [:guardian])
 
-    if ninja.guardian.id == guardian_id do
-      create_enrollment(event, :guardian, attrs)
-    else
-      {:error, :not_ninja_guardian}
+    unless ninja.guardian.id == guardian_id do
+      raise Bokken.UserHasNotPermissionError,
+            "This ninja does not belong to the guardian, so enrollment cannot be modified."
     end
+
+    create_enrollment(event, :guardian, attrs)
   end
 
   @doc """
@@ -730,19 +727,16 @@ defmodule Bokken.Events do
 
       iex> guardian_delete_enrollment(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
-
-      iex> guardian_delete_enrollment(event, guardian_id, ninja_id, %{field: value})
-      {:error, :not_ninja_guardian}
-
   """
   def guardian_delete_enrollment(enrollment, guardian_id, ninja_id) do
     ninja = Accounts.get_ninja!(ninja_id, [:guardian])
 
-    if ninja.guardian.id == guardian_id do
-      delete_enrollment(enrollment)
-    else
-      {:error, :not_ninja_guardian}
+    unless ninja.guardian.id == guardian_id do
+      raise Bokken.UserHasNotPermissionError,
+            "This ninja does not belong to the guardian, so enrollment cannot be modified."
     end
+
+    delete_enrollment(enrollment)
   end
 
   @doc """

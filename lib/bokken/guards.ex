@@ -35,7 +35,6 @@ defmodule Bokken.Guards do
                   :not_authorized,
                   :not_allowed,
                   :ninja_already_enrolled,
-                  :enrollments_closed,
-                  :not_ninja_guardian
+                  :enrollments_closed
                 ]
 end
