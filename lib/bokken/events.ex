@@ -616,7 +616,7 @@ defmodule Bokken.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_enrollment(event, role \\ :admin, attrs \\ %{}) do
+  def create_enrollment(event, role \\ :guardian, attrs \\ %{}) do
     cur_time = DateTime.utc_now()
     ninja_id = Map.get(attrs, :ninja_id) || Map.get(attrs, "ninja_id")
 
