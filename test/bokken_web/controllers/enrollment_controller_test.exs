@@ -88,8 +88,9 @@ defmodule BokkenWeb.EnrollmentControllerTest do
         enrollment: %{event_id: event.id, ninja_id: new_ninja.id, accepted: true}
       }
 
-      conn = post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
-      assert json_response(conn, 403)
+      assert_error_sent 403, fn ->
+        post(conn, Routes.event_enrollment_path(conn, :create, event.id), enrollment_attrs)
+      end
     end
   end
 
@@ -138,8 +139,9 @@ defmodule BokkenWeb.EnrollmentControllerTest do
 
       {:ok, enrollment} = Events.create_enrollment(event, :admin, enrollment_attrs)
 
-      conn = delete(conn, Routes.event_enrollment_path(conn, :delete, event.id, enrollment.id))
-      assert json_response(conn, 403)
+      assert_error_sent 403, fn ->
+        delete(conn, Routes.event_enrollment_path(conn, :delete, event.id, enrollment.id))
+      end
     end
   end
 

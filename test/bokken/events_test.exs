@@ -68,17 +68,13 @@ defmodule Bokken.EventsTest do
       valid_attrs = insert(:enrollment)
       event = Events.get_event!(valid_attrs.event_id)
 
-      try do
+      assert_raise Bokken.UserHasNotPermissionError, fn ->
         Events.guardian_create_enrollment(
           event,
           Ecto.UUID.generate(),
           valid_attrs.ninja_id,
           valid_attrs
         )
-      rescue
-        e in Bokken.UserHasNotPermissionError ->
-          assert e.message ==
-                   "This ninja does not belong to the guardian, so enrollment cannot be modified."
       end
     end
 
