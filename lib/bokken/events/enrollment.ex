@@ -4,6 +4,8 @@ defmodule Bokken.Events.Enrollment do
   """
   use Bokken.Schema
 
+  import BokkenWeb.Gettext
+
   alias Bokken.Accounts.Ninja
   alias Bokken.Events.Event
 
@@ -25,6 +27,17 @@ defmodule Bokken.Events.Enrollment do
     enrollment
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> assoc_constraint(:event)
+    |> assoc_constraint(:ninja)
+  end
+
+  def guardian_changeset(enrollment, attrs) do
+    enrollment
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
+    |> validate_inclusion(:accepted, [false],
+      message: gettext("Guardian cannot submit an accepted enrollment")
+    )
     |> assoc_constraint(:event)
     |> assoc_constraint(:ninja)
   end

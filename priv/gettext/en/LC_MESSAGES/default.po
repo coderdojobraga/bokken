@@ -11,7 +11,27 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/bokken/ecto/pt_mobile.ex:60
+#: lib/bokken/ecto/pt_mobile.ex:61
 #, elixir-autogen, elixir-format
 msgid "invalid PT phone number"
+msgstr ""
+
+#: lib/bokken/events/enrollment.ex:39
+#, elixir-autogen, elixir-format
+msgid "Guardian cannot submit an accepted enrollment"
+msgstr ""
+
+#: lib/bokken/events/event.ex:60
+#, elixir-autogen, elixir-format
+msgid "must be greater than enrollments_open"
+msgstr ""
+
+#: lib/bokken/events/event.ex:56
+#, elixir-autogen, elixir-format
+msgid "must be greater than start_time"
+msgstr ""
+
+#: lib/bokken/events/event.ex:62
+#, elixir-autogen, elixir-format
+msgid "must be smaller than start_time"
 msgstr ""

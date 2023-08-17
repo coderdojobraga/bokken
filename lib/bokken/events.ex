@@ -609,28 +609,26 @@ defmodule Bokken.Events do
 
   ## Examples
 
-      iex> create_enrollment(%{field: value})
+      iex> create_enrollment(event, %{field: value})
       {:ok, %Enrollment{}}
 
-      iex> create_enrollment(%{field: bad_value})
+      iex> create_enrollment(event, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_enrollment(event, attrs \\ %{}) do
+  def create_enrollment(event, role \\ :guardian, attrs \\ %{}) do
     cur_time = DateTime.utc_now()
     ninja_id = Map.get(attrs, :ninja_id) || Map.get(attrs, "ninja_id")
 
     if DateTime.compare(event.enrollments_open, cur_time) == :lt and
          DateTime.compare(event.enrollments_close, cur_time) == :gt do
       if is_ninja_enrolled?(ninja_id, event.id) do
-        {:error, "Ninja already enrolled"}
+        {:error, :ninja_already_enrolled}
       else
-        %Enrollment{}
-        |> Enrollment.changeset(attrs)
-        |> Repo.insert()
+        insert_enrollment(role, attrs)
       end
     else
-      {:error, "Enrollments are closed"}
+      {:error, :enrollments_closed}
     end
   end
 
@@ -638,6 +636,44 @@ defmodule Bokken.Events do
     Enrollment
     |> where([e], e.event_id == ^event_id and e.ninja_id == ^ninja_id)
     |> Repo.exists?()
+  end
+
+  defp insert_enrollment(:admin, attrs) do
+    %Enrollment{}
+    |> Enrollment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  defp insert_enrollment(:guardian, attrs) do
+    %Enrollment{}
+    |> Enrollment.guardian_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  defp insert_enrollment(_, _attrs) do
+    {:error, :invalid_role}
+  end
+
+  @doc """
+  Creates an enrollment as a guardian.
+
+  ## Examples
+
+      iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: value})
+      {:ok, %Enrollment{}}
+
+      iex> guardian_create_enrollment(event, guardian_id, ninja_id, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def guardian_create_enrollment(event, guardian_id, ninja_id, attrs \\ %{}) do
+    ninja = Accounts.get_ninja!(ninja_id, [:guardian])
+
+    unless ninja.guardian.id == guardian_id do
+      raise Bokken.UserHasNotPermissionError,
+            "This ninja does not belong to the guardian, so enrollment cannot be modified."
+    end
+
+    create_enrollment(event, :guardian, attrs)
   end
 
   @doc """
@@ -679,6 +715,28 @@ defmodule Bokken.Events do
     else
       {:error, "Cannot delete enrollment of past session"}
     end
+  end
+
+  @doc """
+  Deletes an enrollment as a guardian.
+
+  ## Examples
+
+      iex> guardian_delete_enrollment(event, guardian_id, ninja_id, %{field: value})
+      {:ok, %Enrollment{}}
+
+      iex> guardian_delete_enrollment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def guardian_delete_enrollment(enrollment, guardian_id, ninja_id) do
+    ninja = Accounts.get_ninja!(ninja_id, [:guardian])
+
+    unless ninja.guardian.id == guardian_id do
+      raise Bokken.UserHasNotPermissionError,
+            "This ninja does not belong to the guardian, so enrollment cannot be modified."
+    end
+
+    delete_enrollment(enrollment)
   end
 
   @doc """

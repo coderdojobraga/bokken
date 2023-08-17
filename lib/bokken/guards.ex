@@ -29,5 +29,12 @@ defmodule Bokken.Guards do
   """
   defguard is_404(reason) when reason in [:not_found, :not_registered, :invalid_credentials]
   defguard is_401(reason) when reason in [:token_expired]
-  defguard is_403(reason) when reason in [:not_authorized, :not_allowed]
+
+  defguard is_403(reason)
+           when reason in [
+                  :not_authorized,
+                  :not_allowed,
+                  :ninja_already_enrolled,
+                  :enrollments_closed
+                ]
 end

@@ -1,7 +1,6 @@
 defmodule BokkenWeb.EnrollmentController do
   use BokkenWeb, controller: "1.6"
 
-  alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Enrollment
 
@@ -40,59 +39,36 @@ defmodule BokkenWeb.EnrollmentController do
   def create(
         conn,
         %{
-          "enrollment" =>
-            %{"ninja_id" => ninja_id, "accepted" => accepted, "event_id" => event_id} =
-              enrollment_params
+          "enrollment" => %{"ninja_id" => ninja_id, "event_id" => event_id} = enrollment_params
         }
       )
       when is_guardian(conn) do
     guardian = conn.assigns.current_user.guardian
     event = Events.get_event!(event_id)
 
-    cond do
-      # credo:disable-for-next-line Credo.Check.Design.TagTODO
-      # TODO verify guardian inside the Events.create_enrollment function
-      !is_guardian_of_ninja(guardian, ninja_id) ->
-        conn
-        |> put_status(:forbidden)
-        |> render("error.json", reason: "Not the ninja's guardian")
-
-      # credo:disable-for-next-line Credo.Check.Design.TagTODO
-      # TODO create a create_enrollement_changeset for guardians and one for admins
-      accepted ->
-        conn
-        |> put_status(:forbidden)
-        |> render("error.json", reason: "Guardian cannot submit an accepted enrollment")
-
-      true ->
-        with {:ok, %Enrollment{} = enrollment} <-
-               Events.create_enrollment(event, enrollment_params) do
-          conn
-          |> put_status(:created)
-          |> render("show.json", enrollment: enrollment)
-        end
+    with {:ok, enrollment} <-
+           Events.guardian_create_enrollment(event, guardian.id, ninja_id, enrollment_params) do
+      conn
+      |> put_status(:created)
+      |> render("show.json", enrollment: enrollment)
     end
   end
 
   def delete(conn, %{"id" => enrollment_id}) when is_guardian(conn) do
     enrollment = Events.get_enrollment(enrollment_id, [:ninja])
     guardian = conn.assigns.current_user.guardian
+    ninja = enrollment.ninja
 
     if is_nil(enrollment) do
       conn
       |> put_status(:not_found)
       |> render("error.json", reason: "No such enrollment")
     else
-      if is_guardian_of_ninja(guardian, enrollment.ninja.id) do
-        with {:ok, %Enrollment{}} <- Events.delete_enrollment(enrollment) do
-          conn
-          |> put_status(:ok)
-          |> render("success.json", message: "Enrollment deleted successfully")
-        end
-      else
+      with {:ok, %Enrollment{}} <-
+             Events.guardian_delete_enrollment(enrollment, guardian.id, ninja.id) do
         conn
-        |> put_status(:unauthorized)
-        |> render("error.json", reason: "Not the ninja's guardian")
+        |> put_status(:ok)
+        |> render("success.json", message: "Enrollment deleted successfully")
       end
     end
   end
@@ -106,10 +82,5 @@ defmodule BokkenWeb.EnrollmentController do
       |> put_status(:ok)
       |> render("show.json", enrollment: new_enrollment)
     end
-  end
-
-  defp is_guardian_of_ninja(guardian, ninja_id) do
-    ninja = Accounts.get_ninja!(ninja_id, [:guardian])
-    ninja.guardian.id == guardian.id
   end
 end
