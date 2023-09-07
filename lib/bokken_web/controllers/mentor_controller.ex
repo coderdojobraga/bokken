@@ -1,5 +1,5 @@
 defmodule BokkenWeb.MentorController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
@@ -7,9 +7,35 @@ defmodule BokkenWeb.MentorController do
 
   action_fallback BokkenWeb.FallbackController
 
+  def index(conn, %{"event_id" => _event_id} = params)
+      when is_map_key(conn.query_params, "attendance") do
+    mentor_filter =
+      case conn.query_params["attendance"] do
+        "absent" -> [:both_absent, :mentor_absent]
+        _ -> [:both_present, :ninja_absent]
+      end
+
+    mentors = Accounts.list_mentors(params, mentor_filter)
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, mentors: mentors)
+  end
+
+  def index(conn, %{"event_id" => _event_id} = params) do
+    mentors = Accounts.list_mentors(params)
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, mentors: mentors)
+  end
+
   def index(conn, _params) do
     mentors = Accounts.list_mentors()
-    render(conn, "index.json", mentors: mentors)
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, mentors: mentors)
   end
 
   def create(conn, %{"team_id" => team_id, "mentor_id" => mentor_id})
@@ -19,8 +45,8 @@ defmodule BokkenWeb.MentorController do
 
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.team_path(conn, :show, mentor))
-      |> render("show.json", mentor: mentor)
+      |> put_resp_header("location", ~p"/api/mentors/#{mentor}")
+      |> render(:show, mentor: mentor)
     end
   end
 
@@ -30,21 +56,26 @@ defmodule BokkenWeb.MentorController do
     with {:ok, %Mentor{} = mentor} <- Accounts.create_mentor(mentor_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.mentor_path(conn, :show, mentor))
-      |> render("show.json", mentor: mentor)
+      |> put_resp_header("location", ~p"/api/mentors/#{mentor}")
+      |> render(:show, mentor: mentor)
     end
   end
 
   def show(conn, %{"id" => id}) do
     mentor = Accounts.get_mentor!(id, [:skills])
-    render(conn, "show.json", mentor: mentor)
+
+    conn
+    |> put_status(:ok)
+    |> render(:show, mentor: mentor)
   end
 
   def update(conn, %{"id" => id, "mentor" => mentor_params}) when is_organizer(conn) do
     mentor = Accounts.get_mentor!(id)
 
     with {:ok, %Mentor{} = mentor} <- Accounts.update_mentor(mentor, mentor_params) do
-      render(conn, "show.json", mentor: mentor)
+      conn
+      |> put_status(:ok)
+      |> render(:show, mentor: mentor)
     end
   end
 

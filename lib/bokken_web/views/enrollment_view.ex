@@ -2,7 +2,7 @@ defmodule BokkenWeb.EnrollmentView do
   use BokkenWeb, :view
 
   alias BokkenWeb.EnrollmentView
-  alias BokkenWeb.EventView
+  alias BokkenWeb.EventJSON
   alias BokkenWeb.NinjaView
 
   def render("index.json", %{enrollments: enrollments, current_user: current_user}) do
@@ -47,7 +47,7 @@ defmodule BokkenWeb.EnrollmentView do
 
   defp event(enrollment) do
     if Ecto.assoc_loaded?(enrollment.event) do
-      %{event: render_one(enrollment.event, EventView, "event.json")}
+      %{event: EventJSON.data(enrollment.event)}
     else
       %{event_id: enrollment.event_id}
     end

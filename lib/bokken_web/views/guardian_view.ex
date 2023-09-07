@@ -17,7 +17,7 @@ defmodule BokkenWeb.GuardianView do
     |> Map.merge(personal(guardian, current_user))
   end
 
-  defp data(guardian) do
+  def data(guardian) do
     %{
       id: guardian.id,
       photo: Avatar.url({guardian.photo, guardian}, :thumb),

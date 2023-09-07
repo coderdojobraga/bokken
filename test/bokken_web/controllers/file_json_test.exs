@@ -6,15 +6,12 @@ defmodule Bokken.FileJSONTest do
   alias Bokken.Uploaders.Document
   alias BokkenWeb.FileJSON
 
-  test "data" do
-    file = build(:file)
-    rendered_file = FileJSON.data(file)
+  test "index" do
+    files = build_list(5, :file)
+    rendered_files = FileJSON.index(%{files: files})
 
-    assert rendered_file == %{
-             id: file.id,
-             title: file.title,
-             description: file.description,
-             document: Document.url({file.document, file})
+    assert rendered_files == %{
+             data: Enum.map(files, &FileJSON.data(&1))
            }
   end
 
@@ -27,12 +24,15 @@ defmodule Bokken.FileJSONTest do
            }
   end
 
-  test "index" do
-    files = build_list(5, :file)
-    rendered_files = FileJSON.index(%{files: files})
+  test "data" do
+    file = build(:file)
+    rendered_file = FileJSON.data(file)
 
-    assert rendered_files == %{
-             data: Enum.map(files, &FileJSON.data(&1))
+    assert rendered_file == %{
+             id: file.id,
+             title: file.title,
+             description: file.description,
+             document: Document.url({file.document, file})
            }
   end
 end

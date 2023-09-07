@@ -1,9 +1,10 @@
 defmodule BokkenWeb.EventController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Events
   alias Bokken.Events.Event
+
   alias Bokken.Mailer
   alias BokkenWeb.EventsEmails
 
@@ -11,28 +12,36 @@ defmodule BokkenWeb.EventController do
 
   def index(conn, params) do
     events = Events.list_events(params)
-    render(conn, "index.json", events: events)
+
+    conn
+    |> put_status(:ok)
+    |> render(:index, events: events)
   end
 
   def create(conn, %{"event" => event_params}) when is_organizer(conn) do
     with {:ok, %Event{} = event} <- Events.create_event(event_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.event_path(conn, :show, event))
-      |> render("show.json", event: event)
+      |> put_resp_header("location", ~p"/api/events/#{event}")
+      |> render(:show, event: event)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    event = Events.get_event!(id, [:location, :team])
-    render(conn, "show.json", event: event)
+    event = Events.get_event!(id)
+
+    conn
+    |> put_status(:ok)
+    |> render(:show, event: event)
   end
 
   def update(conn, %{"id" => id, "event" => event_params}) when is_organizer(conn) do
     event = Events.get_event!(id)
 
     with {:ok, %Event{} = event} <- Events.update_event(event, event_params) do
-      render(conn, "show.json", event: event)
+      conn
+      |> put_status(:ok)
+      |> render(:show, event: event)
     end
   end
 
@@ -47,63 +56,39 @@ defmodule BokkenWeb.EventController do
   def notify_signup(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
 
-    res =
-      Accounts.list_users()
-      |> Enum.filter(fn u -> u.active and u.verified and u.role in [:guardian, :mentor] end)
+    result =
+      Events.list_notifiable_signup_users()
       |> send_email(fn user -> EventsEmails.event_reminder_email(user, event) end)
-
-    status =
-      if Enum.empty?(res[:fail]) do
-        :ok
-      else
-        :internal_server_error
-      end
 
     if Map.has_key?(params, "no_print") do
       conn
-      |> put_status(status)
-      |> assign(:result, res)
+      |> put_status(get_status(result))
+      |> assign(:result, result)
     else
       conn
-      |> put_status(status)
-      |> assign(:result, res)
-      |> render("emails.json", res)
+      |> put_status(get_status(result))
+      |> assign(:result, result)
+      |> render(:emails, result)
     end
   end
 
   def notify_selected(conn, params) when is_organizer(conn) do
     event = Events.get_next_event!([:location])
-    lectures = Events.list_lectures(%{"event_id" => event.id}, [:mentor, :ninja, :event])
-    enrollments = Events.list_enrollments()
 
-    mentor_res =
-      lectures
-      |> Enum.map(fn lecture ->
-        Accounts.get_user!(lecture.mentor.user_id)
-        |> Map.put(:lecture, lecture)
-      end)
+    mentor_result =
+      Events.list_notifiable_selected_mentors(event)
       |> send_email(fn user ->
         EventsEmails.event_selected_mentor_email(event, user.lecture, to: user.email)
       end)
 
-    ninja_res =
-      lectures
-      |> Enum.map(fn lecture ->
-        Accounts.get_user!(Accounts.get_guardian!(lecture.ninja.guardian_id).user_id)
-        |> Map.put(:lecture, lecture)
-      end)
+    ninja_result =
+      Events.list_notifiable_selected_ninjas(event)
       |> send_email(fn user ->
         EventsEmails.event_selected_ninja_email(event, user.lecture, to: user.email)
       end)
 
-    not_coming_ninjas =
-      enrollments
-      |> Enum.filter(fn e ->
-        e.event_id == event.id and
-          not Enum.any?(lectures, fn l ->
-            l.ninja_id == e.ninja_id and l.event_id == e.event_id
-          end)
-      end)
+    not_coming_ninjas_result =
+      Events.list_not_coming_ninjas(event)
       |> case do
         [] ->
           %{success: [], fail: []}
@@ -120,27 +105,21 @@ defmodule BokkenWeb.EventController do
           end)
       end
 
-    res = %{
-      success: mentor_res[:success] ++ ninja_res[:success] ++ not_coming_ninjas[:success],
-      fail: mentor_res[:fail] ++ ninja_res[:fail] ++ not_coming_ninjas[:fail]
+    result = %{
+      success:
+        mentor_result[:success] ++ ninja_result[:success] ++ not_coming_ninjas_result[:success],
+      fail: mentor_result[:fail] ++ ninja_result[:fail] ++ not_coming_ninjas_result[:fail]
     }
-
-    status =
-      if Enum.empty?(res[:fail]) do
-        :ok
-      else
-        :internal_server_error
-      end
 
     if Map.has_key?(params, "no_print") do
       conn
-      |> put_status(status)
-      |> assign(:result, res)
+      |> put_status(get_status(result))
+      |> assign(:result, result)
     else
       conn
-      |> put_status(status)
-      |> assign(:result, res)
-      |> render("emails.json", res)
+      |> put_status(get_status(result))
+      |> assign(:result, result)
+      |> render(:emails, result)
     end
   end
 
@@ -158,5 +137,13 @@ defmodule BokkenWeb.EventController do
         end
       end
     )
+  end
+
+  defp get_status(result) do
+    if Enum.empty?(result[:fail]) do
+      :ok
+    else
+      :internal_server_error
+    end
   end
 end

@@ -163,10 +163,33 @@ defmodule Bokken.Accounts do
     |> Map.fetch!(:mentors)
   end
 
+  alias Bokken.Events.Lecture
+
+  # List all mentors related to an event, including their attendance
   def list_mentors(%{"event_id" => event_id}) do
-    event_id
-    |> Events.get_event!([:mentors])
-    |> Map.fetch!(:mentors)
+    results =
+      Lecture
+      |> where([l], l.event_id == ^event_id)
+      |> join(:inner, [l], m in Mentor, on: m.id == l.mentor_id)
+      |> select([l, m], %{mentor: m, attendance: l.attendance})
+      |> Repo.all()
+
+    Enum.map(results, fn %{mentor: mentor, attendance: attendance} ->
+      Map.put(mentor, :attendance, attendance)
+    end)
+  end
+
+  def list_mentors(%{"event_id" => event_id}, attendances) when is_list(attendances) do
+    results =
+      Lecture
+      |> where([l], l.event_id == ^event_id and l.attendance in ^attendances)
+      |> join(:inner, [l], m in Mentor, on: m.id == l.mentor_id)
+      |> select([l, m], %{mentor: m, attendance: l.attendance})
+      |> Repo.all()
+
+    Enum.map(results, fn %{mentor: mentor, attendance: attendance} ->
+      Map.put(mentor, :attendance, attendance)
+    end)
   end
 
   def list_mentors do

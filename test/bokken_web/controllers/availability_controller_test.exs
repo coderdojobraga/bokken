@@ -13,7 +13,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
     setup [:login_as_mentor]
 
     test "list all availabilities", %{conn: conn, event: event} do
-      conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
+      conn = get(conn, ~p"/api/events/#{event}/availabilities")
       assert json_response(conn, 200)["availabilities"] == []
       assert json_response(conn, 200)["unavailabilities"] == []
     end
@@ -30,19 +30,19 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       conn =
         post(
           conn,
-          Routes.event_availability_path(conn, :create, event.id),
+          ~p"/api/events/#{event}/availabilities/",
           valid_availability_attrs
         )
 
       assert %{"availability_id" => availability_id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.event_availability_path(conn, :show, event.id, availability_id))
+      conn = get(conn, ~p"/api/events/#{event}/availabilities/#{availability_id}")
       assert json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.event_availability_path(conn, :index, event.id))
+      conn = get(conn, ~p"/api/events/#{event}/availabilities")
       assert json_response(conn, 200)["availabilities"]
 
-      conn = get(conn, Routes.event_availability_path(conn, :index, user.mentor.id))
+      conn = get(conn, ~p"/api/events/#{user.mentor.id}/availabilities")
       assert json_response(conn, 200)["availabilities"]
     end
 
@@ -54,7 +54,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       conn =
         post(
           conn,
-          Routes.event_availability_path(conn, :create, event.id),
+          ~p"/api/events/#{event}/availabilities",
           invalid_availability_attrs
         )
 
@@ -79,7 +79,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       conn =
         patch(
           conn,
-          Routes.event_availability_path(conn, :update, event.id, availability.id),
+          ~p"/api/events/#{event}/availabilities/#{availability}",
           new_availability_attrs
         )
 
@@ -100,7 +100,7 @@ defmodule BokkenWeb.AvailabilityControllerTest do
       conn =
         patch(
           conn,
-          Routes.event_availability_path(conn, :update, event.id, availability.id),
+          ~p"/api/events/#{event}/availabilities/#{availability}",
           invalid_availability_attrs
         )
 
