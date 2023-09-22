@@ -1,5 +1,5 @@
 defmodule BokkenWeb.Admin.GuardianController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
@@ -8,7 +8,7 @@ defmodule BokkenWeb.Admin.GuardianController do
 
   def index(conn, _params) do
     guardians = Accounts.list_guardians([:user])
-    render(conn, "index.json", guardians: guardians)
+    render(conn, :index, guardians: guardians)
   end
 
   def update(conn, %{"id" => id, "guardian" => guardian_params, "user" => user_params})
@@ -17,7 +17,7 @@ defmodule BokkenWeb.Admin.GuardianController do
 
     with {:ok, %Guardian{} = guardian} <-
            Accounts.update_guardian_and_user(guardian, guardian_params, user_params) do
-      render(conn, "guardian.json", guardian: guardian)
+      render(conn, :show, guardian: guardian)
     end
   end
 end

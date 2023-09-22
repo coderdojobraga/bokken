@@ -1,13 +1,15 @@
-defmodule BokkenWeb.Admin.GuardianView do
-  use BokkenWeb, :view
-
+defmodule BokkenWeb.Admin.GuardianJSON do
   alias Bokken.Uploaders.Avatar
 
-  def render("index.json", %{guardians: guardians}) do
-    %{data: render_many(guardians, __MODULE__, "guardian.json")}
+  def index(%{guardians: guardians}) do
+    %{data: for(g <- guardians, do: guardian(g))}
   end
 
-  def render("guardian.json", %{guardian: guardian}) do
+  def show(%{guardian: guardian}) do
+    %{data: guardian(guardian)}
+  end
+
+  def guardian(guardian) do
     %{
       id: guardian.id,
       photo: Avatar.url({guardian.photo, guardian}, :thumb),

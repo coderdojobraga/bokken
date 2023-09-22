@@ -1,5 +1,5 @@
 defmodule BokkenWeb.GuardianController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
@@ -8,7 +8,7 @@ defmodule BokkenWeb.GuardianController do
 
   def index(conn, _params) do
     guardians = Accounts.list_guardians()
-    render(conn, "index.json", guardians: guardians)
+    render(conn, :index, guardians: guardians)
   end
 
   def create(conn, %{"guardian" => guardian_params})
@@ -16,14 +16,14 @@ defmodule BokkenWeb.GuardianController do
     with {:ok, %Guardian{} = guardian} <- Accounts.create_guardian(guardian_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.guardian_path(conn, :show, guardian))
-      |> render("show.json", guardian: guardian)
+      |> put_resp_header("location", ~p"/api/guardians/#{guardian.id}")
+      |> render(:show, guardian: guardian)
     end
   end
 
   def show(conn, %{"id" => id}) do
     guardian = Accounts.get_guardian!(id)
-    render(conn, "show.json", guardian: guardian)
+    render(conn, :show, guardian: guardian)
   end
 
   def update(conn, %{"id" => id, "guardian" => guardian_params})
@@ -31,7 +31,7 @@ defmodule BokkenWeb.GuardianController do
     guardian = Accounts.get_guardian!(id)
 
     with {:ok, %Guardian{} = guardian} <- Accounts.update_guardian(guardian, guardian_params) do
-      render(conn, "show.json", guardian: guardian)
+      render(conn, :show, guardian: guardian)
     end
   end
 

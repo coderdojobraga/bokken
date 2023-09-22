@@ -17,7 +17,7 @@ defmodule BokkenWeb.GuardianControllerTest do
 
   describe "index" do
     test "lists all guardians", %{conn: conn} do
-      conn = get(conn, Routes.guardian_path(conn, :index))
+      conn = get(conn, ~p"/api/guardians/")
       assert json_response(conn, 200)["data"] == []
     end
   end
@@ -36,10 +36,10 @@ defmodule BokkenWeb.GuardianControllerTest do
 
       guardian = params_for(:guardian, guardian_attrs)
 
-      conn = post(conn, Routes.guardian_path(conn, :create), guardian: guardian)
+      conn = post(conn, ~p"/api/guardians/", guardian: guardian)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.guardian_path(conn, :show, id))
+      conn = get(conn, ~p"/api/guardians/#{id}")
 
       assert %{
                "id" => _id,
@@ -56,7 +56,7 @@ defmodule BokkenWeb.GuardianControllerTest do
       user_id = get_req_header(conn, "user_id")
       user_id = Enum.at(user_id, 0)
       guardian = Map.put(guardian, :user_id, user_id)
-      conn = post(conn, Routes.guardian_path(conn, :create), guardian: guardian)
+      conn = post(conn, ~p"/api/guardians/", guardian: guardian)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -75,10 +75,11 @@ defmodule BokkenWeb.GuardianControllerTest do
         city: "Guimarães"
       }
 
-      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: update_attrs)
+      conn = put(conn, ~p"/api/guardians/#{guardian.id}", guardian: update_attrs)
+
       assert %{"id" => id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.guardian_path(conn, :show, id))
+      conn = get(conn, ~p"/api/guardians/#{id}")
 
       assert %{
                "first_name" => "Ana Maria",
@@ -91,7 +92,7 @@ defmodule BokkenWeb.GuardianControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, guardian: guardian} do
       invalid_attrs = %{mobile: nil}
-      conn = put(conn, Routes.guardian_path(conn, :update, guardian), guardian: invalid_attrs)
+      conn = put(conn, ~p"/api/guardians/#{guardian.id}", guardian: invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -100,11 +101,11 @@ defmodule BokkenWeb.GuardianControllerTest do
     setup [:new_guardian]
 
     test "deletes chosen guardian", %{conn: conn, guardian: guardian} do
-      conn = delete(conn, Routes.guardian_path(conn, :delete, guardian))
+      conn = delete(conn, ~p"/api/guardians/#{guardian.id}")
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, Routes.guardian_path(conn, :show, guardian))
+        get(conn, ~p"/api/guardians/#{guardian.id}")
       end
     end
   end
