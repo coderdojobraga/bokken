@@ -1,5 +1,5 @@
 defmodule BokkenWeb.PageController do
-  use BokkenWeb, :controller
+  use BokkenWeb, controller: "1.6"
 
   @app Mix.Project.config()[:app]
   @version Mix.Project.config()[:version]
