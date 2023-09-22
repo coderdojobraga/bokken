@@ -1,5 +1,5 @@
 defmodule BokkenWeb.BadgeController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Gamification
   alias Bokken.Gamification.Badge
@@ -9,18 +9,18 @@ defmodule BokkenWeb.BadgeController do
 
   def index(conn, params) when is_map_key(params, "ninja_id") do
     badges = Gamification.list_badges(params)
-    render(conn, "index.json", badges: badges)
+    render(conn,:index, badges: badges)
   end
 
   def index(conn, _params) when is_ninja(conn) do
     ninja_id = conn.assigns.current_user.ninja.id
     badges = Gamification.list_badges(%{"ninja_id" => ninja_id})
-    render(conn, "index.json", badges: badges)
+    render(conn, :index, badges: badges)
   end
 
   def index(conn, _params) when is_mentor(conn) do
     badges = Gamification.list_badges()
-    render(conn, "index.json", badges: badges)
+    render(conn, :index, badges: badges)
   end
 
   def create(conn, %{"badge_id" => badge_id, "ninja_id" => ninja_id})

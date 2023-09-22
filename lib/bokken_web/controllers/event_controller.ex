@@ -1,5 +1,5 @@
 defmodule BokkenWeb.EventController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Events
@@ -11,7 +11,7 @@ defmodule BokkenWeb.EventController do
 
   def index(conn, params) do
     events = Events.list_events(params)
-    render(conn, "index.json", events: events)
+    render(conn, :index, events: events)
   end
 
   def create(conn, %{"event" => event_params}) when is_organizer(conn) do

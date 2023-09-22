@@ -1,5 +1,5 @@
 defmodule BokkenWeb.LocationController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Location
@@ -8,7 +8,7 @@ defmodule BokkenWeb.LocationController do
 
   def index(conn, _params) do
     locations = Events.list_locations()
-    render(conn, "index.json", locations: locations)
+    render(conn, :index, locations: locations)
   end
 
   def create(conn, %{"location" => location_params}) when is_organizer(conn) do

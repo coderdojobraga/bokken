@@ -1,5 +1,5 @@
 defmodule BokkenWeb.ResetPasswordController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Mailer

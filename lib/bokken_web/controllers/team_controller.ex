@@ -1,5 +1,5 @@
 defmodule BokkenWeb.TeamController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Team
@@ -8,7 +8,7 @@ defmodule BokkenWeb.TeamController do
 
   def index(conn, params) do
     teams = Events.list_teams(params)
-    render(conn, "index.json", teams: teams)
+    render(conn, :index, teams: teams)
   end
 
   def create(conn, %{"team" => team_params}) when is_organizer(conn) do

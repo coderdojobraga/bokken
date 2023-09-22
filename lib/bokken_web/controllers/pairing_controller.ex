@@ -1,5 +1,5 @@
 defmodule BokkenWeb.PairingController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Pairings
@@ -9,7 +9,7 @@ defmodule BokkenWeb.PairingController do
 
     conn
     |> put_status(:ok)
-    |> render("index.json", lectures: lectures)
+    |> render(:index, lectures: lectures)
   end
 
   def create(conn, %{"event_id" => event_id}) when is_organizer(conn) do

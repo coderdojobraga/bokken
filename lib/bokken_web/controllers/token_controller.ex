@@ -1,5 +1,5 @@
 defmodule BokkenWeb.TokenController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Token
@@ -9,7 +9,7 @@ defmodule BokkenWeb.TokenController do
 
     conn
     |> put_status(:ok)
-    |> render("index.json", tokens: tokens)
+    |> render(:index, tokens: tokens)
   end
 
   def show(conn, %{"id" => id}) do

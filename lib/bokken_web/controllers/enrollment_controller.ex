@@ -1,5 +1,5 @@
 defmodule BokkenWeb.EnrollmentController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Enrollment
@@ -25,7 +25,7 @@ defmodule BokkenWeb.EnrollmentController do
 
     conn
     |> put_status(:ok)
-    |> render("index.json", enrollments: enrollments)
+    |> render(:index, enrollments: enrollments)
   end
 
   def index(conn, %{"event_id" => _event_id} = params) do
@@ -33,7 +33,7 @@ defmodule BokkenWeb.EnrollmentController do
 
     conn
     |> put_status(:ok)
-    |> render("index.json", enrollments: enrollments)
+    |> render(:index, enrollments: enrollments)
   end
 
   def create(

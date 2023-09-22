@@ -1,5 +1,5 @@
 defmodule BokkenWeb.GuardianController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Guardian
@@ -8,7 +8,7 @@ defmodule BokkenWeb.GuardianController do
 
   def index(conn, _params) do
     guardians = Accounts.list_guardians()
-    render(conn, "index.json", guardians: guardians)
+    render(conn, :index, guardians: guardians)
   end
 
   def create(conn, %{"guardian" => guardian_params})

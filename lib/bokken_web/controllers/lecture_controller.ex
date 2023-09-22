@@ -1,5 +1,5 @@
 defmodule BokkenWeb.LectureController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Events
   alias Bokken.Events.Lecture
@@ -8,7 +8,7 @@ defmodule BokkenWeb.LectureController do
 
   def index(conn, params) do
     lectures = Events.list_lectures(params, [:ninja, :event, :mentor, :assistant_mentors, :files])
-    render(conn, "index.json", lectures: lectures)
+    render(conn, :index, lectures: lectures)
   end
 
   def create(conn, %{"lecture" => params})

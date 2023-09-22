@@ -1,5 +1,5 @@
 defmodule BokkenWeb.OrganizerController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Organizer
@@ -8,7 +8,7 @@ defmodule BokkenWeb.OrganizerController do
 
   def index(conn, _params) do
     organizers = Accounts.list_organizers()
-    render(conn, "index.json", organizers: organizers)
+    render(conn, :index, organizers: organizers)
   end
 
   def create(conn, %{"organizer" => organizer_params}) when is_organizer(conn) do

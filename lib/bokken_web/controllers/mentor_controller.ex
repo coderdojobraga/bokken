@@ -1,5 +1,5 @@
 defmodule BokkenWeb.MentorController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Mentor
@@ -9,7 +9,7 @@ defmodule BokkenWeb.MentorController do
 
   def index(conn, _params) do
     mentors = Accounts.list_mentors()
-    render(conn, "index.json", mentors: mentors)
+    render(conn, :index, mentors: mentors)
   end
 
   def create(conn, %{"team_id" => team_id, "mentor_id" => mentor_id})
