@@ -79,7 +79,7 @@ defmodule BokkenWeb.SkillController do
 
   def show(conn, %{"id" => id}) do
     skill = Curriculum.get_skill!(id)
-    render(conn,:show, skill: skill)
+    render(conn, :show, skill: skill)
   end
 
   def update(conn, %{"id" => id, "skill" => skill_params}) when is_organizer(conn) do

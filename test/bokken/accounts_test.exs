@@ -27,7 +27,12 @@ defmodule Bokken.AccountsTest do
       user = insert(:user)
 
       attrs =
-        params_for(:guardian, user_id: user.id, user: user, city: "Braga", mobile: "+351915096743")
+        params_for(:guardian,
+          user_id: user.id,
+          user: user,
+          city: "Braga",
+          mobile: "+351915096743"
+        )
 
       assert {:ok, %Guardian{} = guardian} = Accounts.create_guardian(attrs)
       assert guardian.city == "Braga"

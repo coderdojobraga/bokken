@@ -8,7 +8,7 @@ defmodule BokkenWeb.Admin.NinjaController do
 
   def index(conn, _params) do
     ninjas = Accounts.list_ninjas([:guardian])
-    render(conn,:index, ninjas: ninjas)
+    render(conn, :index, ninjas: ninjas)
   end
 
   def update(conn, %{"id" => id, "ninja" => ninja_params}) when is_organizer(conn) do

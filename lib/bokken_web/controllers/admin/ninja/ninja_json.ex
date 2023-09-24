@@ -1,13 +1,11 @@
 defmodule BokkenWeb.Admin.NinjaJSON do
-
-
   alias Bokken.Uploaders.Avatar
 
-  def show(%{ninjas: ninjas}) do
+  def index(%{ninjas: ninjas}) do
     %{data: for(ninja <- ninjas, do: data(ninja))}
   end
 
-  def data( %{ninja: ninja}) do
+  def data(%{ninja: ninja}) do
     %{
       id: ninja.id,
       photo: Avatar.url({ninja.photo, ninja}, :thumb),

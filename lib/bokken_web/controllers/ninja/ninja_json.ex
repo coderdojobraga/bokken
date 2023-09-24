@@ -1,25 +1,22 @@
 defmodule BokkenWeb.NinjaJSON do
-
-
   alias Bokken.Uploaders.Avatar
-  alias BokkenWeb.{NinjaJSON, SkillJSON}
+  alias BokkenWeb.{SkillJSON}
 
-
-  def index( %{ninjas: ninjas, current_user: current_user}) do
-    %{data: for(ninja <- ninjas, do: data(ninja, current_user))}
+  def index(%{ninjas: ninjas}) do
+    %{data: for(ninja <- ninjas, do: data(ninja))}
   end
 
-  def show(%{ninja: ninja, current_user: current_user}) do
-    %{data: data(ninja, current_user)}
+  def show(%{ninja: ninja}) do
+    %{data: data(ninja)}
   end
 
   def ninja(%{ninja: ninja, current_user: current_user}) do
-    data(ninja, current_user)
+    data(ninja)
     |> Map.merge(personal(ninja, current_user))
     |> Map.merge(sensitive(ninja, current_user))
   end
 
-  defp data(ninja, _) do
+  def data(ninja) do
     %{
       id: ninja.id,
       photo: Avatar.url({ninja.photo, ninja}, :thumb),
