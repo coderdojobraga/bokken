@@ -38,7 +38,7 @@ defmodule BokkenWeb.NinjaController do
 
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/teams/#{team_id}/ninjas/#{ninja}")
+      |> put_resp_header("location", ~p"/api/teams/#{team_i}/ninjas/#{ninja}")
       # |> put_resp_header("location" Routes.team_path(conn, :show, ninja))
       |> render(:show, ninja: ninja)
     end
