@@ -25,9 +25,7 @@ defmodule BokkenWeb.AvailabilityView do
   def render("show.json", %{availability: availability, current_user: current_user}) do
     %{
       data:
-        render_one(availability, AvailabilityView, "availability.json",
-          current_user: current_user
-        )
+        render_one(availability, AvailabilityView, "availability.json", current_user: current_user)
     }
   end
 

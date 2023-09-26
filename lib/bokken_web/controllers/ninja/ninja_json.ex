@@ -1,5 +1,6 @@
 defmodule BokkenWeb.NinjaJSON do
   alias Bokken.Uploaders.Avatar
+  alias BokkenWeb.SkillJSON
 
   def index(%{ninjas: ninjas}) do
     %{data: for(ninja <- ninjas, do: data(ninja))}
