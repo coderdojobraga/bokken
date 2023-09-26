@@ -3,9 +3,8 @@ defmodule Bokken.NinjaJSONTest do
 
   import Bokken.Factory
 
-  alias Bokken.Uploaders.Avatar
-  alias Bokken.Uploaders.Document
   alias BokkenWeb.NinjaJSON
+  alias Bokken.Uploaders.Avatar
 
   test "data" do
     ninja = build(:ninja)

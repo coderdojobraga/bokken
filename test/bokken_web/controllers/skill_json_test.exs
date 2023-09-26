@@ -3,7 +3,6 @@ defmodule Bokken.SkillJSONTest do
 
   import Bokken.Factory
 
-  alias Bokken.Uploaders.Document
   alias BokkenWeb.SkillJSON
 
   test "data" do
