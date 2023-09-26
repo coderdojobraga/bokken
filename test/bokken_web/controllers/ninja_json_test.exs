@@ -2,9 +2,8 @@ defmodule Bokken.NinjaJSONTest do
   use Bokken.DataCase
 
   import Bokken.Factory
-
-  alias BokkenWeb.NinjaJSON
   alias Bokken.Uploaders.Avatar
+  alias BokkenWeb.NinjaJSON
 
   test "data" do
     ninja = build(:ninja)
