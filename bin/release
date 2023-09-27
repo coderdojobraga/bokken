@@ -43,7 +43,7 @@ function build_image() {
   local version
   local env
 
-  env=${1:-stg}
+  env=${1:-prod}
 
   load_env_file ".env.${env}"
 
@@ -54,10 +54,6 @@ function build_image() {
     -t coderdojobraga/bokken:"$version" \
     -f Dockerfile .
   docker image prune --force
-}
-
-function push_image() {
-  docker push coderdojobraga/bokken --all-tags
 }
 
 if [[ "${1:-NOFORCE}" != "--force" ]]; then
@@ -78,4 +74,4 @@ else
 fi
 
 build_image "${1:-prod}"
-push_image
+
