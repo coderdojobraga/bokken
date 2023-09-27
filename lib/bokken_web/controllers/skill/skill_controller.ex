@@ -1,5 +1,5 @@
 defmodule BokkenWeb.SkillController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Curriculum
@@ -9,24 +9,24 @@ defmodule BokkenWeb.SkillController do
 
   def index(conn, %{"ninja_id" => _ninja_id} = params) do
     skills = Curriculum.list_ninja_skills(params)
-    render(conn, "index.json", skills: skills)
+    render(conn, :index, skills: skills)
   end
 
   def index(conn, %{"mentor_id" => _mentor_id} = params) do
     skills = Curriculum.list_mentor_skills(params)
-    render(conn, "index.json", skills: skills)
+    render(conn, :index, skills: skills)
   end
 
   def index(conn, _params) do
     skills = Curriculum.list_skills()
-    render(conn, "index.json", skills: skills)
+    render(conn, :index, skills: skills)
   end
 
   def create(conn, %{"skill" => skill_params}) when is_organizer(conn) do
     with {:ok, %Skill{} = skill} <- Curriculum.create_skill(skill_params) do
       conn
       |> put_status(:created)
-      |> render("show.json", skill: skill)
+      |> render(:show, skill: skill)
     end
   end
 
@@ -39,7 +39,7 @@ defmodule BokkenWeb.SkillController do
     with {:ok, %NinjaSkill{} = ninja_skill} <- Curriculum.create_ninja_skill(ninja_skill_attrs) do
       conn
       |> put_status(:created)
-      |> render("show.json", skill: skill(ninja_skill))
+      |> render(:show, skill: skill(ninja_skill))
     end
   end
 
@@ -54,12 +54,12 @@ defmodule BokkenWeb.SkillController do
       with {:ok, %NinjaSkill{} = ninja_skill} <- Curriculum.create_ninja_skill(ninja_skill_attrs) do
         conn
         |> put_status(:created)
-        |> render("show.json", skill: skill(ninja_skill))
+        |> render(:show, skill: skill(ninja_skill))
       end
     else
       conn
       |> put_status(:unauthorized)
-      |> render("error.json", reason: "You're not the ninja's guardian")
+      |> render(:error, reason: "You're not the ninja's guardian")
     end
   end
 
@@ -73,20 +73,20 @@ defmodule BokkenWeb.SkillController do
            Curriculum.create_mentor_skill(mentor_skill_attrs) do
       conn
       |> put_status(:created)
-      |> render("show.json", skill: skill(mentor_skill))
+      |> render(:show, skill: skill(mentor_skill))
     end
   end
 
   def show(conn, %{"id" => id}) do
     skill = Curriculum.get_skill!(id)
-    render(conn, "show.json", skill: skill)
+    render(conn, :show, skill: skill)
   end
 
   def update(conn, %{"id" => id, "skill" => skill_params}) when is_organizer(conn) do
     skill = Curriculum.get_skill!(id)
 
     with {:ok, %Skill{} = skill} <- Curriculum.update_skill(skill, skill_params) do
-      render(conn, "show.json", skill: skill)
+      render(conn, :show, skill: skill)
     end
   end
 
@@ -113,7 +113,7 @@ defmodule BokkenWeb.SkillController do
     else
       conn
       |> put_status(:not_found)
-      |> render("error.json", reason: "You don't have that skill")
+      |> render(:error, reason: "You don't have that skill")
     end
   end
 
@@ -132,7 +132,7 @@ defmodule BokkenWeb.SkillController do
     else
       conn
       |> put_status(:not_found)
-      |> render("error.json", reason: "You don't have that skill")
+      |> render(:error, reason: "You don't have that skill")
     end
   end
 
@@ -150,12 +150,12 @@ defmodule BokkenWeb.SkillController do
       else
         conn
         |> put_status(:not_found)
-        |> render("error.json", reason: "Ninja doesn't have that skill")
+        |> render(:error, reason: "Ninja doesn't have that skill")
       end
     else
       conn
       |> put_status(:unauthorized)
-      |> render("error.json", reason: "You're not the ninja's guardian")
+      |> render(:error, reason: "You're not the ninja's guardian")
     end
   end
 

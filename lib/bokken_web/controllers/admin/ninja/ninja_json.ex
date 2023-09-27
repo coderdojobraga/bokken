@@ -1,13 +1,11 @@
-defmodule BokkenWeb.Admin.NinjaView do
-  use BokkenWeb, :view
-
+defmodule BokkenWeb.Admin.NinjaJSON do
   alias Bokken.Uploaders.Avatar
 
-  def render("index.json", %{ninjas: ninjas}) do
-    %{data: render_many(ninjas, __MODULE__, "ninja.json")}
+  def index(%{ninjas: ninjas}) do
+    %{data: for(ninja <- ninjas, do: data(ninja))}
   end
 
-  def render("ninja.json", %{ninja: ninja}) do
+  def data(%{ninja: ninja}) do
     %{
       id: ninja.id,
       photo: Avatar.url({ninja.photo, ninja}, :thumb),
