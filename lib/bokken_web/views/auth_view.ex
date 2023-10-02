@@ -5,7 +5,7 @@ defmodule BokkenWeb.AuthView do
   alias BokkenWeb.GuardianView
   alias BokkenWeb.MentorView
   alias BokkenWeb.NinjaView
-  alias BokkenWeb.OrganizerView
+  alias BokkenWeb.OrganizerJSON
 
   def render("me.json", %{user: %{registered: false} = user}) do
     render_one(user, AuthView, "user.json")
@@ -30,7 +30,7 @@ defmodule BokkenWeb.AuthView do
   end
 
   def render("me.json", %{user: %{role: :organizer, organizer: organizer} = user}) do
-    render_one(organizer, OrganizerView, "organizer.json")
+    render_one(organizer, OrganizerJSON, "organizer.json")
     |> Map.merge(render_one(user, AuthView, "user.json", current_user: user))
     |> Map.put(:organizer_id, organizer.id)
   end
