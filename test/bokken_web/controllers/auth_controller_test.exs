@@ -7,13 +7,9 @@ defmodule BokkenWeb.AuthControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "sign_up " do
+  describe "sign_up" do
     test "sign_up new user when data is valid", %{conn: conn} do
-      user_params = %{
-        email: "example@mail.com",
-        password: "password1234",
-        role: "guardian"
-      }
+      user_params = params_for(:user)
 
       conn = post(conn, ~p"/api/auth/sign_up", user_params)
 
@@ -21,11 +17,7 @@ defmodule BokkenWeb.AuthControllerTest do
     end
 
     test "sign_up new user when data is invalid", %{conn: conn} do
-      user_params = %{
-        email: "example@mail.com",
-        password: "password1234",
-        role: "random"
-      }
+      user_params = params_for(:user, %{role: "random"})
 
       conn = post(conn, ~p"/api/auth/sign_up", user_params)
 
@@ -33,7 +25,7 @@ defmodule BokkenWeb.AuthControllerTest do
     end
   end
 
-  describe "sign_in " do
+  describe "sign_in" do
     test "sign_in user when data is valid", %{conn: conn} do
       user = insert(:user)
 
@@ -92,7 +84,7 @@ defmodule BokkenWeb.AuthControllerTest do
 
       conn = put(conn, ~p"/api/auth/me", user: user_params)
 
-      assert json_response(conn, 200)
+      assert json_response(conn, 200)["verified"] == false
     end
   end
 
@@ -100,13 +92,7 @@ defmodule BokkenWeb.AuthControllerTest do
     setup [:login_as_guardian]
 
     test "create new guardian", %{conn: conn} do
-      params = %{
-        first_name: "Daniel",
-        last_name: "Pereira",
-        email: "random@gmail.com",
-        role: "guardian",
-        mobile: "929 066 896"
-      }
+      params = params_for(:guardian)
 
       conn = post(conn, ~p"/api/auth/me", user: params)
 
