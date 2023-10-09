@@ -2,7 +2,7 @@ defmodule BokkenWeb.LectureView do
   use BokkenWeb, :view
 
   alias BokkenWeb.EventView
-  alias BokkenWeb.FileView
+  alias BokkenWeb.FileJSON
   alias BokkenWeb.LectureView
   alias BokkenWeb.MentorView
   alias BokkenWeb.NinjaView
@@ -72,7 +72,7 @@ defmodule BokkenWeb.LectureView do
 
   defp files(lecture) do
     if Ecto.assoc_loaded?(lecture.files) do
-      %{files: render_many(lecture.files, FileView, "file.json")}
+      %{files: for(file <- lecture.files, do: FileJSON.data(file))}
     else
       %{}
     end
