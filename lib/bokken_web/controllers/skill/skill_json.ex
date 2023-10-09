@@ -1,17 +1,17 @@
 defmodule BokkenWeb.SkillJSON do
   def index(%{skills: skills}) do
-    %{data: for(skill <- skills, do: data(%{skill: skill}))}
+    %{data: for(skill <- skills, do: data(skill))}
   end
 
   def show(%{skill: skill}) do
-    %{data: data(%{skill: skill})}
+    %{data: data(skill)}
   end
 
   def error(%{reason: reason}) do
     %{error: reason}
   end
 
-  def data(%{skill: skill}) do
+  def data(skill) do
     %{
       id: skill.id,
       name: skill.name,
