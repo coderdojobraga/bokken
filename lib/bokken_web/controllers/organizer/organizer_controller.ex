@@ -1,5 +1,5 @@
 defmodule BokkenWeb.OrganizerController do
-  use BokkenWeb, controller: "1.6"
+  use BokkenWeb, :controller
 
   alias Bokken.Accounts
   alias Bokken.Accounts.Organizer
@@ -8,21 +8,21 @@ defmodule BokkenWeb.OrganizerController do
 
   def index(conn, _params) do
     organizers = Accounts.list_organizers()
-    render(conn, "index.json", organizers: organizers)
+    render(conn, :index, organizers: organizers)
   end
 
   def create(conn, %{"organizer" => organizer_params}) when is_organizer(conn) do
     with {:ok, %Organizer{} = organizer} <- Accounts.create_organizer(organizer_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.organizer_path(conn, :show, organizer))
-      |> render("show.json", organizer: organizer)
+      |> put_resp_header("location", ~p"/api/organizers/#{organizer}")
+      |> render(:show, organizer: organizer)
     end
   end
 
   def show(conn, %{"id" => id}) do
     organizer = Accounts.get_organizer!(id)
-    render(conn, "show.json", organizer: organizer)
+    render(conn, :show, organizer: organizer)
   end
 
   def update(conn, %{"id" => id, "organizer" => organizer_params})
@@ -30,7 +30,7 @@ defmodule BokkenWeb.OrganizerController do
     organizer = Accounts.get_organizer!(id)
 
     with {:ok, %Organizer{} = organizer} <- Accounts.update_organizer(organizer, organizer_params) do
-      render(conn, "show.json", organizer: organizer)
+      render(conn, :show, organizer: organizer)
     end
   end
 
