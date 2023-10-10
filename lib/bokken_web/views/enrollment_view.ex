@@ -3,7 +3,7 @@ defmodule BokkenWeb.EnrollmentView do
 
   alias BokkenWeb.EnrollmentView
   alias BokkenWeb.EventView
-  alias BokkenWeb.NinjaView
+  alias BokkenWeb.NinjaJSON
 
   def render("index.json", %{enrollments: enrollments, current_user: current_user}) do
     %{
@@ -39,7 +39,7 @@ defmodule BokkenWeb.EnrollmentView do
 
   defp ninja(enrollment, current_user) do
     if Ecto.assoc_loaded?(enrollment.ninja) do
-      %{ninja: render_one(enrollment.ninja, NinjaView, "ninja.json", current_user: current_user)}
+      %{ninja: NinjaJSON.ninja(%{ninja: enrollment.ninja, current_user: current_user})}
     else
       %{ninja_id: enrollment.ninja_id}
     end
