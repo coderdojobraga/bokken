@@ -6,6 +6,10 @@ defmodule BokkenWeb.Admin.NinjaJSON do
     %{data: for(ninja <- ninjas, do: data(ninja))}
   end
 
+  def show(%{ninja: ninja}) do
+    %{data: data(ninja)}
+  end
+
   def data(%Ninja{} = ninja) do
     %{
       id: ninja.id,
