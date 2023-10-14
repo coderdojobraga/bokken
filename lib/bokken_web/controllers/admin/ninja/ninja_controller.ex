@@ -15,7 +15,7 @@ defmodule BokkenWeb.Admin.NinjaController do
     ninja = Accounts.get_ninja!(id, [:guardian])
 
     with {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
-      render(conn, :ninja, ninja: ninja)
+      render(conn, :show, ninja: ninja)
     end
   end
 end
