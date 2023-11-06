@@ -1,20 +1,15 @@
 defmodule BokkenWeb.Admin.GuardianControllerTest do
   use BokkenWeb.ConnCase
 
-  alias Bokken.Accounts
-
   import Bokken.Factory
 
   setup %{conn: conn} do
-    password = "password1234!"
-    guardian_user = insert(:user, role: "organizer", password: password)
-
-    {:ok, user} = Accounts.authenticate_user(guardian_user.email, password)
-
-    {:ok, conn: log_in_user(conn, user)}
+    {:ok, conn: put_resp_header(conn, "accept", "application/json")}
   end
 
   describe "index" do
+    setup [:login_as_organizer]
+
     test "lists all guardians", %{conn: conn} do
       conn = get(conn, ~p"/api/admin/guardians/")
       assert json_response(conn, 200)["data"] == []
@@ -22,6 +17,8 @@ defmodule BokkenWeb.Admin.GuardianControllerTest do
   end
 
   describe "show" do
+    setup [:login_as_organizer]
+
     test "shoes", %{conn: conn} do
       guardian = insert(:guardian)
 
