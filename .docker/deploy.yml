@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
-    restart: unless-stopped
+    restart: always
   api:
     volumes:
       - uploads:/app/priv/uploads
@@ -21,4 +21,4 @@ services:
       - MAILER_API_KEY
       - HOST_URL
       - PORT
-    restart: unless-stopped
+    restart: always
