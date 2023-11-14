@@ -9,7 +9,6 @@ defmodule BokkenWeb.Endpoint do
   @session_options [
     store: :cookie,
     secure: true,
-    extra: "SameSite=None",
     key: "_bokken_key",
     signing_salt: "82k4BOy+"
   ]
