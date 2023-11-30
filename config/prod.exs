@@ -10,7 +10,7 @@ config :bokken, BokkenWeb.Endpoint,
     # For production, don't forget to configure the url host
     # to something meaningful, Phoenix uses this information
     # when generating URLs.
-    host: "bokken.di.uminho.pt",
+    host: "api.coderdojobraga.org",
     port: 80
   ],
   cache_static_manifest: "priv/static/cache_manifest.json",

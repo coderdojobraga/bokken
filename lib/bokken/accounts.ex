@@ -112,7 +112,7 @@ defmodule Bokken.Accounts do
 
     case get_user(user_id) do
       nil ->
-        {:error, "User not found"}
+        {:error, :not_found}
 
       user ->
         transaction =
@@ -290,7 +290,7 @@ defmodule Bokken.Accounts do
 
     case get_user(user_id) do
       nil ->
-        {:error, "User not found"}
+        {:error, :not_found}
 
       user ->
         transaction =

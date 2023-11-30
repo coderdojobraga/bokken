@@ -623,7 +623,7 @@ defmodule Bokken.Events do
     if DateTime.compare(event.enrollments_open, cur_time) == :lt and
          DateTime.compare(event.enrollments_close, cur_time) == :gt do
       if is_ninja_enrolled?(ninja_id, event.id) do
-        {:error, :ninja_already_enrolled}
+        {:error, :already_enrolled}
       else
         insert_enrollment(role, attrs)
       end
@@ -713,7 +713,7 @@ defmodule Bokken.Events do
     if DateTime.compare(event.start_time, cur_time) == :gt do
       Repo.delete(enrollment)
     else
-      {:error, "Cannot delete enrollment of past session"}
+      {:error, :not_authorized}
     end
   end
 
@@ -851,14 +851,14 @@ defmodule Bokken.Events do
     if DateTime.compare(event.enrollments_open, current_time) == :lt and
          DateTime.compare(event.enrollments_close, current_time) == :gt do
       if mentor_availability_exists?(mentor_id, event.id) do
-        {:error, "Mentor has already stated availability for this event"}
+        {:error, :already_enrolled}
       else
         %Availability{}
         |> Availability.changeset(attrs)
         |> Repo.insert()
       end
     else
-      {:error, "Availability cannot be created when event enrollments are closed"}
+      {:error, :enrollments_closed}
     end
   end
 
