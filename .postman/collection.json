@@ -3255,7 +3255,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"description\": \"For the ninja who never stops building things\",\n        \"id\": \"380b3725-a37a-4c7d-a15b-50c61de1573c\",\n        \"image\": \"https://bokken.di.uminho.pt/uploads/badges/380b3725-a37a-4c7d-a15b-50c61de1573c/original.png?v=63790670110\",\n        \"name\": \"Built 695 projects\"\n    }\n}"
+									"body": "{\n    \"data\": {\n        \"description\": \"For the ninja who never stops building things\",\n        \"id\": \"380b3725-a37a-4c7d-a15b-50c61de1573c\",\n        \"image\": \"https://api.coderdojobraga.org/uploads/badges/380b3725-a37a-4c7d-a15b-50c61de1573c/original.png?v=63790670110\",\n        \"name\": \"Built 695 projects\"\n    }\n}"
 								}
 							]
 						},
