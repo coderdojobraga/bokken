@@ -17,6 +17,7 @@ defmodule Bokken.NinjaJSONTest do
              belt: ninja.belt,
              socials: ninja.socials,
              since: ninja.inserted_at,
+             birthday: ninja.birthday,
              guardian_id: ninja.guardian_id
            }
   end

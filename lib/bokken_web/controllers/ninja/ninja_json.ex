@@ -25,6 +25,7 @@ defmodule BokkenWeb.NinjaJSON do
       belt: ninja.belt,
       socials: ninja.socials,
       since: ninja.inserted_at,
+      birthday: ninja.birthday,
       guardian_id: ninja.guardian_id
     }
     |> Map.merge(skills(ninja))
