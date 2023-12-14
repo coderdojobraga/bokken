@@ -9,7 +9,7 @@ defmodule BokkenWeb.GuardianJSON do
     %{data: data(guardian, current_user)}
   end
 
-  defp data(guardian, current_user) do
+  def data(guardian, current_user) do
     guardian(guardian)
     |> Map.merge(personal(guardian, current_user))
   end
