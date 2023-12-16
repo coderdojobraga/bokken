@@ -14,20 +14,24 @@ defmodule BokkenWeb.NinjaController do
       when is_map_key(params, "badge_id")
       when is_map_key(params, "event_id") do
     ninjas = Accounts.list_ninjas()
-    render(conn, :index, ninjas: ninjas)
+    render(conn, :index, %{ninjas: ninjas, current_user: conn.assigns.current_user})
   end
 
   def index(conn, _params) when is_guardian(conn) or is_organizer(conn) do
     guardian_id = conn.assigns.current_user.guardian.id
     guardian = Accounts.get_guardian!(guardian_id, [:ninjas])
-    render(conn, :index, ninjas: guardian.ninjas)
+
+    render(conn, :index, %{
+      ninjas: guardian.ninjas,
+      current_user: conn.assigns.current_user
+    })
   end
 
   def create(conn, %{"event_id" => event_id, "ninja_id" => ninja_id})
       when is_guardian(conn) or is_organizer(conn) do
     with {:ok, %Event{} = event, %Lecture{} = _lecture} <-
            Accounts.register_ninja_in_event(event_id, ninja_id) do
-      render(conn, :index, ninjas: event.ninjas)
+      render(conn, :index, %{ninjas: event.ninjas, current_user: conn.assigns.current_user})
     end
   end
 
@@ -39,7 +43,7 @@ defmodule BokkenWeb.NinjaController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/teams/#{ninja}")
-      |> render(:show, ninja: ninja)
+      |> render(:show, %{ninja: ninja, current_user: conn.assigns.current_user})
     end
   end
 
@@ -52,18 +56,18 @@ defmodule BokkenWeb.NinjaController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/ninjas/#{ninja}")
-      |> render(:show, ninja: ninja)
+      |> render(:show, %{ninja: ninja, current_user: conn.assigns.current_user})
     end
   end
 
   def show(conn, %{"id" => id}) do
     ninja = Accounts.get_ninja!(id, [:skills])
-    render(conn, :show, ninja: ninja)
+    render(conn, :show, %{ninja: ninja, current_user: conn.assigns.current_user})
   end
 
   def show(conn, %{"discord_id" => discord_id}) do
     with {:ok, %Ninja{} = ninja} <- Accounts.get_ninja_by_discord(discord_id) do
-      render(conn, :show, ninja: ninja)
+      render(conn, :show, %{ninja: ninja, current_user: conn.assigns.current_user})
     end
   end
 
@@ -72,14 +76,14 @@ defmodule BokkenWeb.NinjaController do
     ninja = Accounts.get_ninja!(id)
 
     with {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
-      render(conn, :show, ninja: ninja)
+      render(conn, :show, %{ninja: ninja, current_user: conn.assigns.current_user})
     end
   end
 
   def update(conn, %{"discord_id" => discord_id, "ninja" => ninja_params}) do
     with {:ok, %Ninja{} = ninja} <- Accounts.get_ninja_by_discord(discord_id),
          {:ok, %Ninja{} = ninja} <- Accounts.update_ninja(ninja, ninja_params) do
-      render(conn, :show, ninja: ninja)
+      render(conn, :show, %{ninja: ninja, current_user: conn.assigns.current_user})
     end
   end
 

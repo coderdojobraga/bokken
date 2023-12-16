@@ -2,21 +2,15 @@ defmodule BokkenWeb.NinjaJSON do
   alias Bokken.Uploaders.Avatar
   alias BokkenWeb.SkillJSON
 
-  def index(%{ninjas: ninjas}) do
-    %{data: for(ninja <- ninjas, do: data(ninja))}
+  def index(%{ninjas: ninjas, current_user: current_user}) do
+    %{data: for(ninja <- ninjas, do: data(ninja, current_user))}
   end
 
-  def show(%{ninja: ninja}) do
-    %{data: data(ninja)}
+  def show(%{ninja: ninja, current_user: current_user}) do
+    %{data: data(ninja, current_user)}
   end
 
-  def ninja(%{ninja: ninja, current_user: current_user}) do
-    data(ninja)
-    |> Map.merge(personal(ninja, current_user))
-    |> Map.merge(sensitive(ninja, current_user))
-  end
-
-  def data(ninja) do
+  def data(ninja, current_user) do
     %{
       id: ninja.id,
       photo: Avatar.url({ninja.photo, ninja}, :thumb),
@@ -25,14 +19,15 @@ defmodule BokkenWeb.NinjaJSON do
       belt: ninja.belt,
       socials: ninja.socials,
       since: ninja.inserted_at,
-      birthday: ninja.birthday,
       guardian_id: ninja.guardian_id
     }
+    |> Map.merge(personal(ninja, current_user))
+    |> Map.merge(sensitive(ninja, current_user))
     |> Map.merge(skills(ninja))
   end
 
   defp personal(ninja, current_user)
-       when current_user.role == :organizer or current_user.id == ninja.id do
+       when current_user.role in [:organizer, :guardian] or current_user.id == ninja.id do
     %{
       birthday: ninja.birthday
     }

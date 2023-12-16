@@ -5,38 +5,73 @@ defmodule Bokken.NinjaJSONTest do
   alias Bokken.Uploaders.Avatar
   alias BokkenWeb.NinjaJSON
 
-  test "data" do
-    ninja = build(:ninja)
-    rendered_ninja = NinjaJSON.data(ninja)
+  describe "login as guardian" do
+    setup do
+      user = build(:user, role: :guardian)
+      guardian = build(:guardian, user: user)
+      ninja = build(:ninja, guardian: guardian)
+      {:ok, ninja: ninja, current_user: user}
+    end
 
-    assert rendered_ninja == %{
-             id: ninja.id,
-             photo: Avatar.url({ninja.photo, ninja}),
-             first_name: ninja.first_name,
-             last_name: ninja.last_name,
-             belt: ninja.belt,
-             socials: ninja.socials,
-             since: ninja.inserted_at,
-             birthday: ninja.birthday,
-             guardian_id: ninja.guardian_id
-           }
+    test "show", %{ninja: ninja, current_user: user} do
+      rendered_ninja = NinjaJSON.show(%{ninja: ninja, current_user: user})
+
+      assert rendered_ninja ==
+               %{
+                 data: %{
+                   id: ninja.id,
+                   photo: Avatar.url({ninja.photo, ninja}),
+                   first_name: ninja.first_name,
+                   last_name: ninja.last_name,
+                   belt: ninja.belt,
+                   socials: ninja.socials,
+                   since: ninja.inserted_at,
+                   birthday: ninja.birthday,
+                   guardian_id: ninja.guardian_id
+                 }
+               }
+    end
+
+    test "index", %{ninja: ninja, current_user: user} do
+      ninjas = build_list(5, :ninja, guardian: ninja.guardian)
+      rendered_ninjas = NinjaJSON.index(%{ninjas: ninjas, current_user: user})
+
+      assert 5 == Enum.count(rendered_ninjas[:data])
+    end
   end
 
-  test "show" do
-    ninja = build(:ninja)
-    rendered_ninja = NinjaJSON.show(%{ninja: ninja})
+  describe "login as mentor" do
+    setup do
+      user = build(:user, role: :mentor)
+      ninja = build(:ninja)
+      {:ok, ninja: ninja, current_user: user}
+    end
 
-    assert rendered_ninja == %{
-             data: NinjaJSON.data(ninja)
-           }
-  end
+    test "show", %{ninja: ninja, current_user: user} do
+      rendered_ninja = NinjaJSON.show(%{ninja: ninja, current_user: user})
 
-  test "index" do
-    ninjas = build_list(5, :ninja)
-    rendered_ninjas = NinjaJSON.index(%{ninjas: ninjas})
+      assert rendered_ninja ==
+               %{
+                 data: %{
+                   id: ninja.id,
+                   photo: Avatar.url({ninja.photo, ninja}),
+                   first_name: ninja.first_name,
+                   last_name: ninja.last_name,
+                   belt: ninja.belt,
+                   socials: ninja.socials,
+                   since: ninja.inserted_at,
+                   birthday: ninja.birthday,
+                   notes: nil,
+                   guardian_id: ninja.guardian_id
+                 }
+               }
+    end
 
-    assert rendered_ninjas == %{
-             data: Enum.map(ninjas, &NinjaJSON.data(&1))
-           }
+    test "index", %{ninja: ninja, current_user: user} do
+      ninjas = build_list(5, :ninja, guardian: ninja.guardian)
+      rendered_ninjas = NinjaJSON.index(%{ninjas: ninjas, current_user: user})
+
+      assert 5 == Enum.count(rendered_ninjas[:data])
+    end
   end
 end

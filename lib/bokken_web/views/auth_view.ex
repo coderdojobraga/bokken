@@ -24,7 +24,7 @@ defmodule BokkenWeb.AuthView do
   end
 
   def render("me.json", %{user: %{role: :ninja, ninja: ninja} = user}) do
-    NinjaJSON.ninja(%{ninja: ninja, current_user: user})
+    NinjaJSON.data(ninja, user)
     |> Map.merge(render_one(user, AuthView, "user.json"))
     |> Map.put(:ninja_id, ninja.id)
   end
