@@ -17,13 +17,14 @@ defmodule BokkenWeb.NinjaController do
     render(conn, :index, %{ninjas: ninjas, current_user: conn.assigns.current_user})
   end
 
-  def index(conn, _params) when is_guardian(conn) or is_organizer(conn) do
-    guardian_id = conn.assigns.current_user.guardian.id
+  def index(conn, _params) when is_guardian(conn) do
+    current_user = Accounts.get_user!(conn.assigns.current_user.id, [:guardian])
+    guardian_id = current_user.guardian.id
     guardian = Accounts.get_guardian!(guardian_id, [:ninjas])
 
     render(conn, :index, %{
       ninjas: guardian.ninjas,
-      current_user: conn.assigns.current_user
+      current_user: current_user
     })
   end
 
@@ -61,7 +62,7 @@ defmodule BokkenWeb.NinjaController do
   end
 
   def show(conn, %{"id" => id}) do
-    ninja = Accounts.get_ninja!(id, [:skills])
+    ninja = Accounts.get_ninja!(id, [:skills, :guardian])
     render(conn, :show, %{ninja: ninja, current_user: conn.assigns.current_user})
   end
 

@@ -27,7 +27,9 @@ defmodule BokkenWeb.NinjaJSON do
   end
 
   defp personal(ninja, current_user)
-       when current_user.role in [:organizer, :guardian] or current_user.id == ninja.id do
+       when current_user.role == :organizer or
+              current_user.guardian.id == ninja.guardian.id or
+              current_user.id == ninja.id do
     %{
       birthday: ninja.birthday
     }
