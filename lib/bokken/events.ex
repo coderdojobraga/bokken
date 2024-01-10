@@ -248,6 +248,16 @@ defmodule Bokken.Events do
     |> Map.fetch!(:events)
   end
 
+  def list_events(%{"order" => order}) do
+    query =
+      if order == "asc",
+        do: from(e in Event, order_by: [asc: e.start_time]),
+        else: from(e in Event, order_by: [desc: e.start_time])
+
+    Repo.all(query)
+    |> Repo.preload([:location, :team])
+  end
+
   def list_events(_args) do
     Event
     |> Repo.all()
