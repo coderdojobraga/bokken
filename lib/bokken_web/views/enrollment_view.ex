@@ -39,7 +39,7 @@ defmodule BokkenWeb.EnrollmentView do
 
   defp ninja(enrollment, current_user) do
     if Ecto.assoc_loaded?(enrollment.ninja) do
-      %{ninja: NinjaJSON.ninja(%{ninja: enrollment.ninja, current_user: current_user})}
+      %{ninja: NinjaJSON.data(enrollment.ninja, current_user)}
     else
       %{ninja_id: enrollment.ninja_id}
     end

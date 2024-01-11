@@ -19,6 +19,20 @@ defmodule Bokken.Guards do
   defguard is_registered(conn) when conn.assigns.current_user.registered
 
   @doc """
+  Defines the way to proceed in specific roles situations.
+
+  ## Examples
+
+      defguard is_ninja_guardian(user, ninja) when user.role == :guardian and user.guardian.id == ninja.guardian.id
+      Means to return True when a user is the ninja's guardian.
+
+  """
+  defguard is_ninja_guardian(user, ninja)
+           when user.role == :guardian and user.guardian.id == ninja.guardian.id
+
+  defguard is_ninja_user(user, ninja) when user.role == :ninja and user.id == ninja.user_id
+
+  @doc """
   Defines the way to proceed in specific error situations.
 
   ## Examples

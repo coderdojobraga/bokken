@@ -35,7 +35,7 @@ defmodule BokkenWeb.LectureView do
 
   defp ninja(lecture, current_user) do
     if Ecto.assoc_loaded?(lecture.ninja) do
-      %{ninja: NinjaJSON.ninja(%{ninja: lecture.ninja, current_user: current_user})}
+      %{ninja: NinjaJSON.data(lecture.ninja, current_user)}
     else
       %{ninja_id: lecture.ninja_id}
     end
