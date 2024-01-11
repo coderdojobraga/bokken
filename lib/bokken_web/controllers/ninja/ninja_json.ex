@@ -2,6 +2,8 @@ defmodule BokkenWeb.NinjaJSON do
   alias Bokken.Uploaders.Avatar
   alias BokkenWeb.SkillJSON
 
+  import Bokken.Guards, only: [is_ninja_guardian: 2, is_ninja_user: 2]
+
   def index(%{ninjas: ninjas, current_user: current_user}) do
     %{data: for(ninja <- ninjas, do: data(ninja, current_user))}
   end
@@ -28,8 +30,8 @@ defmodule BokkenWeb.NinjaJSON do
 
   defp personal(ninja, current_user)
        when current_user.role == :organizer or
-              current_user.guardian.id == ninja.guardian.id or
-              current_user.id == ninja.id do
+              is_ninja_guardian(current_user, ninja) or
+              is_ninja_user(current_user, ninja) do
     %{
       birthday: ninja.birthday
     }
