@@ -16,7 +16,8 @@ config :bokken, BokkenWeb.Endpoint,
     port: String.to_integer(System.get_env("PORT", "4002"))
   ],
   secret_key_base: "UYOacKoTtE8G5zQ4bjnfor+cxMxtRf3wOhpmYHPuMZDgrqtzzwXdt9uMfTb9wsSl",
-  server: true
+  server: true,
+  frontend_url: "http://localhost:3000"
 
 config :bokken, Bokken.Authorization,
   issuer: "bokken",
