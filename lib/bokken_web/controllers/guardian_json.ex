@@ -1,23 +1,20 @@
-defmodule BokkenWeb.GuardianView do
-  use BokkenWeb, :view
-
+defmodule BokkenWeb.GuardianJSON do
   alias Bokken.Uploaders.Avatar
-  alias BokkenWeb.GuardianView
 
-  def render("index.json", %{guardians: guardians, current_user: current_user}) do
-    %{data: render_many(guardians, GuardianView, "guardian.json", current_user: current_user)}
+  def index(%{guardians: guardians, current_user: current_user}) do
+    %{data: for(g <- guardians, do: data(g, current_user))}
   end
 
-  def render("show.json", %{guardian: guardian, current_user: current_user}) do
-    %{data: render_one(guardian, GuardianView, "guardian.json", current_user: current_user)}
+  def show(%{guardian: guardian, current_user: current_user}) do
+    %{data: data(guardian, current_user)}
   end
 
-  def render("guardian.json", %{guardian: guardian, current_user: current_user}) do
-    data(guardian)
+  def data(guardian, current_user) do
+    guardian(guardian)
     |> Map.merge(personal(guardian, current_user))
   end
 
-  defp data(guardian) do
+  defp guardian(guardian) do
     %{
       id: guardian.id,
       photo: Avatar.url({guardian.photo, guardian}, :thumb),
