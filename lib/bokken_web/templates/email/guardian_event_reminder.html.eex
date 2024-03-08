@@ -24,7 +24,8 @@
                       <ul style="Margin-top: 16px;Margin-bottom: 20px; text-align:center; list-style: none; padding: 0;">
                         <li>📅 <%= display_date(@event.start_time) %> </li>
                         <li>⏱ <%= display_time(@event.start_time) %> - <%= display_time(@event.end_time) %></li>
-                        <li>⌖ <%= @event.location.address %><li>
+                        <li>⌖ <%= @event.location.address %></li>
+                        <li>⚠️ Limite de inscrições: <%= @event.spots_available %></li>
                       </h1>
                     </div>
                   </div>
